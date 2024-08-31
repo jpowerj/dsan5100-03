@@ -1,0 +1,394 @@
+---
+title: "Week 4: Discrete Probability Distributions"
+subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
+author: "Jeff Jacobs"
+institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
+date: 2023-09-14
+lecnum: 4
+categories:
+  - "Class Sessions"
+format:
+  revealjs:
+    cache: false
+    footer: "DSAN 5100-03 Week 4: Discrete Distributions"
+    output-file: slides.html
+    df-print: kable
+    code-fold: true
+    html-math-method: mathjax
+    scrollable: true
+    slide-number: true
+    section-divs: false
+    simplemenu:
+      flat: true
+      barhtml:
+        header: "<div class='menubar'><span style='position: absolute; left: 8; padding-left: 8px;'><a href='./index.html'>&larr; Return to Notes</a></span><ul class='menu'></ul></div>"
+      scale: 0.5
+    number-sections: false
+    footnotes-hover: true
+    tbl-cap-location: bottom
+    theme: [default, "../_style-slides.scss"]
+    revealjs-plugins:
+      - simplemenu
+    include-in-header:
+      text: "<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous'><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>"
+  html:
+    output-file: index.html
+    cache: false
+---
+
+::: {.content-visible unless-format="revealjs"}
+
+<center>
+<a class="h2" href="./slides.html" target="_blank">Open slides in new window &rarr;</a>
+</center>
+
+:::
+
+# Schedule {.smaller .smaller-title data-name="Schedule"}
+
+::: {.hidden}
+
+```{r}
+source("../_globals.r")
+```
+
+:::
+
+| | Start | End | Topic | Recording |
+|:- |:- |:- |:- |:-:|
+| **Lecture** | 12:30pm | 12:40pm | [Recap and Quizzes &rarr;](#recap) | <a href="./recording-w03-1.html" target="_blank"><i class="bi bi-film"></i></a> |
+| | 12:40pm | 1:20pm | [Probability Distributions in General &rarr;](#what-is-conditional-probability) | <a href="./recording-w03-2.html" target="_blank"><i class="bi bi-film"></i></a> |
+| | 1:20pm | 2:00pm | [Common Discrete Distributions &rarr;](#bayes-theorem-and-its-implications) | <a href="./recording-w03-3.html" target="_blank"><i class="bi bi-film"></i></a> |
+| **Break!** | 2:00pm | 2:10pm | | |
+| **Lab** | 2:10pm | 2:50pm | [Lab 3 Demonstration <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i>](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-demo.html){target="_blank"} | <a href="./recording-w03-4.html" target="_blank"><i class="bi bi-film"></i></a> |
+| | 2:50pm | 3:00pm | [Lab 3 Assignment Overview <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i>](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-assignment.html){target="_blank"} | <a href="./recording-w03-5.html" target="_blank"><i class="bi bi-film"></i></a> |
+
+: {tbl-colwidths="[12,12,12,54,5,5]"} 
+
+# Probability Distributions in General {data-stack-name="Probability Distributions"}
+
+## Discrete vs. Continuous {.smaller .small-math .crunch-ul .crunch-images .crunch-title .crunch-math .crunch-cell-output}
+
+::: columns
+::: {.column width="50%"}
+
+* **Discrete** = "Easy mode": Based (intuitively) on **sets**
+* $\Pr(A)$: Four marbles $\{A, B, C, D\}$ in box, all equally likely, what is the probability I pull out $A$?
+
+```{r}
+#| label: discrete-prob-plot
+#| fig-height: 5.5
+library(tibble)
+library(ggplot2)
+disc_df <- tribble(
+  ~x, ~y, ~label,
+  0, 0, "A",
+  0, 1, "B",
+  1, 0, "C",
+  1, 1, "D"
+)
+ggplot(disc_df, aes(x=x, y=y, label=label)) +
+    geom_point(size=g_pointsize) +
+    geom_text(
+      size=g_textsize,
+      hjust=1.5,
+      vjust=-0.5
+    ) +
+    xlim(-0.5,1.5) + ylim(-0.5,1.5) +
+    coord_fixed() +
+    dsan_theme("quarter") +
+    labs(
+      title="Discrete Probability Space in N"
+    )
+```
+
+$$
+\Pr(A) = \underbrace{\frac{|\{A\}|}{|\Omega|}}_{\mathclap{\small \text{Probability }\textbf{mass}}} = \frac{1}{|\{A,B,C,D\}|} = \frac{1}{4}
+$$
+
+:::
+::: {.column width="50%"}
+
+* **Continuous** = "Hard mode": Based (intuitively) on **areas**
+* $\Pr(A)$: If I throw a dart at this square, what is the probability that I hit region $A$?
+
+```{r}
+#| label: continuous-prob-plot
+#| fig-height: 6
+library(ggforce)
+ggplot(disc_df, aes(x=x, y=y, label=label)) +
+    xlim(-0.5,1.5) + ylim(-0.5,1.5) +
+    geom_rect(aes(xmin = -0.5, xmax = 1.5, ymin = -0.5, ymax = 1.5), fill=cbPalette[1], color="black", alpha=0.3) +
+    geom_circle(aes(x0=x, y0=y, r=0.25), fill=cbPalette[2]) +
+    coord_fixed() +
+    dsan_theme("quarter") +
+    geom_text(
+      size=g_textsize,
+      #hjust=1.75,
+      #vjust=-0.75
+    ) +
+    geom_text(
+      data=data.frame(label="Ω"),
+      aes(x=-0.4,y=1.39),
+      parse=TRUE,
+      size=g_textsize
+    ) +
+    labs(
+      title=expression("Continuous Probability Space in "*R^2)
+    )
+```
+
+$$
+\Pr(A) = \underbrace{\frac{\text{Area}(\{A\})}{\text{Area}(\Omega)}}_{\mathclap{\small \text{Probability }\textbf{density}}} = \frac{\pi r^2}{s^2} = \frac{\pi \left(\frac{1}{4}\right)^2}{4} = \frac{\pi}{64}
+$$
+
+:::
+:::
+
+## The Technical Difference tl;dr {.smaller .smallish-math .crunch-title .crunch-math-less}
+
+* **Countable** Sets: Can be put into 1-to-1 correspondence with the **natural numbers** $\mathbb{N}$
+  * What are you doing when you're counting? Saying "first", "second", "third", ...
+  * You're pairing each object with a natural number! $\{(\texttt{a},1),(\texttt{b},2),\ldots,(\texttt{z},26)\}$
+  <!-- f(\texttt{a}) = 1, f^{-1}(1) = \texttt{a}$, $f(\texttt{b}) = 2, f^{-1}(2) = \texttt{b}$, ... -->
+* **Uncountable** Sets: Cannot be put into 1-to-1 correspondence with the natural numbers.
+  * **$\mathbb{R}$ is uncountable**. *Intuition*: Try counting the real numbers. *Proof*[^cantor]
+  $$
+  \text{Assume }\exists (f: \mathbb{R} \leftrightarrow \mathbb{N}) = 
+  \begin{array}{|c|c|c|c|c|c|c|}\hline
+  \mathbb{R} & & & & & & \Leftrightarrow \mathbb{N} \\ \hline
+  \color{orange}{3} & . & 1 & 4 & 1 & \cdots & \Leftrightarrow 1 \\\hline
+  4 & . & \color{orange}{9} & 9 & 9 & \cdots & \Leftrightarrow 2 \\\hline
+  0 & . & 1 & \color{orange}{2} & 3 & \cdots &\Leftrightarrow 3 \\\hline
+  1 & . & 2 & 3 & \color{orange}{4} & \cdots & \Leftrightarrow 4 \\\hline
+ \vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\\hline
+  \end{array} \overset{\color{blue}{y_{[i]}} = \color{orange}{x_{[i]}} \overset{\mathbb{Z}_{10}}{+} 1}{\longrightarrow} \color{blue}{y = 4.035 \ldots} \Leftrightarrow \; ?
+  $$
+
+[^cantor]: The method used in this proof, if you haven't seen it before, is called [**Cantor diagonalization**](https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument){target="_blank"}, and it is extremely fun and applicable to a wide variety of levels-of-infinity proofs
+
+::: {.aside}
+**Fun math challenge**: Is $\mathbb{Q}$ countable? See [this appendix slide](#appendix-countability-of-mathbbq) for why the answer is yes, despite the fact that $\forall x, y \in \mathbb{Q} \left[ \frac{x+y}{2} \in \mathbb{Q} \right]$
+:::
+
+## The Practical Difference {.smaller}
+
+* This part of the course (**discrete** probability): $\Pr(X = v), v \in \mathcal{R}_X \subseteq \mathbb{N}$
+  * Example: $\Pr($<span><i class="bi bi-dice-3"></i></span>$) = \Pr(X = 3), 3 \in \{1,2,3,4,5,6\} \subseteq \mathbb{N}$
+* Next part of the course (**continuous** probability): $\Pr(X \in V), v \subseteq \mathbb{R}$
+  * Example: $\Pr(X \geq 2\pi) = \Pr(X \in [\pi,\infty)), [\pi,\infty) \subseteq \mathbb{R}$
+* Why do they have to be in separate parts?
+
+$$
+\Pr(X = 2\pi) = \frac{\text{Area}(\overbrace{2\pi}^{\mathclap{\small \text{Single point}}})}{\text{Area}(\underbrace{\mathbb{R}}_{\mathclap{\small \text{(Uncountably) Infinite set of points}}})} = 0
+$$
+
+
+## Probability Mass vs. Probability Density {.smaller .small-title}
+
+* **Cumulative Distribution Function** (**CDF**): $F_X(v) = \Pr(X \leq v)$
+* For **discrete** RV $X$, **Probability Mass Function** (**pmf**) $p_X(v)$:
+  $$
+  \begin{align*}
+  p_X(v) &= \Pr(X = v) = F_X(v) - F_X(v-1) \\
+  \implies F_X(v) &= \sum_{\{w \in \mathcal{R}_X: \; w \leq v\}}p_X(w)
+  \end{align*}
+  $$
+* For **continuous** RV $X$ ($\mathcal{R}_X \subseteq \mathbb{R}$), **Probability Density Function** (**pdf**) $f_X(v)$:
+  $$
+  \begin{align*}
+  f_X(v) &= \frac{d}{dx}F_X(v) \\
+  \implies F_X(v) &= \int_{-\infty}^v f_X(w)dw
+  \end{align*}
+  $$
+
+::: {.aside}
+
+Frustratingly, the CDF/pmf/pdf is usually written using $X$ and $x$, like $F_X(x) = \Pr(X \leq x)$. To me this is extremely confusing, since the capitalized $X$ is a random variable (not a number) while the lowercase $x$ is some particular value, like $3$. So, to emphasize this difference, I use $X$ for the RV and $v$ for the **value** at which we're checking the CDF/pmf/pdf.
+
+Also note the capitalized CDF but lowercase pmf/pdf, matching the mathematical notation where $f_X(v)$ is the derivative of $F_X(v)$.
+
+:::
+
+## Probability Density $\neq$ Probability {.smaller}
+
+* **BEWARE**: $f_X(v) \neq \Pr(X = v)$!
+* Long story short, for continuous variables, $\Pr(X = v) = 0$[^measurezero]
+* Hence, we instead construct a PDF $f_X(v)$ that enables us to calculate $\Pr(X \in [a,b])$ by integrating: $f_X(v)$ is whatever function satisfies $\Pr(X \in [a,b]) = \int_{a}^bf_X(v)dv$.
+* i.e., instead of $p_X(v) = \Pr(X = v)$ from discrete world, the relevant function here is $f_X(v)$, the probability **density** of $X$ at $v$.
+* If we **really** want to get something like the "probability of a value" in a continuous space 😪, we can get something kind of like this by using fancy limits
+  $$
+  f_X(v) = \lim_{\varepsilon \to 0}\frac{P(X \in [v-\varepsilon, v + \varepsilon])}{2\varepsilon} = \lim_{\varepsilon \to 0}\frac{F(v + \varepsilon) - F(v - \varepsilon)}{2\varepsilon} = \frac{d}{dx}F_X(v)
+  $$
+
+[^measurezero]: For intuition: $X \sim U[0,10] \implies \Pr(X = \pi) = \frac{|\{v \in \mathbb{R}:\; v = \pi\}|}{|\mathbb{R}|} = \frac{1}{2^{\aleph_0}} \approx 0$. That is, finding the $\pi$ needle in the $\mathbb{R}$ haystack is a one-in-$\left(\infty^\infty\right)$ event. A similar issue occurs if $S$ is countably-infinite, like $S = \mathbb{N}$: $\Pr(X = 3) = \frac{|\{x \in \mathbb{N} : \; x = 3\}|}{|\mathbb{N}|} = \frac{1}{\aleph_0}$.
+
+# Common Discrete Distributions {data-stack-name="Discrete Distributions"}
+
+* Bernoulli
+* Binomial
+* Geometric
+
+## Bernoulli Distribution
+
+* Single trial with two outcomes, **"success"** (**1**) or **"failure"** (**0**): basic model of a **coin flip** (heads = 1, tails = 0)
+* $X \sim \text{Bern}({\color{purple} p}) \implies \mathcal{R}_X = \{0,1\}, \; \Pr(X = 1) = {\color{purple}p}$.
+
+```{r}
+#| label: bernoulli-demo
+#| fig-align: center
+library(ggplot2)
+library(tibble)
+bern_tibble <- tribble(
+  ~Outcome, ~Probability, ~Color,
+  "Failure", 0.2, cbPalette[1],
+  "Success", 0.8, cbPalette[2]
+)
+ggplot(data = bern_tibble, aes(x=Outcome, y=Probability)) +
+  geom_bar(aes(fill=Outcome), stat = "identity") +
+  dsan_theme("half") +
+  labs(
+    y = "Probability Mass"
+  ) +
+  scale_fill_manual(values=c(cbPalette[1], cbPalette[2])) +
+  remove_legend()
+```
+
+## Binomial Distribution
+
+* **Number of successes** in ${\color{purple}N}$ Bernoulli trials. $X \sim \text{Binom}({\color{purple}N},{\color{purple}k},{\color{purple}p}) \implies \mathcal{R}_X = \{0, 1, \ldots, N\}$
+  * $P(X = k)  = \binom{N}{k}p^k(1-p)^{N-k}$: probability of $k$ successes out of $N$ trials.
+  * $\binom{N}{k} = \frac{N!}{k!(N-k)!}$: "Binomial coefficient". How many groups of size $k$ can be formed?[^binom]
+
+[^binom]: A fun way to never have to memorize or compute these: imagine a pyramid like $\genfrac{}{}{0pt}{}{}{\boxed{\phantom{1}}}\genfrac{}{}{0pt}{}{\boxed{\phantom{1}}}{}\genfrac{}{}{0pt}{}{}{\boxed{\phantom{1}}}$, where the boxes are slots for numbers, and put a $1$ in the box at the top. In the bottom row, fill each slot with the sum of the two numbers above-left and above-right of it. Since $1 + \text{(nothing)} = 1$, this looks like: $\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}$. Continue filling in the pyramid this way, so the next row looks like $\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{2}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}$, then $\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{3}\genfrac{}{}{0pt}{}{2}{}\genfrac{}{}{0pt}{}{}{3}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}$, and so on. The $k$th number in the $N$th row (counting from $0$) is $\binom{N}{k}$. For the triangle written out to the 7th row, see Appendix I at end of slideshow.
+
+## Visualizing the Binomial {.smaller}
+
+```{r}
+#| label: binomial-demo
+#| echo: true
+#| code-fold: show
+#| fig-align: center
+k <- seq(0, 10)
+prob <- dbinom(k, 10, 0.5)
+bar_data <- tibble(k, prob)
+ggplot(bar_data, aes(x=k, y=prob)) +
+  geom_bar(stat="identity", fill=cbPalette[1]) +
+  labs(
+    title="Binomial Distribution, N = 10, p = 0.5",
+    y="Probability Mass"
+  ) +
+  scale_x_continuous(breaks=seq(0,10)) +
+  dsan_theme("half")
+```
+
+::: {.notes}
+So who can tell me, from this plot, the approximate probability of getting 4 heads when flipping a coin 10 times?
+:::
+
+
+## Multiple Classes: Multinomial Distribution {.smaller}
+
+* Bernoulli only allows two outcomes: success or failure.
+* What if we're predicting soccer match outcomes?
+  * $X_i \in \{\text{Win}, \text{Loss}, \text{Draw}\}$
+* **Categorical Distribution**: Generalization of Bernoulli to $k$ outcomes. $X \sim \text{Categorical}(\mathbf{p} = \{p_1, p_2, \ldots, p_k\}), \sum_{i=1}^kp_i = 1$.
+  * $P(X = k) = p_k$
+* **Multinomial Distribution**: Generalization of Binomial to $k$ outcomes.
+* $\mathbf{X} \sim \text{Multinom}(N,k,\mathbf{p}=\{p_1,p_2,\ldots,p_k\}), \sum_{i=1}^kp_i=1$
+  * $P(\mathbf{X} = \{x_1,x_2\ldots,x_k\}) = \frac{N!}{x_1!x_2!\cdots x_k!}p_1^{x_1}p_2^{x_2}\cdots p_k^{x_k}$
+  * $P(\text{30 wins}, \text{4 losses}, \text{4 draws}) = \frac{38!}{30!4!4!}p_{\text{win}}^{30}p_{\text{lose}}^4p_{\text{draw}}^4$.
+
+## Geometric Distribution
+
+* **Geometric**: Likelihood that we need ${\color{purple}k}$ trials to get our first success. $X \sim \text{Geom}({\color{purple}k},{\color{purple}p}) \implies \mathcal{R}_X = \{0, 1, \ldots\}$
+  * $P(X = k) = \underbrace{(1-p)^{k-1}}_{\small k - 1\text{ failures}}\cdot \underbrace{p}_{\mathclap{\small \text{success}}}$
+  * Probability of $k-1$ failures followed by a success
+
+```{r}
+#| label: geometric-demo
+#| fig-align: center
+library(ggplot2)
+k <- seq(0, 8)
+prob <- dgeom(k, 0.5)
+bar_data <- tibble(k, prob)
+ggplot(bar_data, aes(x = k, y = prob)) +
+    geom_bar(stat = "identity", fill = cbPalette[1]) +
+    labs(
+        title = "Geometric Distribution, p = 0.5",
+        y = "Probability Mass"
+    ) +
+    scale_x_continuous(breaks = seq(0, 8)) +
+    dsan_theme("half")
+```
+
+## Less Common (But Important) Distributions {.smaller}
+
+* **Discrete Uniform**: $N$ equally-likely outcomes
+  * $X \sim U\{{\color{purple}a},{\color{purple}b}\} \implies \mathcal{R}_X = \{a, a+1, \ldots, b\}, P(X = k) = \frac{1}{{\color{purple}b} - {\color{purple}a} + 1}$
+* **Beta**: $X \sim \text{Beta}({\color{purple}\alpha}, {\color{purple}\beta})$: *conjugate prior* for Bernoulli, Binomial, and Geometric dists.
+  * Intuition: If we use Beta to encode our prior hypothesis, then observe data drawn from Binomial, distribution of our *updated* hypothesis is still Beta.
+  * $\underbrace{\Pr(\text{biased}) = \Pr(\text{unbiased})}_{\text{Prior: }\text{Beta}({\color{purple}\alpha}, {\color{purple}\beta})} \rightarrow$ Observe $\underbrace{\frac{8}{10}\text{ heads}}_{\text{Data}} \rightarrow \underbrace{\Pr(\text{biased}) = 0.65}_{\text{Posterior: }\text{Beta}({\color{purple}\alpha + 8}, {\color{purple}\beta + 2})}$
+* **Dirichlet**: $\mathbf{X} = (X_1, X_2, \ldots, X_K) \sim \text{Dir}({\color{purple} \boldsymbol\alpha})$
+  * $K$-dimensional extension of Beta (thus, conjugate prior for Multinomial)
+
+<!-- TODO: see why \param doesn't work for the bolded \alpha -->
+
+::: {.notes}
+We can now use $\text{Beta}(\alpha + 8, \beta + 2)$ as a prior for our next set of trials (encoding our knowledge up to that point), and update further once we know the results (to yet another Beta distribution).
+:::
+
+## Interactive Visualizations {.smaller}
+
+```{=html}
+<iframe src="https://seeing-theory.brown.edu/probability-distributions/index.html" width="100%" height="70%"></iframe>
+```
+
+<a href="https://seeing-theory.brown.edu/probability-distributions/index.html" target="_blank">Seeing Theory &rarr;</a>
+
+
+
+# Lab 3 {data-stack-name="Lab 3"}
+
+## Lab 3 Demonstration
+
+[Lab 3 Demo Link <i class="bi bi-box-arrow-up-right ps-1"></i>](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-3/lab-3-demo.html){target="_blank"}
+
+## Lab 3 Assignment Overview
+
+[Lab 3 Assignment <i class="bi bi-box-arrow-up-right ps-1"></i>](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-3/lab-3-assignment.html){target="_blank"}
+
+<!-- APPENDIX SLIDES -->
+
+
+## Appendix: Countability of $\mathbb{Q}$ {.smaller .small-math}
+
+* **Bad** definition: "$\mathbb{N}$ is countable because no $x \in \mathbb{N}$ between $0$ and $1$. $\mathbb{R}$ is uncountable because infinitely-many $x \in \mathbb{R}$ between $0$ and $1$." ($\implies \mathbb{Q}$ uncountable)
+* And yet, $\mathbb{Q}$ **is** countable...
+
+::: columns
+::: {.column width="45%"}
+
+![](images/rationals_countable.png){fig-align="center"}
+
+:::
+::: {.column width="55%"}
+
+$$
+\begin{align*}
+\begin{array}{ll}
+s: \mathbb{N} \leftrightarrow \mathbb{Z} & s(n) = (-1)^n \left\lfloor \frac{n+1}{2} \right\rfloor \\
+h_+: \mathbb{Z}^+ \leftrightarrow \mathbb{Q}^+ & p_1^{a_1}p_2^{a_2}\cdots \mapsto p_1^{s(a_1)}p_2^{s(a_2)}\cdots \\
+h: \mathbb{Z} \leftrightarrow \mathbb{Q} & h(n) = \begin{cases}h_+(n) &n > 0 \\ 0 & n = 0 \\
+-h_+(-n) & n < 0\end{cases} \\
+(h \circ s): \mathbb{N} \leftrightarrow \mathbb{Q} & ✅🤯
+\end{array}
+\end{align*}
+$$
+
+:::
+:::
+
+::: {.aside}
+Image credit: <a href="https://math.stackexchange.com/a/659373" target="_blank">Rebecca J. Stones, Math StackExchange</a>. Math credit: <a href="https://math.stackexchange.com/a/1067928" target="_blank">Thomas Andrews, Math StackExchange</a>
+:::

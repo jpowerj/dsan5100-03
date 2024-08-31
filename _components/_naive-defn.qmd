@@ -1,0 +1,9 @@
+::: {.callout-note title="Naïve Definition of Probability"}
+
+Given a sample space $\Omega$ and an event $E \subseteq \Omega$,
+
+$$
+\Pr(\underbrace{E}_{\mathclap{\text{event}}}) = \frac{\text{\# Outcomes in E}}{\text{\# Possible Outcomes}} = \frac{|E|}{|\Omega|}
+$$
+
+:::

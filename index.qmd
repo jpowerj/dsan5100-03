@@ -1,0 +1,26 @@
+---
+title: "DSAN 5100, Section 03 (Tuesdays)"
+sidebar: mainnav
+listing:
+  sort-ui: false
+  filter-ui: false
+  type: table
+  include:
+    categories: "{Class Sessions}"
+  fields: [title,date]
+  sort: "lecnum asc"
+  table-hover: true
+  date-format: full
+format:
+  html:
+    df-print: kable
+    html-math-method: mathjax
+---
+
+This page collects slides and relevant links for students in Prof. Jeff's **Tuesday section (Section 03)** of **DSAN 5100: Probabilistic Modeling and Statistical Computing**, Fall 2024 at Georgetown University.
+
+Sections take place in **Car Barn 309** on **Tuesdays** from **6:30pm to 9:00pm**.
+
+This page is *not* a replacement for the **[Main Course Page]({{< var course_url >}}){target='_blank'}** or the sections's **[Canvas Page]({{< var canvas_url >}}){target="_blank"}**!
+
+Use the menu on the left, or the table below, to view resources for a specific week.

@@ -1,0 +1,11 @@
+* Imagine a case where we **think** we're observing $X_i$, but we're actually observing $\widetilde{X_i} = X_i + \varepsilon$ 😰 How badly does this affect our **estimates** $\widehat{\mu}$ and $\widehat{\sigma^2}$? $\widehat{\mu}$ first:
+
+    $$
+    \widetilde{\mu} \definedas \widehat{\mu}_{\text{MLE}}(\widetilde{\mathbf{X}}) = \frac{1}{N}\sum_{i=1}^n \widetilde{X_i} = \sum_{i=1}^n (X_i + \varepsilon) = \frac{1}{N}X_i + \frac{1}{N}N\varepsilon = \widehat{\mu}(\mathbf{X}) + {\color{red} \varepsilon}
+    $$
+
+* Now how about $\widehat{\sigma^2}$?
+
+    $$
+    \widetilde{\sigma^2} \definedas \widehat{\sigma^2}_{\text{MLE}}(\widetilde{\mathbf{X}}) = \frac{1}{N}\sum_{i=1}^n(\widetilde{X_i} - \widetilde{\mu})^2
+    $$

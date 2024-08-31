@@ -1,0 +1,20 @@
+---
+title: "Extra Writeups"
+sidebar: mainnav
+listing:
+  sort-ui: true
+  filter-ui: true
+  type: table
+  include:
+    categories: "{Extra Writeups,Clarifications}"
+  fields: [title,date,categories]
+  field-display-names: 
+    title: "Title"
+    date: "Last Updated"
+    categories: "Category"
+  sort: "date desc"
+  table-hover: true
+  date-format: full
+  categories: true
+---
+

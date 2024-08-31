@@ -1,0 +1,159 @@
+---
+title: "Bayes' Theorem: Disease Probabilities"
+author: "Jeff Jacobs"
+institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>jj1088@georgetown.edu</a>"
+date: last-modified
+categories:
+  - "Extra Writeups"
+format:
+  html:
+    df-print: kable
+---
+
+## What We're Given
+
+* $D \in \{0, 1\}$ = has disease
+* $T \in \{0, 1\}$ = test result
+* (In the real world, however, we cannot observe $D$, only $T$)
+* 99% accuracy:
+    * $\Pr(T = 1 \mid D = 1) = 0.99$
+    * $\Pr(T = 0 \mid D = 0) = 0.99$
+* Rare disease: 1 in 10000 people has it
+    * $\Pr(D = 1) = \frac{1}{10000}$
+
+## Basic Bayes: Probability of Disease Given Positive Test
+
+We want
+
+$$
+\Pr(D = 1 \mid T = 1)
+$$
+
+Which we can compute, using the given information, via Bayes' rule (where the second line is how I like to write it out, a bit more cluttered but makes it clear how to compute the denominator)
+
+$$
+\begin{align*}
+\Pr(D = 1 \mid T = 1) &= \frac{\Pr(T = 1 \mid D = 1)\Pr(D = 1)}{\Pr(T = 1)} \\
+&= \frac{\Pr(T = 1 \mid D = 1)\Pr(D = 1)}{\Pr(T = 1 \mid D = 1)\Pr(D = 1) + \Pr(T = 1 \mid D = 0)\Pr(D = 0)}
+\end{align*}
+$$
+
+Numerically:
+
+$$
+\Pr(D = 1 \mid T = 1) = \frac{(0.99)(1/10000)}{(0.99)(1/10000) + (0.01)(9999/10000)} \approx 0.0098
+$$
+
+(Less than 1%)
+
+## Deeper Dive
+
+But now let's think about what's behind this... It's a dangerous, **highly contagious** disease, meaning that (societally) false **negatives** are much, much worse than false **positives**:
+
+* A false **negative**, in this case, means that someone is walking around thinking they **don't** have the disease (because they tested negative), when they actually **do**. This means that they are not quarantining, they are going out to parties and events and etc., spreading the disease.
+* A false **positive**, on the other hand, means someone who panics unnecessarily: maybe it means, they go to the hospital, the hospital performs additional tests, and successfully discovers that the person, despite their positive test result, doesn't have the disease.
+* So, **consequence-wise**, a **false negative** potentially means a new outbreak of the disease in the society, while a **false positive** means a quick (scary, but hopefully quick) trip to the hospital
+
+### The Catastrophic Case
+
+So, let's focus on the disastrous first case: what's the probability of a **false negative**? First, we can compute the **conditional** probability of a negative test, conditional on someone having the disease? Here we just use our **complement rule** of probability: that $\Pr(E^c) = 1 - \Pr(E)$ for any event $E$:
+
+$$
+\Pr(T = 0 \mid D = 1) = 1 - \Pr(T = 1 \mid D = 1) = 0.01
+$$
+
+Now that we know this, let's incorporate the **base rate** information---that is, the information we have about the likelihood of having the disease (the thing we conditioned on above):
+
+$$
+\Pr(D = 1) = \frac{1}{10000}
+$$
+
+So, given these two pieces of information, we can compute the probability of a person in the population being a **false negative case**: having the disease, but not being detected by the test.
+
+$$
+\begin{align*}
+\Pr(T = 0 \cap D = 1) &= \Pr(T = 0 \mid D = 1)\Pr(D = 1) \\
+&= (0.01)(1/10000) = \frac{1}{1000000},
+\end{align*}
+$$
+
+i.e., **one in a million**.
+
+### The Bad (But Not Catastrophic) Case
+
+Now let's turn to the second, bad but not catastrophic, case: the probability of a **false positive**. As before, we start by computing the **conditional probability** of a positive test result for someone who in fact does **not** have the disease:
+
+$$
+\Pr(T = 1 \mid D = 0) = 1 - \Pr(T = 0 \mid D = 0) = 0.01
+$$
+
+This time, however, we'll see that the base rate will make a big difference. The base rate in this case---the probability of someone **not** having the disease---is:
+
+$$
+\Pr(D = 0) = 1 - \Pr(D = 1) = \frac{9999}{10000}
+$$
+
+So, incorporating these two pieces of information, we can compute the likelihood of a **false positive case**: someone in the population who **doesn't** have the disease but **does** test positive:
+
+$$
+\begin{align*}
+\Pr(T = 1 \cap D = 0) &= \Pr(T = 1 \mid D = 0)\Pr(D = 0) \\
+&= (0.01)(9999/10000) = \frac{9999}{1000000}
+\end{align*}
+$$
+
+In words: for every million people in the population, 9999 of them will have a **false positive** panic: they won't have the disease, but they will **think** they have the disease because of their positive test.
+
+## Putting It Together:
+
+At first, this example is depressing: "Oh no, that's terrible! We're forcing thousands of people to panic, thinking that they have the disease, when they really don't!"
+
+But, walking through it with this false negative / false positive paradigm, we see the real takeaway: that there is always a **tradeoff** between false positives and false negatives. In this case, from a public health perspective for example, it's actually somewhat of a **good** situation: at the "cost" of having several thousand people panic unnecessarily, we **achieve** the benefit of making it very, very unlikely (one in a million, literally) that someone goes undetected in the population with this dangerous, contagious disease.
+
+```{=html}
+<table>
+    <thead>
+        <tr style="border-top: 0px solid black;">
+            <th colspan="2" rowspan="2" style="border-top: 0px solid black; border-left: 0px solid black;"><span data-qmd="$N = 1000000$"></span></th>
+            <th colspan="2" align="center">True State of the World</th>
+        </tr>
+        <tr>
+            <th align="center"><span data-qmd="$D = 0$"></span><br><span style="font-weight: 500; font-size: 0.85rem;">(Doesn't have disease)</span></th>
+            <th align="center"><span data-qmd="$D = 1$"></span><br><span style="font-weight: 500; font-size: 0.85rem;">(Has disease)</span></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan="2" align="right" style="vertical-align: middle;"><b>Prediction</b></td>
+            <td align="center"><span data-qmd="$T = 0$"></span><br>(Tested negative)</td>
+            <td align="center"><span data-qmd="**True Negative**"></span><br><span class="subtitle">Successfully detected no disease 👍</span><br><span data-qmd="**989,901 People**"></span></td>
+            <td align="center"><span data-qmd="**False Negative**"></span><br><span class="subtitle">Failed to detect disease 🚨😵🚨</span><br><span data-qmd="**1 Person**"></span></td>
+        </tr>
+        <tr>
+            <td align="center"><span data-qmd="$T = 1$"></span><br>(Tested positive)</td>
+            <td align="center"><span data-qmd="**False Positive**"></span><br><span class="subtitle">False alarm 😬 sorry!</span><br><span data-qmd="**9999 People**"></span></td>
+            <td align="center"><span data-qmd="**True Positive**"></span><br><span class="subtitle">Successfully detected disease 😮‍💨</span><br><span data-qmd="**99 People**"></span></td>
+        </tr>
+    </tbody>
+</table>
+```
+
+### (Compuation of the remaining two cells:)
+
+**True Positive**:
+
+$$
+\begin{align*}
+\Pr(T = 1 \cap D = 1) &= \Pr(T = 1 \mid D = 1)\Pr(D = 1) \\
+&= (0.99)\frac{1}{10000} = \frac{99}{1000000}
+\end{align*}
+$$
+
+**True Negative**:
+
+$$
+\begin{align*}
+\Pr(T = 0 \cap D = 0) &= \Pr(T = 0 \mid D = 0)\Pr(D = 0) \\
+&= (0.99)\frac{9999}{10000} = \frac{989901}{1000000}
+\end{align*}
+$$

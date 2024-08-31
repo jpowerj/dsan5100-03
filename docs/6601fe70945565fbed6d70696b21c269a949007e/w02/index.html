@@ -1,0 +1,2628 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jeff Jacobs">
+<meta name="dcterms.date" content="2023-08-31">
+
+<title>Week 2: Introduction to Probabilistic Modeling</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script><script src="../sidebar.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../dsan-globals/jjstyles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../w02/index.html">Week 2: Sep 3</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">DSAN 5100-03</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://dsan.georgetown.domains/dsan5100/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="bi bi-arrow-left pe-1"></i> Main Course Page</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w01/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 1: Aug 30</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w02/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Week 2: Sep 3</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=98022271-76d6-457f-83ee-b1dd00143dbc" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Recordings <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../extra-videos/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Videos</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../writeups/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Writeups</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cheatsheet-math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Math Cheatsheet</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.instructure.com/courses/193275" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S03 Canvas Page <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/meet" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Book Office Hours <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://forms.gle/3CYWo8xHUxMvvowbA" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Suggestion Box <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/dsps" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Textbook <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#schedule" id="toc-schedule" class="nav-link active" data-scroll-target="#schedule">Schedule</a></li>
+  <li><a href="#about-me" id="toc-about-me" class="nav-link" data-scroll-target="#about-me">About Me</a>
+  <ul class="collapse">
+  <li><a href="#prof.-jeff-introduction" id="toc-prof.-jeff-introduction" class="nav-link" data-scroll-target="#prof.-jeff-introduction">Prof.&nbsp;Jeff Introduction!</a></li>
+  <li><a href="#grad-school" id="toc-grad-school" class="nav-link" data-scroll-target="#grad-school">Grad School</a></li>
+  <li><a href="#dissertation-political-science-history" id="toc-dissertation-political-science-history" class="nav-link" data-scroll-target="#dissertation-political-science-history">Dissertation (Political Science + History)</a></li>
+  <li><a href="#research-labor-economics" id="toc-research-labor-economics" class="nav-link" data-scroll-target="#research-labor-economics">Research (Labor Economics)</a></li>
+  </ul></li>
+  <li><a href="#review" id="toc-review" class="nav-link" data-scroll-target="#review">Review</a>
+  <ul class="collapse">
+  <li><a href="#deterministic-processes" id="toc-deterministic-processes" class="nav-link" data-scroll-target="#deterministic-processes">Deterministic Processes</a></li>
+  <li><a href="#holy-grail-deterministic-model-newtonian-physics" id="toc-holy-grail-deterministic-model-newtonian-physics" class="nav-link" data-scroll-target="#holy-grail-deterministic-model-newtonian-physics">“Holy Grail” Deterministic Model: Newtonian Physics</a></li>
+  <li><a href="#but-what-happens-when" id="toc-but-what-happens-when" class="nav-link" data-scroll-target="#but-what-happens-when">But What Happens When…</a></li>
+  <li><a href="#random-processes" id="toc-random-processes" class="nav-link" data-scroll-target="#random-processes">Random Processes</a></li>
+  <li><a href="#data-ground-truth-noise" id="toc-data-ground-truth-noise" class="nav-link" data-scroll-target="#data-ground-truth-noise">Data = Ground Truth + Noise</a></li>
+  <li><a href="#random-variables" id="toc-random-variables" class="nav-link" data-scroll-target="#random-variables">Random Variables</a></li>
+  <li><a href="#discrete-vs.-continuous" id="toc-discrete-vs.-continuous" class="nav-link" data-scroll-target="#discrete-vs.-continuous">Discrete vs.&nbsp;Continuous</a></li>
+  <li><a href="#thinking-about-independence" id="toc-thinking-about-independence" class="nav-link" data-scroll-target="#thinking-about-independence">Thinking About Independence</a></li>
+  </ul></li>
+  <li><a href="#combinatorics" id="toc-combinatorics" class="nav-link" data-scroll-target="#combinatorics">Combinatorics</a>
+  <ul class="collapse">
+  <li><a href="#naïve-definition-of-probability" id="toc-naïve-definition-of-probability" class="nav-link" data-scroll-target="#naïve-definition-of-probability">Naïve Definition of Probability</a></li>
+  <li><a href="#example-flipping-two-coins" id="toc-example-flipping-two-coins" class="nav-link" data-scroll-target="#example-flipping-two-coins">Example: Flipping Two Coins</a></li>
+  <li><a href="#events-neq-outcomes" id="toc-events-neq-outcomes" class="nav-link" data-scroll-target="#events-neq-outcomes">Events <span class="math inline">\(\neq\)</span> Outcomes!</a></li>
+  <li><a href="#back-to-the-naïve-definition" id="toc-back-to-the-naïve-definition" class="nav-link" data-scroll-target="#back-to-the-naïve-definition">Back to the Naïve Definition</a></li>
+  <li><a href="#combinatorics-ice-cream-possibilities" id="toc-combinatorics-ice-cream-possibilities" class="nav-link" data-scroll-target="#combinatorics-ice-cream-possibilities">Combinatorics: Ice Cream Possibilities</a></li>
+  <li><a href="#grouping-vs.-ordering" id="toc-grouping-vs.-ordering" class="nav-link" data-scroll-target="#grouping-vs.-ordering">Grouping vs.&nbsp;Ordering</a></li>
+  <li><a href="#does-order-matter" id="toc-does-order-matter" class="nav-link" data-scroll-target="#does-order-matter">Does Order Matter?</a></li>
+  <li><a href="#permutations-vs.-combinations" id="toc-permutations-vs.-combinations" class="nav-link" data-scroll-target="#permutations-vs.-combinations">Permutations vs.&nbsp;Combinations</a></li>
+  <li><a href="#no-need-to-memorize" id="toc-no-need-to-memorize" class="nav-link" data-scroll-target="#no-need-to-memorize">No Need to Memorize!</a></li>
+  <li><a href="#with-or-without-replacement" id="toc-with-or-without-replacement" class="nav-link" data-scroll-target="#with-or-without-replacement">With or Without Replacement?</a></li>
+  <li><a href="#how-many-possible-samples" id="toc-how-many-possible-samples" class="nav-link" data-scroll-target="#how-many-possible-samples">How Many Possible Samples?</a></li>
+  </ul></li>
+  <li><a href="#probability-fundamentals" id="toc-probability-fundamentals" class="nav-link" data-scroll-target="#probability-fundamentals">Probability Fundamentals</a>
+  <ul class="collapse">
+  <li><a href="#logic-sets-and-probability" id="toc-logic-sets-and-probability" class="nav-link" data-scroll-target="#logic-sets-and-probability">Logic, Sets, and Probability</a></li>
+  <li><a href="#example-flipping-two-coins-1" id="toc-example-flipping-two-coins-1" class="nav-link" data-scroll-target="#example-flipping-two-coins-1">Example: Flipping Two Coins</a></li>
+  <li><a href="#logic-rightarrow-probability" id="toc-logic-rightarrow-probability" class="nav-link" data-scroll-target="#logic-rightarrow-probability">Logic <span class="math inline">\(\rightarrow\)</span> Probability</a></li>
+  <li><a href="#flipping-two-coins-logic-rightarrow-probability" id="toc-flipping-two-coins-logic-rightarrow-probability" class="nav-link" data-scroll-target="#flipping-two-coins-logic-rightarrow-probability">Flipping Two Coins: Logic <span class="math inline">\(\rightarrow\)</span> Probability</a></li>
+  <li><a href="#moving-from-predicates-to-formulas" id="toc-moving-from-predicates-to-formulas" class="nav-link" data-scroll-target="#moving-from-predicates-to-formulas">Moving from Predicates to Formulas</a></li>
+  <li><a href="#using-rules-of-probability" id="toc-using-rules-of-probability" class="nav-link" data-scroll-target="#using-rules-of-probability">Using “Rules” of Probability</a></li>
+  <li><a href="#importing-results-from-logic" id="toc-importing-results-from-logic" class="nav-link" data-scroll-target="#importing-results-from-logic">“Importing” Results from Logic</a></li>
+  <li><a href="#converting-to-probability-theory" id="toc-converting-to-probability-theory" class="nav-link" data-scroll-target="#converting-to-probability-theory">Converting to Probability Theory</a></li>
+  </ul></li>
+  <li><a href="#statistics-univariate-and-multivariate" id="toc-statistics-univariate-and-multivariate" class="nav-link" data-scroll-target="#statistics-univariate-and-multivariate">Statistics: Univariate and Multivariate</a>
+  <ul class="collapse">
+  <li><a href="#random-variables-1" id="toc-random-variables-1" class="nav-link" data-scroll-target="#random-variables-1">Random Variables</a></li>
+  <li><a href="#random-variables-as-events" id="toc-random-variables-as-events" class="nav-link" data-scroll-target="#random-variables-as-events">Random Variables as Events</a></li>
+  <li><a href="#doing-math-with-events" id="toc-doing-math-with-events" class="nav-link" data-scroll-target="#doing-math-with-events">Doing Math with Events</a></li>
+  <li><a href="#are-random-variables-all-powerful" id="toc-are-random-variables-all-powerful" class="nav-link" data-scroll-target="#are-random-variables-all-powerful">Are Random Variables All-Powerful??</a></li>
+  <li><a href="#recall-types-of-variables" id="toc-recall-types-of-variables" class="nav-link" data-scroll-target="#recall-types-of-variables">Recall: Types of Variables</a></li>
+  <li><a href="#visualizing-discrete-rvs" id="toc-visualizing-discrete-rvs" class="nav-link" data-scroll-target="#visualizing-discrete-rvs">Visualizing Discrete RVs</a></li>
+  <li><a href="#preview-visualizing-continuous-rvs" id="toc-preview-visualizing-continuous-rvs" class="nav-link" data-scroll-target="#preview-visualizing-continuous-rvs">(Preview:) Visualizing Continuous RVs</a></li>
+  <li><a href="#probability-theory-gives-us-distributions-for-rvs-not-numbers" id="toc-probability-theory-gives-us-distributions-for-rvs-not-numbers" class="nav-link" data-scroll-target="#probability-theory-gives-us-distributions-for-rvs-not-numbers">Probability Theory Gives Us <em>Distributions</em> for RVs, not Numbers!</a></li>
+  <li><a href="#example-game-reviews" id="toc-example-game-reviews" class="nav-link" data-scroll-target="#example-game-reviews">Example: Game Reviews</a></li>
+  <li><a href="#adding-a-single-line" id="toc-adding-a-single-line" class="nav-link" data-scroll-target="#adding-a-single-line">Adding a Single Line</a></li>
+  <li><a href="#or-a-single-ribbon" id="toc-or-a-single-ribbon" class="nav-link" data-scroll-target="#or-a-single-ribbon">Or a Single Ribbon</a></li>
+  <li><a href="#example-the-normal-distribution" id="toc-example-the-normal-distribution" class="nav-link" data-scroll-target="#example-the-normal-distribution">Example: The Normal Distribution</a></li>
+  <li><a href="#real-data-and-the-68-95-99.7-rule" id="toc-real-data-and-the-68-95-99.7-rule" class="nav-link" data-scroll-target="#real-data-and-the-68-95-99.7-rule">Real Data and the 68-95-99.7 Rule</a></li>
+  <li><a href="#boxplots-comparing-multiple-distributions" id="toc-boxplots-comparing-multiple-distributions" class="nav-link" data-scroll-target="#boxplots-comparing-multiple-distributions">Boxplots: Comparing Multiple Distributions</a></li>
+  <li><a href="#another-option-joyplots" id="toc-another-option-joyplots" class="nav-link" data-scroll-target="#another-option-joyplots">Another Option: Joyplots</a></li>
+  <li><a href="#multivariate-distributions-preview" id="toc-multivariate-distributions-preview" class="nav-link" data-scroll-target="#multivariate-distributions-preview">Multivariate Distributions: Preview</a></li>
+  <li><a href="#visualizing-3d-distributions-projection" id="toc-visualizing-3d-distributions-projection" class="nav-link" data-scroll-target="#visualizing-3d-distributions-projection">Visualizing 3D Distributions: Projection</a></li>
+  <li><a href="#visualizing-3d-distributions-contours" id="toc-visualizing-3d-distributions-contours" class="nav-link" data-scroll-target="#visualizing-3d-distributions-contours">Visualizing 3D Distributions: Contours</a></li>
+  <li><a href="#visualizing-3d-distributions-contours-1" id="toc-visualizing-3d-distributions-contours-1" class="nav-link" data-scroll-target="#visualizing-3d-distributions-contours-1">Visualizing 3D Distributions: Contours</a></li>
+  </ul></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 2: Introduction to Probabilistic Modeling</h1>
+<p class="subtitle lead"><em>DSAN 5100: Probabilistic Modeling and Statistical Computing</em><br>Section 03</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Class Sessions</div>
+  </div>
+  </div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jeff Jacobs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">August 31, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window →</a>
+</center>
+<section id="schedule" class="level1 smaller smaller-title" data-name="Schedule">
+<h1 class="smaller smaller-title" data-name="Schedule">Schedule</h1>
+<div class="hidden">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<style>
+  .crunch-figures .quarto-figure {
+    margin-bottom: 0 !important;
+}
+.crunch-figures figcaption {
+    margin-top: 0 !important;
+}
+.crunch-images img {
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+}
+.crunch-layout-panel .quarto-layout-panel {
+  margin-bottom: 0px !important;
+}
+.crunch-lists li {
+    margin-top: 4px !important;
+    margin-bottom: 4px !important;
+}
+.crunch-math .MathJax_Display {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+.crunch-math .math.display {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+.crunch-math mjx-container {
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+}
+</style>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 54%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Start</th>
+<th style="text-align: left;">End</th>
+<th style="text-align: left;">Topic</th>
+<th style="text-align: center;">Recording</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Lecture</strong></td>
+<td style="text-align: left;">12:30pm</td>
+<td style="text-align: left;">12:40pm</td>
+<td style="text-align: left;"><a href="#prof.-jeff-introduction">About Me →</a></td>
+<td style="text-align: center;"><a href="./recording-w02-1.html" target="_blank"><i class="bi bi-film"></i></a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">12:40pm</td>
+<td style="text-align: left;">12:55pm</td>
+<td style="text-align: left;"><a href="#deterministic-processes">Review →</a></td>
+<td style="text-align: center;"><a href="./recording-w02-2.html" target="_blank"><i class="bi bi-film"></i></a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">12:55pm</td>
+<td style="text-align: left;">1:10pm</td>
+<td style="text-align: left;"><a href="#sampling-and-combinatorics">Sampling and Combinatorics →</a></td>
+<td style="text-align: center;"><a href="./recording-w02-3.html" target="_blank"><i class="bi bi-film"></i></a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1:10pm</td>
+<td style="text-align: left;">1:25pm</td>
+<td style="text-align: left;"><a href="#probability-fundamentals">Probability Fundamentals →</a></td>
+<td style="text-align: center;"><a href="./recording-w02-4.html" target="_blank"><i class="bi bi-film"></i></a></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1:25pm</td>
+<td style="text-align: left;">1:50pm</td>
+<td style="text-align: left;"><a href="#univariate-statistics">Statistics Fundamentals →</a></td>
+<td style="text-align: center;"><a href="./recording-w02-5.html" target="_blank"><i class="bi bi-film"></i></a></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Break!</strong></td>
+<td style="text-align: left;">1:50pm</td>
+<td style="text-align: left;">2:00pm</td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Lab</strong></td>
+<td style="text-align: left;">2:00pm</td>
+<td style="text-align: left;">2:50pm</td>
+<td style="text-align: left;"><a href="https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-demo.html" target="_blank">Lab 1 Demonstrations <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i></a></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">2:50pm</td>
+<td style="text-align: left;">3:00pm</td>
+<td style="text-align: left;"><a href="https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-assignment.html" target="_blank">Lab Assignment Overview <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i></a></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="about-me" class="level1" data-stack-name="About Me">
+<h1 data-stack-name="About Me">About Me</h1>
+<section id="prof.-jeff-introduction" class="level2 crunch-title">
+<h2 class="crunch-title anchored" data-anchor-id="prof.-jeff-introduction">Prof.&nbsp;Jeff Introduction!</h2>
+<ul>
+<li>Born and raised in <strong>NW DC</strong> → high school in <strong>Rockville, MD</strong></li>
+<li><strong>University of Maryland</strong>: Computer Science, Math, Economics <em>(2008-2012)</em></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/jj_dc_map.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="grad-school" class="level2 crunch-title">
+<h2 class="crunch-title anchored" data-anchor-id="grad-school">Grad School</h2>
+<ul>
+<li>Studied abroad in <strong>Beijing</strong> (Peking University/北大) → internship with Huawei in <strong>Hong Kong</strong> (HKUST)</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:55%;">
+<ul>
+<li><strong>Stanford</strong> for MS in Computer Science <em>(2012-2014)</em></li>
+<li>Research Economist at <strong>UC Berkeley</strong> <em>(2014-2015)</em></li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p><img src="images/bay_area_crop.png" class="img-fluid"></p>
+</div>
+</div>
+<ul>
+<li><strong>Columbia</strong> (NYC) for PhD[+Postdoc] in Political Science <em>(2015-2023)</em></li>
+</ul>
+</section>
+<section id="dissertation-political-science-history" class="level2 small-title">
+<h2 class="small-title anchored" data-anchor-id="dissertation-political-science-history">Dissertation (Political Science + History)</h2>
+<p><em>“Our Word is Our Weapon”: Text-Analyzing Wars of Ideas from the French Revolution to the First Intifada</em></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/diss.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="research-labor-economics" class="level2 smaller crunch-figures">
+<h2 class="smaller crunch-figures anchored" data-anchor-id="research-labor-economics">Research (Labor Economics)</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><a href="https://www.aeaweb.org/articles?id=10.1257/aeri.20180150" target="_blank">“Monopsony in Online Labor Markets”</a>: Machine Learning to enhance causal estimates of the effect of <strong>job description language</strong> on <strong>uptake rate</strong></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>“Freedom as Non-Domination in the Labor Market”: Game-theoretic models of workers’ rights (<strong>monopsony</strong> vs.&nbsp;<strong>labor discipline</strong>)</li>
+</ul>
+<!-- ## Most Recently...
+
+* Chapter on "Freedom as Non-Domination in the Labor Market and in the Workplace" in *Republican Liberty: Philosophical, Political, and Economic Perspectives* (Cambridge University Press, 2024)
+* Submitted papers:
+  * "Meaning, Understanding, and Digitization in the History of Ideas"
+  * "Quantifying Cultural Diplomacy: The Soviet Union and the Diffusion of Marxism in the Third World, 1945--1991" -->
+</div>
+</div>
+<ul>
+<li><a href="https://ieeexplore.ieee.org/document/9346539" target="_blank">“Unsupervised Extraction of Workplace Rights and Duties from Collective Bargaining Agreements”</a>: Linguistic (dependency) parses of contracts → time series of <strong>worker</strong> vs.&nbsp;<strong>employer</strong> rights and responsibilities over time</li>
+</ul>
+<center>
+<p><img style="margin-top: 0px !important; margin-bottom: 0px !important;" src="images/cbas.jpeg" height="320"></p>
+<!-- ){.notopmargin fig-align="center" height=325 style="margin-top: 0px !important;"} -->
+</center></section>
+</section>
+<section id="review" class="level1" data-stack-name="Review">
+<h1 data-stack-name="Review">Review</h1>
+<section id="deterministic-processes" class="level2">
+<h2 class="anchored" data-anchor-id="deterministic-processes">Deterministic Processes</h2>
+<ul>
+<li>Given a set of inputs, we can compute the outcome <em>exactly</em></li>
+<li>Example: Given the radius of a circle, we can compute its area <em>without any uncertainty</em>. <span class="math inline">\(r \mapsto \pi r^2\)</span></li>
+<li>(The fact that we <em>can</em> compute the outcome doesn’t mean that it’s easy to do so! See, e.g., the <a href="https://en.wikipedia.org/wiki/Double_pendulum" target="_blank">double pendulum</a>)</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/pendulum.gif" class="notopmargin img-fluid figure-img"></p>
+<figcaption>Image credit: <a href="https://tenor.com/view/double-pendulum-pendulum-chaos-theory-gif-25511149" target="_blank">Tenor.com</a></figcaption>
+</figure>
+</div>
+<div class="notes">
+<p>The pendulum example points to the fact that the notion of a <em>chaotic</em> system, one which is “sensitive to initial conditions”, is different from that of a <em>stochastic</em> system.</p>
+</div>
+</section>
+<section id="holy-grail-deterministic-model-newtonian-physics" class="level2 smaller small-title">
+<h2 class="smaller small-title anchored" data-anchor-id="holy-grail-deterministic-model-newtonian-physics">“Holy Grail” Deterministic Model: Newtonian Physics</h2>
+<style>
+#fig-newton {
+    margin-top: 0px !important;
+    margin-bottom: 0px !important;
+}
+
+figcaption {
+    margin-top: 0px !important;
+}
+</style>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-fig-width="5" data-fig-height="2.5" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<svg width="480" height="240" viewbox="0.00 0.00 373.38 209.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 205)">
+<title>grid</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-205 369.38,-205 369.38,4 -4,4"></polygon>
+<g id="clust1" class="cluster">
+<title>cluster_01</title>
+<polygon fill="none" stroke="black" points="8,-8 8,-193 212.88,-193 212.88,-8 8,-8"></polygon>
+<text text-anchor="middle" x="110.44" y="-176.4" font-family="Times,serif" font-size="14.00">"Nature"</text>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_02</title>
+<polygon fill="none" stroke="black" points="268.88,-62 268.88,-139 357.38,-139 357.38,-62 268.88,-62"></polygon>
+<text text-anchor="middle" x="313.13" y="-122.4" font-family="Times,serif" font-size="14.00">"Science"</text>
+</g>
+<!-- Obs -->
+<g id="node1" class="node">
+<title>Obs</title>
+<ellipse fill="lightblue" stroke="black" cx="110.44" cy="-142" rx="88.56" ry="18"></ellipse>
+<text text-anchor="middle" x="110.44" y="-137.8" font-family="Times,serif" font-size="14.00">Thing(s) we can see</text>
+</g>
+<!-- Und -->
+<g id="node2" class="node">
+<title>Und</title>
+<ellipse fill="white" stroke="black" cx="110.44" cy="-34" rx="94.38" ry="18"></ellipse>
+<text text-anchor="middle" x="110.44" y="-29.8" font-family="Times,serif" font-size="14.00">Underlying processes</text>
+</g>
+<!-- Und&#45;&gt;Obs -->
+<g id="edge3" class="edge">
+<title>Und-&gt;Obs</title>
+<path fill="none" stroke="black" d="M110.44,-52.14C110.44,-72.65 110.44,-93.17 110.44,-113.68"></path>
+<polygon fill="black" stroke="black" points="106.94,-113.75 110.44,-123.75 113.94,-113.75 106.94,-113.75"></polygon>
+</g>
+<!-- Model -->
+<g id="node3" class="node">
+<title>Model</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="313.13" cy="-88" rx="36.5" ry="18"></ellipse>
+<text text-anchor="middle" x="313.13" y="-83.8" font-family="Times,serif" font-size="14.00">Model</text>
+</g>
+<!-- Und&#45;&gt;Model -->
+<g id="edge1" class="edge">
+<title>Und-&gt;Model</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M175.49,-51.23C210.71,-60.71 252.83,-72.04 280.91,-79.6"></path>
+<polygon fill="black" stroke="black" points="176.32,-47.83 165.75,-48.61 174.5,-54.59 176.32,-47.83"></polygon>
+</g>
+<!-- Model&#45;&gt;Obs -->
+<g id="edge2" class="edge">
+<title>Model-&gt;Obs</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M280.87,-96.41C252.52,-104.04 209.88,-115.51 174.47,-125.04"></path>
+<polygon fill="black" stroke="black" points="173.44,-121.69 164.7,-127.67 175.26,-128.45 173.44,-121.69"></polygon>
+</g>
+</g>
+</svg>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-fig-width="5" data-fig-height="2.5" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<svg width="480" height="240" viewbox="0.00 0.00 429.94 209.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 205)">
+<title>grid</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-205 425.94,-205 425.94,4 -4,4"></polygon>
+<g id="clust2" class="cluster">
+<title>cluster_03</title>
+<polygon fill="none" stroke="black" points="257.06,-62 257.06,-139 413.94,-139 413.94,-62 257.06,-62"></polygon>
+<text text-anchor="middle" x="335.5" y="-122.4" font-family="Times,serif" font-size="14.00">Isaac Newton</text>
+</g>
+<g id="clust1" class="cluster">
+<title>cluster_04</title>
+<g id="a_clust1"><a href="https://en.wikipedia.org/wiki/Woolsthorpe_Manor" title="<U>Woolsthorpe Manor</U>" target="_blank">
+<polygon fill="none" stroke="black" points="8,-8 8,-193 201.06,-193 201.06,-8 8,-8"></polygon>
+<text text-anchor="start" x="47.96" y="-177.4" font-family="Times,serif" text-decoration="underline" font-size="14.00">Woolsthorpe Manor</text>
+</a>
+</g>
+</g>
+<!-- Tree -->
+<g id="node1" class="node">
+<title>Tree</title>
+<g id="a_node1"><a href="https://www.popularmechanics.com/science/a5259/4343234/" title="<U>Falling Apple</U>" target="_blank">
+<ellipse fill="lightblue" stroke="black" cx="104.53" cy="-142" rx="64.33" ry="18"></ellipse>
+<text text-anchor="start" x="65.84" y="-138.8" font-family="Times,serif" text-decoration="underline" font-size="14.00">Falling Apple</text>
+</a>
+</g>
+</g>
+<!-- Physics -->
+<g id="node2" class="node">
+<title>Physics</title>
+<g id="a_node2"><a href="https://en.wikipedia.org/wiki/Fundamental_interaction" title="<U>Particle Interactions</U>" target="_blank">
+<ellipse fill="white" stroke="black" cx="104.53" cy="-34" rx="88.56" ry="18"></ellipse>
+<text text-anchor="start" x="48.36" y="-30.8" font-family="Times,serif" text-decoration="underline" font-size="14.00">Particle Interactions</text>
+</a>
+</g>
+</g>
+<!-- Physics&#45;&gt;Tree -->
+<g id="edge2" class="edge">
+<title>Physics-&gt;Tree</title>
+<path fill="none" stroke="black" d="M104.53,-52.14C104.53,-72.65 104.53,-93.17 104.53,-113.68"></path>
+<polygon fill="black" stroke="black" points="101.03,-113.75 104.53,-123.75 108.03,-113.75 101.03,-113.75"></polygon>
+</g>
+<!-- Newton -->
+<g id="node3" class="node">
+<title>Newton</title>
+<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="335.5" cy="-88" rx="70.38" ry="18"></ellipse>
+<text text-anchor="middle" x="335.5" y="-83.8" font-family="Times,serif" font-size="14.00">Newton's Laws</text>
+</g>
+<!-- Physics&#45;&gt;Newton -->
+<g id="edge3" class="edge">
+<title>Physics-&gt;Newton</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M172.76,-49.86C208.06,-58.18 250.64,-68.22 283.24,-75.91"></path>
+<polygon fill="black" stroke="black" points="173.55,-46.45 163.01,-47.56 171.94,-53.26 173.55,-46.45"></polygon>
+</g>
+<!-- Newton&#45;&gt;Tree -->
+<g id="edge1" class="edge">
+<title>Newton-&gt;Tree</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M282.95,-100.16C247.77,-108.45 201.07,-119.47 164.42,-128.11"></path>
+<polygon fill="black" stroke="black" points="163.3,-124.78 154.37,-130.48 164.9,-131.59 163.3,-124.78"></polygon>
+</g>
+</g>
+</svg>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+
+</div>
+<div id="newton" class="quarto-layout-panel" data-layout-ncol="4" style="&quot;">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><img src="images/newton1.jpeg" class="img-fluid"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><img src="images/newton2.jpeg" class="img-fluid"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
+<p><img src="images/newton3.jpeg" class="img-fluid"></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: flex-start;">
+<div id="fig-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><span class="math display">\[
+\leadsto F_g = G\frac{m_1m_2}{r^2}
+\]</span></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universal_gravitation" target="_blank">Newton’s Law of Universal Gravitation</a><br><br>← <em>Dr.&nbsp;Zirkel follows Newton’s famous steps</em>. Coloured wood engraving. <a href="https://wellcomecollection.org/works/ypzq2z9m" target="_blank">Wellcome Collection (Public Domain)</a>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: flex-start;">
+<p>&nbsp;</p>
+</div>
+</div>
+</div>
+</section>
+<section id="but-what-happens-when" class="level2 smaller smaller-caption">
+<h2 class="smaller smaller-caption anchored" data-anchor-id="but-what-happens-when">But What Happens When…</h2>
+<p><span class="math display">\[
+\text{Outcome}\left(\text{Dice Roll}\right) = \; ?\frac{?_1?_2}{?^2}
+\]</span></p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<center>
+<strong>Pre-Enlightenment</strong>
+</center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/fortuna.jpg" height="400" class="figure-img"></p>
+<figcaption>Hans Sebald Beham, <a href="https://commons.wikimedia.org/wiki/File:Fortuna_or_Fortune.jpg"><em>Fortuna</em> (1541)</a>, <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, via Wikimedia Commons</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<center>
+<strong>Post-Enlightenment</strong>
+</center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/pascal.jpg" height="400" class="figure-img"></p>
+<figcaption>Blaise Pascal, <a href="https://archive.org/details/bub_gb_UqgUAAAAQAAJ/page/n67/mode/2up" target="_blank"><em>Traité du triangle arithmétique</em> (1665)</a>. Public Domain, via Internet Archive</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="random-processes" class="level2">
+<h2 class="anchored" data-anchor-id="random-processes">Random Processes</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Can’t compute the outcome <em>exactly</em>, but <strong>can still say something</strong> about potential outcomes!</li>
+<li>Example: randomly chosen radius <span class="math inline">\(r \in [0,1]\)</span>, what can we say about <span class="math inline">\(A = \pi r^2\)</span>?
+<ul>
+<li>Unif: <span class="math inline">\([0,\pi]\)</span> equally likely</li>
+<li>Exp: closer to <span class="math inline">\(0\)</span> more likely</li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell nobotmargin" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/random-circles-unif-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell nobotmargin" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>radii <span class="ot">&lt;-</span> <span class="fu">rexp</span>(N, <span class="dv">4</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> <span class="fu">paste0</span>(N, <span class="st">" Exponentially-Distributed Radii"</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_circ_with_distr</span>(N, radii, title, <span class="at">alpha=</span><span class="fl">0.15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 1638 rows containing missing values or values outside the scale range
+(`geom_path()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/random-circles-exp-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="data-ground-truth-noise" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="data-ground-truth-noise">Data = Ground Truth + Noise</h2>
+<ul>
+<li>Depressing but true origin of <strong>statistics</strong> (as opposed to <strong>probability</strong>): the Plague 😷</li>
+</ul>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/lord_have_mercy.jpg" class="img-fluid figure-img"></p>
+<figcaption>Ground Truth: The Great Plague (<em>Lord Have Mercy on London</em>, Unknown Artist, circa 1665, via <a href="https://commons.wikimedia.org/wiki/File:Lord_haue_mercy_on_London.jpg" target="_blank">Wikimedia Commons</a>)</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/bill.jpeg" class="img-fluid figure-img"></p>
+<figcaption>Noisy Data (Recorded amidst chaos): London Bill of Mortality, 1665 (Public Domain, <a href="https://wellcomecollection.org/works/bqxkq9yy" target="_blank">Wellcome Collection</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="random-variables" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="random-variables">Random Variables</h2>
+<ul>
+<li>In <strong>algebra</strong>, to solve problems we work with <strong>variables</strong></li>
+<li>In <strong>probability theory</strong>, to solve problems we work with <strong>random variables</strong></li>
+<li>Recall the difference between <strong>random</strong> and <strong>deterministic</strong>: <span class="math inline">\(A = \pi r^2\)</span> tells us that, given a value of <span class="math inline">\(r\)</span>, we can solve for <strong>the</strong> unique value of <span class="math inline">\(A\)</span></li>
+<li>In probability theory, however, there is <strong>no one “true” value</strong> of a random variable <span class="math inline">\(X\)</span>.</li>
+<li>Let <span class="math inline">\(X = f(N)\)</span> mean that <span class="math inline">\(X\)</span> is the result of a rolled die, where the die has <span class="math inline">\(N\)</span> sides.</li>
+<li>Plugging in <span class="math inline">\(N = 6\)</span> (standard 6-sided die) still doesn’t mean we know “the” value of <span class="math inline">\(X\)</span>. However, (if the die is fair) we <strong>do</strong> know</li>
+</ul>
+<p><span class="math display">\[
+\Pr(X = 1) = \Pr(X = 2) = \cdots = \Pr(X = 6) = \frac{1}{6}
+\]</span></p>
+</section>
+<section id="discrete-vs.-continuous" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="discrete-vs.-continuous">Discrete vs.&nbsp;Continuous</h2>
+<ul>
+<li>Many complicated definitions, often misleading or unintuitive!</li>
+<li>How I want you to remember: <strong>How many possible values between</strong> two known values?</li>
+<li><strong>Discrete</strong>: e.g., <strong>number of siblings</strong>
+<ul>
+<li>I have 2 siblings, you have 3 siblings… How many values (sibling counts) in between?</li>
+</ul></li>
+<li><strong>Continuous</strong>: e.g., <strong>temperature</strong>
+<ul>
+<li>It is 27.0° C in my room, 28.0° C in your room… How many values (temperatures) in between?</li>
+</ul></li>
+<li>So, if <span class="math inline">\(X\)</span> is the result of a rolled die, is <span class="math inline">\(X\)</span> discrete or continuous? How many values can be rolled between 3 and 4?</li>
+</ul>
+</section>
+<section id="thinking-about-independence" class="level2">
+<h2 class="anchored" data-anchor-id="thinking-about-independence">Thinking About Independence</h2>
+<ul>
+<li>We’ll define it formally later; for now, this is our working definition:</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Working Definition: Independence">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Working Definition: Independence
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Two random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> are <strong>independent</strong> if learning information about <span class="math inline">\(X\)</span> does <strong>not</strong> give you information about the value of <span class="math inline">\(Y\)</span>, or vice-versa.</p>
+</div>
+</div>
+</section>
+</section>
+<section id="combinatorics" class="level1" data-stack-name="Combinatorics">
+<h1 data-stack-name="Combinatorics">Combinatorics</h1>
+<section id="naïve-definition-of-probability" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="naïve-definition-of-probability">Naïve Definition of Probability</h2>
+<ul>
+<li><strong>Sample Space</strong>: The set of all possible <strong>outcomes</strong> of an experiment</li>
+<li><strong>Event</strong>: A <strong>subset</strong> of the sample space</li>
+</ul>
+<div class="callout callout-style-default callout-tip callout-titled" title="Naïve Definition of Probability">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Naïve Definition of Probability
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Given a sample space <span class="math inline">\(S\)</span>, and an event <span class="math inline">\(E \subset S\)</span>,</p>
+<p><span class="math display">\[
+\Pr(\underbrace{E}_{\text{event}}) = \frac{\text{\# Favorable Outcomes}}{\text{\# Possible Outcomes}} = \frac{|E|}{|S|}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="example-flipping-two-coins" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="example-flipping-two-coins">Example: Flipping Two Coins</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Naïve Definition of Probability">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Naïve Definition of Probability
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Given a sample space <span class="math inline">\(S\)</span>, and an event <span class="math inline">\(E \subset S\)</span>,</p>
+<p><span class="math display">\[
+\Pr(\underbrace{E}_{\text{event}}) = \frac{\text{\# Favorable Outcomes}}{\text{\# Possible Outcomes}} = \frac{|E|}{|S|}
+\]</span></p>
+</div>
+</div>
+<ul>
+<li><strong>Flipping two coins:</strong>
+<ul>
+<li>Sample space <span class="math inline">\(S = \{TT, TH, HT, HH\}\)</span></li>
+<li>Event <span class="math inline">\(E_1\)</span>: Result of first flip is <span class="math inline">\(H\)</span>, result of second flip is <span class="math inline">\(T\)</span> <span class="math inline">\(\implies\)</span> <span class="math inline">\(E_1 = \{HT\}\)</span>.</li>
+<li>Event <span class="math inline">\(E_2\)</span>: At least one <span class="math inline">\(H\)</span> <span class="math inline">\(\implies\)</span> <span class="math inline">\(E_2 = \{TH, HT, HH\}\)</span>.</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(E_1) &amp;= \frac{|\{HT\}|}{|S|} = \frac{|\{HT\}|}{|\{TT, TH, HT, HH\}|} = \frac{1}{4} \\
+\Pr(E_2) &amp;= \frac{|\{TH, HT, HH\}|}{|S|} = \frac{|\{TH, HT, HH\}|}{|\{TT, TH, HT, HH\}|} = \frac{3}{4}
+\end{align*}
+\]</span></p>
+</section>
+<section id="events-neq-outcomes" class="level2">
+<h2 class="anchored" data-anchor-id="events-neq-outcomes">Events <span class="math inline">\(\neq\)</span> Outcomes!</h2>
+<ul>
+<li><strong>Outcomes</strong> are <strong>things</strong>, <strong>events</strong> are <strong>sets</strong> of things</li>
+<li>Subtle but <strong>extremely</strong> important distinction!</li>
+<li>In the coin flip example:
+<ul>
+<li>The <strong>event</strong> <span class="math inline">\(E_1 = \{HT\}\)</span> can be confused with the <strong>outcome</strong> <span class="math inline">\(HT\)</span>.</li>
+<li>So, try to remember instead the <strong>event</strong> <span class="math inline">\(E_2 = \{TH, HT, HH\}\)</span>: it is more clear, in this case, how this <strong>event</strong> does not correspond to any individual <strong>outcome</strong></li>
+</ul></li>
+</ul>
+</section>
+<section id="back-to-the-naïve-definition" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="back-to-the-naïve-definition">Back to the Naïve Definition</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Naïve Definition of Probability">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Naïve Definition of Probability
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Given a sample space <span class="math inline">\(S\)</span>, and an event <span class="math inline">\(E \subset S\)</span>,</p>
+<p><span class="math display">\[
+\Pr(\underbrace{E}_{\text{event}}) = \frac{\text{\# Favorable Outcomes}}{\text{\# Possible Outcomes}} = \frac{|E|}{|S|}
+\]</span></p>
+</div>
+</div>
+<ul>
+<li>The naïve definition tells us that <strong>probabilities</strong> are just <strong>ratios of counts</strong>:
+<ul>
+<li>Count the number of ways the event <span class="math inline">\(E\)</span> can happen, count the total number of things that can happen, and divide!</li>
+</ul></li>
+<li>This is why we begin studying probability by studying <strong>combinatorics</strong>: the mathematics of <strong>counting</strong></li>
+</ul>
+</section>
+<section id="combinatorics-ice-cream-possibilities" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="combinatorics-ice-cream-possibilities">Combinatorics: Ice Cream Possibilities</h2>
+<style>
+.quarto-layout-cell {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+</style>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/ice_cream1.svg" class="img-fluid figure-img" width="406"></p>
+<figcaption>The <span class="math inline">\(6 = 2 \cdot 3\)</span> possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/ice_cream2.svg" class="img-fluid figure-img"></p>
+<figcaption>The <span class="math inline">\(6 = 3 \cdot 2\)</span> possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="grouping-vs.-ordering" class="level2">
+<h2 class="anchored" data-anchor-id="grouping-vs.-ordering">Grouping vs.&nbsp;Ordering</h2>
+<ul>
+<li>In standard statistics/combinatorics introductions you’ll learn different counting formulas for when <strong>order matters</strong> vs.&nbsp;when order <strong>doesn’t matter</strong></li>
+<li>This is not a <strong>mathematical</strong> distinction so much as a <strong>pragmatic</strong> distinction: what are you trying to <strong>accomplish</strong> by counting?</li>
+<li>Problems with extremely similar descriptions can differ in small detail, so that the <strong>units you need to distinguish between</strong> in one version differ from the units you need to distinguish between in the other.</li>
+</ul>
+</section>
+<section id="does-order-matter" class="level2 smaller small-title crunch-lists">
+<h2 class="smaller small-title crunch-lists anchored" data-anchor-id="does-order-matter">Does Order Matter?</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example: Student Government vs. Student Sports">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: Student Government vs.&nbsp;Student Sports
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Consider a school where students can either <strong>try out for the swim team</strong> or <strong>run for a position in the student government</strong></li>
+<li>The swim team has <strong>4 slots</strong>, but slots aren’t differentiated: you’re either <strong>on</strong> the team (one of the 4 chosen students) or <strong>not</strong></li>
+<li>The student government also has <strong>4 slots</strong>, but there is a difference between the slots: first slot is <strong>President</strong>, second is <strong>Vice President</strong>, third is <strong>Secretary</strong>, and fourth is <strong>Treasurer</strong>.</li>
+</ul>
+</div>
+</div>
+<ul>
+<li>Simple case (for intuition): the school only has <strong>4 students</strong>. In this case, how many ways are there to form the <strong>swim team</strong>? What about the <strong>student government</strong>?
+<ul>
+<li><strong>Swim team</strong>: <span class="math inline">\(1\)</span> <strong>way</strong>. You have only one choice, to let all 4 students onto the team</li>
+<li><strong>Student government</strong>: <span class="math inline">\(4 \cdot 3 \cdot 2 \cdot 1 = 24\)</span> <strong>ways</strong>. You have to let all 4 students in, <strong>but you have a choice</strong> of who is President, Vice President, Secretary, and Treasurer</li>
+</ul></li>
+<li>How did we get <span class="math inline">\(4 \cdot 3 \cdot 2 \cdot 1\)</span>? (Think about the ice cream example…)
+<ul>
+<li>Start by choosing the President: 4 choices</li>
+<li>Now choose the Vice President: only 3 students left to choose from</li>
+<li>Now choose the Secretary: only 2 students left to choose from</li>
+<li>Now choose the Treasurer: only 1 student left to choose from</li>
+</ul></li>
+</ul>
+</section>
+<section id="permutations-vs.-combinations" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="permutations-vs.-combinations">Permutations vs.&nbsp;Combinations</h2>
+<ul>
+<li><strong>Permutations</strong>: How many ways can I choose groups of size <span class="math inline">\(k\)</span> out of <span class="math inline">\(n\)</span> total objects, where <strong>order within groups matters</strong>: <span class="math inline">\(P_{n,k}\)</span> (sometimes written <span class="math inline">\(_nP_k\)</span>).
+<ul>
+<li>In this case, we want to count <span class="math inline">\((a,b)\)</span> and <span class="math inline">\((b,a)\)</span> as two separate groups</li>
+</ul></li>
+<li><strong>Combinations</strong>: How many ways can I choose groups of size <span class="math inline">\(k\)</span> out of <span class="math inline">\(n\)</span> total objects, where <strong>order in the groups doesn’t matter</strong>: <span class="math inline">\(C_{n,k}\)</span> (sometimes written <span class="math inline">\(_nC_k,\binom{n}{k}\)</span>).
+<ul>
+<li>In this case, we <strong>don’t</strong> want to count <span class="math inline">\((a, b)\)</span> and <span class="math inline">\((b, a)\)</span> as two separate groups…</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+P_{n,k} = \frac{n!}{(n-k)!}, \; C_{n,k} = \frac{n!}{k!(n-k)!}
+\end{align*}
+\]</span></p>
+</section>
+<section id="no-need-to-memorize" class="level2 smaller crunch-title crunch-math">
+<h2 class="smaller crunch-title crunch-math anchored" data-anchor-id="no-need-to-memorize">No Need to Memorize!</h2>
+<style>
+p {
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
+}
+</style>
+<ul>
+<li>Key point: you don’t have to remember these as <strong>two separate formulas</strong>!</li>
+<li>The number of <strong>combinations</strong> is based on the number of <strong>permutations</strong>, but <strong>corrected</strong> for <strong>double counting</strong>: e.g., corrected for the fact that <span class="math inline">\((a,b) \neq (b,a)\)</span> when counting permutations but <span class="math inline">\((a,b) = (b,a)\)</span> when counting combinations.</li>
+</ul>
+<p><span class="math display">\[
+C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}{\leftarrow \text{Duplicate groups}}
+\]</span></p>
+<p>Where does <span class="math inline">\(k!\)</span> come from? <em>(How many different orderings can we make of the same group?)</em></p>
+<ul>
+<li><p><span class="math inline">\(k = 2\)</span>: <span class="math inline">\((\underbrace{\boxed{\phantom{a}}}_{\text{2 choices}},\underbrace{\boxed{\phantom{a}}}_{\text{1 remaining choice}}) \implies 2\)</span></p></li>
+<li><p><span class="math inline">\(k = 3\)</span>: <span class="math inline">\((\underbrace{\boxed{\phantom{a}}}_{\text{3 choices}},\underbrace{\boxed{\phantom{a}}}_{\text{2 remaining choices}}, \underbrace{\boxed{\phantom{a}}}_{\text{1 remaining choice}}) \implies 6\)</span></p></li>
+<li><p><span class="math inline">\(k = 4\)</span>: <span class="math inline">\((\underbrace{\boxed{\phantom{a}}}_{\text{4 choices}}, \underbrace{\boxed{\phantom{a}}}_{\text{3 remaining choices}}, \underbrace{\boxed{\phantom{a}}}_{\text{2 remaining choices}}, \underbrace{\boxed{\phantom{a}}}_{\text{1 remaining choice}}) \implies 24\)</span></p></li>
+</ul>
+</section>
+<section id="with-or-without-replacement" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="with-or-without-replacement">With or Without Replacement?</h2>
+<ul>
+<li>Boils down to: can the same object be included in my sample more than once?</li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Without Replacement</th>
+<th>With Replacement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Most statistical problems</strong>: “Check off” objects as you collect data about them, so that each observation in your data is <strong>unique</strong></td>
+<td>Very special (but very important!) set of statistical problems: allow objects to appear in your sample <strong>multiple times</strong>, to “squeeze” more information out of the sample (<em>called <a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)" target="_blank">Bootstrapping</a>—much more on this later in the course!</em>)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="how-many-possible-samples" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="how-many-possible-samples">How Many Possible Samples?</h2>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example: How Many Possible Samples?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example: How Many Possible Samples?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>From a population of <span class="math inline">\(N = 3\)</span>, how many ways can we take samples of size <span class="math inline">\(k = 2\)</span>?</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Without Replacement</th>
+<th>With Replacement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(3 \cdot 2 = 6\)</span> ways (3 objects to choose from for first element of sample, 2 remaining objects to choose from for second element of sample)</td>
+<td><span class="math inline">\(3\cdot 3 = 3^2 = 9\)</span> ways (3 objects to choose from for first element of sample, <em>still</em> 3 objects to choose from for second element of sample)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled" title="Result: How Many Possible Samples">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Result: How Many Possible Samples
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>From a population of size <span class="math inline">\(N\)</span>, how many ways can we take samples of size <span class="math inline">\(k\)</span>? (Try to extrapolate from above examples before looking at answer!)</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Without Replacement</th>
+<th style="text-align: center;">With Replacement</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\displaystyle \underbrace{N \cdot (N-1) \cdot \cdots \cdot (N - k + 1)}_{k\text{ times}} = \frac{N!}{(N - k )!}\)</span><br><br><em>(This formula should look somewhat familiar…)</em></td>
+<td style="text-align: center;"><span class="math inline">\(\displaystyle \underbrace{N \cdot N \cdot \cdots \cdot N}_{k\text{ times}} = N^k\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="probability-fundamentals" class="level1" data-stack-name="Probability">
+<h1 data-stack-name="Probability">Probability Fundamentals</h1>
+<section id="logic-sets-and-probability" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="logic-sets-and-probability">Logic, Sets, and Probability</h2>
+<ul>
+<li>There is a <strong>deep connection</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> between the <strong>objects</strong> and <strong>operations</strong> of logic, set theory, and probability:</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 32%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Logic</th>
+<th>Set Theory</th>
+<th>Probability Theory</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Objects</strong></td>
+<td>Predicates<br><span class="math inline">\(p, q \in \{T, F\}\)</span></td>
+<td>Sets<br><span class="math inline">\(S = \{a, b, \ldots\}\)</span></td>
+<td>Events<br><span class="math inline">\(E = \{TH, HT, HH\}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Conjunction</strong></td>
+<td><strong>And</strong> (<span class="math inline">\(\wedge\)</span>)<br><span class="math inline">\(p \wedge q\)</span></td>
+<td><strong>Intersection</strong> (<span class="math inline">\(\cap\)</span>)<br><span class="math inline">\(A \cap B\)</span></td>
+<td><strong>Multiplication</strong> (<span class="math inline">\(\times\)</span>):<br><span class="math inline">\(\Pr(E_1 \cap E_2) = \Pr(E_1)\times \Pr(E_2)\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Disjunction</strong></td>
+<td><strong>Or</strong> (<span class="math inline">\(\vee\)</span>)<br><span class="math inline">\(p \vee q\)</span></td>
+<td><strong>Union</strong> (<span class="math inline">\(\cup\)</span>)<br><span class="math inline">\(A \cup B\)</span></td>
+<td><strong>Addition</strong> (<span class="math inline">\(+\)</span>): <span class="math inline">\(\Pr(E_1 \cup E_2) =\)</span><br><span class="math inline">\(\Pr(E_1) + \Pr(E_2) - \Pr(E_1 \wedge E_2)\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Negation</strong></td>
+<td><strong>Not</strong> (<span class="math inline">\(\neg\)</span>)<br><span class="math inline">\(\neg p\)</span></td>
+<td><strong>Complement</strong> (<span class="math inline">\(^c\)</span>)<br><span class="math inline">\(S^c\)</span></td>
+<td><strong>Subtract from 1</strong><br><span class="math inline">\(\Pr(A^c) = 1 - \Pr(A)\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example-flipping-two-coins-1" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="example-flipping-two-coins-1">Example: Flipping Two Coins</h2>
+<ul>
+<li><strong>Logic</strong>: We can define 4 predicates:
+<ul>
+<li><span class="math inline">\(p_1\)</span> = “First result is <span class="math inline">\(H\)</span>”, <span class="math inline">\(q_1\)</span> = “First result is <span class="math inline">\(T\)</span>”</li>
+<li><span class="math inline">\(p_2\)</span> = “Second result is <span class="math inline">\(H\)</span>”, <span class="math inline">\(q_2\)</span> = “Second result is <span class="math inline">\(T\)</span>”</li>
+</ul></li>
+<li><strong>Logical formulas</strong>:
+<ul>
+<li><span class="math inline">\(f_1 = p_1 \wedge q_2\)</span>: “First result is <span class="math inline">\(H\)</span> <strong>and</strong> second result is <span class="math inline">\(T\)</span>”</li>
+<li><span class="math inline">\(f_2 = p_1 \vee q_2\)</span>: “First result is <span class="math inline">\(H\)</span> <strong>or</strong> second result is <span class="math inline">\(T\)</span>”</li>
+<li><span class="math inline">\(f_3 = \neg p_1\)</span>: “First result is <strong>not</strong> <span class="math inline">\(H\)</span>”</li>
+</ul></li>
+<li><strong>The issue?</strong>: We don’t know, until <strong>after</strong> the coins have been flipped, whether these are <strong>true</strong> or <strong>false</strong>!</li>
+<li>But, we should still be able to say something about their <strong>likelihood</strong>, for example, whether <span class="math inline">\(f_1\)</span> or <span class="math inline">\(f_2\)</span> is more likely to happen… <strong>Enter probability theory!</strong></li>
+</ul>
+</section>
+<section id="logic-rightarrow-probability" class="level2">
+<h2 class="anchored" data-anchor-id="logic-rightarrow-probability">Logic <span class="math inline">\(\rightarrow\)</span> Probability</h2>
+<ul>
+<li>Probability theory lets us reason about the <strong>uncertainty</strong> surrounding <strong>logical</strong> predicates like <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span>, by:
+<ol type="a">
+<li>encoding them as <strong>sets of possibilities</strong> <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span>, and</li>
+<li>representing the uncertainty around any given possibility using a <strong>probability measure</strong> <span class="math inline">\(\Pr: S \mapsto [0,1]\)</span>,</li>
+</ol></li>
+<li>thus allowing us to reason about
+<ol type="a">
+<li>the likelihood of these set-encoded predicates on their own: <span class="math inline">\(\Pr(P)\)</span> and <span class="math inline">\(\Pr(Q)\)</span>, but also</li>
+<li>their <strong>logical connections</strong>: <span class="math inline">\(\Pr(p \wedge q) = \Pr(P \cap Q)\)</span>, <span class="math inline">\(\Pr(\neg p) = \Pr(P^c)\)</span>, and so on.</li>
+</ol></li>
+</ul>
+</section>
+<section id="flipping-two-coins-logic-rightarrow-probability" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="flipping-two-coins-logic-rightarrow-probability">Flipping Two Coins: Logic <span class="math inline">\(\rightarrow\)</span> Probability</h2>
+<ul>
+<li>Returning to the two coins example: we can look at the predicates and see that they exhaust all possibilities, so that we can define a <strong>sample space</strong> <span class="math inline">\(S = \{TT, TH, HT, HH\}\)</span> of all possible <strong>outcomes</strong> of our coin-flipping experiment, noting that <span class="math inline">\(|S| = 4\)</span>, so there are 4 possible outcomes.</li>
+<li>Then we can associate each <strong>predicate</strong> with an <strong>event</strong>, a <strong>subset</strong> of the sample space, and use our <strong>naïve definition</strong> to compute the probability of these events:</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Predicate</th>
+<th>Event</th>
+<th>Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(p_1\)</span> = “First result is <span class="math inline">\(H\)</span>”</td>
+<td><span class="math inline">\(P_1 = \{HT, HH\}\)</span></td>
+<td><span class="math inline">\(\Pr(P_1) = \frac{|P_1|}{|S|} = \frac{2}{4} = \frac{1}{2}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(q_1\)</span> = “First result is <span class="math inline">\(T\)</span>”</td>
+<td><span class="math inline">\(Q_1 = \{TT, TH\}\)</span></td>
+<td><span class="math inline">\(\Pr(Q_1) = \frac{|Q_1|}{|S|} = \frac{2}{4} = \frac{1}{2}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(p_2\)</span> = “Second result is <span class="math inline">\(H\)</span>”</td>
+<td><span class="math inline">\(P_2 = \{TH, HH\}\)</span></td>
+<td><span class="math inline">\(\Pr(P_2) = \frac{|P_2|}{|S|} = \frac{2}{4} = \frac{1}{2}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(q_2\)</span> = “Second result is <span class="math inline">\(T\)</span>”</td>
+<td><span class="math inline">\(Q_2 = \{TT, HT\}\)</span></td>
+<td><span class="math inline">\(\Pr(Q_2) = \frac{|Q_2|}{|S|} = \frac{2}{4} = \frac{1}{2}\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="moving-from-predicates-to-formulas" class="level2 smaller crunch-table crunch-math">
+<h2 class="smaller crunch-table crunch-math anchored" data-anchor-id="moving-from-predicates-to-formulas">Moving from Predicates to Formulas</h2>
+<ul>
+<li>Notice that, in the four rows of the previous table, we were only computing the probabilities of “simple” events: events corresponding to a <strong>single</strong> predicate</li>
+<li>But we promised that probability theory lets us compute probabilities for <strong>logical formulas</strong> as well! …The magic of encoding events as <strong>sets</strong> becomes clear:</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 40%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formula</th>
+<th style="text-align: left;">Event</th>
+<th style="text-align: left;">Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(f_1 = p_1 \wedge q_2\)</span></td>
+<td style="text-align: left;"><span class="math display">\[ \begin{align*} F_1 &amp;= P_1 \cap Q_2 \\ &amp;= \{HT, HH\} \cap \{TT, HT\} \\ &amp;= \{HT\} \end{align*} \]</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} \Pr(F_1) &amp;= \Pr(\{HT\}) \\ &amp;= \frac{|\{HT\}|}{|S|} = \frac{1}{4} \end{align*}\]</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(f_2 = p_1 \vee q_2\)</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} F_2 &amp;= P_1 \cup Q_2 \\ &amp;= \{HT, HH\} \cup \{TT, HT\} \\ &amp;= \{TT, HT, HH\} \end{align*}\]</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} \Pr(F_2) &amp;= \Pr(\{TT, HT, HH\}) \\ &amp;= \frac{|\{TT, HT, HH\}|}{|S|} = \frac{3}{4} \end{align*}\]</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(f_3 = \neg p_1\)</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} F_3 &amp;= P_1^c \\ &amp;= \{HT, HH\}^c \\ &amp;= \{TT, TH\}\end{align*}\]</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} \Pr(F_3) &amp;= \Pr(\{TT, TH\}) \\ &amp;= \frac{|\{TT, TH\}|}{|S|} = \frac{2}{4} = \frac{1}{2} \end{align*}\]</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="using-rules-of-probability" class="level2 smaller crunch-math crunch-title">
+<h2 class="smaller crunch-math crunch-title anchored" data-anchor-id="using-rules-of-probability">Using “Rules” of Probability</h2>
+<ul>
+<li>Hopefully, though, you found all this churning through set theory to be a bit tedious…</li>
+<li>This is where <strong>rules of probability</strong> come from! They <strong>simplify</strong> set-theoretic computations into simple multiplications, additions, and subtractions:
+<ul>
+<li><span class="math inline">\(\Pr(A \cap B) = \Pr(A) \times \Pr(B)\)</span></li>
+<li><span class="math inline">\(\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B)\)</span></li>
+<li><span class="math inline">\(\Pr(A^c) = 1 - \Pr(A)\)</span></li>
+</ul></li>
+<li>Since we know probabilities of the “simple” events <span class="math inline">\(P_1\)</span>, <span class="math inline">\(Q_1\)</span>, <span class="math inline">\(P_2\)</span>, <span class="math inline">\(Q_2\)</span>, we don’t need to “look inside them”! Just take the probabilities and multiply/add/subtract as needed:</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formula</th>
+<th>Event</th>
+<th>Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(f_1 = p_1 \wedge q_2\)</span></td>
+<td><span class="math inline">\(F_1 = P_1 \cap Q_2\)</span></td>
+<td><span class="math inline">\(\Pr(F_1) = \Pr(P_1) \times \Pr(Q_2) = \frac{1}{2}\times \frac{1}{2} = \frac{1}{4}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(f_2 = p_1 \vee q_2\)</span></td>
+<td><span class="math inline">\(F_2 = P_1 \cup Q_2\)</span></td>
+<td><span class="math display">\[\textstyle{\begin{align*} \textstyle \Pr(F_2) &amp;= \Pr(P_1) + \Pr(Q_2) - \Pr(P_1 \cap Q_2) \\ \textstyle &amp;= \frac{1}{2} + \frac{1}{2} - \frac{1}{4} = \frac{3}{4} \end{align*}}\]</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(f_3 = \neg p_1\)</span></td>
+<td><span class="math inline">\(F_3 = P_1^c\)</span></td>
+<td><span class="math inline">\(\Pr(F_3) = 1 - \Pr(P_1) = 1 - \frac{1}{2} = \frac{1}{2}\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="importing-results-from-logic" class="level2 crunch-math">
+<h2 class="crunch-math anchored" data-anchor-id="importing-results-from-logic">“Importing” Results from Logic</h2>
+<ul>
+<li>This deep connection between the three fields means that, if we have some useful theorem or formula from one field, we can immediately put it to use in another!</li>
+<li>For example: <strong>DeMorgan’s Laws</strong> were developed in logic (DeMorgan was a 19th-century logician), and basically just tell us how to <strong>distribute</strong> logic operators:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\underbrace{\neg(p \wedge q)}_{\text{``}p\text{ and }q\text{'' is not true}} &amp;\iff \underbrace{\neg p \vee \neg q}_{p\text{ is not true or }q\text{ is not true}} \\
+\underbrace{\neg(p \vee q)}_{\text{``}p\text{ or }q\text{'' is not true}} &amp;\iff \underbrace{\neg p \wedge \neg q}_{p\text{ is not true and }q\text{ is not true}}
+\end{align*}
+\]</span></p>
+</section>
+<section id="converting-to-probability-theory" class="level2 smaller crunch-math">
+<h2 class="smaller crunch-math anchored" data-anchor-id="converting-to-probability-theory">Converting to Probability Theory</h2>
+<ul>
+<li>So, using the same principles we used in our coin flipping examples, we can consider <strong>events</strong> <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span>, and get the following “translation” of DeMorgan’s Laws:</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Logic</th>
+<th>Set Theory</th>
+<th>Probability Theory</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\neg(p \wedge q) = \neg p \vee \neg q\)</span></td>
+<td><span class="math inline">\((P \cap Q)^c = P^c \cup Q^c\)</span></td>
+<td><span class="math inline">\(\Pr((P \cap Q)^c) = \Pr(P^c \cup Q^c)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\neg(p \vee q) = \neg p \wedge \neg q\)</span></td>
+<td><span class="math inline">\((P \cup Q)^c = P^c \cap Q^c\)</span></td>
+<td><span class="math inline">\(\Pr((P \cup Q)^c) = \Pr(P^c \cap Q^c)\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Note that, since these are <strong>isomorphic</strong> to one another, we could have derived DeMorgan’s Laws from <strong>within</strong> probability theory, rather than the other way around:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Pr((P \cap Q)^c) &amp;= 1 - \Pr(P \cap Q) = 1 - \Pr(P)\Pr(Q) \\
+&amp;= 1 - (1-\Pr(P^c))(1 - \Pr(Q^c)) \\
+&amp;= 1 - [1 - \Pr(P^c) - \Pr(Q^c) + \Pr(P^c)\Pr(Q^c)] \\
+&amp;= \Pr(P^c) + \Pr(Q^c) - \Pr(P^c)\Pr(Q^c) \\
+&amp;= \Pr(P^c) + \Pr(Q^c) - \Pr(P^c \cap Q^c) \\
+&amp;= \Pr(P^c \cup Q^c) \; ✅
+\end{align*}
+\]</span></p>
+</section>
+</section>
+<section id="statistics-univariate-and-multivariate" class="level1" data-stack-name="Statistics">
+<h1 data-stack-name="Statistics">Statistics: Univariate and Multivariate</h1>
+<section id="random-variables-1" class="level2 crunch-math">
+<h2 class="crunch-math anchored" data-anchor-id="random-variables-1">Random Variables</h2>
+<ul>
+<li>Recall our discussion of <strong>random variables</strong>: used by analogy to <strong>algebra</strong>, since we can do math with them:</li>
+<li>Just as <span class="math inline">\(2 \cdot 3\)</span> is shorthand for <span class="math inline">\(2 + 2 + 2\)</span>, we can define <span class="math inline">\(X\)</span> as shorthand for the possible outcomes of a random process. <span class="math display">\[
+\begin{align*}
+S = \{ &amp;\text{result of dice roll is 1}, \\
+&amp;\text{result of dice roll is 2}, \\
+&amp;\text{result of dice roll is 3}, \\
+&amp;\text{result of dice roll is 4}, \\
+&amp;\text{result of dice roll is 5}, \\
+&amp;\text{result of dice roll is 6}\} \rightsquigarrow X \in \{1,\ldots,6\}
+\end{align*}
+\]</span></li>
+</ul>
+</section>
+<section id="random-variables-as-events" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="random-variables-as-events">Random Variables as Events</h2>
+<ul>
+<li>Each value <span class="math inline">\(v_X\)</span> that a random variable <span class="math inline">\(X\)</span> can take on gives rise to an <strong>event</strong> <span class="math inline">\(X = v_X\)</span>: the <strong>event</strong> that the random variable <span class="math inline">\(X\)</span> takes on value <span class="math inline">\(v\)</span>.</li>
+<li>Since <span class="math inline">\(X = v_X\)</span> is an <strong>event</strong>, we can compute its probability <span class="math inline">\(\Pr(X = v_X)\)</span>!</li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Event in words</th>
+<th style="text-align: center;">Event in terms of RV</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Result of dice roll is 1</td>
+<td style="text-align: center;"><span class="math inline">\(X = 1\)</span></td>
+</tr>
+<tr class="even">
+<td>Result of dice roll is 2</td>
+<td style="text-align: center;"><span class="math inline">\(X = 2\)</span></td>
+</tr>
+<tr class="odd">
+<td>Result of dice roll is 3</td>
+<td style="text-align: center;"><span class="math inline">\(X = 3\)</span></td>
+</tr>
+<tr class="even">
+<td>Result of dice roll is 4</td>
+<td style="text-align: center;"><span class="math inline">\(X = 4\)</span></td>
+</tr>
+<tr class="odd">
+<td>Result of dice roll is 5</td>
+<td style="text-align: center;"><span class="math inline">\(X = 5\)</span></td>
+</tr>
+<tr class="even">
+<td>Result of dice roll is 6</td>
+<td style="text-align: center;"><span class="math inline">\(X = 6\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="doing-math-with-events" class="level2 smaller crunch-title crunch-math">
+<h2 class="smaller crunch-title crunch-math anchored" data-anchor-id="doing-math-with-events">Doing Math with Events</h2>
+<ul>
+<li>We’ve seen how <span class="math inline">\(\Pr(\cdot)\)</span> can “encode” logical expressions involving uncertain outcomes.</li>
+<li>Even more powerful when paired with the notion of <strong>random variables</strong>: lets us also “encode” <strong>mathematical</strong> expressions involving uncertain quantities!</li>
+<li>Consider an experiment where we <strong>roll two dice</strong>. Let <span class="math inline">\(X\)</span> be the RV encoding the outcome of the first roll, and <span class="math inline">\(Y\)</span> be the RV encoding the outcome of the second roll.</li>
+<li>We can compute probabilities involving <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> separately, e.g., <span class="math inline">\(\Pr(X = 1) = \frac{1}{6}\)</span>, but we can <strong>also</strong> reason probabilistically about <strong>mathematical expressions</strong> involving <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>! For example, we can reason about their <strong>sum</strong>:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(\text{rolls sum to 10}) &amp;= \Pr(X + Y = 10) \\
+&amp;= \Pr(Y = 10 - X)
+\end{align*}
+\]</span></p>
+<ul>
+<li>Or about how the outcome of one roll will relate to the outcome of the other:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(\text{first roll above mean}) &amp;= \Pr\left(X &gt; \frac{X+Y}{2}\right) \\
+&amp;= \Pr(2X &gt; X+Y) = \Pr(X &gt; Y)
+\end{align*}
+\]</span></p>
+</section>
+<section id="are-random-variables-all-powerful" class="level2">
+<h2 class="anchored" data-anchor-id="are-random-variables-all-powerful">Are Random Variables All-Powerful??</h2>
+<ul>
+<li>Just remember that probability <span class="math inline">\(P(\cdot)\)</span> is always probability of an <strong>event</strong>—random variables are just shorthand for quantifiable events.</li>
+<li>Not all events can be simplified via random variables!
+<ul>
+<li><span class="math inline">\(\text{catch a fish} \mapsto P(\text{trout}), P(\text{bass}), \ldots\)</span></li>
+</ul></li>
+<li>What types of events <em>can</em> be quantified like this?
+<ul>
+<li><em>(Hint: It has to do with a key topic in the early weeks of both DSAN 5000 and 5100…)</em></li>
+</ul></li>
+</ul>
+<div class="notes">
+<p>The answer is, broadly, any situation where you’re modeling things, like dice rolls, where mathematical operations like addition, multiplication, etc. make sense. So, if we’re modeling dice, it makes sense to say e.g.&nbsp;“result is 6” + “result is 3” = “total is 9”. More on the next page!</p>
+</div>
+</section>
+<section id="recall-types-of-variables" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="recall-types-of-variables">Recall: Types of Variables</h2>
+<ul>
+<li><strong>Categorical</strong>
+<ul>
+<li>No meaningful way to order values: <span class="math inline">\(\{\text{trout}, \text{bass}, \ldots \}\)</span></li>
+</ul></li>
+<li><strong>Ordinal</strong>
+<ul>
+<li>Can place in order (bigger, smaller), though <em>gaps</em> aren’t meaningful: <span class="math inline">\(\{{\color{orange}\text{great}},{\color{orange}\text{greater}},{\color{orange}\text{greatest}}\}\)</span></li>
+<li><span class="math inline">\({\color{orange}\text{greater}} \overset{?}{=} 2\cdot {\color{orange}\text{great}} - 1\)</span></li>
+</ul></li>
+<li><strong>Cardinal</strong>
+<ul>
+<li>Can place in order, and gaps are meaningful <span class="math inline">\(\implies\)</span> can do “standard” math with them! Example: <span class="math inline">\(\{{\color{blue}1},{\color{blue}2},\ldots,{\color{blue}10}\}\)</span></li>
+<li><span class="math inline">\({\color{blue}7}\overset{\color{green}\unicode{x2714}}{=} 2 \cdot {\color{blue}4} - 1\)</span></li>
+<li>If events have <strong>this structure</strong> (meaningful way to define multiplication, addition, subtraction), then we can analyze them as <strong>random variables</strong></li>
+</ul></li>
+</ul>
+</section>
+<section id="visualizing-discrete-rvs" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="visualizing-discrete-rvs">Visualizing Discrete RVs</h2>
+<ul>
+<li><strong>Ultimate Probability Pro-Tip</strong>: When you hear “discrete distribution”, think of a bar graph: <span class="math inline">\(x\)</span>-axis = events, bar height = probability of events</li>
+<li><strong>Two coins example</strong>: <span class="math inline">\(X\)</span> = RV representing <strong>number of heads</strong> obtained in two coin flips</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ lubridate 1.9.3     ✔ tibble    3.2.1
+✔ purrr     1.0.2     ✔ tidyr     1.3.1
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/dicrete-bar-graph-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="preview-visualizing-continuous-rvs" class="level2">
+<h2 class="anchored" data-anchor-id="preview-visualizing-continuous-rvs">(Preview:) Visualizing Continuous RVs</h2>
+<ul>
+<li>This works even for <strong>continuous</strong> distributions, if you focus on the <strong>area under the curve</strong> instead of the height:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>funcShaded <span class="ot">&lt;-</span> <span class="cf">function</span>(x, lower_bound, upper_bound) {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    y <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(x)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    y[x <span class="sc">&lt;</span> lower_bound <span class="sc">|</span> x <span class="sc">&gt;</span> upper_bound] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(y)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>funcShadedBound1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">funcShaded</span>(x, <span class="sc">-</span><span class="cn">Inf</span>, <span class="dv">0</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>funcShadedBound2 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">funcShaded</span>(x, <span class="fl">0.2</span>, <span class="fl">1.8</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>funcShadedBound3 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">funcShaded</span>(x, <span class="dv">2</span>, <span class="cn">Inf</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>norm_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>,<span class="dv">3</span>)), <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">title=</span><span class="st">"Probability Density, X Normally Distributed"</span>,</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">x=</span><span class="st">"Possible Values of X"</span>,</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">y=</span><span class="st">"Probability Density"</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dsan_theme</span>(<span class="st">"half"</span>) <span class="sc">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_cartesian</span>(<span class="at">clip =</span> <span class="st">"off"</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>label_df <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>x, <span class="sc">~</span>y, <span class="sc">~</span>label,</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="fl">0.8</span>, <span class="fl">0.1</span>, <span class="st">"Pr(X &lt; 0) = 0.5"</span>,</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fl">1.0</span>, <span class="fl">0.05</span>, <span class="st">"Pr(0.2 &lt; X &lt; 1.8)</span><span class="sc">\n</span><span class="st">= 0.385"</span>,</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="fl">2.5</span>,<span class="fl">0.1</span>,<span class="st">"Pr(X &gt; 1.96)</span><span class="sc">\n</span><span class="st">= 0.025"</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>shaded_plot <span class="ot">&lt;-</span> norm_plot <span class="sc">+</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> funcShadedBound1, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> funcShadedBound2, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">2</span>], <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> funcShadedBound3, <span class="at">geom =</span> <span class="st">"area"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">3</span>], <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(label_df, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">label =</span> label), <span class="at">size=</span><span class="dv">6</span>)</span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>shaded_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/continuous-area-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="probability-theory-gives-us-distributions-for-rvs-not-numbers" class="level2">
+<h2 class="anchored" data-anchor-id="probability-theory-gives-us-distributions-for-rvs-not-numbers">Probability Theory Gives Us <em>Distributions</em> for RVs, not Numbers!</h2>
+<ul>
+<li>We’re going beyond “base” probability theory if we want to <strong>summarize</strong> these distributions</li>
+<li>However, we can understand a lot about the full distribution by looking at some basic <strong>summary statistics</strong>. Most common way to summarize:</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 45%">
+<col style="width: 10%">
+<col style="width: 45%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\underbrace{\text{point estimate}}_{\text{mean/median}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\pm\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\underbrace{\text{uncertainty}}_{\text{variance/standard deviation}}\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example-game-reviews" class="level2">
+<h2 class="anchored" data-anchor-id="example-game-reviews">Example: Game Reviews</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>fig_title <span class="ot">&lt;-</span> <span class="st">"Review for a Popular Nintendo Switch Game"</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>fig_subtitle <span class="ot">&lt;-</span> <span class="st">"(That I definitely didn't play for &gt;400 hours this summer...)"</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co">#score_df &lt;- read_csv("https://gist.githubusercontent.com/jpowerj/8b2b6a50cef5a682db640e874a14646b/raw/bbe07891a90874d1fe624224c1b82212b1ac8378/totk_scores.csv")</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>score_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://gist.githubusercontent.com/jpowerj/8b2b6a50cef5a682db640e874a14646b/raw/e3c2b9d258380e817289fbb64f91ba9ed4357d62/totk_scores.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Rows: 145 Columns: 1
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl (1): score
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>mean_score <span class="ot">&lt;-</span> <span class="fu">mean</span>(score_df<span class="sc">$</span>score)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(score_df, <span class="fu">aes</span>(<span class="at">x=</span>score)) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_vline(xintercept=mean_score) +</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span>fig_title,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle=</span>fig_subtitle,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">"Review Score"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Number of Reviews"</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"full"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/game-reviews-plot-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>(Data from <a href="https://www.metacritic.com/game/switch/the-legend-of-zelda-tears-of-the-kingdom?ref=hp">Metacritic</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="adding-a-single-line" class="level2">
+<h2 class="anchored" data-anchor-id="adding-a-single-line">Adding a Single Line</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>mean_score <span class="ot">&lt;-</span> <span class="fu">mean</span>(score_df<span class="sc">$</span>score)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>mean_score_label <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%0.2f"</span>, mean_score)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(score_df, <span class="fu">aes</span>(<span class="at">x=</span>score)) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>() <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept=</span>mean_score, <span class="at">linetype=</span><span class="st">"dashed"</span>), <span class="at">color=</span><span class="st">"purple"</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="st">""</span>, <span class="at">values=</span><span class="fu">c</span>(<span class="st">"dashed"</span><span class="ot">=</span><span class="st">"dashed"</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"dashed"</span><span class="ot">=</span><span class="st">"Mean Score"</span>)) <span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add single additional tick</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">60</span>, <span class="dv">70</span>, <span class="dv">80</span>, <span class="dv">90</span>, mean_score, <span class="dv">100</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"60"</span>,<span class="st">"70"</span>,<span class="st">"80"</span>,<span class="st">"90"</span>,mean_score_label,<span class="st">"100"</span>)) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span>fig_title,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle=</span>fig_subtitle,</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">"Review Score"</span>,</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Number of Reviews"</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"full"</span>) <span class="sc">+</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">"mm"</span>)</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">colour =</span> <span class="fu">c</span>(<span class="st">'black'</span>, <span class="st">'black'</span>,<span class="st">'black'</span>, <span class="st">'black'</span>, <span class="st">'purple'</span>, <span class="st">'black'</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
+ℹ Please use `linewidth` instead.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Vectorized input to `element_text()` is not officially supported.
+ℹ Results may be unexpected or may change in future versions of ggplot2.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/game-reviews-mean-line-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>(Data from <a href="https://www.metacritic.com/game/switch/the-legend-of-zelda-tears-of-the-kingdom?ref=hp">Metacritic</a>)</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="or-a-single-ribbon" class="level2">
+<h2 class="anchored" data-anchor-id="or-a-single-ribbon">Or a Single Ribbon</h2>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Each x value gets 10 y values</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">rep</span>(<span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>),<span class="dv">10</span>))</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(x), <span class="dv">0</span>, <span class="dv">5</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>total_N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span>g_pointsize) <span class="sc">+</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"column"</span>) <span class="sc">+</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="fu">paste0</span>(<span class="st">"N="</span>,total_N,<span class="st">" Randomly-Generated Points"</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co"># This time, just the means</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>mean_df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(x) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean=</span><span class="fu">mean</span>(y), <span class="at">min=</span><span class="fu">min</span>(y), <span class="at">max=</span><span class="fu">max</span>(y))</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mean_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>mean)) <span class="sc">+</span></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>min, <span class="at">ymax=</span>max, <span class="at">fill=</span><span class="st">"ribbon"</span>), <span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color=</span><span class="st">"mean"</span>), <span class="at">size=</span>g_pointsize) <span class="sc">+</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size=</span>g_linesize) <span class="sc">+</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>) <span class="sc">+</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="st">""</span>, <span class="at">values=</span><span class="fu">c</span>(<span class="st">"mean"</span><span class="ot">=</span><span class="st">"black"</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"mean"</span><span class="ot">=</span><span class="st">"Mean"</span>)) <span class="sc">+</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="st">""</span>, <span class="at">values=</span><span class="fu">c</span>(<span class="st">"ribbon"</span><span class="ot">=</span>cbPalette[<span class="dv">1</span>]), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"ribbon"</span><span class="ot">=</span><span class="st">"Range"</span>)) <span class="sc">+</span></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend_title</span>() <span class="sc">+</span></span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="fu">paste0</span>(<span class="st">"Means of N="</span>,total_N,<span class="st">" Randomly-Generated Points"</span>)</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Each x value gets 10 y values</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">rep</span>(<span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>),<span class="dv">10</span>))</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> x <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">length</span>(x), <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>total_N <span class="ot">&lt;-</span> <span class="fu">nrow</span>(df)</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span>g_pointsize) <span class="sc">+</span></span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"column"</span>) <span class="sc">+</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="fu">paste0</span>(<span class="st">"N="</span>,total_N,<span class="st">" Randomly-Generated Points"</span>)</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a><span class="co"># This time, just the means</span></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>mean_df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(x) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">mean=</span><span class="fu">mean</span>(y), <span class="at">min=</span><span class="fu">min</span>(y), <span class="at">max=</span><span class="fu">max</span>(y))</span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mean_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>mean)) <span class="sc">+</span></span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>min, <span class="at">ymax=</span>max, <span class="at">fill=</span><span class="st">"ribbon"</span>), <span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color=</span><span class="st">"mean"</span>), <span class="at">size=</span>g_pointsize) <span class="sc">+</span></span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size=</span>g_linesize) <span class="sc">+</span></span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>) <span class="sc">+</span></span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="st">""</span>, <span class="at">values=</span><span class="fu">c</span>(<span class="st">"mean"</span><span class="ot">=</span><span class="st">"black"</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"mean"</span><span class="ot">=</span><span class="st">"Mean"</span>)) <span class="sc">+</span></span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="st">""</span>, <span class="at">values=</span><span class="fu">c</span>(<span class="st">"ribbon"</span><span class="ot">=</span>cbPalette[<span class="dv">1</span>]), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"ribbon"</span><span class="ot">=</span><span class="st">"Range"</span>)) <span class="sc">+</span></span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend_title</span>() <span class="sc">+</span></span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="fu">paste0</span>(<span class="st">"Means of N="</span>,total_N,<span class="st">" Randomly-Generated Points"</span>)</span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="quarto-layout-panel" data-layout="[[1,1], [1,1]]">
+<div class="quarto-layout-row">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/noribbon-demo-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/ribbon-demo-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/noribbon-demo-lowvar-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/ribbon-demo-lowvar-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-the-normal-distribution" class="level2 smaller crunch-figures">
+<h2 class="smaller crunch-figures anchored" data-anchor-id="example-the-normal-distribution">Example: The Normal Distribution</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<center>
+<em>(The distribution you saw a few slides ago)</em>
+</center>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vlines_std_normal <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>x, <span class="sc">~</span>xend, <span class="sc">~</span>y, <span class="sc">~</span>yend, <span class="sc">~</span>Params,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fu">dnorm</span>(<span class="dv">0</span>), <span class="st">"Mean"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="dv">2</span>, <span class="sc">-</span><span class="dv">2</span>, <span class="dv">0</span>, <span class="fu">dnorm</span>(<span class="sc">-</span><span class="dv">2</span>), <span class="st">"SD"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="fu">dnorm</span>(<span class="sc">-</span><span class="dv">1</span>), <span class="st">"SD"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="fu">dnorm</span>(<span class="dv">1</span>), <span class="st">"SD"</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">0</span>, <span class="fu">dnorm</span>(<span class="dv">2</span>), <span class="st">"SD"</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>)), <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">linewidth =</span> g_linewidth) <span class="sc">+</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_segment</span>(<span class="at">data=</span>vlines_std_normal, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">xend=</span>xend, <span class="at">y=</span>y, <span class="at">yend=</span>yend, <span class="at">linetype =</span> Params), <span class="at">linewidth =</span> g_linewidth, <span class="at">color=</span><span class="st">"purple"</span>) <span class="sc">+</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_area</span>(<span class="at">stat =</span> <span class="st">"function"</span>, <span class="at">fun =</span> dnorm, <span class="at">fill =</span> cbPalette[<span class="dv">1</span>], <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>), <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="co">#geom_area(stat = "function", fun = dnorm, fill = "blue", xlim = c(0, 2))</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> <span class="st">"v"</span>,</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="st">"Density f(v)"</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/standard-normal-demo-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>“RV <span class="math inline">\(X\)</span> is normally distributed with <span class="param"><strong>mean</strong></span> <span class="math inline">\({\color{purple}\mu}\)</span> and <span class="param"><strong>standard deviation</strong></span> <span class="math inline">\({\color{purple}\sigma}\)</span>”
+<ul>
+<li>Translates to <span class="math inline">\(X \sim \mathcal{N}(\color{purple}{\mu},\color{purple}{\sigma})\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li><span class="math inline">\(\color{purple}{\mu}\)</span> and <span class="math inline">\(\color{purple}{\sigma}\)</span> are <span style="color: purple;"><strong>parameters</strong></span><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>: the “knobs” or “sliders” which change the location/shape of the distribution</li>
+</ul></li>
+</ul>
+</div>
+</div>
+<ul>
+<li>The parameters in this case give <strong>natural summaries</strong> of the data:
+<ul>
+<li><span class="math inline">\({\color{\purple}\mu}\)</span> = center (mean), <span class="math inline">\({\color{purple}\sigma}\)</span> = [square root of] variance around center</li>
+</ul></li>
+<li><strong>Mean</strong> can usually be interpreted intuitively; for <strong>standard deviation</strong>, we usually use the <a href="https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule" target="_blank"><strong>68-95-99.7 rule</strong></a>, which will make more sense relative to some <strong>real-world data</strong>…</li>
+</ul>
+</section>
+<section id="real-data-and-the-68-95-99.7-rule" class="level2 smaller crunch-layout-panel crunch-title crunch-figures crunch-lists crunch-images">
+<h2 class="smaller crunch-layout-panel crunch-title crunch-figures crunch-lists crunch-images anchored" data-anchor-id="real-data-and-the-68-95-99.7-rule">Real Data and the 68-95-99.7 Rule</h2>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div id="fig-height-plot" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-height-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="index_files/figure-html/fig-height-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-height-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Heights (cm) for 18K professional athletes
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-empirical" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-empirical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><img src="images/empirical_rule.svg" height="333" class="figure-img"></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-empirical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: The 68-95-99.7 Rule visualized (<a href="https://commons.wikimedia.org/wiki/File:Empirical_rule_histogram.svg" target="_blank">Wikimedia Commons</a>)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>The <strong>point estimate</strong> <span class="math inline">\({\color{purple}\mu} = 186.48\)</span> is straightforward: <em>the average height of the athletes is 186.48cm</em>. Using the 68-95-99.7 Rule to interpret the <strong>SD</strong>, <span class="math inline">\({\color{purple}\sigma} = 9.7\)</span>, we get:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<center>
+<em>About <strong>68% of the heights</strong> fall between</em>
+</center>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 45%">
+<col style="width: 10%">
+<col style="width: 45%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">[<span class="math inline">\({\color{purple}\mu} - 1\cdot {\color{purple}\sigma}\)</span></td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;"><span class="math inline">\({\color{purple}\mu} + 1\cdot {\color{purple}\sigma}\)</span>]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[186.48 - 1 · 9.7</td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;">186.48 + 1 · 9.7]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[176.78</td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;">196.18]</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<center>
+<em>About <strong>95% of the heights</strong> fall between</em>
+</center>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 45%">
+<col style="width: 10%">
+<col style="width: 45%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">[<span class="math inline">\({\color{purple}\mu} - 2 \cdot {\color{purple}\sigma}\)</span></td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;"><span class="math inline">\({\color{purple}\mu} + 2 \cdot {\color{purple}\sigma}\)</span>]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[186.48 - 2 · 9.7</td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;">186.48 + 2 · 9.7]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[167.08</td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;">205.88]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="boxplots-comparing-multiple-distributions" class="level2 smaller small-title">
+<h2 class="smaller small-title anchored" data-anchor-id="boxplots-comparing-multiple-distributions">Boxplots: Comparing Multiple Distributions</h2>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/boxplot_vs_pdf.svg" class="img-fluid figure-img"></p>
+<figcaption><a href="https://commons.wikimedia.org/wiki/File:Boxplot_vs_PDF.svg">Jhguch at en.wikipedia</a>, <a href="https://creativecommons.org/licenses/by-sa/2.5">CC BY-SA 2.5</a>, via Wikimedia Commons</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/multiple_boxplots.svg" class="img-fluid figure-img"></p>
+<figcaption><a href="https://commons.wikimedia.org/wiki/File:Boxplot_of_Average_Article_Feedback_ratings_by_project_rated_quality.svg">Protonk</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>, via Wikimedia Commons</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="another-option-joyplots" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="another-option-joyplots">Another Option: Joyplots</h2>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-joy-division" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-joy-division-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/joy_division.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-joy-division-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: <a href="https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/joy-plots-in-arcgis-pro/" target="_blank">(Iconic album cover)</a>
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-manifesto" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-manifesto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><img src="images/manifesto_distances.png" height="550" class="figure-img"></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-manifesto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: <a href="https://cs.stanford.edu/~jjacobs3/Jacobs_Translations_Ideological_Interventions_2019_11_22.pdf" target="_blank"><em>(Tooting my own horn)</em></a>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="multivariate-distributions-preview" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="multivariate-distributions-preview">Multivariate Distributions: Preview</h2>
+<ul>
+<li>The <strong>bivariate normal</strong> distribution represents the distribution of <strong>two</strong> normally-distributed RVs <span class="math inline">\(\mathbf{X} = [\begin{smallmatrix} X_1 &amp; X_2\end{smallmatrix}]\)</span>, which may or may not be correlated:</li>
+</ul>
+<div class="special-math" style="margin-bottom: 42px !important;">
+<p><span class="math display">\[
+\mathbf{X} = \begin{bmatrix}X_1 \\ X_2\end{bmatrix}, \; \boldsymbol{\mu} =
+%\begin{bmatrix}\mu_1 \\ \mu_2\end{bmatrix}
+\begin{bmatrix}\smash{\overbrace{\mu_1}^{\mathbb{E}[X_1]}} \\ \smash{\underbrace{\mu_2}_{\mathbb{E}[X_2]}}\end{bmatrix}
+, \; \mathbf{\Sigma} = \begin{bmatrix}\smash{\overbrace{\sigma_1^2}^{\text{Var}[X_1]}} &amp; \smash{\overbrace{\rho\sigma_1\sigma_2}^{\text{Cov}[X_1,X_2]}} \\ \smash{\underbrace{\rho\sigma_2\sigma_1}_{\text{Cov}[X_2,X_1]}} &amp; \smash{\underbrace{\sigma_2^2}_{\text{Var}[X_2]}}\end{bmatrix}
+% \begin{bmatrix}\sigma_1^2 &amp; \rho\sigma_1\sigma_2 \\ \rho\sigma_2\sigma_1 &amp; \sigma_2^2 \end{bmatrix}
+% = \begin{bmatrix}\text{Var}[X_1] &amp; \text{Cov}[X_1,X_2] \\ \text{Cov}[X_2,X_1] &amp; \text{Var}[X_2] \end{bmatrix}
+\]</span></p>
+</div>
+<ul>
+<li>By squishing all this information intro matrices, we can specify the parameters of <strong>multivariate-normally-distributed</strong> <em>vectors</em> of RVs similarly to how we specify single-dimensional normally-distributed RVs:</li>
+</ul>
+<div class="crunch-math">
+<p><span class="math display">\[
+\begin{align*}
+\overbrace{X}^{\mathclap{\text{scalar}}} &amp;\sim \mathcal{N}\phantom{_k}(\overbrace{\mu}^{\text{scalar}}, \overbrace{\sigma}^{\text{scalar}}) \tag{Univariate} \\
+\underbrace{\mathbf{X}}_{\text{vector}} &amp;\sim \boldsymbol{\mathcal{N}}_k(\smash{\underbrace{\boldsymbol{\mu}}_{\text{vector}}}, \underbrace{\mathbf{\Sigma}}_{\text{matrix}}) \tag{Multivariate}
+\end{align*}
+\]</span></p>
+</div>
+<div class="footnote crunch-math" style="font-size: 1.2rem !important; margin-top: 24px !important;">
+<p><em>Note: In the future I’ll use the notation <span class="math inline">\(\mathbf{X}_{[a \times b]}\)</span> to denote the dimensions of the vectors/matrices, like <span class="math inline">\(\mathbf{X}_{[k \times 1]} \sim \boldsymbol{\mathcal{N}}_k(\boldsymbol{\mu}_{[k \times 1]}, \mathbf{\Sigma}_{[k \times k]})\)</span></em></p>
+</div>
+</section>
+<section id="visualizing-3d-distributions-projection" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="visualizing-3d-distributions-projection">Visualizing 3D Distributions: Projection</h2>
+<ul>
+<li>Since most of our intuitions about plots come from <strong>2D</strong> plots, it is <strong>extremely useful</strong> to be able to take a 3D plot like this and imagine “projecting” it down into different 2D plots:</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/bivariate_normal_corrected.svg" class="img-fluid figure-img"></p>
+<figcaption>(Adapted via LaTeX from <a href="https://tex.stackexchange.com/questions/31708/draw-a-bivariate-normal-distribution-in-tikz">StackExchange discussion</a>)</figcaption>
+</figure>
+</div>
+</section>
+<section id="visualizing-3d-distributions-contours" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="visualizing-3d-distributions-contours">Visualizing 3D Distributions: Contours</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/contour_nocorr.png" class="img-fluid figure-img"></p>
+<figcaption>From <a href="https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-normal-uncorrelated" target="_blank">Prof.&nbsp;Hickman’s slides!</a></figcaption>
+</figure>
+</div>
+</section>
+<section id="visualizing-3d-distributions-contours-1" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="visualizing-3d-distributions-contours-1">Visualizing 3D Distributions: Contours</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/contour_corr.png" class="img-fluid figure-img"></p>
+<figcaption>Also from <a href="https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-correlated" target="_blank">Prof.&nbsp;Hickman’s slides!</a></figcaption>
+</figure>
+</div>
+<!-- ![From Selvan, Raghavendra (2015). <a href="https://raghavian.github.io/publication/2015-01-01-Bayesian-tracking-EM" target="_blank">*Bayesian tracking of multiple point targets using expectation maximization*</a>. MSc Thesis.](images/bivariate_normal.png) -->
+<!---
+ ## 68-95-99.7 Rule
+
+
+
+
+
+
+::: {.cell layout-align="center"}
+
+```{.r .cell-code}
+ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
+    stat_function(fun = dnorm, linewidth = g_linewidth) +
+    geom_area(stat = "function", fun = dnorm, fill = cbPalette[1], xlim = c(-3, 3), alpha=0.2) +
+    #geom_area(stat = "function", fun = dnorm, fill = "blue", xlim = c(0, 2))
+    dsan_theme("quarter") +
+    labs(
+      x = "v",
+      y = "Density f(v)"
+    )
+```
+
+::: {.cell-output-display}
+![](index_files/figure-html/standard-normal-empirical-1.png){fig-align='center' width=672}
+:::
+:::
+
+
+
+
+
+--->
+<!---
+ 
+## Looking Ahead: Classification vs. Regression {.smaller}
+
+* What types of vars are we guessing for **classification** tasks?
+  * Answer: Discrete variables
+  * Binary classification $\leftrightarrow$ Dichotomous variables: $X \in \{T, F\}$. Example: $X \in \{\text{spam}, \text{not spam}\}$
+* **Regression** tasks?
+  * Answer: Continuous variables. $X \in \mathbb{R}$. Example: predicted temperature
+* And where does probability come in?
+  * Answer: Allows us to quantify $\Pr(\mathcal{H} \mid X)$!
+  * $\mathcal{H}_1 = \text{email is spam}$, $\mathcal{H}_0 = \text{email is not spam}$, $X = \text{email contents}$
+  * $\mathcal{H}_1 = \text{Tomorrow's temperature} > 20^\circ$, $\mathcal{H}_0 = \text{Tomorrow's temperature} \leq 20^\circ$,<br>$X = \text{Historical temperature data}$
+ 
+--->
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>For math majors, you can think of it as an <strong>isomorphism</strong> between the objects and operations of the three subjects<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Throughout the course, this “calligraphic” font <span class="math inline">\(\mathcal{N}\)</span>, <span class="math inline">\(\mathcal{D}\)</span>, etc., will be used to denote <strong>distributions</strong><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Throughout the course, remember, <span style="color:purple;"><strong>purrple</strong></span> is for <span style="color:purple;"><strong>purrameters</strong></span><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

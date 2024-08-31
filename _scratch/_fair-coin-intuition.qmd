@@ -1,0 +1,19 @@
+
+## Intuition Check II
+
+::: {layout="[1,1]" layout-valign="center"}
+
+::: {#intuition2-left}
+
+* Now imagine, instead of one sequence, we observe $N = 1000$ sequences, and the **most common** outcome is 3 heads...
+* **Now** we can start to say, **something seems fishy here!**
+* We can **quantify this "fishiness"** by comparing the distribution we would **expect** if the coin was fair vs. the **observed** distribution
+
+:::
+
+```{r}
+#| label: expected-vs-observed-heads
+
+```
+
+:::

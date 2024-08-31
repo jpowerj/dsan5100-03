@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jeff Jacobs">
+<meta name="dcterms.date" content="2023-10-23">
+
+<title>DSAN 5100 Math Cheatsheet</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script><script src="./sidebar.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="dsan-globals/jjstyles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./cheatsheet-math.html">Math Cheatsheet</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">DSAN 5100-03</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://dsan.georgetown.domains/dsan5100/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="bi bi-arrow-left pe-1"></i> Main Course Page</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./w01/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 1: Aug 30</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./w02/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 2: Sep 3</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=98022271-76d6-457f-83ee-b1dd00143dbc" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Recordings <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./extra-videos/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Videos</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./writeups/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Writeups</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./cheatsheet-math.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Math Cheatsheet</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.instructure.com/courses/193275" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">S03 Canvas Page <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/meet" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Book Office Hours <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://forms.gle/3CYWo8xHUxMvvowbA" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Suggestion Box <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/dsps" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Textbook <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#math-preliminaries" id="toc-math-preliminaries" class="nav-link active" data-scroll-target="#math-preliminaries">Math Preliminaries</a>
+  <ul class="collapse">
+  <li><a href="#logic" id="toc-logic" class="nav-link" data-scroll-target="#logic">Logic</a></li>
+  <li><a href="#sets" id="toc-sets" class="nav-link" data-scroll-target="#sets">Sets</a></li>
+  <li><a href="#algebra" id="toc-algebra" class="nav-link" data-scroll-target="#algebra">Algebra</a></li>
+  <li><a href="#calculus" id="toc-calculus" class="nav-link" data-scroll-target="#calculus">Calculus</a></li>
+  </ul></li>
+  <li><a href="#conditional-probability" id="toc-conditional-probability" class="nav-link" data-scroll-target="#conditional-probability">Conditional Probability</a>
+  <ul class="collapse">
+  <li><a href="#probability-fundamentals" id="toc-probability-fundamentals" class="nav-link" data-scroll-target="#probability-fundamentals">Probability Fundamentals</a></li>
+  <li><a href="#random-variables" id="toc-random-variables" class="nav-link" data-scroll-target="#random-variables">Random Variables</a></li>
+  </ul></li>
+  <li><a href="#expectation-variance-moments" id="toc-expectation-variance-moments" class="nav-link" data-scroll-target="#expectation-variance-moments">Expectation, Variance, Moments</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">DSAN 5100 Math Cheatsheet</h1>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jeff Jacobs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 23, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="math-preliminaries" class="level2">
+<h2 class="anchored" data-anchor-id="math-preliminaries">Math Preliminaries</h2>
+<section id="logic" class="level3">
+<h3 class="anchored" data-anchor-id="logic">Logic</h3>
+<ul>
+<li><strong>Proposition</strong> <span class="math inline">\(p\)</span>: A true-false statement like “1 + 1 = 2” or “<span class="math inline">\(x\)</span> is greater than 5”. The latter would be written as <span class="math inline">\(p(x)\)</span>, since its true/false value depends on a given value of <span class="math inline">\(x\)</span>.</li>
+<li><span class="math inline">\(\wedge\)</span>: <strong>Logical “and”</strong>. <span class="math inline">\(p \wedge q\)</span> is true only if <strong>both</strong> <span class="math inline">\(p\)</span> <strong>and</strong> <span class="math inline">\(q\)</span> are true.</li>
+<li><span class="math inline">\(\vee\)</span>: <strong>Logical “or”</strong>. <span class="math inline">\(p \vee q\)</span> is true if <span class="math inline">\(p\)</span> is true or <span class="math inline">\(q\)</span> is true, or both are true.</li>
+<li><span class="math inline">\(\neg\)</span>: <strong>Logical negation</strong>: If <span class="math inline">\(p\)</span> is true, <span class="math inline">\(\neg p\)</span> is false. If <span class="math inline">\(p\)</span> is false, <span class="math inline">\(\neg p\)</span> is true.</li>
+<li><strong>DeMorgan’s Laws</strong>: Logical identities which illustrate how the negation operator gets “distributed” in a logical statement, allowing conversion of “or” statements into “and” statements, and vice-versa: <span class="math inline">\(\neg(p \wedge q) = \neg(\neg p \vee \neg q)\)</span></li>
+<li><span class="math inline">\(\implies\)</span>: <strong>“Implies”</strong>. <span class="math inline">\(a \implies b\)</span> is true if, whenever <span class="math inline">\(a\)</span> is true, <span class="math inline">\(b\)</span> is also true.</li>
+<li><span class="math inline">\(\iff\)</span>: <strong>“If and only if”</strong>. <span class="math inline">\(a \iff b\)</span> is true if, <span class="math inline">\(a\)</span> is only true when <span class="math inline">\(b\)</span> is true, and <span class="math inline">\(a\)</span> is only false when <span class="math inline">\(b\)</span> is false.</li>
+<li><span class="math inline">\(\exists\)</span>: <strong>“There exists”</strong>. In the course this will be written as <span class="math inline">\(\exists x \in S [p(x)]\)</span>, which means that there exists <strong>some element</strong> <span class="math inline">\(x\)</span> in the set <span class="math inline">\(S\)</span> such that <span class="math inline">\(p(x)\)</span> is true. Also called the “existential quantifier”.</li>
+<li><span class="math inline">\(\forall\)</span>: <strong>“For all”</strong>. In the course this will be written as <span class="math inline">\(\forall x \in S [p(x)]\)</span>, which means that for <strong>every element</strong> in a set <span class="math inline">\(S\)</span> (with <span class="math inline">\(x\)</span> representing some element arbitrarily taken from <span class="math inline">\(S\)</span>), the proposition <span class="math inline">\(p(x)\)</span> is true. Also called the “universal quantifier”.
+<ul>
+<li>Note that the universal and existential quantifiers are closely related by a negation law (just like <span class="math inline">\(\wedge\)</span> and <span class="math inline">\(\vee\)</span> and their connection via DeMorgan’s Laws): <span class="math inline">\(\neg \left( \forall x \in S[p(x)] \right) \iff \exists x \in S [\neg p(x)]\)</span>. The negation on the <strong>outside</strong> of the quantified proposition has moved <strong>inside</strong> of it, with the quantifier flipped.</li>
+<li>The same holds true in reverse: <span class="math inline">\(\neg \left( \exists x \in S [p(x)] \right) \iff \forall x \in S [\neg p(x)]\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="sets" class="level3">
+<h3 class="anchored" data-anchor-id="sets">Sets</h3>
+<ul>
+<li>A <strong>set</strong> <span class="math inline">\(S\)</span> (denoted by a capital letter when possible) is a collection of <strong>elements</strong> (denoted by a lowercase letter when possible).
+<ul>
+<li>For example, if <span class="math inline">\(S = \{0,1,2,3\}\)</span>, then <span class="math inline">\(0\)</span> is an <strong>element of</strong> <span class="math inline">\(S\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(a \in S\)</span>: The proposition that <span class="math inline">\(a\)</span> is an <strong>element of</strong> the set <span class="math inline">\(S\)</span>.
+<ul>
+<li>If <span class="math inline">\(S = \{0,1,2,3\}\)</span>, then <span class="math inline">\(2 \in S\)</span> but <span class="math inline">\(5 \notin S\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(A \subseteq S\)</span>: The proposition that <span class="math inline">\(A\)</span> is a <strong>subset of</strong> the set <span class="math inline">\(S\)</span>.
+<ul>
+<li>If <span class="math inline">\(S = \{0, 1, 2, 3\}\)</span>, then <span class="math inline">\(\{1,3\} \subseteq S\)</span> but <span class="math inline">\(\{1,4\} \not\subseteq S\)</span>. Note that sets are defined to be subsets of themselves, so that <span class="math inline">\(S \subseteq S\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(A \subset S\)</span>: The proposition that <span class="math inline">\(A\)</span> is a <strong>proper subset</strong> of <span class="math inline">\(S\)</span>, meaning that <span class="math inline">\(A \subseteq S\)</span> but <span class="math inline">\(A \neq S\)</span>.
+<ul>
+<li>While sets <strong>are</strong> subsets of themselves, sets are <strong>not</strong> <em>proper subsets</em> of themselves, so that if <span class="math inline">\(S = \{0, 1, 2, 3\}\)</span>, then <span class="math inline">\(\{1,2,3\} \subset S\)</span> but <span class="math inline">\(\{0, 1, 2, 3\} \not\subset S\)</span>.</li>
+</ul></li>
+<li><span class="math inline">\(|S|\)</span>: The <strong>cardinality</strong> of, or number of elements in, a set <span class="math inline">\(S\)</span>.
+<ul>
+<li>If <span class="math inline">\(S = \{1, 2, 3\}\)</span>, <span class="math inline">\(|S| = 3\)</span>.</li>
+<li>If the set <span class="math inline">\(S\)</span> has <strong>infinite cardinality</strong>, we can distinguish between two cases:
+<ul>
+<li>If elements of <span class="math inline">\(S\)</span> can be put into <strong>one-to-one correspondence</strong> with the natural numbers <span class="math inline">\(\mathbb{N}\)</span>, we say that <span class="math inline">\(S\)</span> is <strong>countably infinite</strong> and has cardinality <span class="math inline">\(\aleph_0\)</span> (pronounced “aleph-null”): <span class="math inline">\(|S| = \aleph_0\)</span>.</li>
+<li>If elements of <span class="math inline">\(S\)</span> <strong>cannot</strong> be put into one-to-one correspondence with the natural numbers <span class="math inline">\(\mathbb{N}\)</span>, we say that <span class="math inline">\(S\)</span> is <strong>uncountably infinite</strong> and has cardinality <strong>greater than</strong> <span class="math inline">\(\aleph_0\)</span>: <span class="math inline">\(|S| &gt; \aleph_0\)</span>.</li>
+</ul></li>
+</ul></li>
+<li><span class="math inline">\(\mathcal{P}(S)\)</span>: The <strong>power set</strong> of a set <span class="math inline">\(S\)</span>, which is the set of <strong>all possible subsets</strong> of <span class="math inline">\(S\)</span>.
+<ul>
+<li>For example, if <span class="math inline">\(S = \{1, 2, 3\}\)</span>, <span class="math inline">\(\mathcal{P}(S) = \{\varnothing, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\}\)</span>. Notice that <span class="math inline">\(|\mathcal{P}(S)| = 2^{|S|}\)</span>, which is always true of the power set.</li>
+</ul></li>
+</ul>
+</section>
+<section id="algebra" class="level3">
+<h3 class="anchored" data-anchor-id="algebra">Algebra</h3>
+<ul>
+<li><p><span class="math inline">\(\mathbb{N}\)</span>: The set of all <strong>natural numbers</strong>, sometimes called the “counting numbers”: <span class="math inline">\(\{0, 1, 2, 3, \ldots \}\)</span> (This set is <em>countably infinite</em>).</p></li>
+<li><p><span class="math inline">\(\mathbb{Z}\)</span>: The set of all <strong>integers</strong>, which includes all of the natural numbers along with their <strong>negatives</strong>: <span class="math inline">\(\{\ldots, -2, -1, 0, 1, 2, \ldots\}\)</span> (This set is also <em>countably infinite</em>)</p></li>
+<li><p><span class="math inline">\(\mathbb{Q}\)</span>: The set of all <strong>rational numbers</strong>, i.e., well-defined ratios of two integers. <span class="math inline">\(x \in \mathbb{Q} \iff x = \frac{p}{q}\)</span> for two integers <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span>, and <span class="math inline">\(q \neq 0\)</span>. (This set is, surprisingly, also <em>countably infinite</em>)</p></li>
+<li><p><span class="math inline">\(\mathbb{R}\)</span>: The set of all <strong>real numbers</strong>, which includes all integers as well as numbers such as <span class="math inline">\(\pi\)</span>, <span class="math inline">\(2.356\)</span>, or <span class="math inline">\(\sqrt{2}\)</span> (This set is <em>uncountably infinite</em>).</p></li>
+<li><p><strong>Scalar</strong>: A single number from some set of numbers, like <span class="math inline">\(-2.1 \in \mathbb{R}\)</span></p></li>
+<li><p><strong>Vector</strong>: A <span class="math inline">\(d\)</span>-dimensional <strong>vector</strong> <span class="math inline">\(\mathbf{v}\)</span> is a collection of <span class="math inline">\(d\)</span> scalars in <span class="math inline">\(\mathbb{R}\)</span>, <span class="math inline">\(\mathbf{v} = (v_1, v_2, \ldots, v_d)^\top\)</span>, which we can interpret as an <strong>arrow</strong> pointing <span class="math inline">\(v_i\)</span> units in each dimension <span class="math inline">\(i\)</span>. For example, if <span class="math inline">\(\mathbf{v} = (3,5)\)</span>, we can interpret <span class="math inline">\(\mathbf{v}\)</span> as representing an arrow pointing <span class="math inline">\(3\)</span> units in the <span class="math inline">\(x\)</span> direction and <span class="math inline">\(5\)</span> units in the <span class="math inline">\(y\)</span> direction.</p>
+<ul>
+<li>As indicated above, however, we will assume that vectors are <strong>column vectors</strong> unless otherwise specified, though they will be written row-wise with a <strong>transpose</strong> symbol at the end. This means that, although it will be written like <span class="math inline">\(\mathbf{v} = (v_1, v_2, \ldots, v_n)^\top\)</span>, you should apply the transpose in your head: <span class="math display">\[
+\mathbf{v} = (v_1, v_2, \ldots, v_n)^\top = \begin{bmatrix}v_1 \\ v_2 \\ \vdots \\ v_n\end{bmatrix}
+\]</span></li>
+</ul></li>
+<li><p><strong>Matrix</strong>: An <span class="math inline">\(m \times n\)</span> <strong>matrix</strong> <span class="math inline">\(\mathbf{M}_{[m \times n]}\)</span> is an <span class="math inline">\(m\)</span>-by-<span class="math inline">\(n\)</span> grid of scalars, where the scalar in the <span class="math inline">\(i\)</span>th row and <span class="math inline">\(j\)</span>th column is denoted <span class="math inline">\(m_{i,j}\)</span>. In the class, we will be careful to add a subscript like <span class="math inline">\(\mathbf{M}_{[m \times n]}\)</span> to indicate the number of rows (<span class="math inline">\(m\)</span>) and columns (<span class="math inline">\(n\)</span>) in the matrix, since operations like multiplication are only defined for matrices with particular dimensions.</p></li>
+<li><p><strong>Matrix multiplication</strong>: For two matrices <span class="math inline">\(\mathbf{X}_{[a \times b]}\)</span> and <span class="math inline">\(\mathbf{Y}_{[c \times d]}\)</span>, matrix multiplication is defined if <span class="math inline">\(b = c\)</span>, and produces the following <span class="math inline">\(a \times d\)</span> matrix <span class="math inline">\(\mathbf{XY}_{[a \times d]}\)</span>:</p>
+<p><span class="math display">\[
+  \mathbf{XY}_{[a \times d]} = \begin{bmatrix}
+  x_{1,1}y_{1,1} &amp; \cdots &amp; x_{m,1}y_{1,n} \\
+  \vdots &amp; \ddots &amp; \vdots \\
+  x_{1,n}y_{m,1} &amp; \cdots &amp; x_{m,n}y_{m,n}
+  \end{bmatrix}
+  \]</span></p></li>
+<li><p><span class="math inline">\(\sum_{i=1}^n f(i)\)</span>: <span class="math inline">\(\Sigma\)</span> is the capitalized Greek letter “Sigma”, and stands for “Sum” in this case. This notation means: “the sum of <span class="math inline">\(f(i)\)</span> from <span class="math inline">\(i = 1\)</span> to <span class="math inline">\(i = n\)</span>”. For example, <span class="math inline">\(\sum_{i=1}^3 i^2 = 1^2 + 2^2 + 3^2 = 14\)</span>.</p></li>
+<li><p><span class="math inline">\(\prod_{i=1}^n f(i)\)</span>: <span class="math inline">\(\Pi\)</span> is the capitalized Greek letter “Pi”, and stands for “Product” in this case. This notation means: “the product of <span class="math inline">\(f(i)\)</span> from <span class="math inline">\(i = 1\)</span> to <span class="math inline">\(i = n\)</span>”. For example, <span class="math inline">\(\prod_{i=1}^3 i^2 = 1^2 \cdot 2^2 \cdot 3^2 = 36\)</span>.</p></li>
+</ul>
+</section>
+<section id="calculus" class="level3">
+<h3 class="anchored" data-anchor-id="calculus">Calculus</h3>
+<ul>
+<li><span class="math inline">\([a,b] \in \mathbb{R}\)</span>: The <strong>closed interval</strong> between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. That is, the subset of <span class="math inline">\(\mathbb{R}\)</span> containing all numbers between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, <strong>including</strong> <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> themselves.</li>
+<li><span class="math inline">\((a,b) \in \mathbb{R}\)</span>: The <strong>open interval</strong> between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. That is, the subset of <span class="math inline">\(\mathbb{R}\)</span> containing all numbers between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>, <strong>excluding</strong> <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> themselves.</li>
+<li><span class="math inline">\([a, b)\)</span>, <span class="math inline">\((a, b]\)</span>: The <strong>half-open interval</strong> between <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. In the first case, we include <span class="math inline">\(a\)</span> but exclude <span class="math inline">\(b\)</span>, while in the second we exclude <span class="math inline">\(a\)</span> but include <span class="math inline">\(b\)</span>.</li>
+<li><span class="math inline">\(\int_{a}^b f(x)dx\)</span>: The <strong>integral</strong> of the function <span class="math inline">\(f(x)\)</span> between points <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span>. In this course, you just need to remember that this produces the <strong>area under the curve</strong> of <span class="math inline">\(f(x)\)</span> between these points.</li>
+<li><span class="math inline">\(\frac{d}{dx} \left[ f(x) \right]\)</span>: The <strong>derivative</strong> of the function <span class="math inline">\(f(x)\)</span>. For this class, you just need to remember that the derivative is what transforms a <strong>Cumulative Density Function</strong> (<strong>CDF</strong>) into a <strong>Probability Density Function</strong> (<strong>PDF</strong>): if <span class="math inline">\(F_X(v)\)</span> is the CDF of a random variable <span class="math inline">\(X\)</span>, then <span class="math inline">\(\frac{d}{dx}\left[ F_X(v) \right] = f_X(v)\)</span>, the PDF of <span class="math inline">\(X\)</span>.
+<ul>
+<li>For functions of multiple variables, like the joint pdf <span class="math inline">\(f_{X,Y}(v_X, v_Y)\)</span>, we use the <span class="math inline">\(\partial\)</span> symbol instead of <span class="math inline">\(d\)</span> to denote <strong>partial derivatives</strong>: for example, the change in <span class="math inline">\(F_{X,Y}(v_X, v_Y)\)</span> as <span class="math inline">\(v_X\)</span> changes is denoted <span class="math inline">\(\frac{\partial}{\partial v_X}\left[ F_{X,Y}(v_X, v_Y) \right]\)</span>, while the change in <span class="math inline">\(F_{X,Y}(v_X, v_Y)\)</span> as <span class="math inline">\(v_Y\)</span> changes is denoted <span class="math inline">\(\frac{\partial}{\partial v_Y}\left[ F_{X,Y}(v_X, v_Y) \right]\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="conditional-probability" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-probability">Conditional Probability</h2>
+<section id="probability-fundamentals" class="level3">
+<h3 class="anchored" data-anchor-id="probability-fundamentals">Probability Fundamentals</h3>
+<ul>
+<li><span class="math inline">\(\Omega\)</span>: The set of all possible <strong>outcomes</strong> in a probability setting</li>
+<li><span class="math inline">\(\mathcal{P}(\Omega) = \{ e \mid e \subseteq \Omega\}\)</span>: The set of all subsets of <span class="math inline">\(\Omega\)</span>, each of which is an <strong>event</strong></li>
+</ul>
+</section>
+<section id="random-variables" class="level3">
+<h3 class="anchored" data-anchor-id="random-variables">Random Variables</h3>
+<ul>
+<li><span class="math inline">\(X\)</span> is a <strong>random variable</strong> if it maps each element of <span class="math inline">\(\Omega\)</span> to a real number <span class="math inline">\(o \in \mathbb{R}\)</span>.
+<ul>
+<li>For example, if we’re rolling a die, we can create a random variable <span class="math inline">\(X\)</span> which maps <span class="math inline">\(\text{roll a one}\)</span> to <span class="math inline">\(1\)</span>, <span class="math inline">\(\text{roll a two}\)</span> to <span class="math inline">\(2\)</span>, and so on. (Allows us to do math with probability spaces!)</li>
+</ul></li>
+<li><span class="math inline">\(X\)</span> is a <strong>discrete</strong> random variable if it maps outcomes to <strong>countable</strong> set of numbers, whether this means a <strong>finite set</strong> like <span class="math inline">\(\{1,2,3\}\)</span> or a <strong>countably infinite</strong> set like <span class="math inline">\(\mathbb{N}\)</span>.</li>
+<li><span class="math inline">\(X\)</span> is a <strong>continuous</strong> random variable if it maps outcomes to a <strong>non-countable</strong> set of numbers, typically <span class="math inline">\(\mathbb{R}\)</span>.</li>
+<li><span class="math inline">\(\mathcal{R}_X\)</span>, the <strong>support</strong> of a random variable <span class="math inline">\(X\)</span>, is the <strong>set of all possible values</strong> that the random variable can map onto. For example, if <span class="math inline">\(X\)</span> represents a dice roll, then <span class="math inline">\(\mathcal{R}_X = \{1, 2, 3, 4, 5, 6\}\)</span>.</li>
+<li><strong>Cumulative Density Function</strong> (<strong>CDF</strong>): Given a random variable <span class="math inline">\(X\)</span> (whether discrete or continuous), <span class="math inline">\(F_X(v) = P(X \leq v)\)</span> is its <strong>cumulative density function</strong>, which tells us the probability that <span class="math inline">\(X\)</span> is realized as a number less than or equal to some value <span class="math inline">\(v\)</span>.</li>
+<li><strong>Probability Mass Function</strong> (<strong>PMF</strong>): Given a <strong>discrete</strong> random variable <span class="math inline">\(X\)</span>, <span class="math inline">\(p_X(v) = P(X = v)\)</span> is its <strong>probability mass function</strong>, which tells us the probability that <span class="math inline">\(X\)</span> is realized as the value <span class="math inline">\(v\)</span>.</li>
+<li><strong>Probability Density Function</strong> (<strong>PDF</strong>): Given a <strong>continuous</strong> random variable <span class="math inline">\(X\)</span>, <span class="math inline">\(f_X(v)\)</span> is the unique function which allows us to determine, using integration, the probability that <span class="math inline">\(X\)</span> is in some range <span class="math inline">\([a,b]\)</span>. That is, it is the unique function satisfying <span class="math inline">\(P(X \in [a,b]) = \int_a^b f_X(x)dx\)</span>.
+<ul>
+<li><strong>Remember</strong>: unlike in the discrete case where <span class="math inline">\(p_X(v) = P(X = v)\)</span>, <span class="math inline">\(f_X(v)\)</span> <strong>is not</strong> the probability that <span class="math inline">\(X\)</span> is realized as the value <span class="math inline">\(v\)</span>. <span class="math inline">\(f_X(v) \neq P(X = v)\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+</section>
+<section id="expectation-variance-moments" class="level2">
+<h2 class="anchored" data-anchor-id="expectation-variance-moments">Expectation, Variance, Moments</h2>
+<ul>
+<li><p><span class="math inline">\(M_1(V)\)</span>: The (“regular”) <strong>arithmetic mean</strong> of a set of values <span class="math inline">\(V = \{v_1, v_2, \ldots, v_n\}\)</span>: <span class="math inline">\(M_1(V) = (v_1 + v_2 + \cdots + v_n)\frac{1}{n} = \left( \sum_{i=1}^n v_i \right)\frac{1}{n}\)</span>.</p></li>
+<li><p><span class="math inline">\(M_0(V)\)</span>: The <strong>geometric mean</strong> of a set of values <span class="math inline">\(V = \{v_1, v_2, \ldots, v_n\}\)</span>: <span class="math inline">\(M_0(V) = (v_1\cdot v_2 \cdot \cdots \cdot v_n)^{\frac{1}{n}} = \left( \prod_{i=1}^n v_i \right)^{\frac{1}{n}}\)</span></p></li>
+<li><p><span class="math inline">\(M_{-1}(V)\)</span>: The <strong>harmonic mean</strong> of a set of values <span class="math inline">\(V = \{v_1, v_2, \ldots, v_n\}\)</span>: <span class="math inline">\(M_{-1}(V) = \frac{n}{\frac{1}{v_1} + \frac{1}{v_2} + \cdots + \frac{1}{v_n}} = \left( \frac{\sum_{i=1}^n v_i^{-1}}{n} \right)^{-1}\)</span></p></li>
+<li><p><span class="math inline">\(\odot\)</span>: The <strong>Hadamard product</strong> of matrices. For two matrices <span class="math inline">\(\mathbf{X}_{[m \times n]}\)</span> and <span class="math inline">\(\mathbf{Y}_{[m \times n]}\)</span> with equal dimensions:</p>
+<p><span class="math display">\[
+  X_{[m \times n]} = \begin{bmatrix}
+      x_{1,1} &amp; \cdots &amp; x_{1,n} \\
+      \vdots &amp; \ddots &amp; \vdots \\
+      x_{m,1} &amp; \cdots &amp; x_{m,n}
+  \end{bmatrix}, Y_{[m \times n]} = \begin{bmatrix}
+      y_{1,1} &amp; \cdots &amp; y_{1,n} \\
+      \vdots &amp; \ddots &amp; \vdots \\
+      y_{m,1} &amp; \cdots &amp; y_{m,n}
+  \end{bmatrix}
+  \]</span></p>
+<p>Their <strong>Hadamard product</strong> <span class="math inline">\(\mathbf{X} \odot \mathbf{Y}\)</span> is another <span class="math inline">\(m \times n\)</span> matrix</p>
+<p><span class="math display">\[
+  (\mathbf{X} \odot \mathbf{Y})_{[m \times n]} = \begin{bmatrix}
+      x_{1,1}y_{1,1} &amp; \cdots &amp; x_{1,n}y_{1,n} \\
+      \vdots &amp; \ddots &amp; \vdots \\
+      x_{m,1}y_{m,1} &amp; \cdots &amp; x_{m,n}y_{m,n}
+  \end{bmatrix}
+  \]</span></p></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

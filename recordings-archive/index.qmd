@@ -1,0 +1,31 @@
+---
+title: "Lecture Recordings Archive"
+format: html
+sidebar: mainnav
+listing:
+  sort-ui: false
+  filter-ui: false
+  contents:
+    - lecture-recordings-f23.yml
+  type: table
+  # categories: true
+  fields: [week,title,date]
+  field-display-names:
+    week: "Week"
+    title: "Title"
+    date: "Last Updated"
+    categories: "Category"
+    section: "Section"
+  sort:
+    - "week desc"
+    - "section"
+    - "category desc"
+    - "title desc"
+  table-hover: true
+  #date-format: full
+  #date-format: "dddd MMM D, YYYY, HH:mm:ss"
+  date-format: "dddd MMM D, YYYY"
+---
+
+Use the listing below to view lecture recordings for previous iterations of DSAN 5100!
+

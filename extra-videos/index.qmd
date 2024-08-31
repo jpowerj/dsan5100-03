@@ -1,0 +1,33 @@
+---
+title: "Extra Videos"
+#author: "Jeff Jacobs"
+#institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>jj1088@georgetown.edu</a>"
+format: html
+# listing:
+#   template: recordings.ejs
+#   contents:
+#     - items.yml
+listing:
+  #sort-ui: false
+  #filter-ui: false
+  contents:
+    - extra-videos.yml
+  type: table
+  #categories: true
+#   include:
+#     categories: "{Lecture Videos,Extra Videos}"
+  fields: [title,date]
+  field-display-names:
+    week: "Week"
+    title: "Title"
+    date: "Last Updated"
+    categories: "Category"
+    section: "Section"
+  sort:
+    - "date desc"
+    - "title asc"
+  table-hover: true
+  #date-format: full
+  #date-format: "dddd MMM D, YYYY, HH:mm:ss"
+  date-format: "dddd MMM D, YYYY"
+---

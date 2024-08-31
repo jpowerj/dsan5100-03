@@ -1,0 +1,16 @@
+---
+title: "Final Presentation Info"
+date: last-modified
+format:
+  html:
+    df-print: kable
+    cache: false
+---
+
+The information here, on the order for the final presentations, is loaded from a Google Sheets document so that student names are not included in the site's html code itself (and the Sheets document will be removed at the end of the semester). But, if you would like your name removed from the Sheets document for safety/security reasons please let me know!
+
+<a class='h2' href="https://docs.google.com/spreadsheets/d/1BU18fH041N1w5YcATYDPTXQ1atrlEYMLKIrCdz-K9lU/edit?usp=sharing" target='_blank'>Click to open sheet in new tab &rarr;</a>
+
+```{=html}
+<iframe src="https://docs.google.com/spreadsheets/d/e/2PACX-1vTGay6PwRzVXIokRbq4Ym6Sm3fn4wuGweN0WmfE4USFN71HugoAj5Bi_kRQZ7xUu3igba-9ygnsiT5X/pubhtml?widget=true&amp;headers=false" width="100%" height="800"></iframe>
+```

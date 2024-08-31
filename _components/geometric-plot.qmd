@@ -1,0 +1,18 @@
+
+
+```{r}
+#| label: geometric-demo
+#| fig-align: center
+library(ggplot2)
+k <- seq(0, 8)
+prob <- dgeom(k, 0.5)
+bar_data <- tibble(k, prob)
+ggplot(bar_data, aes(x = k, y = prob)) +
+    geom_bar(stat = "identity", fill = cbPalette[1]) +
+    labs(
+        title = "Geometric Distribution, p = 0.5",
+        y = "Probability Mass"
+    ) +
+    scale_x_continuous(breaks = seq(0, 8)) +
+    dsan_theme("half")
+```

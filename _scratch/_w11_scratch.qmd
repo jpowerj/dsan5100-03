@@ -1,0 +1,8 @@
+```{r}
+#| label: compute-z-score
+N <- 16
+sample_mean <- 140
+(numer <- sample_mean - hyp_mu)
+(denom <- sigma / sqrt(N))
+(z_val <- numer / denom)
+```

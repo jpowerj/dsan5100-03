@@ -1,0 +1,80 @@
+project:
+  type: website
+  resources:
+    - "assets/*"
+    - "recordings/*"
+  output-dir: docs/6601fe70945565fbed6d70696b21c269a949007e/
+  preview:
+    port: 4321
+  post-render:
+    - _post_fix_figures.py
+    - _post_pw_protect.py
+    # - _post_recording_pages.py
+
+website:
+  title: ""
+  sidebar:
+    title: "DSAN 5100-03"
+    id: mainnav
+    contents:
+      - href: "https://dsan.georgetown.domains/dsan5100/"
+        text: "<i class='bi bi-arrow-left pe-1'></i> Main Course Page"
+      - "---"
+      # - href: index.qmd
+      #   text: "<i class='bi bi-house pe-1'></i> Section 03 Home"
+      - href: w01/index.qmd
+        text: "Week 1: Aug 30"
+      - href: w02/index.qmd
+        text: "Week 2: Sep 3"
+      # - href: w03/index.qmd
+      #   text: "Week 3: Sep 7"
+      # - href: w04/index.qmd
+      #   text: "Week 4: Sep 14"
+      # - href: w05/index.qmd
+      #   text: "Week 5: Sep 20"
+      # - href: w06/index.qmd
+      #   text: "Week 6: Sep 27"
+      # - href: w07/index.qmd
+      #   text: "Week 7: Oct 5"
+      # - href: w08/index.qmd
+      #   text: "Week 8: Oct 12"
+      # - href: w09/index.qmd
+      #   text: "Week 9: Oct 19"
+      # - href: w10/index.qmd
+      #   text: "Week 10: Oct 26"
+      # - href: w11/index.qmd
+      #   text: "Week 11: Nov 2"
+      # - href: w12/index.qmd
+      #   text: "Week 12: Nov 9"
+      # - href: w13/index.qmd
+      #   text: "Week 13: Nov 16"
+      # - href: w14/index.qmd
+      #   text: "Week 14: Nov 30"
+      - href: "https://georgetown.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=98022271-76d6-457f-83ee-b1dd00143dbc"
+        text: "Recordings <i class='bi bi-box-arrow-up-right ps-1'></i>"
+      - "---"
+      - href: extra-videos/index.qmd
+        text: "Extra Videos"
+      - href: writeups/index.qmd
+        text: "Extra Writeups"
+      - href: cheatsheet-math.qmd
+        text: "Math Cheatsheet"
+      # - href: final-presentations.qmd
+      #   text: "Final Presentations"
+      - "---"
+      - href: "https://georgetown.instructure.com/courses/193275"
+        text: "S03 Canvas Page <i class='bi bi-box-arrow-up-right ps-1'></i>"
+      - href: "https://jjacobs.me/meet"
+        text: "Book Office Hours <i class='bi bi-box-arrow-up-right ps-1'></i>"
+      - href: "https://forms.gle/3CYWo8xHUxMvvowbA"
+        text: "Suggestion Box <i class='bi bi-box-arrow-up-right ps-1'></i>"
+      - href: "https://jjacobs.me/dsps"
+        text: "Textbook <i class='bi bi-box-arrow-up-right ps-1'></i>"
+
+format:
+  html:
+    theme: default
+    css: "dsan-globals/jjstyles.css"
+    toc: true
+    include-in-header:
+      text: "<script src='https://code.jquery.com/jquery-3.7.1.slim.min.js'></script><script src='/sidebar.js'></script>"

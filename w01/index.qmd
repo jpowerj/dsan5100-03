@@ -1,0 +1,27 @@
+---
+title: "Week 1: Welcome to DSAN 5100!"
+subtitle: "DSAN 5100-03"
+author: "Jeff Jacobs"
+institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>`jj1088@georgetown.edu`</a>"
+date: 2024-08-30
+lecnum: 1
+categories:
+  - "Class Sessions"
+format:
+  html:
+    cache: false
+    output-file: index.html
+    df-print: kable
+    css: "../dsan-globals/jjstyles.css"
+---
+
+*(Week 1 of DSAN 5100 is a joint session across all individual sections, taught on Zoom.)*
+
+::: {.callout-note}
+
+# Today's Links
+
+* <a class="icon-link" href="https://dsan.georgetown.domains/dsan5100/w01/" target="_blank"><i class="bi bi-journals pe-1"></i>Week 1 Slides</a>
+* <a class="icon-link disabled" href="#" target="_blank"><i class="bi bi-film pe-1 align-self-center "></i>Week 1 Lecture Recording</a>
+
+:::

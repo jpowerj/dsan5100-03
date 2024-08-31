@@ -1,0 +1,976 @@
+---
+title: "Week 3: Conditional Probability"
+subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
+author: "Jeff Jacobs"
+institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
+date: 2023-09-07
+date-format: full
+#date: last-modified
+#date-format: "dddd MMM D, YYYY, HH:mm:ss"
+lecnum: 3
+categories:
+  - "Class Sessions"
+format:
+  revealjs:
+    cache: false
+    footer: "DSAN 5100-03 Week 03: Conditional Probability"
+    output-file: slides.html
+    df-print: kable
+    code-fold: true
+    html-math-method: mathjax
+    scrollable: true
+    slide-number: true
+    section-divs: false
+    simplemenu:
+      flat: true
+      barhtml:
+        header: "<div class='menubar'><span style='position: absolute; left: 8; padding-left: 8px;'><a href='./index.html'>&larr; Return to Notes</a></span><ul class='menu'></ul></div>"
+      scale: 0.5
+    number-sections: false
+    footnotes-hover: true
+    tbl-cap-location: bottom
+    theme: [default, "../_style-slides.scss"]
+    revealjs-plugins:
+      - simplemenu
+    include-in-header:
+      text: "<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous'><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>"
+  html:
+    cache: false
+    output-file: index.html
+---
+
+::: {.content-visible unless-format="revealjs"}
+
+<center>
+<a class="h2" href="./slides.html" target="_blank">Open slides in new window &rarr;</a>
+</center>
+
+:::
+
+# Schedule {.smaller .smaller-title data-name="Schedule"}
+
+::: {.hidden}
+
+```{r}
+source("../_globals.r")
+```
+
+:::
+
+| | Start | End | Topic | Recording |
+|:- |:- |:- |:- |:-:|
+| **Lecture** | 12:30pm | 12:40pm | [Recap &rarr;](#recap) | <a href="../recordings/recording-w03-1.html" target="_blank"><i class="bi bi-film"></i></a> |
+| | 12:40pm | 1:20pm | [What is Conditional Probability? &rarr;](#what-is-conditional-probability) | <a href="./recording-w03-2.html" target="_blank"><i class="bi bi-film"></i></a> |
+| | 1:20pm | 2:00pm | [Bayes' Theorem and its Implications &rarr;](#bayes-theorem-and-its-implications) | <a href="./recording-w03-3.html" target="_blank"><i class="bi bi-film"></i></a> |
+| **Break!** | 2:00pm | 2:10pm | | |
+| **Lab** | 2:10pm | 2:50pm | [Lab 2 Demonstrations <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i>](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-demo.html){target="_blank"} | <a href="./recording-w03-4.html" target="_blank"><i class="bi bi-film"></i></a> |
+| | 2:50pm | 3:00pm | [Lab 2 Assignment Overview <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i>](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-assignment.html){target="_blank"} | <a href="./recording-w03-5.html" target="_blank"><i class="bi bi-film"></i></a> |
+
+: {tbl-colwidths="[12,12,12,54,5,5]"} 
+
+# Recap {data-stack-name="Recap"}
+
+## Recap {.smaller}
+
+* Logic $\rightarrow$ Set Theory $\rightarrow$ Probability Theory
+* Entirety of probability theory can be derived from **two axioms**:
+
+::: {.callout-tip icon=false title="The Entirety of Probability Theory Follows From..."}
+
+**Axiom 1** (*Unitarity*): $\Pr(\Omega) = 1$ (The probability that **something** happens is 1)
+
+**Axiom 2** (*$\sigma$-additivity*): For mutually-exclusive events $E_1, E_2, \ldots$,
+
+$$
+\underbrace{\Pr\left(\bigcup_{i=1}^{\infty}E_i\right)}_{\Pr(E_1\text{ occurs }\vee E_2\text{ occurs } \vee \cdots)} = \underbrace{\sum_{i=1}^{\infty}\Pr(E_i)}_{\Pr(E_1\text{ occurs}) + \Pr(E_2\text{ occurs}) + \cdots}
+$$
+  
+:::
+
+* But what does "mutually exclusive" mean...?
+
+## Venn Diagrams: Sets {.smaller}
+
+::: {layout-ncol=2}
+::: {#fig-venn-mutex}
+
+$$
+\begin{align*}
+&A = \{0, 1, 2\}, \; B = \{4, 5, 6\} \\
+&\implies A \cap B = \varnothing
+\end{align*}
+$$
+
+Mutually-exclusive (disjoint) sets
+:::
+::: {#fig-venn}
+
+$$
+\begin{align*}
+&A = \{1, 2, 3\}, \; B = \{3, 4, 5\} \\
+&\implies A \cap B = \{3\}
+\end{align*}
+$$
+
+Non-mutually-exclusive sets
+:::
+:::
+
+## Venn Diagrams: Events (Dice) {.smaller}
+
+$$
+\begin{align*}
+A &= \{\text{Roll is even}\} = \{2, 4, 6\} \\
+B &= \{\text{Roll is odd}\} = \{1, 3, 5\} \\
+C &= \{\text{Roll is in Fibonnaci sequence}\} = \{1, 2, 3, 5\}
+\end{align*}
+$$
+
+| Set 1 | Set 2 | Intersection | Mutually Exclusive? | Can Happen Simultaneously? |
+| - | - | - | - | - |
+| $A$ | $B$ | $A \cap B = \varnothing$ | **Yes** | **No** |
+| $A$ | $C$ | $A \cap C = \{2\}$ | **No** | **Yes** |
+| $B$ | $C$ | $B \cap C = \{1, 3, 5\}$ | **No** | **Yes** |
+
+: {tbl-colwidths="[8,8,30,27,27]"}
+
+## "Rules" of Probability {.smaller}
+
+* (Remember: not *"rules"* but *"facts resulting from the logic $\leftrightarrow$ probability connection"*)
+
+::: {.callout-tip icon="false" title="\"Rules\" of Probability"}
+
+For logical predicates $p, q \in \{T, F\}$, events $P, Q$ defined so $P$ = event that $p$ becomes true, $Q$ = event that $q$ becomes true,
+
+1. **Logical AND = Probabilistic Multiplication**
+
+$$
+\Pr(p \wedge q) = \Pr(P \cap Q) = \Pr(P) \cdot \Pr(Q)
+$$
+
+2. **Logical OR = Probabilistic Addition**
+
+$$
+\Pr(p \vee q) = \Pr(P \cup Q) = \Pr(P) + \Pr(Q) - \underbrace{\Pr(P \cap Q)}_{\text{(see rule 1)}}
+$$
+
+3. **Logical NOT = Probabilistic Complement**
+
+$$
+\Pr(\neg p) = \Pr(P^c) = 1 - \Pr(P)
+$$
+
+:::
+
+# What is Conditional Probability? {data-stack-name="Conditional Prob"}
+
+## Conditional Probability {.smaller}
+
+* Usually if someone asks you probabilistic questions, like
+  * "What is the likelihood that [our team] wins?"
+  * "Do you think it will rain tomorrow?" and so on
+* You don't guess a random number, you **consider** and **incorporate evidence**.
+* Example: $\Pr(\text{rain})$ on its own, without any other info? A tough question... maybe $0.5$?
+* In reality, we would think about
+  * $\Pr(\text{rain} \mid \text{month of the year})$
+  * $\Pr(\text{rain} \mid \text{where we live})$
+  * $\Pr(\text{rain} \mid \text{did it rain yesterday?})$
+* Psychologically, breaks down into two steps: (1) Think of a **baseline probability**, (2) **Update** baseline probability to incorporate **relevant evidence** (more on this in a bit...)
+* Also recall from last week: **all** probability is **conditional** probability, even if just conditioned on "something happened" ($\Omega$, the thing defined so $\Pr(\Omega) = 1$)
+
+## Naïve Definition 2.0 {.smaller}
+
+::: {.callout-tip icon="false" title="[Slightly Less] Naïve Definition of Probability"}
+
+$$
+\Pr(A \mid B) = \frac{\text{\# of Desired Outcomes in world where }B\text{ happened}}{\text{\# Total outcomes in world where }B\text{ happened}} = \frac{|B \cap A|}{|B|}
+$$
+
+:::
+
+| World Name | Weather in World | Likelihood of Rain Today |
+| - | - |:-:|
+| $R$ | **Rained for the past 5 days** | $\Pr(\text{rain} \mid R) > 0.5$ |
+| $M$ | **Mix of rain and non-rain over past 5 days** | $\Pr(\text{rain} \mid M) \approx 0.5$ |
+| $S$ | **Sunny for the past 5 days** | $\Pr(\text{rain} \mid S) < 0.5$ |
+
+: {tbl-colwidths="[16,50,34]"}
+
+
+## Law of Total Probability {.smaller}
+
+* Suppose the events $B_1, \ldots, B_k$ form a partition of the space $S$ and $\Pr(B_j) > 0 \forall j$.
+* Then, for every event $A$ in $S$,
+
+$$
+\Pr(A) = \sum_{i=1}^k \Pr(B_j)\Pr(A \mid B_j)
+$$
+
+* Probability of an event is the sum of its conditional probabilities across all conditions.
+* In other words: $A$ is some event, $B_1, \ldots, B_n$ are mutually exclusive events filling entire sample-space, then
+
+$$
+\Pr(A) = \Pr(A \mid B_1)\Pr(B_1) + \Pr(A \mid B_2)\Pr(B_2) + \cdots + \Pr(A \mid B_n)\Pr(B_n)
+$$
+
+i.e. Compute the probability by **summing over all possible cases**.
+
+## Example {.smaller}
+
+* Probabilities of completing a job on time, with and without rain, are 0.42 and 0.90 respectively.
+* Probability it will rain is 0.45. What is the probability the job will be completed on time?
+* $A$ = job will be completed on time, $B$ = rain
+
+$$
+\Pr(B) = 0.45 \implies \Pr(B^c) = 1 - \Pr(B) = 0.55.
+$$
+
+* Note: Events $B$ and $B^c$ are exclusive and form partitions of the sample space $S$
+* We know $\Pr(A \mid B) = 0.24$, $\Pr(A \mid B^c) = 0.9$.
+* By the Law of Total Probability, we have
+
+$$
+\begin{align*}
+\Pr(A) &= \Pr(B)\Pr(A \mid B) + \Pr(B^c)\Pr(A \mid B^c) \\
+&= 0.45(0.42) + 0.55(0.9) = 0.189 + 0.495 = 0684.
+\end{align*}
+$$
+
+So, the probability that the job will be completed on time is **0.684**. [(source)](https://byjus.com/maths/total-probability-theorem/){target="_blank"}
+
+# Bayes' Theorem and its Implications {data-stack-name="Bayes"}
+
+## Deriving Bayes' Theorem {.smaller .crunch-math}
+
+* Literally just a re-writing of the conditional probability definition (don't be scared)!
+
+::: columns
+::: {.column width="50%"}
+
+1. For two events $A$ and $B$, definition of conditional probability says that
+
+$$
+\begin{align*}
+\Pr(A \mid B) &= \frac{\Pr(A \cap B)}{\Pr(B)} \tag{1} \\
+\Pr(B \mid A) &= \frac{\Pr(B \cap A)}{\Pr(A)} \tag{2}
+\end{align*}
+$$
+
+2. Multiply to get rid of fractions
+
+$$
+\begin{align*}
+\Pr(A \mid B)\Pr(B) &= \Pr(A \cap B) \tag{1*} \\
+\Pr(B \mid A)\Pr(A) &= \Pr(B \cap A) \tag{2*}
+\end{align*}
+$$
+
+:::
+::: {.column width="50%"}
+
+3. But **set intersection** is **associative** (just like multiplication...), $A \cap B = B \cap A$! So, we know LHS of $(\text{1*})$ = LHS of $(\text{2*})$:
+
+$$
+\Pr(A \mid B)\Pr(B) = \Pr(B \mid A)\Pr(A)
+$$
+
+4. Divide both sides by $\Pr(B)$ to get a **new definition** of $\Pr(A \mid B)$, **Bayes' Theorem**!
+
+::: {#fig-bayes-thm}
+
+$$
+\boxed{\Pr(A \mid B) = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}}
+$$
+
+Bayes' Theorem
+:::
+
+:::
+:::
+
+## Why Is This Helpful? {.smaller}
+
+::: {.callout-tip icon="false" title="Bayes' Theorem"}
+
+For any two events $A$ and $B$,
+$$
+\Pr(A \mid B) = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}
+$$
+
+:::
+
+* In words (as exciting as I can make it, for now): **Bayes' Theorem allows us to take information about $B \mid A$ and use it to infer information about $A \mid B$**
+* It isn't until you work through some examples that this becomes mind-blowing, the most powerful equation we have for inferring **unknowns** from **knowns**...
+* Consider $A = \{\text{person has disease}\}$, $B = \{\text{person tests positive for disease}\}$
+  1. Is $A$ observable on its own? **No**, but...
+  2.
+    (a) Is $B$ observable on its own? **Yes**, and
+    (b) Can we **infer** information about $A$ from knowing $B$? **Also Yes, thanks to Bayes!**
+  3. Therefore, we can **use $B$ to infer information about $A$**, i.e., calculate $\Pr(A \mid B)$...
+
+## Why Is This Helpful for *Data Science*? {.smaller}
+
+* It merges **probability theory** and **hypothesis testing** into a single framework:
+
+$$
+\Pr(\text{hypothesis} \mid \text{data}) = \frac{\Pr(\text{data} \mid \text{hypothesis})\Pr(\text{hypothesis})}{\Pr(\text{data})}
+$$
+
+
+## Probability Forwards and Backwards {.nostretch .smaller}
+
+* Two discrete RVs:
+  * Weather on a given day, $W \in \{\textsf{Rain},\textsf{Sun}\}$
+  * Action that day, $A \in \{\textsf{Go}, \textsf{Stay}\}$: go to party or stay in and watch movie
+* Data-generating process: if $\textsf{Sun}$, rolls a die $R$ and goes out unless $R = 6$. If $\textsf{Rain}$, flips a coin and goes out if $\textsf{H}$.
+
+* Probabilistic Graphical Model (PGM):
+
+![](images/pgm.svg){fig-align="center" width="60%"}
+
+## {.unnumbered .nostretch}
+
+* So, if we know $W = \textsf{Sun}$, what is $P(A = \textsf{Go})$?
+$$
+\begin{align*}
+P(A = \textsf{Go} \mid W) &= 1 - P(R = 6) \\
+&= 1 - \frac{1}{6} = \frac{5}{6}
+\end{align*}
+$$
+
+* Conditional probability lets us go **forwards** (left to right):
+
+![](images/pgm_forwards.svg){fig-align="center" width="60%"}
+
+::: {.notes}
+But what if we want to perform inference going **backwards**?
+:::
+
+## {.unnumbered .smaller .smallishmath}
+
+::: columns
+::: {.column width="50%"}
+
+  * If we see Ana at the party, we know $A = \textsf{Go}$
+  * What does this tell us about the weather?
+  * Intuitively, we should increase our degree of belief that $W = \textsf{Sun}$. But, by how much?
+  * We don't know $P(W \mid A)$, only $P(A \mid W)$...
+
+:::
+::: {.column width="50%"}
+
+![](images/koolaid_bayes.png){fig-align="center" width="100%"}
+
+:::
+:::
+
+## {.unnumbered .smaller}
+
+$$
+P(W = \textsf{Sun} \mid A = \textsf{Go}) = \frac{\overbrace{P(A = \textsf{Go} \mid W = \textsf{Sun})}^{5/6~ ✅}\overbrace{P(W = \textsf{Sun})}^{❓}}{\underbrace{P(A = \textsf{Go})}_{❓}}
+$$
+
+* We've seen $P(W = \textsf{Sun})$ before, it's our **prior**: the probability without having any additional relevant knowledge. So, let's say 50/50. $P(W = \textsf{Sun}) = \frac{1}{2}$
+* If we lived in Seattle, we could pick $P(W = \textsf{Sun}) = \frac{1}{4}$
+
+## {.unnumbered .smaller .small-math}
+
+$$
+P(W = \textsf{Sun} \mid A = \textsf{Go}) = \frac{\overbrace{P(A = \textsf{Go} \mid W = \textsf{Sunny})}^{5/6~ ✅}\overbrace{P(W = \textsf{Sun})}^{1/2~ ✅}}{\underbrace{P(A = \textsf{Go})}_{❓}}
+$$
+
+* $P(A = \textsf{Go})$ is trickier: the probability that Ana goes out **regardless of what the weather is**. But there are only two possible weather outcomes! So we just compute
+
+$$
+\begin{align*}
+&P(A = \textsf{Go}) = \sum_{\omega \in S(W)}P(A = \textsf{Go}, \omega) = \sum_{\omega \in S(W)}P(A = \textsf{Go} \mid \omega)P(\omega) \\
+&= P(A = \textsf{Go} \mid W = \textsf{Rain})P(W = \textsf{Rain}) + P(A = \textsf{Go} \mid W = \textsf{Sun})P(W = \textsf{Sun}) \\
+&= \left( \frac{1}{2} \right)\left( \frac{1}{2} \right) + \left( \frac{5}{6} \right)\left( \frac{1}{2} \right) = \frac{1}{4} + \frac{5}{12} = \frac{2}{3}
+\end{align*}
+$$
+
+## Putting it All Together {.smaller-math}
+
+$$
+\begin{align*}
+P(W = \textsf{Sun} \mid A = \textsf{Go}) &= \frac{\overbrace{P(A = \textsf{Go} \mid W = \textsf{Sunny})}^{3/4~ ✅}\overbrace{P(W = \textsf{Sun})}^{1/2~ ✅}}{\underbrace{P(A = \textsf{Go})}_{1/2~ ✅}} \\
+&= \frac{\left(\frac{3}{4}\right)\left(\frac{1}{2}\right)}{\frac{1}{2}} = \frac{\frac{3}{8}}{\frac{1}{2}} = \frac{3}{4}.
+\end{align*}
+$$
+
+* Given that we see Ana at the party, we should **update our beliefs**, so that $P(W = \textsf{Sun}) = \frac{3}{4}, P(W = \textsf{Rain}) = \frac{1}{4}$.
+
+## A Scarier Example {.smaller}
+
+* Bo worries he has a **rare disease**. He takes a test with **99% accuracy** and tests **positive**. What's the probability Bo has the disease? (Intuition: 99%? ...Let's do the math!)
+
+::: columns
+::: {.column width="50%"}
+
+* $H \in \{\textsf{sick}, \textsf{healthy}\}, T \in \{\textsf{T}^+, \textsf{T}^-\}$
+* **The test**: 99% accurate. $\Pr(T = \textsf{T}^+ \mid H = \textsf{sick}) = 0.99$, $\Pr(T = \textsf{T}^- \mid H = \textsf{healthy}) = 0.99$.
+* **The disease**: 1 in 10K. $\Pr(H = \textsf{sick}) = \frac{1}{10000}$
+* **What do we want to know?** $\Pr(H = \textsf{sick} \mid T = \textsf{T}^+)$
+* **How do we get there?**
+
+:::
+::: {.column width="50%"}
+
+![This photo, originally thought to be of Thomas Bayes, turns out to be [probably someone else](https://www.york.ac.uk/depts/maths/histstat/bayespic.htm)... $\Pr(\textsf{Bayes})$?](images/bayes.jpg){fig-align="center" width="65%"}
+
+:::
+:::
+
+::: {.notes}
+$H$ for health, $T$ for test result
+
+Photo credit: https://thedatascientist.com/wp-content/uploads/2019/04/reverend-thomas-bayes.jpg
+:::
+
+## {.unnumbered .small-math}
+
+$$
+\begin{align*}
+\Pr(H = \textsf{sick} \mid T = \textsf{T}^+) &= \frac{\Pr(T = \textsf{T}^+ \mid H = \textsf{sick})\Pr(H = \textsf{sick})}{\Pr(T = \textsf{T}^+)} \\
+&= \frac{(0.99)\left(\frac{1}{10000}\right)}{(0.99)\left( \frac{1}{10000} \right) + (0.01)\left( \frac{9999}{10000} \right)}
+\end{align*}
+$$
+
+```{r}
+#| label: prob-sick-bayes
+#| echo: true
+p_sick <- 1 / 10000
+p_healthy <- 1 - p_sick
+p_pos_given_sick <- 0.99
+p_neg_given_sick <- 1 - p_pos_given_sick
+p_neg_given_healthy <- 0.99
+p_pos_given_healthy <- 1 - p_neg_given_healthy
+numer <- p_pos_given_sick * p_sick
+denom1 <- numer
+denom2 <- p_pos_given_healthy * p_healthy
+final_prob <- numer / (denom1 + denom2)
+final_prob
+```
+
+* ... Less than 1% 😱
+
+## Proof in the Pudding {.smaller}
+
+* Let's generate a dataset of **5,000** people, using $\Pr(\textsf{Disease}) = \frac{1}{10000}$
+
+```{r}
+#| label: bayes-sick-mc
+#| echo: true
+#| code-fold: true
+library(tibble)
+library(dplyr)
+# Disease rarity
+p_disease <- 1 / 10000
+# 1K people
+num_people <- 10000
+# Give them ids
+ppl_df <- tibble(id=seq(1,num_people))
+# Whether they have the disease or not
+has_disease <- rbinom(num_people, 1, p_disease)
+ppl_df <- ppl_df %>% mutate(has_disease=has_disease)
+ppl_df |> head()
+```
+
+## Binary Variable Trick {.smaller .crunch-code}
+
+* Since `has_disease` $\in \{0, 1\}$, we can use
+  * `sum(has_disease)` to obtain the **count** of people with the disease, or
+  * `mean(has_disease)` to obtain the **proportion** of people who have the disease
+* To see this (or, if you forget in the future), just make a fake dataset with a binary variable and 3 rows, and think about **sums** vs. **means** of that variable:
+
+::: columns
+::: {.column width="40%"}
+
+```{r}
+#| label: fake-binary-data
+#| echo: true
+#| code-fold: show
+binary_df <- tibble(
+  id=c(1,2,3),
+  x=c(0,1,0)
+)
+binary_df
+```
+
+:::
+::: {.column width="60%"}
+
+Taking the **sum** tells us: **one** row where `x == 1`:
+
+```{r}
+#| label: binary-df-sum
+#| echo: true
+#| code-fold: show
+sum(binary_df$x)
+```
+
+Taking the **mean** tells us: **1/3** of rows have `x == 1`:
+
+```{r}
+#| label: binary-df-mean
+#| echo: true
+#| code-fold: show
+mean(binary_df$x)
+```
+
+:::
+:::
+
+## Applying This to the Disease Data {.smaller}
+
+* If we want the **number** of people who have the disease:
+
+```{r}
+#| echo: true
+#| code-fold: show
+#| label: compute-disease-count
+# Compute the *number* of people who have the disease
+sum(ppl_df$has_disease)
+```
+
+* If we want the **proportion** of people who have the disease:
+
+```{r}
+#| echo: true
+#| code-fold: show
+#| label: compute-disease-rate
+# Compute the *proportion* of people who have the disease
+mean(ppl_df$has_disease)
+```
+
+* (And if you dislike scientific notation like I do...)
+
+```{r}
+#| label: compute-disease-rate-decimal
+#| echo: true
+#| code-fold: show
+format(mean(ppl_df$has_disease), scientific = FALSE)
+```
+
+::: {.notes}
+(Foreshadowing Monte Carlo methods)
+:::
+
+## Data-Generating Process: Test Results {.smaller}
+
+```{r}
+#| label: count-positive-tests
+#| echo: true
+#| code-fold: show
+library(dplyr)
+# Data Generating Process
+take_test <- function(is_sick) {
+  if (is_sick) {
+    return(rbinom(1,1,p_pos_given_sick))
+  } else {
+    return(rbinom(1,1,p_pos_given_healthy))
+  }
+}
+ppl_df['test_result'] <- unlist(lapply(ppl_df$has_disease, take_test))
+num_positive <- sum(ppl_df$test_result)
+p_positive <- mean(ppl_df$test_result)
+writeLines(paste0(num_positive," positive tests / ",num_people," total = ",p_positive))
+```
+
+```{r}
+#| label: df-test-result-var
+#disp(ppl_df %>% head(50), obs_per_page = 3)
+ppl_df |> head()
+```
+
+## Zooming In On Positive Tests {.smaller}
+
+::: columns
+::: {.column width="50%"}
+
+```{r}
+#| label: filter-positives-only
+pos_ppl <- ppl_df %>% filter(test_result == 1)
+#disp(pos_ppl, obs_per_page = 10)
+pos_ppl |> head()
+```
+
+:::
+::: {.column width="50%"}
+
+* Bo doesn't have it, and neither do 110 of the 111 total people who tested positive!
+* But, in the real world, we only observe $T$
+
+![](images/pgm_sick.svg){fig-align="center" width="100%"}
+
+:::
+:::
+
+## Zooming In On Disease-Havers {.smaller}
+
+* What if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?
+
+```{r}
+#| label: disease-only
+#| echo: true
+#| code-fold: show
+#disp(ppl_df[ppl_df$has_disease == 1,])
+ppl_df[ppl_df$has_disease == 1,]
+```
+
+Is this always going to be the case?
+
+::: columns
+::: {.column width="50%"}
+
+```{r}
+#| label: repeating-disease-simulation
+#| echo: false
+#| code-fold: true
+simulate_disease <- function(num_people, p_disease, verbose = TRUE, return_df = TRUE, return_full_df = FALSE, return_all_detected = FALSE, return_info = FALSE) {
+  # Give them ids
+  sim_df <- tibble(id=seq(1,num_people))
+  # Whether they have the disease or not
+  has_disease <- rbinom(num_people, 1, p_disease)
+  sim_df['has_disease'] <- has_disease
+  # Find the number / proportion with the disease
+  num_with_disease <- sum(sim_df$has_disease)
+  prop_with_disease <- mean(sim_df$has_disease)
+  prop_with_disease_decimal <- format(prop_with_disease, scientific = FALSE)
+  if (verbose) {
+    writeLines(paste0("Num with disease: ",num_with_disease))
+    writeLines(paste0("Proportion with disease: ",prop_with_disease_decimal))
+  }
+  # Simulate giving everyone the test
+  sim_df['test_result'] <- unlist(lapply(sim_df$has_disease, take_test))
+  if (return_full_df) {
+    return(sim_df)
+  }
+  # Find the number with positive tests
+  num_pos_tests <- sum(sim_df$test_result)
+  if (verbose) {
+    writeLines(paste0("Number of positive tests: ",num_pos_tests))
+  }
+  # Extract just the people *with* the disease
+  disease_df <- sim_df %>% filter(has_disease == 1)
+  # And print the proportion of these who got correct result
+  if (nrow(disease_df) == 0) {
+    # (We define P(correct) as 1 in this case.)
+    # (Intuition: we correctly detected "all" 0 people with the disease)
+    prop_correct <- 1
+  } else {
+    prop_correct <- mean(disease_df$test_result)
+  }
+  #if (verbose) {
+  #  writeLines(paste0("Proportion of disease-havers with correct test: ",prop_correct))
+  #  print(disease_df)
+  #}
+  if (return_all_detected) {
+    return(prop_correct == 1)
+  }
+  if (return_df) {
+    return(disease_df)
+  }
+  if (return_info) {
+    return(list(
+      num_people=num_people,
+      df=disease_df,
+      prop_correct=prop_correct,
+      all_detected=(prop_correct == 1)
+    ))
+  }
+}
+#disp(simulate_disease(5000, 1/10000))
+simulate_disease(5000, 1/10000)
+```
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| label: sim-disease-again
+#disp(simulate_disease(5000, 1/10000))
+simulate_disease(5000, 1/10000)
+```
+
+:::
+:::
+
+## Worst-Case Worlds {.smaller}
+
+::: columns
+::: {.column width="50%"}
+
+```{r}
+#| label: worse-case-sim
+for (i in seq(1,1000)) {
+  sim_result <- simulate_disease(5000, 1/10000, verbose = FALSE, return_all_detected = FALSE, return_df = FALSE, return_info = TRUE)
+  if (!sim_result$all_detected) {
+    writeLines(paste0("World #",i," / 1000 (",sim_result$num_people," people):"))
+    print(sim_result$df)
+    writeLines('\n')
+  }
+}
+format(4 / 5000000, scientific = FALSE)
+```
+
+:::
+::: {.column width="50%"}
+
+How unlikely is this? Math:
+
+$$
+\begin{align*}
+\Pr(\textsf{T}^- \cap \textsf{Sick}) &= \Pr(\textsf{T}^- \mid \textsf{Sick})\Pr(\textsf{Sick}) \\
+&= (0.01)\frac{1}{10000} \\
+&= \frac{1}{1000000}
+\end{align*}
+$$
+
+Computers:
+
+```{r}
+#| label: how-unlikely-sim
+result_df <- simulate_disease(1000000, 1/10000, verbose = FALSE, return_full_df = TRUE)
+false_negatives <- result_df[result_df$has_disease == 1 & result_df$test_result == 0,]
+num_false_negatives <- nrow(false_negatives)
+writeLines(paste0("False Negatives: ",num_false_negatives,", Total Cases: ", nrow(result_df)))
+false_negative_rate <- num_false_negatives / nrow(result_df)
+false_negative_rate_decimal <- format(false_negative_rate, scientific = FALSE)
+writeLines(paste0("False Negative Rate: ", false_negative_rate_decimal))
+```
+
+(Perfect match!)
+
+:::
+:::
+
+## Bayes: Takeaway
+
+* Bayesian approach **allows new evidence to be weighed against existing evidence**, with **statistically principled** way to derive these weights:
+
+$$
+\begin{array}{ccccc}
+\Pr_{\text{post}}(\mathcal{H}) &\hspace{-6mm}\propto &\hspace{-6mm} \Pr(X \mid \mathcal{H}) &\hspace{-6mm} \times &\hspace{-6mm} \Pr_{\text{pre}}(\mathcal{H}) \\
+\text{Posterior} &\hspace{-6mm}\propto &\hspace{-6mm}\text{Evidence} &\hspace{-6mm} \times &\hspace{-6mm} \text{Prior}
+\end{array}
+$$
+
+
+## Monte Carlo Methods: Overview {data-name="Monte Carlo"}
+
+* You already saw an example, in our rare disease simulation!
+* Generally, **using computers** (rather than math, "by hand") **to estimate probabilistic quantities**
+
+::: columns
+::: {.column width="50%" .smaller}
+
+**Pros:**
+
+* Most real-world processes have no analytic solution
+* Step-by-step breakdown of complex processes
+
+:::
+::: {.column width="50%"}
+
+**Cons:**
+
+* Can require immense computing power
+* ⚠️ Can generate **incorrect answers** ⚠️
+
+:::
+:::
+
+::: {.notes}
+By step-by-step I mean, a lot of the time you are just walking through, generating the next column using previously-generated columns. Like we did in the example above, generating `test_result` based on `has_disease`.
+:::
+
+## Birthday Problem
+
+::: columns
+::: {.column width="50%"}
+
+* 30 people gather in a room together. What is the probability that two of them share the same birthday?
+* Analytic solution is fun, but requires some thought... Monte Carlo it!
+
+:::
+::: {.column width="50%"}
+
+```{r}
+#| label: monty-hall-mc
+#| echo: true
+#| code-fold: true
+gen_bday_room <- function(room_num=NULL) {
+  num_people <- 30
+  num_days <- 366
+  ppl_df <- tibble(id=seq(1,num_people))
+birthdays <- sample(1:num_days, num_people,replace = T)
+  ppl_df['birthday'] <- birthdays
+  if (!is.null(room_num)) {
+    ppl_df <- ppl_df %>% mutate(room_num=room_num) %>% relocate(room_num)
+  }
+  return(ppl_df)
+}
+ppl_df <- gen_bday_room(1)
+#disp(ppl_df %>% head())
+ppl_df |> head()
+```
+
+:::
+:::
+
+## {.unnumbered}
+
+```{r}
+#| label: shared-bdays-fn
+# Inefficient version (return_num=FALSE) is for: if you want tibbles of *all* shared bdays for each room
+get_shared_bdays <- function(df, is_grouped=NULL, return_num=FALSE, return_bool=FALSE) {
+  bday_pairs <- tibble()
+  for (i in 1:(nrow(df)-1)) {
+    i_data <- df[i,]
+    i_bday <- i_data$birthday
+    for (j in (i+1):nrow(df)) {
+      j_data <- df[j,]
+      j_bday <- j_data$birthday
+      # Check if they're the same
+      same_bday <- i_bday == j_bday
+      if (same_bday) {
+        if (return_bool) {
+          return(1)
+        }
+        pair_data <- tibble(i=i,j=j,bday=i_bday)
+        if (!is.null(is_grouped)) {
+          i_room <- i_data$room_num
+          pair_data['room'] <- i_room
+        }
+        bday_pairs <- bind_rows(bday_pairs, pair_data)
+      }
+    }
+  }
+  if (return_bool) {
+    return(0)
+  }
+  if (return_num) {
+    return(nrow(bday_pairs))
+  }
+  return(bday_pairs)
+}
+#get_shared_bdays(ppl_df)
+get_shared_bdays(ppl_df)
+```
+
+## {.unnumbered .smaller}
+
+Let's try more rooms...
+
+::: columns
+::: {.column width="48%"}
+
+```{r,echo=TRUE}
+#| label: bday-mc-multiple-rooms
+#| echo: true
+# Get tibbles for each room
+library(purrr)
+gen_bday_rooms <- function(num_rooms) {
+  rooms_df <- tibble()
+  for (r in seq(1, num_rooms)) {
+      cur_room <- gen_bday_room(r)
+      rooms_df <- bind_rows(rooms_df, cur_room)
+  }
+  return(rooms_df)
+}
+num_rooms <- 10
+rooms_df <- gen_bday_rooms(num_rooms)
+rooms_df %>% group_by(room_num) %>% group_map(~ get_shared_bdays(.x, is_grouped=TRUE))
+```
+
+:::
+::: {.column width="48%"}
+
+Number of shared birthdays per room:
+
+```{r}
+#| label: get-shared-bdays
+#| echo: true
+# Now just get the # shared bdays
+shared_per_room <- rooms_df %>%
+    group_by(room_num) %>%
+    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_num=TRUE))
+shared_per_room <- unlist(shared_per_room)
+shared_per_room
+```
+
+* $\widehat{\Pr}(\text{shared})$
+
+```{r}
+#| label: shared-bday-rooms-pct
+sum(shared_per_room > 0) / num_rooms
+```
+
+:::
+:::
+
+## {.unnumbered .smaller}
+
+* How about **A THOUSAND ROOMS**?
+
+```{r}
+#| label: bday-1k-rooms
+num_rooms_many <- 100
+many_rooms_df <- gen_bday_rooms(num_rooms_many)
+anyshared_per_room <- many_rooms_df %>%
+    group_by(room_num) %>%
+    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_bool = TRUE))
+anyshared_per_room <- unlist(anyshared_per_room)
+anyshared_per_room
+```
+
+* $\widehat{\Pr}(\text{shared bday})$?
+
+```{r}
+#| label: bday-1k-rooms-prob
+# And now the probability estimate
+sum(anyshared_per_room > 0) / num_rooms_many
+```
+
+* The analytic solution: $\Pr(\text{shared} \mid k\text{ people in room}) = 1 - \frac{366!}{366^{k}(366-k)!}$
+* In our case: $1 - \frac{366!}{366^{30}(366-30)!} = 1 - \frac{366!}{366^{30}336!} = 1 - \frac{\prod_{i=337}^{366}i}{366^{30}}$
+* `R` can juust barely handle these numbers:
+
+```{r}
+#| label: bday-exact-soln
+(exact_solution <- 1 - (prod(seq(337,366))) / (366^30))
+```
+
+## Wrapping Up {.smaller .nostretch}
+
+```{=html}
+<style>
+#bday-solns-plot {
+  width: 50% !important;
+}
+</style>
+```
+
+<center>
+
+<!-- embed _bday-solutions-plot.ipynb#bday-solns-plot width="100%" height="75%" -->
+
+</center>
+
+## Final Note: Functions of Random Variables
+
+* $X \sim U[0,1], Y \sim U[0,1]$.
+* $P(Y < X^2)$?
+* The hard way: solve analytically
+* The easy way: simulate!
+
+# Lab 2 {data-stack-name="Lab 2"}
+
+## Lab 2 Demonstrations
+
+[Lab 2 Demonstrations](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-2/lab-2-demo/lab-2-demo-1.html){target="_blank"}
+
+## Lab 2 Assignment Overview
+
+[Lab 2 Assignment](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-2/lab-2-assignment.html)

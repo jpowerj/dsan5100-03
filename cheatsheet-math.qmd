@@ -1,0 +1,126 @@
+---
+title: "DSAN 5100 Math Cheatsheet"
+author: "Jeff Jacobs"
+institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>`jj1088@georgetown.edu`</a>"
+date: last-modified
+format:
+  html:
+    cache: false
+---
+
+## Math Preliminaries
+
+### Logic
+
+* **Proposition** $p$: A true-false statement like "1 + 1 = 2" or "$x$ is greater than 5". The latter would be written as $p(x)$, since its true/false value depends on a given value of $x$.
+* $\wedge$: **Logical "and"**. $p \wedge q$ is true only if **both** $p$ **and** $q$ are true.
+* $\vee$: **Logical "or"**. $p \vee q$ is true if $p$ is true or $q$ is true, or both are true.
+* $\neg$: **Logical negation**: If $p$ is true, $\neg p$ is false. If $p$ is false, $\neg p$ is true.
+* **DeMorgan's Laws**: Logical identities which illustrate how the negation operator gets "distributed" in a logical statement, allowing conversion of "or" statements into "and" statements, and vice-versa: $\neg(p \wedge q) = \neg(\neg p \vee \neg q)$
+* $\implies$: **"Implies"**. $a \implies b$ is true if, whenever $a$ is true, $b$ is also true.
+* $\iff$: **"If and only if"**. $a \iff b$ is true if, $a$ is only true when $b$ is true, and $a$ is only false when $b$ is false.
+* $\exists$: **"There exists"**. In the course this will be written as $\exists x \in S [p(x)]$, which means that there exists **some element** $x$ in the set $S$ such that $p(x)$ is true. Also called the "existential quantifier".
+* $\forall$: **"For all"**. In the course this will be written as $\forall x \in S [p(x)]$, which means that for **every element** in a set $S$ (with $x$ representing some element arbitrarily taken from $S$), the proposition $p(x)$ is true. Also called the "universal quantifier".
+  * Note that the universal and existential quantifiers are closely related by a negation law (just like $\wedge$ and $\vee$ and their connection via DeMorgan's Laws): $\neg \left( \forall x \in S[p(x)] \right) \iff \exists x \in S [\neg p(x)]$. The negation on the **outside** of the quantified proposition has moved **inside** of it, with the quantifier flipped. 
+  * The same holds true in reverse: $\neg \left( \exists x \in S [p(x)] \right) \iff \forall x \in S [\neg p(x)]$
+
+### Sets
+
+* A **set** $S$ (denoted by a capital letter when possible) is a collection of **elements** (denoted by a lowercase letter when possible).
+    * For example, if $S = \{0,1,2,3\}$, then $0$ is an **element of** $S$.
+* $a \in S$: The proposition that $a$ is an **element of** the set $S$.
+    * If $S = \{0,1,2,3\}$, then $2 \in S$ but $5 \notin S$.
+* $A \subseteq S$: The proposition that $A$ is a **subset of** the set $S$.
+    * If $S = \{0, 1, 2, 3\}$, then $\{1,3\} \subseteq S$ but $\{1,4\} \not\subseteq S$. Note that sets are defined to be subsets of themselves, so that $S \subseteq S$.
+* $A \subset S$: The proposition that $A$ is a **proper subset** of $S$, meaning that $A \subseteq S$ but $A \neq S$.
+    * While sets **are** subsets of themselves, sets are **not** *proper subsets* of themselves, so that if $S = \{0, 1, 2, 3\}$, then $\{1,2,3\} \subset S$ but $\{0, 1, 2, 3\} \not\subset S$.
+* $|S|$: The **cardinality** of, or number of elements in, a set $S$.
+    * If $S = \{1, 2, 3\}$, $|S| = 3$.
+    * If the set $S$ has **infinite cardinality**, we can distinguish between two cases:
+        * If elements of $S$ can be put into **one-to-one correspondence** with the natural numbers $\mathbb{N}$, we say that $S$ is **countably infinite** and has cardinality $\aleph_0$ (pronounced "aleph-null"): $|S| = \aleph_0$.
+        * If elements of $S$ **cannot** be put into one-to-one correspondence with the natural numbers $\mathbb{N}$, we say that $S$ is **uncountably infinite** and has cardinality **greater than** $\aleph_0$: $|S| > \aleph_0$.
+* $\mathcal{P}(S)$: The **power set** of a set $S$, which is the set of **all possible subsets** of $S$.
+    * For example, if $S = \{1, 2, 3\}$, $\mathcal{P}(S) = \{\varnothing, \{1\}, \{2\}, \{3\}, \{1,2\}, \{1,3\}, \{2,3\}, \{1,2,3\}\}$. Notice that $|\mathcal{P}(S)| = 2^{|S|}$, which is always true of the power set.
+
+### Algebra
+
+* $\mathbb{N}$: The set of all **natural numbers**, sometimes called the "counting numbers": $\{0, 1, 2, 3, \ldots \}$ (This set is *countably infinite*).
+* $\mathbb{Z}$: The set of all **integers**, which includes all of the natural numbers along with their **negatives**: $\{\ldots, -2, -1, 0, 1, 2, \ldots\}$ (This set is also *countably infinite*)
+* $\mathbb{Q}$: The set of all **rational numbers**, i.e., well-defined ratios of two integers. $x \in \mathbb{Q} \iff x = \frac{p}{q}$ for two integers $p$ and $q$, and $q \neq 0$. (This set is, surprisingly, also *countably infinite*)
+* $\mathbb{R}$: The set of all **real numbers**, which includes all integers as well as numbers such as $\pi$, $2.356$, or $\sqrt{2}$ (This set is *uncountably infinite*).
+* **Scalar**: A single number from some set of numbers, like $-2.1 \in \mathbb{R}$
+* **Vector**: A $d$-dimensional **vector** $\mathbf{v}$ is a collection of $d$ scalars in $\mathbb{R}$, $\mathbf{v} = (v_1, v_2, \ldots, v_d)^\top$, which we can interpret as an **arrow** pointing $v_i$ units in each dimension $i$. For example, if $\mathbf{v} = (3,5)$, we can interpret $\mathbf{v}$ as representing an arrow pointing $3$ units in the $x$ direction and $5$ units in the $y$ direction.
+  * As indicated above, however, we will assume that vectors are **column vectors** unless otherwise specified, though they will be written row-wise with a **transpose** symbol at the end. This means that, although it will be written like $\mathbf{v} = (v_1, v_2, \ldots, v_n)^\top$, you should apply the transpose in your head:
+  $$
+  \mathbf{v} = (v_1, v_2, \ldots, v_n)^\top = \begin{bmatrix}v_1 \\ v_2 \\ \vdots \\ v_n\end{bmatrix}
+  $$
+* **Matrix**: An $m \times n$ **matrix** $\mathbf{M}_{[m \times n]}$ is an $m$-by-$n$ grid of scalars, where the scalar in the $i$th row and $j$th column is denoted $m_{i,j}$. In the class, we will be careful to add a subscript like $\mathbf{M}_{[m \times n]}$ to indicate the number of rows ($m$) and columns ($n$) in the matrix, since operations like multiplication are only defined for matrices with particular dimensions.
+* **Matrix multiplication**: For two matrices $\mathbf{X}_{[a \times b]}$ and $\mathbf{Y}_{[c \times d]}$, matrix multiplication is defined if $b = c$, and produces the following $a \times d$ matrix $\mathbf{XY}_{[a \times d]}$:
+
+    $$
+    \mathbf{XY}_{[a \times d]} = \begin{bmatrix}
+    x_{1,1}y_{1,1} & \cdots & x_{m,1}y_{1,n} \\
+    \vdots & \ddots & \vdots \\
+    x_{1,n}y_{m,1} & \cdots & x_{m,n}y_{m,n}
+    \end{bmatrix}
+    $$
+
+* $\sum_{i=1}^n f(i)$: $\Sigma$ is the capitalized Greek letter "Sigma", and stands for "Sum" in this case. This notation means: "the sum of $f(i)$ from $i = 1$ to $i = n$". For example, $\sum_{i=1}^3 i^2 = 1^2 + 2^2 + 3^2 = 14$.
+* $\prod_{i=1}^n f(i)$: $\Pi$ is the capitalized Greek letter "Pi", and stands for "Product" in this case. This notation means: "the product of $f(i)$ from $i = 1$ to $i = n$". For example, $\prod_{i=1}^3 i^2 = 1^2 \cdot 2^2 \cdot 3^2 = 36$.
+
+### Calculus
+
+* $[a,b] \in \mathbb{R}$: The **closed interval** between $a$ and $b$. That is, the subset of $\mathbb{R}$ containing all numbers between $a$ and $b$, **including** $a$ and $b$ themselves.
+* $(a,b) \in \mathbb{R}$: The **open interval** between $a$ and $b$. That is, the subset of $\mathbb{R}$ containing all numbers between $a$ and $b$, **excluding** $a$ and $b$ themselves.
+* $[a, b)$, $(a, b]$: The **half-open interval** between $a$ and $b$. In the first case, we include $a$ but exclude $b$, while in the second we exclude $a$ but include $b$.
+* $\int_{a}^b f(x)dx$: The **integral** of the function $f(x)$ between points $a$ and $b$. In this course, you just need to remember that this produces the **area under the curve** of $f(x)$ between these points.
+* $\frac{d}{dx} \left[ f(x) \right]$: The **derivative** of the function $f(x)$. For this class, you just need to remember that the derivative is what transforms a **Cumulative Density Function** (**CDF**) into a **Probability Density Function** (**PDF**): if $F_X(v)$ is the CDF of a random variable $X$, then $\frac{d}{dx}\left[ F_X(v) \right] = f_X(v)$, the PDF of $X$.
+  * For functions of multiple variables, like the joint pdf $f_{X,Y}(v_X, v_Y)$, we use the $\partial$ symbol instead of $d$ to denote **partial derivatives**: for example, the change in $F_{X,Y}(v_X, v_Y)$ as $v_X$ changes is denoted $\frac{\partial}{\partial v_X}\left[ F_{X,Y}(v_X, v_Y) \right]$, while the change in $F_{X,Y}(v_X, v_Y)$ as $v_Y$ changes is denoted $\frac{\partial}{\partial v_Y}\left[ F_{X,Y}(v_X, v_Y) \right]$.
+
+## Conditional Probability
+
+### Probability Fundamentals
+
+* $\Omega$: The set of all possible **outcomes** in a probability setting
+* $\mathcal{P}(\Omega) = \{ e \mid e \subseteq \Omega\}$: The set of all subsets of $\Omega$, each of which is an **event**
+
+### Random Variables
+
+* $X$ is a **random variable** if it maps each element of $\Omega$ to a real number $o \in \mathbb{R}$.
+  * For example, if we're rolling a die, we can create a random variable $X$ which maps $\text{roll a one}$ to $1$, $\text{roll a two}$ to $2$, and so on. (Allows us to do math with probability spaces!)
+* $X$ is a **discrete** random variable if it maps outcomes to **countable** set of numbers, whether this means a **finite set** like $\{1,2,3\}$ or a **countably infinite** set like $\mathbb{N}$.
+* $X$ is a **continuous** random variable if it maps outcomes to a **non-countable** set of numbers, typically $\mathbb{R}$.
+* $\mathcal{R}_X$, the **support** of a random variable $X$, is the **set of all possible values** that the random variable can map onto. For example, if $X$ represents a dice roll, then $\mathcal{R}_X = \{1, 2, 3, 4, 5, 6\}$.
+* **Cumulative Density Function** (**CDF**): Given a random variable $X$ (whether discrete or continuous), $F_X(v) = P(X \leq v)$ is its **cumulative density function**, which tells us the probability that $X$ is realized as a number less than or equal to some value $v$.
+* **Probability Mass Function** (**PMF**): Given a **discrete** random variable $X$, $p_X(v) = P(X = v)$ is its **probability mass function**, which tells us the probability that $X$ is realized as the value $v$.
+* **Probability Density Function** (**PDF**): Given a **continuous** random variable $X$, $f_X(v)$ is the unique function which allows us to determine, using integration, the probability that $X$ is in some range $[a,b]$. That is, it is the unique function satisfying $P(X \in [a,b]) = \int_a^b f_X(x)dx$.
+  * **Remember**: unlike in the discrete case where $p_X(v) = P(X = v)$, $f_X(v)$ **is not** the probability that $X$ is realized as the value $v$. $f_X(v) \neq P(X = v)$.
+
+## Expectation, Variance, Moments
+
+* $M_1(V)$: The ("regular") **arithmetic mean** of a set of values $V = \{v_1, v_2, \ldots, v_n\}$: $M_1(V) = (v_1 + v_2 + \cdots + v_n)\frac{1}{n} = \left( \sum_{i=1}^n v_i \right)\frac{1}{n}$.
+* $M_0(V)$: The **geometric mean** of a set of values $V = \{v_1, v_2, \ldots, v_n\}$: $M_0(V) = (v_1\cdot v_2 \cdot \cdots \cdot v_n)^{\frac{1}{n}} = \left( \prod_{i=1}^n v_i \right)^{\frac{1}{n}}$
+* $M_{-1}(V)$: The **harmonic mean** of a set of values $V = \{v_1, v_2, \ldots, v_n\}$: $M_{-1}(V) = \frac{n}{\frac{1}{v_1} + \frac{1}{v_2} + \cdots + \frac{1}{v_n}} = \left( \frac{\sum_{i=1}^n v_i^{-1}}{n} \right)^{-1}$
+* $\odot$: The **Hadamard product** of matrices. For two matrices $\mathbf{X}_{[m \times n]}$ and $\mathbf{Y}_{[m \times n]}$ with equal dimensions:
+
+    $$
+    X_{[m \times n]} = \begin{bmatrix}
+        x_{1,1} & \cdots & x_{1,n} \\
+        \vdots & \ddots & \vdots \\
+        x_{m,1} & \cdots & x_{m,n}
+    \end{bmatrix}, Y_{[m \times n]} = \begin{bmatrix}
+        y_{1,1} & \cdots & y_{1,n} \\
+        \vdots & \ddots & \vdots \\
+        y_{m,1} & \cdots & y_{m,n}
+    \end{bmatrix}
+    $$
+
+  Their **Hadamard product** $\mathbf{X} \odot \mathbf{Y}$ is another $m \times n$ matrix
+
+    $$
+    (\mathbf{X} \odot \mathbf{Y})_{[m \times n]} = \begin{bmatrix}
+        x_{1,1}y_{1,1} & \cdots & x_{1,n}y_{1,n} \\
+        \vdots & \ddots & \vdots \\
+        x_{m,1}y_{m,1} & \cdots & x_{m,n}y_{m,n}
+    \end{bmatrix}
+    $$

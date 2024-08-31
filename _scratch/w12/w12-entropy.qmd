@@ -1,0 +1,23 @@
+---
+title: "Entropy"
+format: html
+---
+
+```{r}
+#| label: ent-calcs
+my_ent <- function(p) -(p*log2(p) + (1-p)*log2(1-p))
+writeLines("p_R1:")
+(p_r1 <- 13/25)
+writeLines("H(R1):")
+(ent_r1 <- my_ent(p_r1))
+writeLines("p_R2:")
+(p_r2 <- 0.95)
+writeLines("H(R2):")
+(ent_r2 <- my_ent(p_r2))
+writeLines("Mean(p_R1,p_R2):")
+(mean_p <- (1/2)*(p_r1 + p_r2))
+writeLines("H(Mean(p_R1,p_R2)):")
+(ent_at_mean <- my_ent(mean_p))
+writeLines("Mean(H(R1),H(R2)):")
+(mean_ent <- (1/2)*(ent_r1+ent_r2))
+```

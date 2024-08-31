@@ -1,0 +1,29 @@
+```{r}
+#| label: continuous-prob-plot
+#| fig-height: 6.5
+library(ggforce)
+ggplot(disc_df, aes(x=x, y=y, label=label)) +
+    xlim(-0.5,1.5) + ylim(-0.5,1.5) +
+    geom_rect(aes(xmin = -0.5, xmax = 1.5, ymin = -0.5, ymax = 1.5), fill=cbPalette[1], color="black", alpha=0.3) +
+    geom_circle(aes(x0=x, y0=y, r=0.25), fill=cbPalette[2]) +
+    coord_fixed() +
+    dsan_theme("quarter") +
+    geom_text(
+      size=g_textsize,
+      #hjust=1.75,
+      #vjust=-0.75
+    ) +
+    geom_text(
+      data=data.frame(label="Ω"),
+      aes(x=-0.4,y=1.39),
+      parse=TRUE,
+      size=g_textsize
+    ) +
+    labs(
+      title=expression("Continuous Probability Space in "*R^2)
+    )
+```
+
+$$
+\Pr(A) = \underbrace{\frac{\text{Area}(\{A\})}{\text{Area}(\Omega)}}_{\mathclap{\small \text{Probability }\textbf{density}}} = \frac{\pi r^2}{s^2} = \frac{\pi \left(\frac{1}{4}\right)^2}{4} = \frac{\pi}{64}
+$$

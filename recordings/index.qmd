@@ -1,0 +1,31 @@
+---
+title: "Lecture Recordings"
+format: html
+listing:
+  sort-ui: false
+  filter-ui: false
+  contents:
+    - lecture-recordings.yml
+  type: table
+  # categories: true
+  fields: [week,title,date]
+  field-display-names:
+    week: "Week"
+    title: "Title"
+    date: "Last Updated"
+    categories: "Category"
+    section: "Section"
+  sort:
+    - "week desc"
+    - "section"
+    - "category desc"
+    - "title desc"
+  table-hover: true
+  #date-format: full
+  #date-format: "dddd MMM D, YYYY, HH:mm:ss"
+  date-format: "dddd MMM D, YYYY"
+---
+
+The lecture recordings for **Fall 2024** will be added here as soon as possible after the end of class.
+
+You can view recordings of my lectures from previous semesters [here](../recordings-archive/index.qmd) 

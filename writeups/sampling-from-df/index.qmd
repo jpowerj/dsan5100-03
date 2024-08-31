@@ -1,0 +1,107 @@
+---
+title: "Two Ways of Sampling from a Data Frame"
+author: "Jeff Jacobs"
+institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>`jj1088@georgetown.edu`</a>"
+date: last-modified
+categories:
+  - "Extra Writeups"
+sidebar: mainnav
+format:
+  html:
+    cache: false
+    df-print: kable
+execute: 
+  echo: true
+  code-fold: show
+---
+
+A few students have run into issues when trying to use the `sample()` function, from base-R, to sample from a full `data.frame` or `tibble`. In this writeup I'll argue that this is a case where using a function from the `tidyverse` called [slice_sample()](https://dplyr.tidyverse.org/reference/slice.html){target="_blank"} will make your life much easier, but I will also show how to do this sampling using only base-R functions.
+
+Before we start, we make sure to use `set.seed(5000)` at the beginning, so that your grader gets the same results as you do even when working with random processes!
+
+```{r}
+#| label: set-seed
+set.seed(5000)
+```
+
+## Creating a Deck of Cards Using `expand.grid()`
+
+This is done as was introduced in the Bootcamp:
+
+```{r}
+#| label: create-deck
+#| echo: true
+#| code-fold: show
+ranks <- c("Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight",
+           "Nine", "Ten", "Jack", "Queen", "King")
+suits <- c("Hearts", "Diamonds", "Clubs", "Spades")
+deck_df <- expand.grid(ranks, suits)
+colnames(deck_df) <- c("Rank", "Suit")
+head(deck_df)
+```
+
+And we can check the dimensions of `deck_df` just to make sure it created the right number of cards:
+
+```{r}
+#| label: check-deck-size
+dim(deck_df)
+```
+
+Now, since sampling without replacement is the default case for both sample functions, to illustrate how to use parameters to these functions I will be sampling **with replacement**.
+
+## Using `tidyverse` to Sample WITH Replacement
+
+The following code uses the **pipe operator** `%>%` to take the `data.frame`, `deck_df`, and "pipe it into" the `slice_sample()` function from the `tidyverse`. We have to provide two arguments:
+
+* `n`: The number of samples we'd like to take, and
+* `replace`: If set to `TRUE`, the sampling is performed **with** replacement. Otherwise (the default), the sampling is performed **without** replacement.
+
+```{r}
+#| label: tidyverse-sample
+#| echo: true
+#| code-fold: show
+#| warning: false
+library(tidyverse)
+# Using the "fancier" pipe operator (%>%)
+deck_sample_df <- deck_df %>% slice_sample(n = 12, replace = TRUE)
+deck_sample_df
+```
+
+Here we can confirm that it sampled **with** replacement since we see that it selected the Jack of Spades twice (once in slot 4 and once in slot 12).
+
+Note that, although using the pipe operator `%>%` is the "standard" way to use `tidyverse` functions, you can still use the functions without using the pipe operator (long story short, the pipe operator just takes whatever comes before the `%>%` and "plugs it in" as the first argument to the function that comes after the `%>%`), by specifying the first argument to the `slice_sample()` function explicitly:
+
+```{r}
+#| label: tidyverse-sample-nopipe
+deck_sample_df <- slice_sample(deck_df, n = 12, replace = TRUE)
+deck_sample_df
+```
+
+To me, one nice aspect of `slice_sample()` over other base-R functions is (among other things) it ensures that the **column names** are maintained when you sample, which is not always true for the base-R functions. It's also possible to do in base-R (without using tidyverse libraries/functions), though, just less straightforwardly.
+
+## Using Base-R to Sample WITH Replacement
+
+First off, note that just applying `sample()` to the deck will not produce the outcome we expect, or want, which probably unfortunately goes against our intuitions for how this function should work:
+
+```{r}
+#| label: r-sample-wrong
+sample(deck_df, 5, replace = TRUE)
+```
+
+A way to avoid this is to make sure that you are using the `sample()` function **NOT** on the entire `data.frame` object, but just to select a subset of the **rows** of the `data.frame`, like the following:
+
+```{r}
+#| label: r-sample-correct
+deck_df[sample(nrow(deck_df), 15, replace = TRUE),]
+```
+
+First off, notice how here we can again confirm that it sampled with replacement since it had to create additional ids like `34.1` and `34.2` to represent the fact that card #34 (the Eight of Clubs) ended up in our sample 3 times.
+
+Also note how, rather than sampling **from the `data.frame`**, which may be intuitively/linguistically how we would describe what we want, we are actually sampling from the **set of indices of the `data.frame`**, then asking R to give us the rows corresponding to those sampled indices. Concretely, to see what's going on, let's just look at the row filter we've provided (the portion of the full code that is within the square brackets `[]`, before the comma):
+
+```{r}
+#| label: r-sample-filter
+sample(nrow(deck_df), 15, replace = TRUE)
+```
+
+We see that, in fact, we are not really sampling from the `data.frame` itself, so much as sampling from a list of its **indices** (from 1 to 52), and then **after** performing this sample we are going and asking R to give us the rows at the indices that ended up in this sample. Keeping this distinction in mind (between the **rows themselves** and their **indices**) can be helpful for debugging code like this.

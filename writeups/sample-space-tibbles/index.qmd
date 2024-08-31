@@ -1,0 +1,341 @@
+---
+title: "Simulating Sample Spaces With Tibbles"
+author: "Jeff Jacobs"
+institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>`jj1088@georgetown.edu`</a>"
+date: last-modified
+categories:
+  - "Extra Writeups"
+sidebar: mainnav
+format:
+  html:
+    df-print: kable
+    cache: false
+---
+
+After working with a good number of students trying to set up a `tibble` (and/or `data.frame`) in R to represent the **sample space** of phone users given at the beginning of [Quiz 1](https://jfh.georgetown.domains/dsan5100/share-point/quizzes/quiz-1/quiz-1.html){target="_blank"}, and sort of winging it with a bunch of different approaches each time it came up, I decided to try and figure out some "standardized" way to generate a `tibble` which will represent a given sample space, with minimal headaches, that will work every time! This is the result.
+
+## Step 0: What Do I Mean By "Simulating" a Sample Space?
+
+What I'm referring to here is, for example, the information you are given at the top of Quiz 1, stating that a random sample contained:
+
+* **340 people** currently using an iPhone,
+* **185 people** using a different phone who don't want to switch phones ever, and
+* **232 people** using a different phone but hoping to switch to an iPhone in the future.
+
+The idea is that we can generate a `tibble` which "encodes" this information in its rows, by allowing us to use the **naïve definition of probability** to compute probabilities of particular types of people: for example, say we are interested in the probability that a person in our sample uses an iPhone. Mathematically (by the naïve definition), if we construct a random variable $F$ (for i**F**one, of course) representing the outcome of a randomly-selected person's phone type (so that $F = 1$ if the person we ask ends up being an iPhone user, and $F = 0$ otherwise), then we can use the information from our **sample** to compute $\Pr(F = 1)$ as
+
+$$
+\Pr(F = 1) = \frac{\#\text{ iPhone users in sample}}{\#\text{ People in sample}}
+$$ {#eq-1}
+
+This means, therefore, that if we had a `tibble` called `df` where each row contained information on **one particular person** from our sample, then we could "translate" this naive definition formula into code as something like
+
+```r
+prob_F <- nrow(df[df$iphone == 1,]) / nrow(df)
+```
+
+Since here `df[df$iphone == 1,]` would **subset** the full `df` to keep only those rows corresponding to people with iPhones, while `df` itself (without any filters applied) would contain a row for each person. Literally, we are applying the following "translation" of the naïve definition-based formula (@eq-1) into code:
+
+$$
+\Pr(F = 1) = \frac{\overbrace{\#}^{\texttt{nrow}}\overbrace{\text{ iPhone users in sample}}^{\texttt{df[df\$iphone == 1]}}}{\underbrace{\#}_{\texttt{nrow}}\underbrace{\text{ People in sample}}_{\texttt{df}}}
+$$ {#eq-2}
+
+Similarly, say we wanted to compute a **conditional** probability on the basis of our sample, like the probability of a person **liking the feature** (the feature mentioned in the quiz) **given that they are an iPhone user**. In this case, let $L$ be an RV such that $L = 1$ if the person likes the feature and $L = 0$ otherwise. Then we can represent the probability we want in this case mathematically using the definition of **conditional probability**:
+
+$$
+\Pr(L = 1 \mid F = 1) = \frac{\Pr(L = 1 \cap F = 1)}{\Pr(F = 1)}
+$$ {#eq-3}
+
+And then we can interpret this ratio (of $\Pr(L = 1 \cap F = 1)$ to $\Pr(F = 1)$ using the **naïve definition** of probability to derive a new **"naïve definition-based** equation for the same **conditional probability"** written mathematically in @eq-3:
+
+$$
+\Pr(L = 1 \mid F = 1) = \frac{\#\text{ iPhone users in sample who like feature}}{\#\text{ iPhone users in sample}}
+$$ {#eq-4}
+
+In this case, since both the numerator **and** denominator are restricted to only those people in our sample who are iPhone users, we can make our lives easy by creating a new "only iPhone users" `tibble`, using code like
+
+```r
+iphone_df <- df[df$iphone == 1,]
+```
+
+And, with this iPhone-users-only `tibble` now available to us, @eq-4 can be translated into code similarly to how we translated @eq-1 into code, as
+
+```r
+prob_L_given_F <- nrow(iphone_df[iphone_df$like_feature == 1]) / nrow(iphone_df)
+```
+
+Where once again we have just applied the following set of "translations" to the naïve definition (this time the "conditional naïve definition"):
+
+$$
+\Pr(L = 1 \mid F = 1) = \frac{\overbrace{\#}^{\texttt{nrow}}\overbrace{\text{ iPhone users in sample who like feature}}^{\texttt{iphone\_df[iphone\_df\$likes\_feature == 1]}}}{\underbrace{\#}_{\texttt{nrow}}\underbrace{\text{ iPhone users in sample}}_{\texttt{iphone\_df}}}
+$$ {#eq-5}
+
+So, all of the above shows you **how to work with** a sample-space-simulating `tibble`, **once you have created it**. The following steps will show you **how to create** such a sample-space-simulating `tibble` using functions from the `tidyverse`.
+
+## Step 1: Identifying "Types" of People in the Sample
+
+In the case of the quiz, since each person in our sample is characterized by their values for **3 binary variables** ($F$ for iPhone, $W$ for wants-to-switch, and $L$ for likes-feature), we know that there are **$2^3 = 8$ possible types of people** that could appear in the dataset:
+
+| Type | $F$<br>(iPhone) | $W$<br>(Wants to switch) | $L$<br>(Likes feature) |
+| - | - | - | - |
+| 1 | 0 | 0 | 0 |
+| 2 | 0 | 0 | 1 |
+| 3 | 0 | 1 | 0 |
+| 4 | 0 | 1 | 1 |
+| 5 | 1 | 0 | 0 |
+| 6 | 1 | 0 | 1 |
+| 7 | 1 | 1 | 0 |
+| 8 | 1 | 1 | 1 |
+
+: The 8 possible types of people in our sample, sorted in terms of their binary representations (so that `000` corresponds to the non-iPhone, doesn't-want-to-switch, and doesn't-like-the-feature type; `001` corresponds to the non-iPhone, doesn't-want-to-switch, and does-like-the-feature type; and so on.) {#tbl-1}
+
+We'll see why we are splitting people into these types in the next section, but here our next task is to **fill out** the missing "number in sample" column with the number of people who have each of these combinations of properties, using the information given in the problem.
+
+For example, since we know that there are **340 iPhone users** in the sample, and we know that the **probability of an iPhone user liking the feature** is $0.8$, we can compute the **number** of iPhone users who like the feature as
+
+$$
+\begin{align*}
+\#\text{ iPhone users who like feature} &= \#\text{ iPhone users} \cdot 0.8 \\
+&= 340 \cdot 0.8 = 272.
+\end{align*}
+$$
+
+Working out the numbers for all the other types in a similar way (rounding to the nearest integer in cases where we don't get integers, and also assuming that **all** iPhone users just have a $W$ value of $0$, since they don't want to switch to an iPhone because they already have an iPhone), we arrive at the following counts [see the [Appendix](#appendix-computing-counts-for-each-type) below for full details of the computations]:
+
+| Type | $F$<br>(iPhone) | $W$<br>(Wants to switch) | $L$<br>(Likes feature) | Number in Sample |
+| - | - | - | - | - |
+| 1 | 0 | 0 | 0 | 89 |
+| 2 | 0 | 0 | 1 | 96 |
+| 3 | 0 | 1 | 0 | 121 |
+| 4 | 0 | 1 | 1 | 111 |
+| 5 | 1 | 0 | 0 | 68 |
+| 6 | 1 | 0 | 1 | 272 |
+| 7 | 1 | 1 | 0 | 0 |
+| 8 | 1 | 1 | 1 | 0 |
+
+: The same list of types as in @tbl-1, now with an additional column where we've computed the **number of times** that each type appears in our sample (on the basis of the info given in the assignment) {#tbl-2}
+
+## Step 2: Encoding Each Type as a `tibble_row`
+
+One nice thing about the `tibble` library is it explicitly provides a function just for creating individual **rows** of a full `tibble`, called `tibble_row()`. It has the same syntax as the more general `tibble()` function, but in this case you can just provide a set of key=value pairs as arguments, so that (for example) to create a row representing the first "type" in our dataset $(F = 0, W = 0, L = 0)$, we can run
+
+```{r}
+#| label: create-type1-row
+library(tibble)
+type1 <- tibble_row(iphone=0, wants_switch=0, likes_feature=0)
+type1
+```
+
+Now we can do the same thing for the other 5 non-zero types (we don't have to explicitly make row objects for the $(F = 0, W = 1, L = 0)$ or $(F = 0, W = 1, L = 1)$ types, since we're not going to need any of these in our sample-space-simulating `tibble`, though we could make these `tibble_row` objects if we really wanted to for some reason):
+
+```{r}
+#| label: create-remaining-types
+type2 <- tibble_row(iphone=0, wants_switch=0, likes_feature=1)
+type3 <- tibble_row(iphone=0, wants_switch=1, likes_feature=0)
+type4 <- tibble_row(iphone=0, wants_switch=1, likes_feature=1)
+type5 <- tibble_row(iphone=1, wants_switch=0, likes_feature=0)
+type6 <- tibble_row(iphone=1, wants_switch=0, likes_feature=1)
+```
+
+With these "types" set up as rows, all that's left to do is to **duplicate** these rows however many times we need to in order to reflect the number of each type in our sample (Step 3), and then combine these duplicated rows together into one big `tibble` (Step 4)!
+
+## Step 3: Replicating Types To Form Subsets of the Sample Space
+
+This is the part that I found most difficult---honestly, unless there's some secret easy way that I don't know about (please tell me if there is!), the best method I could find for duplicating a given `tibble_row` object `k` times was to utilize the following code snippet (which uses the `slice()` function from the `dplyr` library) as a template:
+
+```r
+type |> slice(rep(1:n(), k))
+```
+
+for taking the individual `tibble_row` variable `type` and repeating it `k` times.
+
+So, using this to make 89 "copies" of the type encoded as the `tibble_row` called `type_1`, to represent the 89 people in our sample who are of this type, I used:
+
+```{r}
+#| label: replicate-t1
+#| warning: false
+library(dplyr) # So we can use slice()
+type1_rows <- type1 |> slice(rep(1:n(), 89))
+```
+
+Which produces output that looks as follows (I'm using `head()` to avoid printing out rows with the exact same values 89 times, but you can see that it worked by glancing at the result of `head()` that follows along with the result of `dim()` below that)
+
+```{r}
+#| label: t1-head
+type1_rows |> head()
+```
+
+```{r}
+#| label: t1-dim
+dim(type1_rows)
+```
+
+Given that this approach worked to make 89 copies of the first type, I just use the same approach 5 more times, to make the appropriate number of copies of each type based on the "Number in Sample" column from @tbl-2:
+
+```{r}
+#| label: replicate-remaining-types
+type2_rows <- type2 |> slice(rep(1:n(), 96))
+type3_rows <- type3 |> slice(rep(1:n(), 121))
+type4_rows <- type4 |> slice(rep(1:n(), 111))
+type5_rows <- type5 |> slice(rep(1:n(), 68))
+type6_rows <- type6 |> slice(rep(1:n(), 272))
+```
+
+This leaves only one remaining step of **combining** these individual collections of rows into a giant `tibble`.
+
+## Step 4: Combining the Type-Rows
+
+Now that we have these six objects, each representing a particular type of person that could be in our sample, replicated the correct number of times based on our calculations from the information given in the problem, we can **combine** them to form a single, combined `tibble` by using the [`bind_rows()`](https://dplyr.tidyverse.org/reference/bind.html){target="_blank"} function from `dplyr` as follows (sorry this line looks so packed/scary: we could have done all this in a loop or something that looks a bit "nicer", but here I thought writing it all out could help with understanding, especially since there are only 6, rather than 8, possible types):
+
+```{r}
+#| label: combine-row-dups
+sample_df <- bind_rows(
+    type1_rows, type2_rows, type3_rows,
+    type4_rows, type5_rows, type6_rows
+)
+```
+
+Even though printing the `head()` or `tail()` of this dataset will not be that helpful for ensuring that we created everything correctly, we can at least check that the dimensions are correct, as we're expecting the sample to contain 757 people (rows) in total, with 3 pieces of information (columns) for each person:
+
+```{r}
+#| label: sample-dims
+dim(sample_df)
+```
+
+We could also check, as a way of starting the type of computations mentioned in Step 0, the number of people **within** the full `sample_df` dataset who match some **filter**---in this case, for example, the number of people who are **iPhone users**:
+
+```{r}
+#| label: num-iphone-users
+iphone_df <- sample_df[sample_df$iphone == 1,]
+dim(iphone_df)
+```
+
+And this tells us that again, the number of rows in this subset matches what we expected---more evidence that we've constructed things correctly.
+
+Now that we've created the `iphone_df` that was mentioned as part of Step 0, we can carry out the one final step of computing a **conditional probability** using this `iphone_df` object, in precisely the way described in Step 0: to get the conditional probability that someone in the sample likes the feature **given** that they are an iPhone user, $\Pr(L = 1 \mid F = 1)$, we just compute
+
+```{r}
+#| label: conditional-prob-iphone
+nrow(iphone_df[iphone_df$likes_feature == 1,]) / nrow(iphone_df)
+```
+
+which once again matches the information given in the problem. To compute the quantities the problem asks you to compute, you can use a similar pattern to this example.
+
+## (Optional) Step 5: Wrapping the Row Duplication in a Function
+
+If you're like me, and you find that typing `slice(rep(1:n(), k))` over and over again is scary and could easily lead to mistakes, you can **wrap this whole process in a function** to make your life easier. For example, we can define a function called `duplicate_row` which takes an argument `tr` representing a `tibble_row` object and another argument `num_reps` specifying how many times that `tibble_row` should be repeated:
+
+```{r}
+#| label: define-duplicate-fn
+duplicate_row <- function(tr, num_reps) {
+    return(tr |> slice(rep(1:n(), num_reps)))
+}
+```
+
+And now rather than writing the whole operation over and over again, we can just call `duplicate_row` as often as needed. If you wanted a `tibble` which contained the numbers 1 through 5 repeated that many times, for example (that is, the number 1 repeated 1 time, the number 2 repeated 2 times, and so on), this could be done in a loop using our `duplicate_row` function as follows:
+
+```{r}
+#| label: use-duplicate-fn
+# Create a single row containing the number 1
+full_tibble <- tibble_row(n = 1)
+# Create 2 rows containing the number 2 and add
+# those 2 rows to full_tibble, then create 3 rows
+# containing the number 3 and add those 3 rows
+# to full_tibble, and so on
+for (i in 2:5) {
+    row_containing_i <- tibble_row(n = i)
+    repeated_rows <- duplicate_row(row_containing_i, i)
+    full_tibble <- bind_rows(full_tibble, repeated_rows)
+}
+dim(full_tibble)
+full_tibble
+```
+
+I hope that helps a bit, in case this scenario ever comes up again on a homework or quiz, or it comes up on your project or at some point in your future data science career!
+
+## Appendix: Computing Counts For Each Type
+
+We already computed the number of iPhone users who like the feature as 272: $\#(F = 1, W = 0, L = 1) = 272$. This lets us compute, using the complement rule, that there are
+
+$$
+340 - 272 = 68
+$$
+
+remaining iPhone users, who do **not** like the feature: $\#(F = 1, W = 0, L = 0) = 68$. The counts for the final two rows, $\#(F = 1, W = 1, L = 0)$ and $\#(F = 1, W = 1, L = 1)$ are both zero, since we defined $W$ for iPhone users to always be $0$, since they already have the iPhone so cannot want to switch to the iPhone. This gives us the bottom half of the count column.
+
+For the top half, we compute as follows: the top half (first four rows) represent all of the **non**-iPhone users. Since there are
+
+$$
+340 + 185 + 232 = 757
+$$
+
+people in total, and 340 are iPhone users, this means that
+
+$$
+757 - 340 = 417
+$$
+
+must be **non**-iPhone users (which we also could have computed by adding the 185 and 232 given in the problem): $\#(F = 0) = 417$.
+
+Of these 417, we are also given that **185** don't want to switch, while **232** do want to switch, so
+
+* $\#(F = 0, W = 0) = 185$ and
+* $\#(F = 0, W = 1) = 232$.
+
+The final piece of info we need is the info given in the problem that **52% of the no-switch people** like the feature, while only **48% of the hope-to-switch people** like the feature.
+
+Since "no-switch people" are people with the properties $(F = 0, W = 0)$, and "hope-to-switch people" are people with the properties $(F = 0, W = 1)$, we can use these given conditional probabilities to compute the remaining counts in our table as follows:
+
+**No-switch people who like the feature**:
+
+We are given the info that, among no-switch people, 52% like the feature. So,
+
+$$
+\begin{align}
+\#(F = 0, W = 0, L = 1) &= 0.52 \cdot \#(F = 0, W = 0) \\
+&= 0.52 \cdot 185 = 96.2,
+\end{align}
+$$
+
+which we round to 96 to get an integer number of people.
+
+**No-switch people who don't like the feature**:
+
+Since 52% of no-switch people like the feature, this must mean that (100% - 52% = 48%) of no-switch people must **not** like the feature:
+
+$$
+\begin{align}
+\#(F = 0, W = 0, L = 0) &= (1 - 0.52) \cdot \#(F = 0, W = 0) \\
+&= 0.48 \cdot 185 = 88.8,
+\end{align}
+$$
+
+which we round to 89 to get an integer number of people.
+
+**Hope-to-switch people who like the feature**:
+
+We are given the info that, among hope-to-switch people, **48%** like the feature. So,
+
+$$
+\begin{align}
+\#(F = 0, W = 1, L = 1) &= 0.48 \cdot \#(F = 0, W = 1) \\
+&= 0.48 \cdot 232 = 111.36,
+\end{align}
+$$
+
+which we round to 111 to get an integer number of people.
+
+**Hope-to-switch people who don't like the feature**
+
+Since we are given that 48% of hope-to-switch people like the feature, this must mean that (100% - 48% = 52%) of hope-to-switch people do **not** like the feature. So,
+
+$$
+\begin{align}
+\#(F = 0, W = 1, L = 0) &= 0.52 \cdot \#(F = 0, W = 1) \\
+&= 0.52 \cdot 232 = 120.64,
+\end{align}
+$$
+
+which we round to 121 to get an integer number of people.
+
+I may have made a mistake in one or more of those calculations, so please let me know if you find one. As a sanity check, however, I did sum the numbers in the "number in sample" column, and the sum does come out to 757 as expected.

@@ -1,0 +1,31 @@
+[
+  {
+    "listing": "/extra-videos/index.html",
+    "items": []
+  },
+  {
+    "listing": "/writeups/index.html",
+    "items": [
+      "/writeups/sampling-from-df/index.html",
+      "/writeups/sample-space-tibbles/index.html",
+      "/writeups/marginalization/index.html",
+      "/writeups/deriving-pdf/index.html",
+      "/writeups/computing-probabilities/index.html"
+    ]
+  },
+  {
+    "listing": "/recordings-archive/index.html",
+    "items": []
+  },
+  {
+    "listing": "/recordings/index.html",
+    "items": []
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/w01/index.html",
+      "/w02/index.html"
+    ]
+  }
+]

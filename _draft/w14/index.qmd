@@ -1,0 +1,26 @@
+---
+title: "Week 14: Student Presentations!"
+date: "Thursday, November 16, 2023"
+date-format: full
+lecnum: 14
+categories:
+  - "Class Sessions"
+author: "Jeff Jacobs"
+institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>`jj1088@georgetown.edu`</a>"
+bibliography: "../_DSAN5100.bib"
+execute:
+  echo: true
+format:
+  html:
+    output-file: index.html
+    cache: false
+    html-math-method: mathjax
+    number-sections: false
+    code-fold: true
+    footnotes-hover: true
+    tbl-cap-location: bottom
+---
+
+# Schedule
+
+Today's Planned Schedule: See the [Final Presentation Info page](../final-presentations.qmd)!
