@@ -3,7 +3,7 @@ title: "Week 2: Introduction to Probabilistic Modeling"
 subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
 author: "Jeff Jacobs"
 institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
-date: 2023-08-31
+date: 2024-09-03
 lecnum: 2
 categories:
   - "Class Sessions"
