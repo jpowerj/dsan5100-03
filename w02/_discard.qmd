@@ -1,0 +1,88 @@
+## Nature vs. Science diagram
+
+```{dot}
+//| fig-width: 4
+//| fig-height: 2.5
+//| fig-align: center
+digraph grid
+{
+    graph [
+        overlap=true,
+        scale=0.2,
+        newrank=true
+    ]
+    nodesep=1.0
+    ranksep=1.0
+    rankdir="LR"
+    nodedir="LR"
+    scale=0.2
+    node [
+        style="filled",
+        color=black,
+        fillcolor=lightblue
+    ]
+	
+	subgraph cluster_01 {
+	    label="\"Nature\"";
+	    Obs[label="Thing(s) we can see"];
+	    Und[label="Underlying processes",fillcolor=white]
+	    
+	}
+	{
+	Und -> Model[dir=back,style=dashed];
+	Model -> Obs[style=dashed];
+	}
+	{
+	    rank=source;
+	    Und -> Obs [constraint=false];
+	}
+	
+	subgraph cluster_02 {
+	    label="\"Science\""
+	    Model[style=dashed];
+	}
+}
+```
+
+## Newton apple diagram
+
+
+```{dot}
+//| fig-width: 5
+//| fig-height: 2.5
+digraph grid
+{
+    graph [
+        overlap=true,
+        scale=0.2,
+        newrank=true
+    ]
+    nodesep=1.0
+    ranksep=1.0
+    rankdir="LR"
+    nodedir="LR"
+    scale=0.2
+    node [
+        style="filled",
+        color=black,
+        fillcolor=lightblue
+    ]
+  subgraph cluster_04 {
+    label=<<U>Woolsthorpe Manor</U>>;
+    URL="https://en.wikipedia.org/wiki/Woolsthorpe_Manor"
+    target="_blank"
+    Tree[label=<<U>Falling Apple</U>>,URL="https://www.popularmechanics.com/science/a5259/4343234/",target="_blank"];
+    Physics[label=<<U>Particle Interactions</U>>,URL="https://en.wikipedia.org/wiki/Fundamental_interaction",target="_blank",fillcolor=white];
+  }
+  subgraph cluster_03 {
+    label="Isaac Newton"
+    Newton[label="Newton's Laws",style=dashed,fillcolor=white]
+  }
+  Newton -> Tree [style=dashed];
+  {
+	    rank=source;
+	    Physics -> Tree [constraint=false];
+	}
+  Physics -> Newton[dir=back,style=dashed]
+}
+```

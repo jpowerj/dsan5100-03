@@ -20,6 +20,8 @@ format:
     scrollable: true
     slide-number: true
     number-sections: false
+    link-external-icon: true
+    link-external-newwindow: true
     theme: [default]
     revealjs-plugins:
       - simplemenu
@@ -34,6 +36,9 @@ format:
     cache: false
     output-file: index.html
     df-print: kable
+    warning: false
+    link-external-icon: true
+    link-external-newwindow: true
 ---
 
 ::: {.content-visible unless-format="revealjs"}
@@ -141,7 +146,7 @@ The pendulum example points to the fact that the notion of a *chaotic* system, o
 
 :::
 
-## "Holy Grail" Deterministic Model: Newtonian Physics {.smaller .title-10 .crunch-title}
+## "Holy Grail" Deterministic Model: Newtonian Physics {.smaller .title-10 .crunch-title .crunch-quarto-figure}
 
 ```{=html}
 <style>
@@ -160,91 +165,13 @@ figcaption {
 
 ::: {.column width="50%"}
 
-```{dot}
-//| fig-width: 5
-//| fig-height: 2.5
-digraph grid
-{
-    graph [
-        overlap=true,
-        scale=0.2,
-        newrank=true
-    ]
-    nodesep=1.0
-    ranksep=1.0
-    rankdir="LR"
-    nodedir="LR"
-    scale=0.2
-    node [
-        style="filled",
-        color=black,
-        fillcolor=lightblue
-    ]
-	
-	subgraph cluster_01 {
-	    label="\"Nature\"";
-	    Obs[label="Thing(s) we can see"];
-	    Und[label="Underlying processes",fillcolor=white]
-	    
-	}
-	{
-	Und -> Model[dir=back,style=dashed];
-	Model -> Obs[style=dashed];
-	}
-	{
-	    rank=source;
-	    Und -> Obs [constraint=false];
-	}
-	
-	subgraph cluster_02 {
-	    label="\"Science\""
-	    Model[style=dashed];
-	}
-}
-```
+![](images/nature-science.svg){width="90%" fig-align="center"}
+
 :::
 
 ::: {.column width="50%"}
 
-```{dot}
-//| fig-width: 5
-//| fig-height: 2.5
-digraph grid
-{
-    graph [
-        overlap=true,
-        scale=0.2,
-        newrank=true
-    ]
-    nodesep=1.0
-    ranksep=1.0
-    rankdir="LR"
-    nodedir="LR"
-    scale=0.2
-    node [
-        style="filled",
-        color=black,
-        fillcolor=lightblue
-    ]
-  subgraph cluster_04 {
-    label=<<U>Woolsthorpe Manor</U>>;
-    URL="https://en.wikipedia.org/wiki/Woolsthorpe_Manor"
-    target="_blank"
-    Tree[label=<<U>Falling Apple</U>>,URL="https://www.popularmechanics.com/science/a5259/4343234/",target="_blank"];
-    Physics[label=<<U>Particle Interactions</U>>,URL="https://en.wikipedia.org/wiki/Fundamental_interaction",target="_blank",fillcolor=white];
-  }
-  subgraph cluster_03 {
-    label="Isaac Newton"
-    Newton[label="Newton's Laws",style=dashed,fillcolor=white]
-  }
-  Newton -> Tree [style=dashed];
-  {
-	    rank=source;
-	    Physics -> Tree [constraint=false];
-	}
-  Physics -> Newton[dir=back,style=dashed]
-}
-```
+![](images/newton-apple.svg){width="90%" fig-align="center"}
 
 :::
 
@@ -297,7 +224,7 @@ $$
 :::
 :::
 
-## Random Processes {.crunch-title .crunch-quarto-figure}
+## Random Processes {.crunch-title .crunch-quarto-figure .crunch-details}
 
 ::: columns
 ::: {.column width="50%"}
@@ -309,13 +236,15 @@ $$
 
 :::
 ::: {.column width="50%"}
+::: {.smaller-text}
 
 ```{r}
 #| label: random-circles-unif
 #| fig-align: center
 #| fig-height: 5.5
 #| classes: "nobotmargin"
-#| echo: false
+#| echo: true
+#| code-fold: true
 plot_circ_with_distr <- function(N, radii, ptitle, alpha=0.1) {
   theta <- seq(0, 360, 4)
   #hist(radii)
@@ -361,6 +290,8 @@ plot_circ_with_distr(N, radii, title, alpha)
 #| fig-align: center
 #| fig-height: 5.5
 #| classes: "nobotmargin"
+#| echo: true
+#| code-fold: true
 library(ggplot2)
 N <- 1000
 radii <- rexp(N, 4)
@@ -368,6 +299,7 @@ title <- paste0(N, " Exponentially-Distributed Radii")
 plot_circ_with_distr(N, radii, title, alpha=0.15)
 ```
 
+:::
 :::
 :::
 
@@ -554,19 +486,15 @@ Where does $k!$ come from? *(How many different orderings can we make of the sam
 
 ## How Many Possible Samples? {.smaller}
 
-::: {.callout-tip title="Example: How Many Possible Samples?"}
-
-From a population of $N = 3$, how many ways can we take samples of size $k = 2$?
+**Example**: From a population of $N = 3$, how many ways can we take samples of size $k = 2$?
 
 | Without Replacement | With Replacement |
 | - | - |
 | $3 \cdot 2 = 6$ ways (3 objects to choose from for first element of sample, 2 remaining objects to choose from for second element of sample) | $3\cdot 3 = 3^2 = 9$ ways (3 objects to choose from for first element of sample, *still* 3 objects to choose from for second element of sample) |
 
-:::
+**General Case**: From population of size $N$, how many ways can we take samples of size $k$? (Try to extrapolate from above example before looking at answer!)
 
-::: {.callout-tip title="Result: How Many Possible Samples"}
-
-From a population of size $N$, how many ways can we take samples of size $k$? (Try to extrapolate from above examples before looking at answer!)
+::: {.fragment .fade-in}
 
 | Without Replacement | With Replacement |
 |:-:|:-:|
@@ -578,7 +506,7 @@ From a population of size $N$, how many ways can we take samples of size $k$? (T
 
 ## Logic, Sets, and Probability {.smaller}
 
-* There is a **deep connection**[^iso] between the **objects** and **operations** of logic, set theory, and probability:
+There is a **deep connection**[^iso] between the **objects** and **operations** of logic, set theory, and probability:
 
 | | Logic | Set Theory | Probability Theory |
 | - | - | - | - |
@@ -589,7 +517,7 @@ From a population of size $N$, how many ways can we take samples of size $k$? (T
 
 : {tbl-colwidths="[18,18,32,32]"}
 
-[^iso]: For math majors, you can think of it as an **isomorphism** between the objects and operations of the three subjects
+[^iso]: For math majors, an **isomorphism**
 
 ## Example: Flipping Two Coins {.smaller}
 
@@ -603,16 +531,16 @@ From a population of size $N$, how many ways can we take samples of size $k$? (T
 * **The issue?**: We don't know, until **after** the coins have been flipped, whether these are **true** or **false**!
 * But, we should still be able to say something about their **likelihood**, for example, whether $f_1$ or $f_2$ is more likely to happen... **Enter probability theory!**
 
-## Logic $\rightarrow$ Probability
+## Logic $\rightarrow$ Probability {.crunch-title .inline-90 .crunch-li-5}
 
 * Probability theory lets us reason about the **uncertainty** surrounding **logical** predicates like $p$ and $q$, by:
   (a) encoding them as **sets of possibilities** $P$ and $Q$, and
-  (b) representing the uncertainty around any given possibility using a **probability measure** $\Pr: S \mapsto [0,1]$,
+  (b) representing uncertainty around a given possibility using a **probability measure** $\Pr: S \mapsto [0,1]$,
 * thus allowing us to reason about
   (a) the likelihood of these set-encoded predicates on their own: $\Pr(P)$ and $\Pr(Q)$, but also
   (b) their **logical connections**: $\Pr(p \wedge q) = \Pr(P \cap Q)$, $\Pr(\neg p) = \Pr(P^c)$, and so on.
 
-## Flipping Two Coins: Logic $\rightarrow$ Probability {.smaller}
+## Flipping Two Coins: Logic $\rightarrow$ Probability {.smaller .title-12}
 
 * Returning to the two coins example: we can look at the predicates and see that they exhaust all possibilities, so that we can define a **sample space** $S = \{TT, TH, HT, HH\}$ of all possible **outcomes** of our coin-flipping experiment, noting that $|S| = 4$, so there are 4 possible outcomes.
 * Then we can associate each **predicate** with an **event**, a **subset** of the sample space, and use our **naïve definition** to compute the probability of these events:
@@ -624,20 +552,20 @@ From a population of size $N$, how many ways can we take samples of size $k$? (T
 | $p_2$ = "Second result is $H$" | $P_2 = \{TH, HH\}$ | $\Pr(P_2) = \frac{|P_2|}{|S|} = \frac{2}{4} = \frac{1}{2}$ |
 | $q_2$ = "Second result is $T$" | $Q_2 = \{TT, HT\}$ | $\Pr(Q_2) = \frac{|Q_2|}{|S|} = \frac{2}{4} = \frac{1}{2}$
 
-## Moving from Predicates to Formulas {.smaller .crunch-table .crunch-math}
+## Moving from Predicates to Formulas {.smaller .crunch-table .crunch-title .crunch-math .math-80 .inline-90 .crunch-ul}
 
 * Notice that, in the four rows of the previous table, we were only computing the probabilities of "simple" events: events corresponding to a **single** predicate
 * But we promised that probability theory lets us compute probabilities for **logical formulas** as well! ...The magic of encoding events as **sets** becomes clear:
 
 | Formula | Event | Probability |
 | - |:- |:- |
-| $f_1 = p_1 \wedge q_2$ | $$ \begin{align*} F_1 &= P_1 \cap Q_2 \\ &= \{HT, HH\} \cap \{TT, HT\} \\ &= \{HT\} \end{align*} $$ | $$\begin{align*} \Pr(F_1) &= \Pr(\{HT\}) \\ &= \frac{|\{HT\}|}{|S|} = \frac{1}{4} \end{align*}$$ |
+| $f_1 = p_1 \wedge q_2$ | $$ \begin{align*} F_1 &= P_1 \cap Q_2 \\ &= \{HT, HH\} \cap \{TT, HT\} \\ &= \{HT\} \end{align*} $$ | $$\begin{align*} \Pr(F_1) &= \Pr(\{HT\}) \\ &= \frac{|\{HT\}|}{|S|} = \frac{1}{4} \phantom{= \frac{1}{4} = \frac{1}{4}} \end{align*}$$ |
 | $f_2 = p_1 \vee q_2$ | $$\begin{align*} F_2 &= P_1 \cup Q_2 \\ &= \{HT, HH\} \cup \{TT, HT\} \\ &= \{TT, HT, HH\} \end{align*}$$ | $$\begin{align*} \Pr(F_2) &= \Pr(\{TT, HT, HH\}) \\ &= \frac{|\{TT, HT, HH\}|}{|S|} = \frac{3}{4} \end{align*}$$ |
-| $f_3 = \neg p_1$ | $$\begin{align*} F_3 &= P_1^c \\ &= \{HT, HH\}^c \\ &= \{TT, TH\}\end{align*}$$ | $$\begin{align*} \Pr(F_3) &= \Pr(\{TT, TH\}) \\ &= \frac{|\{TT, TH\}|}{|S|} = \frac{2}{4} = \frac{1}{2} \end{align*}$$ |
+| $f_3 = \neg p_1$ | $$\begin{align*} F_3 &= P_1^c \\ &= \{HT, HH\}^c \phantom{\cup \{TT, HT\}} \\ &= \{TT, TH\}\end{align*}$$ | $$\begin{align*} \Pr(F_3) &= \Pr(\{TT, TH\}) \\ &= \frac{|\{TT, TH\}|}{|S|} = \frac{2}{4} = \frac{1}{2} \end{align*}$$ |
 
-## Using "Rules" of Probability {.smaller .crunch-math .crunch-title}
+## Using "Rules" of Probability {.smaller .crunch-math .crunch-title .crunch-ul .inline-90 .math-80}
 
-* Hopefully, though, you found all this churning through set theory to be a bit tedious...
+* Hopefully, you found all this churning through set theory to be tedious... ☠️
 * This is where **rules of probability** come from! They **simplify** set-theoretic computations into simple multiplications, additions, and subtractions:
   * $\Pr(A \cap B) = \Pr(A) \times \Pr(B)$
   * $\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B)$
@@ -650,7 +578,7 @@ From a population of size $N$, how many ways can we take samples of size $k$? (T
 | $f_2 = p_1 \vee q_2$ | $F_2 = P_1 \cup Q_2$ | $$\textstyle{\begin{align*} \textstyle \Pr(F_2) &= \Pr(P_1) + \Pr(Q_2) - \Pr(P_1 \cap Q_2) \\ \textstyle &= \frac{1}{2} + \frac{1}{2} - \frac{1}{4} = \frac{3}{4} \end{align*}}$$ |
 | $f_3 = \neg p_1$ | $F_3 = P_1^c$ | $\Pr(F_3) = 1 - \Pr(P_1) = 1 - \frac{1}{2} = \frac{1}{2}$ |
 
-## "Importing" Results from Logic {.crunch-math}
+## "Importing" Results from Logic {.crunch-math .crunch-title}
 
 * This deep connection between the three fields means that, if we have some useful theorem or formula from one field, we can immediately put it to use in another!
 * For example: **DeMorgan's Laws** were developed in logic (DeMorgan was a 19th-century logician), and basically just tell us how to **distribute** logic operators:
@@ -686,10 +614,11 @@ $$
 
 # Statistics: Univariate and Multivariate {data-stack-name="Statistics"}
 
-## Random Variables {.crunch-math}
+## Random Variables {.crunch-math .crunch-title}
 
 * Recall our discussion of **random variables**: used by analogy to **algebra**, since we can do math with them:
-* Just as $2 \cdot 3$ is shorthand for $2 + 2 + 2$, we can define $X$ as shorthand for the possible outcomes of a random process.
+* Just as $2 \cdot 3$ is shorthand for $2 + 2 + 2$, can define $X$ as shorthand for possible outcomes of random process:
+
 $$
 \begin{align*}
 S = \{ &\text{result of dice roll is 1}, \\
@@ -715,9 +644,9 @@ $$
 | Result of dice roll is 5 | $X = 5$ |
 | Result of dice roll is 6 | $X = 6$ |
 
-## Doing Math with Events {.smaller .crunch-title .crunch-math}
+## Doing Math with Events {.smaller .crunch-title .crunch-math .math-90 .crunch-ul}
 
-* We've seen how $\Pr(\cdot)$ can "encode" logical expressions involving uncertain outcomes.
+* We've seen how $\Pr()$ "encodes" logical expressions involving uncertain outcomes.
 * Even more powerful when paired with the notion of **random variables**: lets us also "encode" **mathematical** expressions involving uncertain quantities!
 * Consider an experiment where we **roll two dice**. Let $X$ be the RV encoding the outcome of the first roll, and $Y$ be the RV encoding the outcome of the second roll.
 * We can compute probabilities involving $X$ and $Y$ separately, e.g., $\Pr(X = 1) = \frac{1}{6}$, but we can **also** reason probabilistically about **mathematical expressions** involving $X$ and $Y$! For example, we can reason about their **sum**:
@@ -761,7 +690,7 @@ The answer is, broadly, any situation where you're modeling things, like dice ro
   * ${\color{orange}\text{greater}} \overset{?}{=} 2\cdot {\color{orange}\text{great}} - 1$
 * **Cardinal**
   * Can place in order, and gaps are meaningful $\implies$ can do "standard" math with them! Example: $\{{\color{blue}1},{\color{blue}2},\ldots,{\color{blue}10}\}$
-  * ${\color{blue}7}\overset{\color{green}\unicode{x2714}}{=} 2 \cdot {\color{blue}4} - 1$
+  * ${\color{blue}7} \overset{\text{✅}}{=} 2 \cdot {\color{blue}4} - 1$
   * If events have **this structure** (meaningful way to define multiplication, addition, subtraction), then we can analyze them as **random variables**
 
 ## Visualizing Discrete RVs {.smaller}
@@ -914,7 +843,7 @@ ggplot(score_df, aes(x=score)) +
   theme(axis.text.x = element_text(colour = c('black', 'black','black', 'black', 'purple', 'black')))
 ```
 
-## Or a Single Ribbon
+## Or a Single Ribbon {.crunch-title .crunch-quarto-figure}
 
 ::: {layout="[[1,1], [1,1]]"}
 
@@ -990,7 +919,7 @@ ggplot(mean_df, aes(x=x, y=mean)) +
 
 :::
 
-## Example: The Normal Distribution {.smaller .crunch-figures}
+## Example: The Normal Distribution {.smaller .crunch-figures .crunch-title}
 
 ::: columns
 ::: {.column width="50%"}
@@ -1038,9 +967,10 @@ ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
 [^purple]: Throughout the course, remember, <span style="color:purple;">**purrple**</span> is for <span style="color:purple;">**purrameters**</span>
 [^mathcal]: Throughout the course, this "calligraphic" font $\mathcal{N}$, $\mathcal{D}$, etc., will be used to denote **distributions**
 
-## Real Data and the 68-95-99.7 Rule {.smaller .crunch-layout-panel .crunch-title .crunch-figures .crunch-lists .crunch-images}
+## Real Data and the 68-95-99.7 Rule {.smaller .crunch-layout-panel .crunch-title .crunch-figures .crunch-lists .crunch-images .crunch-quarto-figure}
 
-::: {layout-ncol=2}
+:::: {.columns}
+::: {.column width="50%"}
 
 ```{r}
 #| code-fold: true
@@ -1080,13 +1010,18 @@ ggplot(height_df, aes(x = height_cm)) +
     dsan_theme("full")
 ```
 
+:::
+::: {.column width="50%"}
+
 ::: {#fig-empirical}
-<img src="images/empirical_rule.svg" height="333">
+
+<img src="images/empirical_rule.svg" height="256">
 
 The 68-95-99.7 Rule visualized (<a href="https://commons.wikimedia.org/wiki/File:Empirical_rule_histogram.svg" target="_blank">Wikimedia Commons</a>)
 :::
 
 :::
+::::
 
 The **point estimate** ${\color{purple}\mu} = 186.48$ is straightforward: *the average height of the athletes is 186.48cm*. Using the 68-95-99.7 Rule to interpret the **SD**, ${\color{purple}\sigma} = 9.7$, we get:
 
@@ -1123,35 +1058,45 @@ The **point estimate** ${\color{purple}\mu} = 186.48$ is straightforward: *the a
 :::
 :::
 
-## Boxplots: Comparing Multiple Distributions {.smaller .small-title}
+## Boxplots: Comparing Multiple Distributions {.smaller .title-12 .crunch-title .crunch-quarto-figure}
 
-::: {layout-ncol=2}
+:::: {.columns style='display: flex !important; height: 90%;'}
+::: {.column width="50%"}
 
-![<a href="https://commons.wikimedia.org/wiki/File:Boxplot_vs_PDF.svg">Jhguch at en.wikipedia</a>, <a href="https://creativecommons.org/licenses/by-sa/2.5">CC BY-SA 2.5</a>, via Wikimedia Commons](images/boxplot_vs_pdf.svg)
+![From <a href="https://commons.wikimedia.org/wiki/File:Boxplot_vs_PDF.svg">Wikimedia Commons</a>](images/boxplot_vs_pdf.svg)
 
-![<a href="https://commons.wikimedia.org/wiki/File:Boxplot_of_Average_Article_Feedback_ratings_by_project_rated_quality.svg">Protonk</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>, via Wikimedia Commons](images/multiple_boxplots.svg)
+:::
+::: {.column width="50%" style='display: flex; justify-content: center; align-items: center;'}
+::: {#div-around-thing}
 
+![From <a href="https://commons.wikimedia.org/wiki/File:Boxplot_of_Average_Article_Feedback_ratings_by_project_rated_quality.svg">Wikimedia Commons</a>](images/multiple_boxplots.svg){#thing fig-align="center"}
+
+:::
+:::
 :::
 
 ## Another Option: Joyplots {.smaller}
 
-::: {layout-ncol=2}
+:::: {.columns}
+::: {.column width="50%"}
 
 ![<a href="https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/joy-plots-in-arcgis-pro/" target="_blank">(Iconic album cover)</a>](images/joy_division.jpg){#fig-joy-division}
 
+:::
+::: {.column width="50%"}
 ::: {#fig-manifesto}
 
-<img src="images/manifesto_distances.png" height="550"></img>
+<img src="images/manifesto_distances.png" height="500"></img>
 
 <a href="https://cs.stanford.edu/~jjacobs3/Jacobs_Translations_Ideological_Interventions_2019_11_22.pdf" target="_blank">*(Tooting my own horn)*</a>
 :::
 :::
+:::
 
-## Multivariate Distributions: Preview {.smaller}
+## Multivariate Distributions: Preview {.smaller .crunch-title}
 
 * The **bivariate normal** distribution represents the distribution of **two** normally-distributed RVs $\mathbf{X} = [\begin{smallmatrix} X_1 & X_2\end{smallmatrix}]$, which may or may not be correlated:
 
-::: {.special-math style="margin-bottom: 42px !important;"}
 $$
 \mathbf{X} = \begin{bmatrix}X_1 \\ X_2\end{bmatrix}, \; \boldsymbol{\mu} =
 %\begin{bmatrix}\mu_1 \\ \mu_2\end{bmatrix}
@@ -1160,8 +1105,6 @@ $$
 % \begin{bmatrix}\sigma_1^2 & \rho\sigma_1\sigma_2 \\ \rho\sigma_2\sigma_1 & \sigma_2^2 \end{bmatrix}
 % = \begin{bmatrix}\text{Var}[X_1] & \text{Cov}[X_1,X_2] \\ \text{Cov}[X_2,X_1] & \text{Var}[X_2] \end{bmatrix}
 $$
-
-:::
 
 * By squishing all this information intro matrices, we can specify the parameters of **multivariate-normally-distributed** *vectors* of RVs similarly to how we specify single-dimensional normally-distributed RVs:
 

@@ -70,6 +70,10 @@ a.disabled {
   margin-bottom: 0px !important;
 }
 
+.crunch-details details {
+  margin-bottom: 0px !important;
+}
+
 .crunch-hr {
   margin-top: 8px !important;
   margin-bottom: 6px !important;
@@ -81,10 +85,18 @@ a.disabled {
 }
 
 .crunch-li li {
-  margin-top: unset !important;
-  /* margin-bottom: 2px !important; */
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
+}
+.crunch-li-5 li {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
 }
 
+.crunch-math-8 mjx-container {
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
+}
 .crunch-math mjx-container {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
@@ -114,6 +126,20 @@ a.disabled {
 
 figcaption {
   text-align: center !important;
+}
+
+.inline-80 .math.inline {
+  font-size: 80% !important;
+}
+.inline-90 .math.inline {
+  font-size: 90% !important;
+}
+
+.math-80 .math.display {
+  font-size: 80% !important;
+}
+.math-90 .math.display {
+  font-size: 90% !important;
 }
 
 .new-unit {
@@ -164,6 +190,10 @@ figcaption {
 
 .smaller-caption figcaption {
   font-size: 0.6em !important;
+}
+
+.smaller-text {
+  font-size: 75% !important;
 }
 
 /* and one small fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */

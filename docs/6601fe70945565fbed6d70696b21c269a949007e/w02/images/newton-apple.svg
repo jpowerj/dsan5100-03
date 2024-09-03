@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="433pt" height="209pt" viewBox="0.00 0.00 432.86 209.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 205)">
+<title>grid</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-205 428.8619,-205 428.8619,4 -4,4"/>
+<g id="clust2" class="cluster">
+<title>cluster_03</title>
+<polygon fill="none" stroke="#000000" points="257.0535,-62 257.0535,-139 416.8619,-139 416.8619,-62 257.0535,-62"/>
+<text text-anchor="middle" x="336.9577" y="-122.4" font-family="Times,serif" font-size="14.00" fill="#000000">Isaac Newton</text>
+</g>
+<g id="clust1" class="cluster">
+<title>cluster_04</title>
+<g id="a_clust1"><a xlink:href="https://en.wikipedia.org/wiki/Woolsthorpe_Manor" xlink:title="&lt;U&gt;Woolsthorpe Manor&lt;/U&gt;" target="_blank">
+<polygon fill="none" stroke="#000000" points="8,-8 8,-193 201.0535,-193 201.0535,-8 8,-8"/>
+<text text-anchor="start" x="47.959" y="-177.4" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#000000">Woolsthorpe Manor</text>
+</a>
+</g>
+</g>
+<!-- Tree -->
+<g id="node1" class="node">
+<title>Tree</title>
+<g id="a_node1"><a xlink:href="https://www.popularmechanics.com/science/a5259/4343234/" xlink:title="&lt;U&gt;Falling Apple&lt;/U&gt;" target="_blank">
+<ellipse fill="#add8e6" stroke="#000000" cx="104.5267" cy="-142" rx="64.3249" ry="18"/>
+<text text-anchor="start" x="65.8363" y="-138.8" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#000000">Falling Apple</text>
+</a>
+</g>
+</g>
+<!-- Physics -->
+<g id="node2" class="node">
+<title>Physics</title>
+<g id="a_node2"><a xlink:href="https://en.wikipedia.org/wiki/Fundamental_interaction" xlink:title="&lt;U&gt;Particle Interactions&lt;/U&gt;" target="_blank">
+<ellipse fill="#ffffff" stroke="#000000" cx="104.5267" cy="-34" rx="88.5535" ry="18"/>
+<text text-anchor="start" x="48.3566" y="-30.8" font-family="Times,serif" text-decoration="underline" font-size="14.00" fill="#000000">Particle Interactions</text>
+</a>
+</g>
+</g>
+<!-- Physics&#45;&gt;Tree -->
+<g id="edge2" class="edge">
+<title>Physics-&gt;Tree</title>
+<path fill="none" stroke="#000000" d="M104.5267,-52.1406C104.5267,-72.653 104.5267,-93.1653 104.5267,-113.6776"/>
+<polygon fill="#000000" stroke="#000000" points="101.0268,-113.7473 104.5267,-123.7473 108.0268,-113.7473 101.0268,-113.7473"/>
+</g>
+<!-- Newton -->
+<g id="node3" class="node">
+<title>Newton</title>
+<ellipse fill="none" stroke="#000000" stroke-dasharray="5,2" cx="336.9577" cy="-88" rx="71.8086" ry="18"/>
+<text text-anchor="middle" x="336.9577" y="-83.8" font-family="Times,serif" font-size="14.00" fill="#000000">Newton's Laws</text>
+</g>
+<!-- Physics&#45;&gt;Newton -->
+<g id="edge3" class="edge">
+<title>Physics-&gt;Newton</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M172.7038,-49.8394C208.2734,-58.1032 251.1291,-68.0597 284.1457,-75.7303"/>
+<polygon fill="#000000" stroke="#000000" points="173.4115,-46.4107 162.8789,-47.5568 171.8274,-53.2291 173.4115,-46.4107"/>
+</g>
+<!-- Newton&#45;&gt;Tree -->
+<g id="edge1" class="edge">
+<title>Newton-&gt;Tree</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M284.2252,-100.2512C248.5442,-108.5408 201.3451,-119.5065 164.2735,-128.1192"/>
+<polygon fill="#000000" stroke="#000000" points="163.0524,-124.8096 154.1039,-130.4819 164.6366,-131.628 163.0524,-124.8096"/>
+</g>
+</g>
+</svg>

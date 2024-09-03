@@ -30,6 +30,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
   <link rel="stylesheet" href="../dsan-globals/jjstyles.css">
@@ -508,7 +573,7 @@ Jeff Jacobs
           display:block!important;
       }</style></aside>
 </section>
-<section id="holy-grail-deterministic-model-newtonian-physics" class="slide level2 smaller title-10 crunch-title">
+<section id="holy-grail-deterministic-model-newtonian-physics" class="slide level2 smaller title-10 crunch-title crunch-quarto-figure">
 <h2>“Holy Grail” Deterministic Model: Newtonian Physics</h2>
 <style>
 #fig-newton {
@@ -522,145 +587,22 @@ figcaption {
 </style>
 <div class="columns">
 <div class="column" style="width:50%;">
-<div class="cell" data-fig-width="5" data-fig-height="2.5" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<svg width="480" height="240" viewbox="0.00 0.00 373.38 209.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 205)">
-<title>grid</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-205 369.38,-205 369.38,4 -4,4"></polygon>
-<g id="clust1" class="cluster">
-<title>cluster_01</title>
-<polygon fill="none" stroke="black" points="8,-8 8,-193 212.88,-193 212.88,-8 8,-8"></polygon>
-<text text-anchor="middle" x="110.44" y="-176.4" font-family="Times,serif" font-size="14.00">"Nature"</text>
-</g>
-<g id="clust4" class="cluster">
-<title>cluster_02</title>
-<polygon fill="none" stroke="black" points="268.88,-62 268.88,-139 357.38,-139 357.38,-62 268.88,-62"></polygon>
-<text text-anchor="middle" x="313.13" y="-122.4" font-family="Times,serif" font-size="14.00">"Science"</text>
-</g>
-<!-- Obs -->
-<g id="node1" class="node">
-<title>Obs</title>
-<ellipse fill="lightblue" stroke="black" cx="110.44" cy="-142" rx="88.56" ry="18"></ellipse>
-<text text-anchor="middle" x="110.44" y="-137.8" font-family="Times,serif" font-size="14.00">Thing(s) we can see</text>
-</g>
-<!-- Und -->
-<g id="node2" class="node">
-<title>Und</title>
-<ellipse fill="white" stroke="black" cx="110.44" cy="-34" rx="94.38" ry="18"></ellipse>
-<text text-anchor="middle" x="110.44" y="-29.8" font-family="Times,serif" font-size="14.00">Underlying processes</text>
-</g>
-<!-- Und&#45;&gt;Obs -->
-<g id="edge3" class="edge">
-<title>Und-&gt;Obs</title>
-<path fill="none" stroke="black" d="M110.44,-52.14C110.44,-72.65 110.44,-93.17 110.44,-113.68"></path>
-<polygon fill="black" stroke="black" points="106.94,-113.75 110.44,-123.75 113.94,-113.75 106.94,-113.75"></polygon>
-</g>
-<!-- Model -->
-<g id="node3" class="node">
-<title>Model</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="313.13" cy="-88" rx="36.5" ry="18"></ellipse>
-<text text-anchor="middle" x="313.13" y="-83.8" font-family="Times,serif" font-size="14.00">Model</text>
-</g>
-<!-- Und&#45;&gt;Model -->
-<g id="edge1" class="edge">
-<title>Und-&gt;Model</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M175.49,-51.23C210.71,-60.71 252.83,-72.04 280.91,-79.6"></path>
-<polygon fill="black" stroke="black" points="176.32,-47.83 165.75,-48.61 174.5,-54.59 176.32,-47.83"></polygon>
-</g>
-<!-- Model&#45;&gt;Obs -->
-<g id="edge2" class="edge">
-<title>Model-&gt;Obs</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M280.87,-96.41C252.52,-104.04 209.88,-115.51 174.47,-125.04"></path>
-<polygon fill="black" stroke="black" points="173.44,-121.69 164.7,-127.67 175.26,-128.45 173.44,-121.69"></polygon>
-</g>
-</g>
-</svg>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/nature-science.svg" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
 </div>
 </div><div class="column" style="width:50%;">
-<div class="cell" data-fig-width="5" data-fig-height="2.5" data-layout-align="default">
-<div class="cell-output-display">
-<div>
-<p></p><figure class=""><p></p>
-<div>
-<svg width="480" height="240" viewbox="0.00 0.00 429.94 209.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none; display: block; margin: auto auto auto auto">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 205)">
-<title>grid</title>
-<polygon fill="white" stroke="transparent" points="-4,4 -4,-205 425.94,-205 425.94,4 -4,4"></polygon>
-<g id="clust1" class="cluster">
-<title>cluster_04</title>
-<g id="a_clust1"><a href="https://en.wikipedia.org/wiki/Woolsthorpe_Manor" title="<U>Woolsthorpe Manor</U>" target="_blank">
-<polygon fill="none" stroke="black" points="8,-8 8,-193 201.06,-193 201.06,-8 8,-8"></polygon>
-<text text-anchor="start" x="47.96" y="-177.4" font-family="Times,serif" text-decoration="underline" font-size="14.00">Woolsthorpe Manor</text>
-</a>
-</g>
-</g>
-<g id="clust2" class="cluster">
-<title>cluster_03</title>
-<polygon fill="none" stroke="black" points="257.06,-62 257.06,-139 413.94,-139 413.94,-62 257.06,-62"></polygon>
-<text text-anchor="middle" x="335.5" y="-122.4" font-family="Times,serif" font-size="14.00">Isaac Newton</text>
-</g>
-<!-- Tree -->
-<g id="node1" class="node">
-<title>Tree</title>
-<g id="a_node1"><a href="https://www.popularmechanics.com/science/a5259/4343234/" title="<U>Falling Apple</U>" target="_blank">
-<ellipse fill="lightblue" stroke="black" cx="104.53" cy="-142" rx="64.33" ry="18"></ellipse>
-<text text-anchor="start" x="65.84" y="-138.8" font-family="Times,serif" text-decoration="underline" font-size="14.00">Falling Apple</text>
-</a>
-</g>
-</g>
-<!-- Physics -->
-<g id="node2" class="node">
-<title>Physics</title>
-<g id="a_node2"><a href="https://en.wikipedia.org/wiki/Fundamental_interaction" title="<U>Particle Interactions</U>" target="_blank">
-<ellipse fill="white" stroke="black" cx="104.53" cy="-34" rx="88.56" ry="18"></ellipse>
-<text text-anchor="start" x="48.36" y="-30.8" font-family="Times,serif" text-decoration="underline" font-size="14.00">Particle Interactions</text>
-</a>
-</g>
-</g>
-<!-- Physics&#45;&gt;Tree -->
-<g id="edge2" class="edge">
-<title>Physics-&gt;Tree</title>
-<path fill="none" stroke="black" d="M104.53,-52.14C104.53,-72.65 104.53,-93.17 104.53,-113.68"></path>
-<polygon fill="black" stroke="black" points="101.03,-113.75 104.53,-123.75 108.03,-113.75 101.03,-113.75"></polygon>
-</g>
-<!-- Newton -->
-<g id="node3" class="node">
-<title>Newton</title>
-<ellipse fill="none" stroke="black" stroke-dasharray="5,2" cx="335.5" cy="-88" rx="70.38" ry="18"></ellipse>
-<text text-anchor="middle" x="335.5" y="-83.8" font-family="Times,serif" font-size="14.00">Newton's Laws</text>
-</g>
-<!-- Physics&#45;&gt;Newton -->
-<g id="edge3" class="edge">
-<title>Physics-&gt;Newton</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M172.76,-49.86C208.06,-58.18 250.64,-68.22 283.24,-75.91"></path>
-<polygon fill="black" stroke="black" points="173.55,-46.45 163.01,-47.56 171.94,-53.26 173.55,-46.45"></polygon>
-</g>
-<!-- Newton&#45;&gt;Tree -->
-<g id="edge1" class="edge">
-<title>Newton-&gt;Tree</title>
-<path fill="none" stroke="black" stroke-dasharray="5,2" d="M282.95,-100.16C247.77,-108.45 201.07,-119.47 164.42,-128.11"></path>
-<polygon fill="black" stroke="black" points="163.3,-124.78 154.37,-130.48 164.9,-131.59 163.3,-124.78"></polygon>
-</g>
-</g>
-</svg>
-</div>
-<p></p></figure><p></p>
-</div>
-</div>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/newton-apple.svg" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+</figure>
 </div>
 </div></div>
 <div>
 
 </div>
-<div id="newton" class="quarto-layout-panel" style="&quot;" data-layout-ncol="4">
+<div id="newton" class="quarto-layout-panel" data-layout-ncol="4" style="&quot;">
 <div class="quarto-layout-row">
 <div class="quarto-layout-cell" style="flex-basis: 25.0%;justify-content: center;">
 <p><img data-src="images/newton1.jpeg"></p>
@@ -721,7 +663,7 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 </div>
 </div></div>
 </section>
-<section id="random-processes" class="slide level2 crunch-title crunch-quarto-figure">
+<section id="random-processes" class="slide level2 crunch-title crunch-quarto-figure crunch-details">
 <h2>Random Processes</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -732,7 +674,49 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 <li>Exp: closer to <span class="math inline">\(0\)</span> more likely</li>
 </ul>
 </div><div class="column" style="width:50%;">
+<div class="smaller-text">
 <div class="cell nobotmargin" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>plot_circ_with_distr <span class="ot">&lt;-</span> <span class="cf">function</span>(N, radii, ptitle, <span class="at">alpha=</span><span class="fl">0.1</span>) {</span>
+<span id="cb1-2"><a></a>  theta <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">360</span>, <span class="dv">4</span>)</span>
+<span id="cb1-3"><a></a>  <span class="co">#hist(radii)</span></span>
+<span id="cb1-4"><a></a>  circ_df <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">x =</span> theta, <span class="at">y =</span> radii)</span>
+<span id="cb1-5"><a></a>  <span class="co">#circ_df</span></span>
+<span id="cb1-6"><a></a>  <span class="fu">ggplot</span>(circ_df, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">group =</span> y)) <span class="sc">+</span></span>
+<span id="cb1-7"><a></a>      <span class="fu">geom_path</span>(<span class="at">alpha =</span> alpha, <span class="at">color =</span> cbPalette[<span class="dv">1</span>], <span class="at">linewidth=</span>g_linesize) <span class="sc">+</span></span>
+<span id="cb1-8"><a></a>      <span class="co"># Plot the full unit circle</span></span>
+<span id="cb1-9"><a></a>      <span class="fu">geom_path</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> theta, <span class="at">y =</span> <span class="dv">1</span>), <span class="fu">aes</span>(<span class="at">x =</span> x), <span class="at">linewidth=</span>g_linesize) <span class="sc">+</span></span>
+<span id="cb1-10"><a></a>      <span class="fu">geom_point</span>(<span class="at">data =</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">0</span>, <span class="at">y =</span> <span class="dv">0</span>), <span class="fu">aes</span>(<span class="at">x =</span> x), <span class="at">size =</span> g_pointsize) <span class="sc">+</span></span>
+<span id="cb1-11"><a></a>      <span class="fu">coord_polar</span>(<span class="at">theta =</span> <span class="st">"x"</span>, <span class="at">start =</span> <span class="sc">-</span>pi <span class="sc">/</span> <span class="dv">2</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb1-12"><a></a>      <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb1-13"><a></a>      <span class="co"># scale_x_continuous(limits=c(0,360), breaks=seq(0,360,by=45)) +</span></span>
+<span id="cb1-14"><a></a>      <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">360</span>), <span class="at">breaks =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb1-15"><a></a>      <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb1-16"><a></a>      <span class="fu">labs</span>(</span>
+<span id="cb1-17"><a></a>          <span class="at">title =</span> ptitle,</span>
+<span id="cb1-18"><a></a>          <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb1-19"><a></a>          <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb1-20"><a></a>      ) <span class="sc">+</span></span>
+<span id="cb1-21"><a></a>      <span class="co"># See https://stackoverflow.com/a/19821839</span></span>
+<span id="cb1-22"><a></a>      <span class="fu">theme</span>(</span>
+<span id="cb1-23"><a></a>          <span class="at">axis.line =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-24"><a></a>          <span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-25"><a></a>          <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-26"><a></a>          <span class="at">axis.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-27"><a></a>          <span class="at">panel.border =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-28"><a></a>          <span class="at">panel.grid.major=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb1-29"><a></a>          <span class="at">panel.grid.minor=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb1-30"><a></a>          <span class="at">plot.margin =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>), <span class="st">"cm"</span>),</span>
+<span id="cb1-31"><a></a>          <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">18</span>)</span>
+<span id="cb1-32"><a></a>      )</span>
+<span id="cb1-33"><a></a>}</span>
+<span id="cb1-34"><a></a>N <span class="ot">&lt;-</span> <span class="dv">500</span></span>
+<span id="cb1-35"><a></a>radii <span class="ot">&lt;-</span> <span class="fu">runif</span>(N, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb1-36"><a></a>title <span class="ot">&lt;-</span> <span class="fu">paste0</span>(N, <span class="st">" Uniformly-Distributed Radii"</span>)</span>
+<span id="cb1-37"><a></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.2</span></span>
+<span id="cb1-38"><a></a><span class="fu">plot_circ_with_distr</span>(N, radii, title, alpha)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -742,11 +726,20 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 </div>
 </div>
 <div class="cell nobotmargin" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-2"><a></a>N <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb2-3"><a></a>radii <span class="ot">&lt;-</span> <span class="fu">rexp</span>(N, <span class="dv">4</span>)</span>
+<span id="cb2-4"><a></a>title <span class="ot">&lt;-</span> <span class="fu">paste0</span>(N, <span class="st">" Exponentially-Distributed Radii"</span>)</span>
+<span id="cb2-5"><a></a><span class="fu">plot_circ_with_distr</span>(N, radii, title, <span class="at">alpha=</span><span class="fl">0.15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="index_files/figure-revealjs/random-circles-exp-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
 </figure>
+</div>
 </div>
 </div>
 </div>
@@ -1044,17 +1037,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </section>
 <section id="how-many-possible-samples" class="slide level2 smaller">
 <h2>How Many Possible Samples?</h2>
-<div title="Example: How Many Possible Samples?">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Example: How Many Possible Samples?</strong></p>
-</div>
-<div class="callout-content">
-<p>From a population of <span class="math inline">\(N = 3\)</span>, how many ways can we take samples of size <span class="math inline">\(k = 2\)</span>?</p>
+<p><strong>Example</strong>: From a population of <span class="math inline">\(N = 3\)</span>, how many ways can we take samples of size <span class="math inline">\(k = 2\)</span>?</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -1073,21 +1056,8 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
-</div>
-<div title="Result: How Many Possible Samples">
-<div class="callout callout-tip callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Result: How Many Possible Samples</strong></p>
-</div>
-<div class="callout-content">
-<p>From a population of size <span class="math inline">\(N\)</span>, how many ways can we take samples of size <span class="math inline">\(k\)</span>? (Try to extrapolate from above examples before looking at answer!)</p>
+<p><strong>General Case</strong>: From population of size <span class="math inline">\(N\)</span>, how many ways can we take samples of size <span class="math inline">\(k\)</span>? (Try to extrapolate from above example before looking at answer!)</p>
+<div class="fragment fade-in">
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -1107,9 +1077,6 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </tbody>
 </table>
 </div>
-</div>
-</div>
-</div>
 </section></section>
 <section>
 <section id="probability-fundamentals" class="title-slide slide level1 center" data-stack-name="Probability">
@@ -1118,9 +1085,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </section>
 <section id="logic-sets-and-probability" class="slide level2 smaller scrollable">
 <h2>Logic, Sets, and Probability</h2>
-<ul>
-<li>There is a <strong>deep connection</strong><sup>1</sup> between the <strong>objects</strong> and <strong>operations</strong> of logic, set theory, and probability:</li>
-</ul>
+<p>There is a <strong>deep connection</strong><sup>1</sup> between the <strong>objects</strong> and <strong>operations</strong> of logic, set theory, and probability:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 18%">
@@ -1163,7 +1128,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </tr>
 </tbody>
 </table>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>For math majors, you can think of it as an <strong>isomorphism</strong> between the objects and operations of the three subjects</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>For math majors, an <strong>isomorphism</strong></p></li></ol></aside></section>
 <section id="example-flipping-two-coins-1" class="slide level2 smaller">
 <h2>Example: Flipping Two Coins</h2>
 <ul>
@@ -1182,13 +1147,13 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 <li>But, we should still be able to say something about their <strong>likelihood</strong>, for example, whether <span class="math inline">\(f_1\)</span> or <span class="math inline">\(f_2\)</span> is more likely to happen… <strong>Enter probability theory!</strong></li>
 </ul>
 </section>
-<section id="logic-rightarrow-probability" class="slide level2 scrollable">
+<section id="logic-rightarrow-probability" class="slide level2 crunch-title inline-90 crunch-li-5 scrollable">
 <h2>Logic <span class="math inline">\(\rightarrow\)</span> Probability</h2>
 <ul>
 <li>Probability theory lets us reason about the <strong>uncertainty</strong> surrounding <strong>logical</strong> predicates like <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span>, by:
 <ol type="a">
 <li>encoding them as <strong>sets of possibilities</strong> <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span>, and</li>
-<li>representing the uncertainty around any given possibility using a <strong>probability measure</strong> <span class="math inline">\(\Pr: S \mapsto [0,1]\)</span>,</li>
+<li>representing uncertainty around a given possibility using a <strong>probability measure</strong> <span class="math inline">\(\Pr: S \mapsto [0,1]\)</span>,</li>
 </ol></li>
 <li>thus allowing us to reason about
 <ol type="a">
@@ -1197,7 +1162,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </ol></li>
 </ul>
 </section>
-<section id="flipping-two-coins-logic-rightarrow-probability" class="slide level2 smaller">
+<section id="flipping-two-coins-logic-rightarrow-probability" class="slide level2 smaller title-12">
 <h2>Flipping Two Coins: Logic <span class="math inline">\(\rightarrow\)</span> Probability</h2>
 <ul>
 <li>Returning to the two coins example: we can look at the predicates and see that they exhaust all possibilities, so that we can define a <strong>sample space</strong> <span class="math inline">\(S = \{TT, TH, HT, HH\}\)</span> of all possible <strong>outcomes</strong> of our coin-flipping experiment, noting that <span class="math inline">\(|S| = 4\)</span>, so there are 4 possible outcomes.</li>
@@ -1240,7 +1205,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </tbody>
 </table>
 </section>
-<section id="moving-from-predicates-to-formulas" class="slide level2 smaller crunch-table crunch-math">
+<section id="moving-from-predicates-to-formulas" class="slide level2 smaller crunch-table crunch-title crunch-math math-80 inline-90 crunch-ul">
 <h2>Moving from Predicates to Formulas</h2>
 <ul>
 <li>Notice that, in the four rows of the previous table, we were only computing the probabilities of “simple” events: events corresponding to a <strong>single</strong> predicate</li>
@@ -1263,7 +1228,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 <tr class="odd">
 <td><span class="math inline">\(f_1 = p_1 \wedge q_2\)</span></td>
 <td style="text-align: left;"><span class="math display">\[ \begin{align*} F_1 &amp;= P_1 \cap Q_2 \\ &amp;= \{HT, HH\} \cap \{TT, HT\} \\ &amp;= \{HT\} \end{align*} \]</span></td>
-<td style="text-align: left;"><span class="math display">\[\begin{align*} \Pr(F_1) &amp;= \Pr(\{HT\}) \\ &amp;= \frac{|\{HT\}|}{|S|} = \frac{1}{4} \end{align*}\]</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} \Pr(F_1) &amp;= \Pr(\{HT\}) \\ &amp;= \frac{|\{HT\}|}{|S|} = \frac{1}{4} \phantom{= \frac{1}{4} = \frac{1}{4}} \end{align*}\]</span></td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(f_2 = p_1 \vee q_2\)</span></td>
@@ -1272,16 +1237,16 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(f_3 = \neg p_1\)</span></td>
-<td style="text-align: left;"><span class="math display">\[\begin{align*} F_3 &amp;= P_1^c \\ &amp;= \{HT, HH\}^c \\ &amp;= \{TT, TH\}\end{align*}\]</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} F_3 &amp;= P_1^c \\ &amp;= \{HT, HH\}^c \phantom{\cup \{TT, HT\}} \\ &amp;= \{TT, TH\}\end{align*}\]</span></td>
 <td style="text-align: left;"><span class="math display">\[\begin{align*} \Pr(F_3) &amp;= \Pr(\{TT, TH\}) \\ &amp;= \frac{|\{TT, TH\}|}{|S|} = \frac{2}{4} = \frac{1}{2} \end{align*}\]</span></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="using-rules-of-probability" class="slide level2 smaller crunch-math crunch-title">
+<section id="using-rules-of-probability" class="slide level2 smaller crunch-math crunch-title crunch-ul inline-90 math-80">
 <h2>Using “Rules” of Probability</h2>
 <ul>
-<li>Hopefully, though, you found all this churning through set theory to be a bit tedious…</li>
+<li>Hopefully, you found all this churning through set theory to be tedious… ☠️</li>
 <li>This is where <strong>rules of probability</strong> come from! They <strong>simplify</strong> set-theoretic computations into simple multiplications, additions, and subtractions:
 <ul>
 <li><span class="math inline">\(\Pr(A \cap B) = \Pr(A) \times \Pr(B)\)</span></li>
@@ -1322,7 +1287,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </tbody>
 </table>
 </section>
-<section id="importing-results-from-logic" class="slide level2 crunch-math">
+<section id="importing-results-from-logic" class="slide level2 crunch-math crunch-title">
 <h2>“Importing” Results from Logic</h2>
 <ul>
 <li>This deep connection between the three fields means that, if we have some useful theorem or formula from one field, we can immediately put it to use in another!</li>
@@ -1385,11 +1350,13 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 <h1>Statistics: Univariate and Multivariate</h1>
 
 </section>
-<section id="random-variables-1" class="slide level2 crunch-math">
+<section id="random-variables-1" class="slide level2 crunch-math crunch-title">
 <h2>Random Variables</h2>
 <ul>
 <li>Recall our discussion of <strong>random variables</strong>: used by analogy to <strong>algebra</strong>, since we can do math with them:</li>
-<li>Just as <span class="math inline">\(2 \cdot 3\)</span> is shorthand for <span class="math inline">\(2 + 2 + 2\)</span>, we can define <span class="math inline">\(X\)</span> as shorthand for the possible outcomes of a random process. <span class="math display">\[
+<li>Just as <span class="math inline">\(2 \cdot 3\)</span> is shorthand for <span class="math inline">\(2 + 2 + 2\)</span>, can define <span class="math inline">\(X\)</span> as shorthand for possible outcomes of random process:</li>
+</ul>
+<p><span class="math display">\[
 \begin{align*}
 S = \{ &amp;\text{result of dice roll is 1}, \\
 &amp;\text{result of dice roll is 2}, \\
@@ -1398,8 +1365,7 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
 &amp;\text{result of dice roll is 5}, \\
 &amp;\text{result of dice roll is 6}\} \rightsquigarrow X \in \{1,\ldots,6\}
 \end{align*}
-\]</span></li>
-</ul>
+\]</span></p>
 </section>
 <section id="random-variables-as-events" class="slide level2 smaller">
 <h2>Random Variables as Events</h2>
@@ -1442,10 +1408,10 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
 </tbody>
 </table>
 </section>
-<section id="doing-math-with-events" class="slide level2 smaller crunch-title crunch-math">
+<section id="doing-math-with-events" class="slide level2 smaller crunch-title crunch-math math-90 crunch-ul">
 <h2>Doing Math with Events</h2>
 <ul>
-<li>We’ve seen how <span class="math inline">\(\Pr(\cdot)\)</span> can “encode” logical expressions involving uncertain outcomes.</li>
+<li>We’ve seen how <span class="math inline">\(\Pr()\)</span> “encodes” logical expressions involving uncertain outcomes.</li>
 <li>Even more powerful when paired with the notion of <strong>random variables</strong>: lets us also “encode” <strong>mathematical</strong> expressions involving uncertain quantities!</li>
 <li>Consider an experiment where we <strong>roll two dice</strong>. Let <span class="math inline">\(X\)</span> be the RV encoding the outcome of the first roll, and <span class="math inline">\(Y\)</span> be the RV encoding the outcome of the second roll.</li>
 <li>We can compute probabilities involving <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> separately, e.g., <span class="math inline">\(\Pr(X = 1) = \frac{1}{6}\)</span>, but we can <strong>also</strong> reason probabilistically about <strong>mathematical expressions</strong> involving <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>! For example, we can reason about their <strong>sum</strong>:</li>
@@ -1508,7 +1474,7 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
 <li><strong>Cardinal</strong>
 <ul>
 <li>Can place in order, and gaps are meaningful <span class="math inline">\(\implies\)</span> can do “standard” math with them! Example: <span class="math inline">\(\{{\color{blue}1},{\color{blue}2},\ldots,{\color{blue}10}\}\)</span></li>
-<li><span class="math inline">\({\color{blue}7}\overset{\color{green}\unicode{x2714}}{=} 2 \cdot {\color{blue}4} - 1\)</span></li>
+<li><span class="math inline">\({\color{blue}7} \overset{\text{✅}}{=} 2 \cdot {\color{blue}4} - 1\)</span></li>
 <li>If events have <strong>this structure</strong> (meaningful way to define multiplication, addition, subtraction), then we can analyze them as <strong>random variables</strong></li>
 </ul></li>
 </ul>
@@ -1557,7 +1523,7 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
 <h2>Adding a Single Line</h2>
 
 <img data-src="index_files/figure-revealjs/game-reviews-mean-line-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">(Data from <a href="https://www.metacritic.com/game/switch/the-legend-of-zelda-tears-of-the-kingdom?ref=hp">Metacritic</a>)</p></section>
-<section id="or-a-single-ribbon" class="slide level2">
+<section id="or-a-single-ribbon" class="slide level2 crunch-title crunch-quarto-figure">
 <h2>Or a Single Ribbon</h2>
 <div>
 
@@ -1605,7 +1571,7 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
 </div>
 </div>
 </section>
-<section id="example-the-normal-distribution" class="slide level2 smaller crunch-figures scrollable">
+<section id="example-the-normal-distribution" class="slide level2 smaller crunch-figures crunch-title scrollable">
 <h2>Example: The Normal Distribution</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -1638,14 +1604,11 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
 <li><strong>Mean</strong> can usually be interpreted intuitively; for <strong>standard deviation</strong>, we usually use the <a href="https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule" target="_blank"><strong>68-95-99.7 rule</strong></a>, which will make more sense relative to some <strong>real-world data</strong>…</li>
 </ul>
 <aside><ol class="aside-footnotes"><li id="fn2"><p>Throughout the course, this “calligraphic” font <span class="math inline">\(\mathcal{N}\)</span>, <span class="math inline">\(\mathcal{D}\)</span>, etc., will be used to denote <strong>distributions</strong></p></li><li id="fn3"><p>Throughout the course, remember, <span style="color:purple;"><strong>purrple</strong></span> is for <span style="color:purple;"><strong>purrameters</strong></span></p></li></ol></aside></section>
-<section id="real-data-and-the-68-95-99.7-rule" class="slide level2 smaller crunch-layout-panel crunch-title crunch-figures crunch-lists crunch-images">
+<section id="real-data-and-the-68-95-99.7-rule" class="slide level2 smaller crunch-layout-panel crunch-title crunch-figures crunch-lists crunch-images crunch-quarto-figure">
 <h2>Real Data and the 68-95-99.7 Rule</h2>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div id="fig-height-plot" class="quarto-float quarto-figure quarto-figure-center" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig">
@@ -1659,20 +1622,18 @@ Figure&nbsp;2: Heights (cm) for 18K professional athletes
 </div>
 </div>
 </div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+</div><div class="column" style="width:50%;">
 <div id="fig-empirical" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-empirical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<p><img src="images/empirical_rule.svg" height="333"></p>
+<p><img src="images/empirical_rule.svg" height="256"></p>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-empirical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: The 68-95-99.7 Rule visualized (<a href="https://commons.wikimedia.org/wiki/File:Empirical_rule_histogram.svg" target="_blank">Wikimedia Commons</a>)
 </figcaption>
 </figure>
 </div>
-</div>
-</div>
-</div>
+</div></div>
 <p>The <strong>point estimate</strong> <span class="math inline">\({\color{purple}\mu} = 186.48\)</span> is straightforward: <em>the average height of the athletes is 186.48cm</em>. Using the 68-95-99.7 Rule to interpret the <strong>SD</strong>, <span class="math inline">\({\color{purple}\sigma} = 9.7\)</span>, we get:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -1733,40 +1694,31 @@ Figure&nbsp;3: The 68-95-99.7 Rule visualized (<a href="https://commons.wikimedi
 </table>
 </div></div>
 </section>
-<section id="boxplots-comparing-multiple-distributions" class="slide level2 smaller small-title">
+<section id="boxplots-comparing-multiple-distributions" class="slide level2 smaller title-12 crunch-title crunch-quarto-figure">
 <h2>Boxplots: Comparing Multiple Distributions</h2>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="columns" style="display: flex !important; height: 90%;">
+<div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/boxplot_vs_pdf.svg"></p>
-<figcaption><a href="https://commons.wikimedia.org/wiki/File:Boxplot_vs_PDF.svg">Jhguch at en.wikipedia</a>, <a href="https://creativecommons.org/licenses/by-sa/2.5">CC BY-SA 2.5</a>, via Wikimedia Commons</figcaption>
+<figcaption>From <a href="https://commons.wikimedia.org/wiki/File:Boxplot_vs_PDF.svg">Wikimedia Commons</a></figcaption>
 </figure>
 </div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div class="quarto-figure quarto-figure-center">
+</div><div class="column" style="display: flex; justify-content: center; align-items: center;">
+<div id="div-around-thing">
+<div id="thing" class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/multiple_boxplots.svg"></p>
-<figcaption><a href="https://commons.wikimedia.org/wiki/File:Boxplot_of_Average_Article_Feedback_ratings_by_project_rated_quality.svg">Protonk</a>, <a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>, via Wikimedia Commons</figcaption>
+<figcaption>From <a href="https://commons.wikimedia.org/wiki/File:Boxplot_of_Average_Article_Feedback_ratings_by_project_rated_quality.svg">Wikimedia Commons</a></figcaption>
 </figure>
 </div>
 </div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="another-option-joyplots" class="slide level2 smaller">
 <h2>Another Option: Joyplots</h2>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="columns">
+<div class="column" style="width:50%;">
 <div id="fig-joy-division" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-joy-division-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -1777,28 +1729,24 @@ Figure&nbsp;4: <a href="https://www.esri.com/arcgis-blog/products/arcgis-pro/map
 </figcaption>
 </figure>
 </div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+</div><div class="column" style="width:50%;">
 <div id="fig-manifesto" class="quarto-float quarto-figure quarto-figure-center">
 <figure class="quarto-float quarto-float-fig">
 <div aria-describedby="fig-manifesto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<p><img src="images/manifesto_distances.png" height="550"></p>
+<p><img src="images/manifesto_distances.png" height="500"></p>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-manifesto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;5: <a href="https://cs.stanford.edu/~jjacobs3/Jacobs_Translations_Ideological_Interventions_2019_11_22.pdf" target="_blank"><em>(Tooting my own horn)</em></a>
 </figcaption>
 </figure>
 </div>
-</div>
-</div>
-</div>
+</div></div>
 </section>
-<section id="multivariate-distributions-preview" class="slide level2 smaller">
+<section id="multivariate-distributions-preview" class="slide level2 smaller crunch-title">
 <h2>Multivariate Distributions: Preview</h2>
 <ul>
 <li>The <strong>bivariate normal</strong> distribution represents the distribution of <strong>two</strong> normally-distributed RVs <span class="math inline">\(\mathbf{X} = [\begin{smallmatrix} X_1 &amp; X_2\end{smallmatrix}]\)</span>, which may or may not be correlated:</li>
 </ul>
-<div class="special-math" style="margin-bottom: 42px !important;">
 <p><span class="math display">\[
 \mathbf{X} = \begin{bmatrix}X_1 \\ X_2\end{bmatrix}, \; \boldsymbol{\mu} =
 %\begin{bmatrix}\mu_1 \\ \mu_2\end{bmatrix}
@@ -1807,7 +1755,6 @@ Figure&nbsp;5: <a href="https://cs.stanford.edu/~jjacobs3/Jacobs_Translations_Id
 % \begin{bmatrix}\sigma_1^2 &amp; \rho\sigma_1\sigma_2 \\ \rho\sigma_2\sigma_1 &amp; \sigma_2^2 \end{bmatrix}
 % = \begin{bmatrix}\text{Var}[X_1] &amp; \text{Cov}[X_1,X_2] \\ \text{Cov}[X_2,X_1] &amp; \text{Var}[X_2] \end{bmatrix}
 \]</span></p>
-</div>
 <ul>
 <li>By squishing all this information intro matrices, we can specify the parameters of <strong>multivariate-normally-distributed</strong> <em>vectors</em> of RVs similarly to how we specify single-dimensional normally-distributed RVs:</li>
 </ul>
@@ -2233,6 +2180,13 @@ Figure&nbsp;5: <a href="https://cs.stanford.edu/~jjacobs3/Jacobs_Translations_Id
             if (link.dataset.originalHref !== undefined) {
               link.href = link.dataset.originalHref;
             }
+              // target, if specified
+              link.setAttribute("target", "_blank");
+              if (link.getAttribute("rel") === null) {
+                link.setAttribute("rel", "noopener");
+              }
+              // default icon
+              link.classList.add("external");
           }
         }
       function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {

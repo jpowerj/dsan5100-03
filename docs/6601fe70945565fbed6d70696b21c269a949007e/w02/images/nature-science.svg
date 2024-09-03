@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<svg width="373pt" height="209pt" viewBox="0.00 0.00 373.36 209.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 205)">
+<title>grid</title>
+<polygon fill="#ffffff" stroke="transparent" points="-4,4 -4,-205 369.3597,-205 369.3597,4 -4,4"/>
+<g id="clust4" class="cluster">
+<title>cluster_02</title>
+<polygon fill="none" stroke="#000000" points="268.8639,-62 268.8639,-139 357.3597,-139 357.3597,-62 268.8639,-62"/>
+<text text-anchor="middle" x="313.1118" y="-122.4" font-family="Times,serif" font-size="14.00" fill="#000000">"Science"</text>
+</g>
+<g id="clust1" class="cluster">
+<title>cluster_01</title>
+<polygon fill="none" stroke="#000000" points="8,-8 8,-193 212.8639,-193 212.8639,-8 8,-8"/>
+<text text-anchor="middle" x="110.432" y="-176.4" font-family="Times,serif" font-size="14.00" fill="#000000">"Nature"</text>
+</g>
+<!-- Obs -->
+<g id="node1" class="node">
+<title>Obs</title>
+<ellipse fill="#add8e6" stroke="#000000" cx="110.432" cy="-142" rx="88.5438" ry="18"/>
+<text text-anchor="middle" x="110.432" y="-137.8" font-family="Times,serif" font-size="14.00" fill="#000000">Thing(s) we can see</text>
+</g>
+<!-- Und -->
+<g id="node2" class="node">
+<title>Und</title>
+<ellipse fill="#ffffff" stroke="#000000" cx="110.432" cy="-34" rx="94.3639" ry="18"/>
+<text text-anchor="middle" x="110.432" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000">Underlying processes</text>
+</g>
+<!-- Und&#45;&gt;Obs -->
+<g id="edge3" class="edge">
+<title>Und-&gt;Obs</title>
+<path fill="none" stroke="#000000" d="M110.432,-52.1406C110.432,-72.653 110.432,-93.1653 110.432,-113.6776"/>
+<polygon fill="#000000" stroke="#000000" points="106.932,-113.7473 110.432,-123.7473 113.932,-113.7473 106.932,-113.7473"/>
+</g>
+<!-- Model -->
+<g id="node3" class="node">
+<title>Model</title>
+<ellipse fill="none" stroke="#000000" stroke-dasharray="5,2" cx="313.1118" cy="-88" rx="36.4975" ry="18"/>
+<text text-anchor="middle" x="313.1118" y="-83.8" font-family="Times,serif" font-size="14.00" fill="#000000">Model</text>
+</g>
+<!-- Und&#45;&gt;Model -->
+<g id="edge1" class="edge">
+<title>Und-&gt;Model</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M175.3125,-51.2861C210.6361,-60.6974 252.7787,-71.9254 281.0787,-79.4654"/>
+<polygon fill="#000000" stroke="#000000" points="176.1114,-47.877 165.5474,-48.6844 174.3092,-54.641 176.1114,-47.877"/>
+</g>
+<!-- Model&#45;&gt;Obs -->
+<g id="edge2" class="edge">
+<title>Model-&gt;Obs</title>
+<path fill="none" stroke="#000000" stroke-dasharray="5,2" d="M280.9467,-96.5697C252.3028,-104.2013 209.5536,-115.591 174.0258,-125.0567"/>
+<polygon fill="#000000" stroke="#000000" points="172.9761,-121.7142 164.2143,-127.6708 174.7783,-128.4782 172.9761,-121.7142"/>
+</g>
+</g>
+</svg>
