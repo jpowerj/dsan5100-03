@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jeff Jacobs">
-<meta name="dcterms.date" content="2024-09-03">
 
 <title>Week 2: Introduction to Probabilistic Modeling – DSAN 5100-03</title>
 <style>
@@ -353,7 +352,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">September 3, 2024</p>
+      <p class="date">Tuesday, September 3, 2024</p>
     </div>
   </div>
   
@@ -368,43 +367,50 @@ window.Quarto = {
 <center>
 <a class="h2" href="slides.html" target="_blank">Open slides in new window →</a>
 </center>
-<section id="schedule" class="level1 smaller smaller-title" data-name="Schedule">
-<h1 class="smaller smaller-title" data-name="Schedule">Schedule</h1>
+<section id="schedule" class="level1 smaller smaller-title">
+<h1 class="smaller smaller-title">Schedule</h1>
 <div class="hidden">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For slides</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cbPalette <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>, <span class="st">"#F0E442"</span>, <span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span>, <span class="st">"#CC79A7"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">ggplot2.discrete.colour =</span> cbPalette)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Theme generator, for given sizes</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dsan_theme <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">plot_type =</span> <span class="st">"full"</span>) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (plot_type <span class="sc">==</span> <span class="st">"full"</span>) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        custom_base_size <span class="ot">&lt;-</span> <span class="dv">16</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (plot_type <span class="sc">==</span> <span class="st">"half"</span>) {</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        custom_base_size <span class="ot">&lt;-</span> <span class="dv">22</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (plot_type <span class="sc">==</span> <span class="st">"quarter"</span>) {</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        custom_base_size <span class="ot">&lt;-</span> <span class="dv">28</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># plot_type == "col"</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        custom_base_size <span class="ot">&lt;-</span> <span class="dv">22</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    theme <span class="ot">&lt;-</span> <span class="fu">theme_classic</span>(<span class="at">base_size =</span> custom_base_size) <span class="sc">+</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme</span>(</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.box.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(theme)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">fig.align =</span> <span class="st">"center"</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>g_pointsize <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>g_linesize <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Technically it should always be linewidth</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>g_linewidth <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>g_textsize <span class="ot">&lt;-</span> <span class="dv">14</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>remove_legend_title <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">theme</span>(</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">"mm"</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<style>
-  .crunch-figures .quarto-figure {
-    margin-bottom: 0 !important;
-}
-.crunch-figures figcaption {
-    margin-top: 0 !important;
-}
-.crunch-images img {
-  margin-bottom: 0px !important;
-  margin-top: 0px !important;
-}
-.crunch-layout-panel .quarto-layout-panel {
-  margin-bottom: 0px !important;
-}
-.crunch-lists li {
-    margin-top: 4px !important;
-    margin-bottom: 4px !important;
-}
-.crunch-math .MathJax_Display {
-    margin-top: 0px !important;
-    margin-bottom: 0px !important;
-}
-.crunch-math .math.display {
-  margin-top: 0px !important;
-  margin-bottom: 0px !important;
-}
-.crunch-math mjx-container {
-  margin-top: 2px !important;
-  margin-bottom: 2px !important;
-}
-</style>
 </div>
 <table class="caption-top table">
 <colgroup>
@@ -412,7 +418,6 @@ window.Quarto = {
 <col style="width: 12%">
 <col style="width: 12%">
 <col style="width: 54%">
-<col style="width: 5%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -420,65 +425,56 @@ window.Quarto = {
 <th style="text-align: left;">Start</th>
 <th style="text-align: left;">End</th>
 <th style="text-align: left;">Topic</th>
-<th style="text-align: center;">Recording</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;"><strong>Lecture</strong></td>
-<td style="text-align: left;">12:30pm</td>
-<td style="text-align: left;">12:40pm</td>
+<td style="text-align: left;">6:30pm</td>
+<td style="text-align: left;">6:40pm</td>
 <td style="text-align: left;"><a href="#prof.-jeff-introduction">About Me →</a></td>
-<td style="text-align: center;"><a href="./recording-w02-1.html" target="_blank"><i class="bi bi-film"></i></a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">12:40pm</td>
-<td style="text-align: left;">12:55pm</td>
+<td style="text-align: left;">6:40pm</td>
+<td style="text-align: left;">6:55pm</td>
 <td style="text-align: left;"><a href="#deterministic-processes">Review →</a></td>
-<td style="text-align: center;"><a href="./recording-w02-2.html" target="_blank"><i class="bi bi-film"></i></a></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">12:55pm</td>
-<td style="text-align: left;">1:10pm</td>
+<td style="text-align: left;">6:55pm</td>
+<td style="text-align: left;">7:10pm</td>
 <td style="text-align: left;"><a href="#sampling-and-combinatorics">Sampling and Combinatorics →</a></td>
-<td style="text-align: center;"><a href="./recording-w02-3.html" target="_blank"><i class="bi bi-film"></i></a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">1:10pm</td>
-<td style="text-align: left;">1:25pm</td>
+<td style="text-align: left;">7:10pm</td>
+<td style="text-align: left;">7:25pm</td>
 <td style="text-align: left;"><a href="#probability-fundamentals">Probability Fundamentals →</a></td>
-<td style="text-align: center;"><a href="./recording-w02-4.html" target="_blank"><i class="bi bi-film"></i></a></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">1:25pm</td>
-<td style="text-align: left;">1:50pm</td>
+<td style="text-align: left;">7:25pm</td>
+<td style="text-align: left;">7:50pm</td>
 <td style="text-align: left;"><a href="#univariate-statistics">Statistics Fundamentals →</a></td>
-<td style="text-align: center;"><a href="./recording-w02-5.html" target="_blank"><i class="bi bi-film"></i></a></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"><strong>Break!</strong></td>
-<td style="text-align: left;">1:50pm</td>
-<td style="text-align: left;">2:00pm</td>
+<td style="text-align: left;">7:50pm</td>
+<td style="text-align: left;">8:00pm</td>
 <td style="text-align: left;"></td>
-<td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;"><strong>Lab</strong></td>
-<td style="text-align: left;">2:00pm</td>
-<td style="text-align: left;">2:50pm</td>
+<td style="text-align: left;">8:00pm</td>
+<td style="text-align: left;">8:50pm</td>
 <td style="text-align: left;"><a href="https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-demo.html" target="_blank">Lab 1 Demonstrations <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i></a></td>
-<td style="text-align: center;"></td>
 </tr>
 <tr class="even">
 <td style="text-align: left;"></td>
-<td style="text-align: left;">2:50pm</td>
-<td style="text-align: left;">3:00pm</td>
+<td style="text-align: left;">8:50pm</td>
+<td style="text-align: left;">9:00pm</td>
 <td style="text-align: left;"><a href="https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-assignment.html" target="_blank">Lab Assignment Overview <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i></a></td>
-<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
@@ -525,8 +521,8 @@ window.Quarto = {
 </figure>
 </div>
 </section>
-<section id="research-labor-economics" class="level2 smaller crunch-figures">
-<h2 class="smaller crunch-figures anchored" data-anchor-id="research-labor-economics">Research (Labor Economics)</h2>
+<section id="research-labor-economics" class="level2 smaller crunch-figures crunch-title">
+<h2 class="smaller crunch-figures crunch-title anchored" data-anchor-id="research-labor-economics">Research (Labor Economics)</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -571,8 +567,8 @@ window.Quarto = {
 <p>The pendulum example points to the fact that the notion of a <em>chaotic</em> system, one which is “sensitive to initial conditions”, is different from that of a <em>stochastic</em> system.</p>
 </div>
 </section>
-<section id="holy-grail-deterministic-model-newtonian-physics" class="level2 smaller small-title">
-<h2 class="smaller small-title anchored" data-anchor-id="holy-grail-deterministic-model-newtonian-physics">“Holy Grail” Deterministic Model: Newtonian Physics</h2>
+<section id="holy-grail-deterministic-model-newtonian-physics" class="level2 smaller title-10 crunch-title">
+<h2 class="smaller title-10 crunch-title anchored" data-anchor-id="holy-grail-deterministic-model-newtonian-physics">“Holy Grail” Deterministic Model: Newtonian Physics</h2>
 <style>
 #fig-newton {
     margin-top: 0px !important;
@@ -757,8 +753,8 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 </div>
 </div>
 </section>
-<section id="but-what-happens-when" class="level2 smaller smaller-caption">
-<h2 class="smaller smaller-caption anchored" data-anchor-id="but-what-happens-when">But What Happens When…</h2>
+<section id="but-what-happens-when" class="level2 smaller smaller-caption crunch-title crunch-math-15">
+<h2 class="smaller smaller-caption crunch-title crunch-math-15 anchored" data-anchor-id="but-what-happens-when">But What Happens When…</h2>
 <p><span class="math display">\[
 \text{Outcome}\left(\text{Dice Roll}\right) = \; ?\frac{?_1?_2}{?^2}
 \]</span></p>
@@ -770,7 +766,7 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/fortuna.jpg" height="400" class="figure-img"></p>
-<figcaption>Hans Sebald Beham, <a href="https://commons.wikimedia.org/wiki/File:Fortuna_or_Fortune.jpg"><em>Fortuna</em> (1541)</a>, <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, via Wikimedia Commons</figcaption>
+<figcaption>Hans Sebald Beham, <a href="https://commons.wikimedia.org/wiki/File:Fortuna_or_Fortune.jpg"><em>Fortuna</em> (1541)</a>, via Wikimedia Commons</figcaption>
 </figure>
 </div>
 </div><div class="column" style="width:50%;">
@@ -780,23 +776,21 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/pascal.jpg" height="400" class="figure-img"></p>
-<figcaption>Blaise Pascal, <a href="https://archive.org/details/bub_gb_UqgUAAAAQAAJ/page/n67/mode/2up" target="_blank"><em>Traité du triangle arithmétique</em> (1665)</a>. Public Domain, via Internet Archive</figcaption>
+<figcaption>Blaise Pascal, <a href="https://archive.org/details/bub_gb_UqgUAAAAQAAJ/page/n67/mode/2up" target="_blank"><em>Traité du triangle arithmétique</em> (1665)</a>, via Internet Archive</figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="random-processes" class="level2">
-<h2 class="anchored" data-anchor-id="random-processes">Random Processes</h2>
+<section id="random-processes" class="level2 crunch-title crunch-quarto-figure">
+<h2 class="crunch-title crunch-quarto-figure anchored" data-anchor-id="random-processes">Random Processes</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
 <li>Can’t compute the outcome <em>exactly</em>, but <strong>can still say something</strong> about potential outcomes!</li>
-<li>Example: randomly chosen radius <span class="math inline">\(r \in [0,1]\)</span>, what can we say about <span class="math inline">\(A = \pi r^2\)</span>?
-<ul>
+<li>Example: randomly chosen radius <span class="math inline">\(r \in [0,1]\)</span>, what can we say about <span class="math inline">\(A = \pi r^2\)</span>?</li>
 <li>Unif: <span class="math inline">\([0,\pi]\)</span> equally likely</li>
 <li>Exp: closer to <span class="math inline">\(0\)</span> more likely</li>
-</ul></li>
 </ul>
 </div><div class="column" style="width:50%;">
 <div class="cell nobotmargin" data-layout-align="center">
@@ -815,7 +809,7 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>title <span class="ot">&lt;-</span> <span class="fu">paste0</span>(N, <span class="st">" Exponentially-Distributed Radii"</span>)</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_circ_with_distr</span>(N, radii, title, <span class="at">alpha=</span><span class="fl">0.15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1638 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 1911 rows containing missing values or values outside the scale range
 (`geom_path()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -829,31 +823,25 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 </div>
 </div>
 </section>
-<section id="data-ground-truth-noise" class="level2 smaller">
-<h2 class="smaller anchored" data-anchor-id="data-ground-truth-noise">Data = Ground Truth + Noise</h2>
+<section id="data-ground-truth-noise" class="level2 smaller crunch-title crunch-ul crunch-quarto-figure">
+<h2 class="smaller crunch-title crunch-ul crunch-quarto-figure anchored" data-anchor-id="data-ground-truth-noise">Data = Ground Truth + Noise</h2>
 <ul>
 <li>Depressing but true origin of <strong>statistics</strong> (as opposed to <strong>probability</strong>): the Plague 😷</li>
 </ul>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="columns">
+<div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/lord_have_mercy.jpg" class="img-fluid figure-img"></p>
 <figcaption>Ground Truth: The Great Plague (<em>Lord Have Mercy on London</em>, Unknown Artist, circa 1665, via <a href="https://commons.wikimedia.org/wiki/File:Lord_haue_mercy_on_London.jpg" target="_blank">Wikimedia Commons</a>)</figcaption>
 </figure>
 </div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+</div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/bill.jpeg" class="img-fluid figure-img"></p>
 <figcaption>Noisy Data (Recorded amidst chaos): London Bill of Mortality, 1665 (Public Domain, <a href="https://wellcomecollection.org/works/bqxkq9yy" target="_blank">Wellcome Collection</a>)</figcaption>
 </figure>
-</div>
 </div>
 </div>
 </div>
@@ -893,13 +881,13 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 <ul>
 <li>We’ll define it formally later; for now, this is our working definition:</li>
 </ul>
-<div class="callout callout-style-default callout-tip callout-titled" title="Working Definition: Independence">
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="<i class='bi bi-info-circle pe-1'></i> Working Definition: Independence">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Working Definition: Independence
+<i class="bi bi-info-circle pe-1"></i> Working Definition: Independence
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -910,19 +898,19 @@ Working Definition: Independence
 </section>
 <section id="combinatorics" class="level1" data-stack-name="Combinatorics">
 <h1 data-stack-name="Combinatorics">Combinatorics</h1>
-<section id="naïve-definition-of-probability" class="level2 smaller">
-<h2 class="smaller anchored" data-anchor-id="naïve-definition-of-probability">Naïve Definition of Probability</h2>
+<section id="naïve-definition-of-probability" class="level2">
+<h2 class="anchored" data-anchor-id="naïve-definition-of-probability">Naïve Definition of Probability</h2>
 <ul>
 <li><strong>Sample Space</strong>: The set of all possible <strong>outcomes</strong> of an experiment</li>
 <li><strong>Event</strong>: A <strong>subset</strong> of the sample space</li>
 </ul>
-<div class="callout callout-style-default callout-tip callout-titled" title="Naïve Definition of Probability">
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="<i class='bi bi-info-circle pe-1'></i> Naïve Definition of Probability">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Naïve Definition of Probability
+<i class="bi bi-info-circle pe-1"></i> Naïve Definition of Probability
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -933,15 +921,15 @@ Naïve Definition of Probability
 </div>
 </div>
 </section>
-<section id="example-flipping-two-coins" class="level2 smaller">
-<h2 class="smaller anchored" data-anchor-id="example-flipping-two-coins">Example: Flipping Two Coins</h2>
-<div class="callout callout-style-default callout-tip callout-titled" title="Naïve Definition of Probability">
+<section id="example-flipping-two-coins" class="level2 smaller crunch-title crunch-ul">
+<h2 class="smaller crunch-title crunch-ul anchored" data-anchor-id="example-flipping-two-coins">Example: Flipping Two Coins</h2>
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="<i class='bi bi-info-circle pe-1'></i> Naïve Definition of Probability">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Naïve Definition of Probability
+<i class="bi bi-info-circle pe-1"></i> Naïve Definition of Probability
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -952,12 +940,9 @@ Naïve Definition of Probability
 </div>
 </div>
 <ul>
-<li><strong>Flipping two coins:</strong>
-<ul>
 <li>Sample space <span class="math inline">\(S = \{TT, TH, HT, HH\}\)</span></li>
-<li>Event <span class="math inline">\(E_1\)</span>: Result of first flip is <span class="math inline">\(H\)</span>, result of second flip is <span class="math inline">\(T\)</span> <span class="math inline">\(\implies\)</span> <span class="math inline">\(E_1 = \{HT\}\)</span>.</li>
-<li>Event <span class="math inline">\(E_2\)</span>: At least one <span class="math inline">\(H\)</span> <span class="math inline">\(\implies\)</span> <span class="math inline">\(E_2 = \{TH, HT, HH\}\)</span>.</li>
-</ul></li>
+<li>Event <span class="math inline">\(E_1\)</span>: Result of first flip is <span class="math inline">\(H\)</span>, result of second flip is <span class="math inline">\(T\)</span> <span class="math inline">\(\implies\)</span> <span class="math inline">\(E_1 = \{HT\}\)</span></li>
+<li>Event <span class="math inline">\(E_2\)</span>: At least one <span class="math inline">\(H\)</span> <span class="math inline">\(\implies\)</span> <span class="math inline">\(E_2 = \{TH, HT, HH\}\)</span></li>
 </ul>
 <p><span class="math display">\[
 \begin{align*}
@@ -980,13 +965,13 @@ Naïve Definition of Probability
 </section>
 <section id="back-to-the-naïve-definition" class="level2 smaller">
 <h2 class="smaller anchored" data-anchor-id="back-to-the-naïve-definition">Back to the Naïve Definition</h2>
-<div class="callout callout-style-default callout-tip callout-titled" title="Naïve Definition of Probability">
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="<i class='bi bi-info-circle pe-1'></i> Naïve Definition of Probability">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Naïve Definition of Probability
+<i class="bi bi-info-circle pe-1"></i> Naïve Definition of Probability
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -1044,30 +1029,30 @@ Naïve Definition of Probability
 <li>Problems with extremely similar descriptions can differ in small detail, so that the <strong>units you need to distinguish between</strong> in one version differ from the units you need to distinguish between in the other.</li>
 </ul>
 </section>
-<section id="does-order-matter" class="level2 smaller small-title crunch-lists">
-<h2 class="smaller small-title crunch-lists anchored" data-anchor-id="does-order-matter">Does Order Matter?</h2>
-<div class="callout callout-style-default callout-tip callout-titled" title="Example: Student Government vs. Student Sports">
+<section id="does-order-matter" class="level2 smaller crunch-title small-title crunch-lists crunch-ul crunch-callout">
+<h2 class="smaller crunch-title small-title crunch-lists crunch-ul crunch-callout anchored" data-anchor-id="does-order-matter">Does Order Matter?</h2>
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="<i class='bi bi-info-circle pe-1'></i> Example: Student Government vs. Student Sports">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Example: Student Government vs.&nbsp;Student Sports
+<i class="bi bi-info-circle pe-1"></i> Example: Student Government vs.&nbsp;Student Sports
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>Consider a school where students can either <strong>try out for the swim team</strong> or <strong>run for a position in the student government</strong></li>
-<li>The swim team has <strong>4 slots</strong>, but slots aren’t differentiated: you’re either <strong>on</strong> the team (one of the 4 chosen students) or <strong>not</strong></li>
+<li>Consider a school where students can either <strong>try out for swim team</strong> or <strong>run for a position in student government</strong></li>
+<li>The swim team has <strong>4 slots</strong>, but slots aren’t differentiated: you’re either <strong>on</strong> the team (one of the chosen students) or <strong>not</strong></li>
 <li>The student government also has <strong>4 slots</strong>, but there is a difference between the slots: first slot is <strong>President</strong>, second is <strong>Vice President</strong>, third is <strong>Secretary</strong>, and fourth is <strong>Treasurer</strong>.</li>
 </ul>
 </div>
 </div>
 <ul>
-<li>Simple case (for intuition): the school only has <strong>4 students</strong>. In this case, how many ways are there to form the <strong>swim team</strong>? What about the <strong>student government</strong>?
+<li>Simple case (for intuition): school only has <strong>4 students</strong>. In this case, how many ways are there to form the <strong>swim team</strong>? What about the <strong>student government</strong>?
 <ul>
-<li><strong>Swim team</strong>: <span class="math inline">\(1\)</span> <strong>way</strong>. You have only one choice, to let all 4 students onto the team</li>
-<li><strong>Student government</strong>: <span class="math inline">\(4 \cdot 3 \cdot 2 \cdot 1 = 24\)</span> <strong>ways</strong>. You have to let all 4 students in, <strong>but you have a choice</strong> of who is President, Vice President, Secretary, and Treasurer</li>
+<li><strong>Swim team</strong>: <span class="math inline">\(1\)</span> <strong>way</strong>. You have only one choice, let all 4 students onto team</li>
+<li><strong>Student government</strong>: <span class="math inline">\(4 \cdot 3 \cdot 2 \cdot 1 = 24\)</span> <strong>ways</strong>. You have to let all 4 in, <strong>but you have a choice</strong> of who is President, Vice President, Secretary, and Treasurer</li>
 </ul></li>
 <li>How did we get <span class="math inline">\(4 \cdot 3 \cdot 2 \cdot 1\)</span>? (Think about the ice cream example…)
 <ul>
@@ -1096,14 +1081,8 @@ P_{n,k} = \frac{n!}{(n-k)!}, \; C_{n,k} = \frac{n!}{k!(n-k)!}
 \end{align*}
 \]</span></p>
 </section>
-<section id="no-need-to-memorize" class="level2 smaller crunch-title crunch-math">
-<h2 class="smaller crunch-title crunch-math anchored" data-anchor-id="no-need-to-memorize">No Need to Memorize!</h2>
-<style>
-p {
-    margin-top: 2px !important;
-    margin-bottom: 2px !important;
-}
-</style>
+<section id="no-need-to-memorize" class="level2 smaller crunch-title crunch-math crunch-ul crunch-p">
+<h2 class="smaller crunch-title crunch-math crunch-ul crunch-p anchored" data-anchor-id="no-need-to-memorize">No Need to Memorize!</h2>
 <ul>
 <li>Key point: you don’t have to remember these as <strong>two separate formulas</strong>!</li>
 <li>The number of <strong>combinations</strong> is based on the number of <strong>permutations</strong>, but <strong>corrected</strong> for <strong>double counting</strong>: e.g., corrected for the fact that <span class="math inline">\((a,b) \neq (b,a)\)</span> when counting permutations but <span class="math inline">\((a,b) = (b,a)\)</span> when counting combinations.</li>
@@ -1118,10 +1097,10 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 <li><p><span class="math inline">\(k = 4\)</span>: <span class="math inline">\((\underbrace{\boxed{\phantom{a}}}_{\text{4 choices}}, \underbrace{\boxed{\phantom{a}}}_{\text{3 remaining choices}}, \underbrace{\boxed{\phantom{a}}}_{\text{2 remaining choices}}, \underbrace{\boxed{\phantom{a}}}_{\text{1 remaining choice}}) \implies 24\)</span></p></li>
 </ul>
 </section>
-<section id="with-or-without-replacement" class="level2 smaller">
-<h2 class="smaller anchored" data-anchor-id="with-or-without-replacement">With or Without Replacement?</h2>
+<section id="with-or-without-replacement" class="level2 crunch-title crunch-ul">
+<h2 class="crunch-title crunch-ul anchored" data-anchor-id="with-or-without-replacement">With or Without Replacement?</h2>
 <ul>
-<li>Boils down to: can the same object be included in my sample more than once?</li>
+<li>Boils down to: can the <strong>same object</strong> be included in my sample <strong>more than once</strong>?</li>
 </ul>
 <table class="caption-top table">
 <thead>
@@ -1133,7 +1112,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 <tbody>
 <tr class="odd">
 <td><strong>Most statistical problems</strong>: “Check off” objects as you collect data about them, so that each observation in your data is <strong>unique</strong></td>
-<td>Very special (but very important!) set of statistical problems: allow objects to appear in your sample <strong>multiple times</strong>, to “squeeze” more information out of the sample (<em>called <a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)" target="_blank">Bootstrapping</a>—much more on this later in the course!</em>)</td>
+<td>Special (but important!) set of statistical problems: allow objects to appear in your sample <strong>multiple times</strong>, to “squeeze” more information out of the sample (<em>called <a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)" target="_blank">Bootstrapping</a>—much more on this later in the course!</em>)</td>
 </tr>
 </tbody>
 </table>

@@ -4,6 +4,7 @@ subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Sect
 author: "Jeff Jacobs"
 institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
 date: 2024-09-03
+date-format: full
 lecnum: 2
 categories:
   - "Class Sessions"
@@ -18,18 +19,15 @@ format:
     html-math-method: mathjax
     scrollable: true
     slide-number: true
-    section-divs: false
+    number-sections: false
+    theme: [default]
+    revealjs-plugins:
+      - simplemenu
     simplemenu:
       flat: true
       barhtml:
         header: "<div class='menubar'><span style='position: absolute; left: 8; padding-left: 8px;'><a href='./index.html'>&larr; Return to Notes</a></span><ul class='menu'></ul></div>"
       scale: 0.5
-    number-sections: false
-    footnotes-hover: true
-    tbl-cap-location: bottom
-    theme: [default]
-    revealjs-plugins:
-      - simplemenu
     include-in-header:
       text: "<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous'><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>"
   html:
@@ -46,63 +44,22 @@ format:
 
 :::
 
-# Schedule {.smaller .smaller-title data-name="Schedule"}
+# Schedule {.smaller .smaller-title}
 
-::: {.hidden}
+{{< include ../dsan-globals/_gg.globals.qmd >}}
 
-```{r}
-#| label: r-source-globals
-source("../_globals.r")
-```
+| | Start | End | Topic |
+|:- |:- |:- |:- |
+| **Lecture** | 6:30pm | 6:40pm | [About Me &rarr;](#prof.-jeff-introduction) |
+| | 6:40pm | 6:55pm | [Review &rarr;](#deterministic-processes) |
+| | 6:55pm | 7:10pm | [Sampling and Combinatorics &rarr;](#sampling-and-combinatorics) |
+| | 7:10pm | 7:25pm | [Probability Fundamentals &rarr;](#probability-fundamentals) |
+| | 7:25pm | 7:50pm | [Statistics Fundamentals &rarr;](#univariate-statistics) |
+| **Break!** | 7:50pm | 8:00pm | |
+| **Lab** | 8:00pm | 8:50pm | [Lab 1 Demonstrations <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i>](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-demo.html){target="_blank"} | |
+| | 8:50pm | 9:00pm | [Lab Assignment Overview <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i>](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-assignment.html){target="_blank"} | |
 
-```{=html}
-<style>
-  .crunch-figures .quarto-figure {
-    margin-bottom: 0 !important;
-}
-.crunch-figures figcaption {
-    margin-top: 0 !important;
-}
-.crunch-images img {
-  margin-bottom: 0px !important;
-  margin-top: 0px !important;
-}
-.crunch-layout-panel .quarto-layout-panel {
-  margin-bottom: 0px !important;
-}
-.crunch-lists li {
-    margin-top: 4px !important;
-    margin-bottom: 4px !important;
-}
-.crunch-math .MathJax_Display {
-    margin-top: 0px !important;
-    margin-bottom: 0px !important;
-}
-.crunch-math .math.display {
-  margin-top: 0px !important;
-  margin-bottom: 0px !important;
-}
-.crunch-math mjx-container {
-  margin-top: 2px !important;
-  margin-bottom: 2px !important;
-}
-</style>
-```
-
-:::
-
-| | Start | End | Topic | Recording |
-|:- |:- |:- |:- |:-:|
-| **Lecture** | 12:30pm | 12:40pm | [About Me &rarr;](#prof.-jeff-introduction) | <a href="./recording-w02-1.html" target="_blank"><i class="bi bi-film"></i></a> |
-| | 12:40pm | 12:55pm | [Review &rarr;](#deterministic-processes) | <a href="./recording-w02-2.html" target="_blank"><i class="bi bi-film"></i></a> |
-| | 12:55pm | 1:10pm | [Sampling and Combinatorics &rarr;](#sampling-and-combinatorics) | <a href="./recording-w02-3.html" target="_blank"><i class="bi bi-film"></i></a> |
-| | 1:10pm | 1:25pm | [Probability Fundamentals &rarr;](#probability-fundamentals) | <a href="./recording-w02-4.html" target="_blank"><i class="bi bi-film"></i></a> |
-| | 1:25pm | 1:50pm | [Statistics Fundamentals &rarr;](#univariate-statistics) | <a href="./recording-w02-5.html" target="_blank"><i class="bi bi-film"></i></a> |
-| **Break!** | 1:50pm | 2:00pm | | |
-| **Lab** | 2:00pm | 2:50pm | [Lab 1 Demonstrations <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i>](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-demo.html){target="_blank"} | |
-| | 2:50pm | 3:00pm | [Lab Assignment Overview <i class="bi bi-box-arrow-up-right" style="font-size: 1.2rem;"></i>](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-assignment.html){target="_blank"} | |
-
-: {tbl-colwidths="[12,12,12,54,5,5]"} 
+: {tbl-colwidths="[12,12,12,54,5]"} 
 
 # About Me {data-stack-name="About Me"}
 
@@ -139,7 +96,7 @@ source("../_globals.r")
 ![](images/diss.png){fig-align="center"}
 
 
-## Research (Labor Economics) {.smaller .crunch-figures}
+## Research (Labor Economics) {.smaller .crunch-figures .crunch-title}
 
 ::: columns
 ::: {.column width="50%"}
@@ -179,10 +136,12 @@ source("../_globals.r")
 ![Image credit: <a href="https://tenor.com/view/double-pendulum-pendulum-chaos-theory-gif-25511149" target="_blank">Tenor.com</a>](images/pendulum.gif){fig-align="center" .notopmargin}
 
 ::: {.notes}
+
 The pendulum example points to the fact that the notion of a *chaotic* system, one which is "sensitive to initial conditions", is different from that of a *stochastic* system.
+
 :::
 
-## "Holy Grail" Deterministic Model: Newtonian Physics {.smaller .small-title}
+## "Holy Grail" Deterministic Model: Newtonian Physics {.smaller .title-10 .crunch-title}
 
 ```{=html}
 <style>
@@ -311,7 +270,7 @@ $$
 &nbsp;
 :::
 
-## But What Happens When... {.smaller .smaller-caption}
+## But What Happens When... {.smaller .smaller-caption .crunch-title .crunch-math-15}
 
 $$
 \text{Outcome}\left(\text{Dice Roll}\right) = \; ?\frac{?_1?_2}{?^2}
@@ -324,7 +283,7 @@ $$
 **Pre-Enlightenment**
 </center>
 
-![Hans Sebald Beham, <a href="https://commons.wikimedia.org/wiki/File:Fortuna_or_Fortune.jpg">*Fortuna* (1541)</a>, <a href="https://creativecommons.org/licenses/by/4.0">CC BY 4.0</a>, via Wikimedia Commons](images/fortuna.jpg){height=400}
+![Hans Sebald Beham, <a href="https://commons.wikimedia.org/wiki/File:Fortuna_or_Fortune.jpg">*Fortuna* (1541)</a>, via Wikimedia Commons](images/fortuna.jpg){height=400}
 
 :::
 ::: {.column width="50%"}
@@ -333,20 +292,20 @@ $$
 **Post-Enlightenment**
 </center>
 
-![Blaise Pascal, <a href="https://archive.org/details/bub_gb_UqgUAAAAQAAJ/page/n67/mode/2up" target="_blank">*Traité du triangle arithmétique* (1665)</a>. Public Domain, via Internet Archive](images/pascal.jpg){height=400}
+![Blaise Pascal, <a href="https://archive.org/details/bub_gb_UqgUAAAAQAAJ/page/n67/mode/2up" target="_blank">*Traité du triangle arithmétique* (1665)</a>, via Internet Archive](images/pascal.jpg){height=400}
 
 :::
 :::
 
-## Random Processes
+## Random Processes {.crunch-title .crunch-quarto-figure}
 
 ::: columns
 ::: {.column width="50%"}
 
 * Can't compute the outcome *exactly*, but **can still say something** about potential outcomes!
 * Example: randomly chosen radius $r \in [0,1]$, what can we say about $A = \pi r^2$?
-  * Unif: $[0,\pi]$ equally likely
-  * Exp: closer to $0$ more likely
+* Unif: $[0,\pi]$ equally likely
+* Exp: closer to $0$ more likely
 
 :::
 ::: {.column width="50%"}
@@ -412,17 +371,22 @@ plot_circ_with_distr(N, radii, title, alpha=0.15)
 :::
 :::
 
-## Data = Ground Truth + Noise {.smaller}
+## Data = Ground Truth + Noise {.smaller .crunch-title .crunch-ul .crunch-quarto-figure}
 
 * Depressing but true origin of **statistics** (as opposed to **probability**): the Plague 😷
 
-::: {layout-ncol=2}
+:::: {.columns}
+::: {.column width="50%"}
 
 ![Ground Truth: The Great Plague (*Lord Have Mercy on London*, Unknown Artist, circa 1665, via <a href="https://commons.wikimedia.org/wiki/File:Lord_haue_mercy_on_London.jpg" target="_blank">Wikimedia Commons</a>)](images/lord_have_mercy.jpg)
+
+:::
+::: {.column width="50%"}
 
 ![Noisy Data (Recorded amidst chaos): London Bill of Mortality, 1665 (Public Domain, <a href="https://wellcomecollection.org/works/bqxkq9yy" target="_blank">Wellcome Collection</a>)](images/bill.jpeg)
 
 :::
+::::
 
 ## Random Variables {.smaller}
 
@@ -451,7 +415,7 @@ $$
 
 * We'll define it formally later; for now, this is our working definition:
 
-::: {.callout-tip title="Working Definition: Independence"}
+::: {.callout-tip icon="false" title="<i class='bi bi-info-circle pe-1'></i> Working Definition: Independence"}
 
 Two random variables $X$ and $Y$ are **independent** if learning information about $X$ does **not** give you information about the value of $Y$, or vice-versa.
 
@@ -459,12 +423,16 @@ Two random variables $X$ and $Y$ are **independent** if learning information abo
 
 # Combinatorics {data-stack-name="Combinatorics"}
 
-## Naïve Definition of Probability {.smaller}
+## Naïve Definition of Probability
 
 * **Sample Space**: The set of all possible **outcomes** of an experiment
 * **Event**: A **subset** of the sample space
 
-::: {.callout-tip title="Naïve Definition of Probability"}
+{{< include ../_components/naive-defn.qmd >}}
+
+## Example: Flipping Two Coins {.smaller .crunch-title .crunch-ul}
+
+::: {.callout-tip icon="false" title="<i class='bi bi-info-circle pe-1'></i> Naïve Definition of Probability"}
 
 Given a sample space $S$, and an event $E \subset S$,
 
@@ -474,22 +442,9 @@ $$
 
 :::
 
-## Example: Flipping Two Coins {.smaller}
-
-::: {.callout-tip title="Naïve Definition of Probability"}
-
-Given a sample space $S$, and an event $E \subset S$,
-
-$$
-\Pr(\underbrace{E}_{\text{event}}) = \frac{\text{\# Favorable Outcomes}}{\text{\# Possible Outcomes}} = \frac{|E|}{|S|}
-$$
-
-:::
-
-* **Flipping two coins:**
-    * Sample space $S = \{TT, TH, HT, HH\}$
-    * Event $E_1$: Result of first flip is $H$, result of second flip is $T$ $\implies$ $E_1 = \{HT\}$.
-    * Event $E_2$: At least one $H$ $\implies$ $E_2 = \{TH, HT, HH\}$.
+* Sample space $S = \{TT, TH, HT, HH\}$
+* Event $E_1$: Result of first flip is $H$, result of second flip is $T$ $\implies$ $E_1 = \{HT\}$
+* Event $E_2$: At least one $H$ $\implies$ $E_2 = \{TH, HT, HH\}$
 
 $$
 \begin{align*}
@@ -509,15 +464,7 @@ $$
 
 ## Back to the Naïve Definition {.smaller}
 
-::: {.callout-tip title="Naïve Definition of Probability"}
-
-Given a sample space $S$, and an event $E \subset S$,
-
-$$
-\Pr(\underbrace{E}_{\text{event}}) = \frac{\text{\# Favorable Outcomes}}{\text{\# Possible Outcomes}} = \frac{|E|}{|S|}
-$$
-
-:::
+{{< include ../_components/naive-defn.qmd >}}
 
 * The naïve definition tells us that **probabilities** are just **ratios of counts**:
     * Count the number of ways the event $E$ can happen, count the total number of things that can happen, and divide!
@@ -548,19 +495,19 @@ $$
 * This is not a **mathematical** distinction so much as a **pragmatic** distinction: what are you trying to **accomplish** by counting?
 * Problems with extremely similar descriptions can differ in small detail, so that the **units you need to distinguish between** in one version differ from the units you need to distinguish between in the other.
 
-## Does Order Matter? {.smaller .small-title .crunch-lists}
+## Does Order Matter? {.smaller .crunch-title .small-title .crunch-lists .crunch-ul .crunch-callout}
 
-::: {.callout-tip title="Example: Student Government vs. Student Sports"}
+::: {.callout-tip icon="false" title="<i class='bi bi-info-circle pe-1'></i> Example: Student Government vs. Student Sports"}
 
-* Consider a school where students can either **try out for the swim team** or **run for a position in the student government**
-* The swim team has **4 slots**, but slots aren't differentiated: you're either **on** the team (one of the 4 chosen students) or **not**
+* Consider a school where students can either **try out for swim team** or **run for a position in student government**
+* The swim team has **4 slots**, but slots aren't differentiated: you're either **on** the team (one of the chosen students) or **not**
 * The student government also has **4 slots**, but there is a difference between the slots: first slot is **President**, second is **Vice President**, third is **Secretary**, and fourth is **Treasurer**.
 
 :::
 
-* Simple case (for intuition): the school only has **4 students**. In this case, how many ways are there to form the **swim team**? What about the **student government**?
-    * **Swim team**: $1$ **way**. You have only one choice, to let all 4 students onto the team
-    * **Student government**: $4 \cdot 3 \cdot 2 \cdot 1 = 24$ **ways**. You have to let all 4 students in, **but you have a choice** of who is President, Vice President, Secretary, and Treasurer
+* Simple case (for intuition): school only has **4 students**. In this case, how many ways are there to form the **swim team**? What about the **student government**?
+    * **Swim team**: $1$ **way**. You have only one choice, let all 4 students onto team
+    * **Student government**: $4 \cdot 3 \cdot 2 \cdot 1 = 24$ **ways**. You have to let all 4 in, **but you have a choice** of who is President, Vice President, Secretary, and Treasurer
 * How did we get $4 \cdot 3 \cdot 2 \cdot 1$? (Think about the ice cream example...)
     * Start by choosing the President: 4 choices
     * Now choose the Vice President: only 3 students left to choose from
@@ -580,16 +527,7 @@ P_{n,k} = \frac{n!}{(n-k)!}, \; C_{n,k} = \frac{n!}{k!(n-k)!}
 \end{align*}
 $$
 
-## No Need to Memorize! {.smaller .crunch-title .crunch-math}
-
-```{=html}
-<style>
-p {
-    margin-top: 2px !important;
-    margin-bottom: 2px !important;
-}
-</style>
-```
+## No Need to Memorize! {.smaller .crunch-title .crunch-math .crunch-ul .crunch-p}
 
 * Key point: you don't have to remember these as **two separate formulas**!
 * The number of **combinations** is based on the number of **permutations**, but **corrected** for **double counting**: e.g., corrected for the fact that $(a,b) \neq (b,a)$ when counting permutations but $(a,b) = (b,a)$ when counting combinations.
@@ -606,13 +544,13 @@ Where does $k!$ come from? *(How many different orderings can we make of the sam
 
 * $k = 4$: $(\underbrace{\boxed{\phantom{a}}}_{\text{4 choices}}, \underbrace{\boxed{\phantom{a}}}_{\text{3 remaining choices}}, \underbrace{\boxed{\phantom{a}}}_{\text{2 remaining choices}}, \underbrace{\boxed{\phantom{a}}}_{\text{1 remaining choice}}) \implies 24$
 
-## With or Without Replacement? {.smaller}
+## With or Without Replacement? {.crunch-title .crunch-ul}
 
-* Boils down to: can the same object be included in my sample more than once?
+* Boils down to: can the **same object** be included in my sample **more than once**?
 
 | Without Replacement | With Replacement |
 | - | - |
-| **Most statistical problems**: "Check off" objects as you collect data about them, so that each observation in your data is **unique** | Very special (but very important!) set of statistical problems: allow objects to appear in your sample **multiple times**, to "squeeze" more information out of the sample (*called [Bootstrapping](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)){target="_blank"}---much more on this later in the course!*) |
+| **Most statistical problems**: "Check off" objects as you collect data about them, so that each observation in your data is **unique** | Special (but important!) set of statistical problems: allow objects to appear in your sample **multiple times**, to "squeeze" more information out of the sample (*called [Bootstrapping](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)){target="_blank"}---much more on this later in the course!*) |
 
 ## How Many Possible Samples? {.smaller}
 

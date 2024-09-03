@@ -12,13 +12,15 @@ format:
     cache: false
 ---
 
+{{< include ../../dsan-globals/_gg.globals.qmd >}}
+
 In several of the assignments for DSAN5100, we ask you to "compute" a probability. This can be ambiguous, as we've already learned several different ways to compute probabilities, so here I will try to distinguish between two different **approaches** to computing a probability using a computer. Hopefully it will help you in general when asking us questions, and will help us clarify which of these approaches we are looking for when we ask you to compute a probability in future assignments.
 
 ## Approach 1: Using R Like a Fancy Spreadsheet Program
 
 This approach implicitly assumes the **naïve definition of probability**, from early on in the course:
 
-{{< include ../../_components/_naive-defn.qmd >}}
+{{< include ../../_components/naive-defn.qmd >}}
 
 It follows the following logic:
 
@@ -42,7 +44,6 @@ In this approach we could construct a `tibble` representing the entire **sample 
 
 ```{r}
 #| label: sample-space-df
-source("../../_globals.r")
 library(tibble)
 sample_space_df <- tibble(outcome=seq(1,6))
 sample_space_df

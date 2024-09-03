@@ -21,7 +21,7 @@ format:
 set.seed(5100)
 # This just loads some global ggplot settings, you
 # can uncomment this if trying to run on your own/on Colab
-source("../../_globals.r")
+source("../../dsan-globals/_globals.r")
 ```
 
 :::

@@ -1,0 +1,9 @@
+::: {.callout-tip icon="false" title="<i class='bi bi-info-circle pe-1'></i> Naïve Definition of Probability"}
+
+Given a sample space $S$, and an event $E \subset S$,
+
+$$
+\Pr(\underbrace{E}_{\text{event}}) = \frac{\text{\# Favorable Outcomes}}{\text{\# Possible Outcomes}} = \frac{|E|}{|S|}
+$$
+
+:::

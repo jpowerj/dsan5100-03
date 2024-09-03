@@ -1,4 +1,4 @@
-/* Longer top comment */
+/* Longer top comment! */
 a.disabled {
   /* Make the disabled links grayish */
   color: gray;
@@ -65,6 +65,11 @@ a.disabled {
   margin-bottom: 0px !important;
 }
 
+.crunch-callout .callout {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
 .crunch-hr {
   margin-top: 8px !important;
   margin-bottom: 6px !important;
@@ -83,6 +88,10 @@ a.disabled {
 .crunch-math mjx-container {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
+}
+.crunch-math-15 mjx-container {
+  margin-top: 15px !important;
+  margin-bottom: 15px !important;
 }
 
 .crunch-p p {
@@ -109,6 +118,10 @@ figcaption {
 
 .new-unit {
   border-top: 2px solid gray !important;
+}
+
+.nobotmargin {
+  margin-bottom: 0px !important;
 }
 
 .sidebar-footer-item {
@@ -149,8 +162,11 @@ figcaption {
   line-height: 0.7em !important;
 }
 
-/* and one small fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+.smaller-caption figcaption {
+  font-size: 0.6em !important;
+}
 
+/* and one small fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
 table thead th {
   background-clip: padding-box;
 }

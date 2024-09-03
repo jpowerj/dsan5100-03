@@ -6,11 +6,11 @@
   {
     "listing": "/writeups/index.html",
     "items": [
+      "/writeups/computing-probabilities/index.html",
+      "/writeups/deriving-pdf/index.html",
       "/writeups/sampling-from-df/index.html",
       "/writeups/sample-space-tibbles/index.html",
-      "/writeups/marginalization/index.html",
-      "/writeups/deriving-pdf/index.html",
-      "/writeups/computing-probabilities/index.html"
+      "/writeups/marginalization/index.html"
     ]
   },
   {

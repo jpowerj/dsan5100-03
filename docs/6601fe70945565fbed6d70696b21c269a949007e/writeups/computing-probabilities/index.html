@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jeff Jacobs">
-<meta name="dcterms.date" content="2024-08-30">
+<meta name="dcterms.date" content="2024-09-02">
 
 <title>Two Ways to Compute Probabilities in R/Python – DSAN 5100-03</title>
 <style>
@@ -290,7 +290,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 30, 2024</p>
+      <p class="date">September 2, 2024</p>
     </div>
   </div>
   
@@ -302,23 +302,66 @@ window.Quarto = {
 </header>
 
 
+<div class="hidden">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># For slides</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>cbPalette <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"#E69F00"</span>, <span class="st">"#56B4E9"</span>, <span class="st">"#009E73"</span>, <span class="st">"#F0E442"</span>, <span class="st">"#0072B2"</span>, <span class="st">"#D55E00"</span>, <span class="st">"#CC79A7"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">ggplot2.discrete.colour =</span> cbPalette)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Theme generator, for given sizes</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>dsan_theme <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">plot_type =</span> <span class="st">"full"</span>) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (plot_type <span class="sc">==</span> <span class="st">"full"</span>) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        custom_base_size <span class="ot">&lt;-</span> <span class="dv">16</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (plot_type <span class="sc">==</span> <span class="st">"half"</span>) {</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        custom_base_size <span class="ot">&lt;-</span> <span class="dv">22</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (plot_type <span class="sc">==</span> <span class="st">"quarter"</span>) {</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        custom_base_size <span class="ot">&lt;-</span> <span class="dv">28</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># plot_type == "col"</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        custom_base_size <span class="ot">&lt;-</span> <span class="dv">22</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    theme <span class="ot">&lt;-</span> <span class="fu">theme_classic</span>(<span class="at">base_size =</span> custom_base_size) <span class="sc">+</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        <span class="fu">theme</span>(</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>            <span class="at">legend.box.background =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(theme)</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">fig.align =</span> <span class="st">"center"</span>)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>g_pointsize <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>g_linesize <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Technically it should always be linewidth</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>g_linewidth <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>g_textsize <span class="ot">&lt;-</span> <span class="dv">14</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>remove_legend_title <span class="ot">&lt;-</span> <span class="cf">function</span>() {</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">theme</span>(</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">"mm"</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>    ))</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
 <p>In several of the assignments for DSAN5100, we ask you to “compute” a probability. This can be ambiguous, as we’ve already learned several different ways to compute probabilities, so here I will try to distinguish between two different <strong>approaches</strong> to computing a probability using a computer. Hopefully it will help you in general when asking us questions, and will help us clarify which of these approaches we are looking for when we ask you to compute a probability in future assignments.</p>
 <section id="approach-1-using-r-like-a-fancy-spreadsheet-program" class="level2">
 <h2 class="anchored" data-anchor-id="approach-1-using-r-like-a-fancy-spreadsheet-program">Approach 1: Using R Like a Fancy Spreadsheet Program</h2>
 <p>This approach implicitly assumes the <strong>naïve definition of probability</strong>, from early on in the course:</p>
-<div class="callout callout-style-default callout-note callout-titled" title="Naïve Definition of Probability">
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="<i class='bi bi-info-circle pe-1'></i> Naïve Definition of Probability">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Naïve Definition of Probability
+<i class="bi bi-info-circle pe-1"></i> Naïve Definition of Probability
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Given a sample space <span class="math inline">\(\Omega\)</span> and an event <span class="math inline">\(E \subseteq \Omega\)</span>,</p>
+<p>Given a sample space <span class="math inline">\(S\)</span>, and an event <span class="math inline">\(E \subset S\)</span>,</p>
 <p><span class="math display">\[
-\Pr(\underbrace{E}_{\mathclap{\text{event}}}) = \frac{\text{\# Outcomes in E}}{\text{\# Possible Outcomes}} = \frac{|E|}{|\Omega|}
+\Pr(\underbrace{E}_{\text{event}}) = \frac{\text{\# Favorable Outcomes}}{\text{\# Possible Outcomes}} = \frac{|E|}{|S|}
 \]</span></p>
 </div>
 </div>
@@ -341,11 +384,10 @@ Naïve Definition of Probability
 E = \{2, 4, 6\} \subseteq \Omega
 \]</span></p>
 <p>In this approach we could construct a <code>tibble</code> representing the entire <strong>sample space</strong> <span class="math inline">\(\Omega\)</span> like</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../../_globals.r"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>sample_space_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">outcome=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">6</span>))</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>sample_space_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sample_space_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">outcome=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">6</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sample_space_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -380,9 +422,9 @@ E = \{2, 4, 6\} \subseteq \Omega
 </div>
 <p>Then we could extract a <strong>subset</strong> of this <code>tibble</code> corresponding to the event <span class="math inline">\(E\)</span> by selecting only those rows whose <code>outcome</code> value is even<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>event_df <span class="ot">&lt;-</span> sample_space_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(outcome <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>event_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>event_df <span class="ot">&lt;-</span> sample_space_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(outcome <span class="sc">%%</span> <span class="dv">2</span> <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>event_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -408,7 +450,7 @@ E = \{2, 4, 6\} \subseteq \Omega
 </div>
 <p>These two <code>tibbles</code> together allow us to compute a probability using the <strong>naïve definition</strong>:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(event_df) <span class="sc">/</span> <span class="fu">nrow</span>(sample_space_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(event_df) <span class="sc">/</span> <span class="fu">nrow</span>(sample_space_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5</code></pre>
 </div>
@@ -417,13 +459,13 @@ E = \{2, 4, 6\} \subseteq \Omega
 <p>For example, we might give you a problem that says</p>
 <p><strong>Load <a href="https://datahub.io/core/gdp#data" target="_blank">this dataset of country/region GDP data</a>, and keep just the observations for the year 2010. What is the probability that an entity in this dataset had a GDP lower than $10 billion, and a country code containing the letter <code>Z</code>, in this year?</strong></p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>gdp_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://gist.githubusercontent.com/jpowerj/fecd437b96d0954893de727383f2eaf2/raw/fec58507f7095cb8341b229d6eb74ce53232d663/gdp_2010.csv"</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>below_10b_df <span class="ot">&lt;-</span> gdp_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(value <span class="sc">&lt;</span> <span class="dv">10000000000</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>below_10b_z_df <span class="ot">&lt;-</span> below_10b_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(code, <span class="st">'Z'</span>))</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>below_10b_z_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>gdp_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://gist.githubusercontent.com/jpowerj/fecd437b96d0954893de727383f2eaf2/raw/fec58507f7095cb8341b229d6eb74ce53232d663/gdp_2010.csv"</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>below_10b_df <span class="ot">&lt;-</span> gdp_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(value <span class="sc">&lt;</span> <span class="dv">10000000000</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>below_10b_z_df <span class="ot">&lt;-</span> below_10b_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">str_detect</span>(code, <span class="st">'Z'</span>))</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>below_10b_z_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
@@ -461,8 +503,8 @@ E = \{2, 4, 6\} \subseteq \Omega
 </div>
 <p>So that now we could compute the <strong>probability</strong> of a country having these properties:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>p_event <span class="ot">&lt;-</span> <span class="fu">nrow</span>(below_10b_z_df) <span class="sc">/</span> <span class="fu">nrow</span>(gdp_df)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>p_event</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>p_event <span class="ot">&lt;-</span> <span class="fu">nrow</span>(below_10b_z_df) <span class="sc">/</span> <span class="fu">nrow</span>(gdp_df)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p_event</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.01470588</code></pre>
 </div>
@@ -498,12 +540,12 @@ E = \{2, 4, 6\} \subseteq \Omega
 <p>And now I can use R with these probabilities I computed in my head to derive the probabilities of them occurring in a particular sequence:</p>
 </blockquote>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Encode probabilities of my two events</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>p_greater <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>p_less_or_equal <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use them to compute the probabilities of sequences</span></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>p_sequence <span class="ot">&lt;-</span> p_greater <span class="sc">*</span> p_less_or_equal <span class="sc">*</span> p_greater</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>p_sequence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Encode probabilities of my two events</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>p_greater <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>p_less_or_equal <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">/</span><span class="dv">3</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use them to compute the probabilities of sequences</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>p_sequence <span class="ot">&lt;-</span> p_greater <span class="sc">*</span> p_less_or_equal <span class="sc">*</span> p_greater</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>p_sequence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.07407407</code></pre>
 </div>
@@ -512,10 +554,10 @@ E = \{2, 4, 6\} \subseteq \Omega
 <p>For example, if you wrote the above code for some problem, then in the next problem we could say <strong>“It turns out the person providing you with the dice was cheating! They rigged it so that there’s actually a 99% chance of getting a number greater than 4! Go back and compute the probability of this sequence but using the rigged die”</strong></p>
 <p>And then you could just change the first line of your code, and re-run the whole thing, to obtain the new probability:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>p_greater <span class="ot">&lt;-</span> <span class="fl">0.99</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>p_less_or_equal <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>p_sequence <span class="ot">&lt;-</span> p_greater <span class="sc">*</span> p_less_or_equal <span class="sc">*</span> p_greater</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>p_sequence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>p_greater <span class="ot">&lt;-</span> <span class="fl">0.99</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>p_less_or_equal <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>p_sequence <span class="ot">&lt;-</span> p_greater <span class="sc">*</span> p_less_or_equal <span class="sc">*</span> p_greater</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>p_sequence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.009801</code></pre>
 </div>
@@ -526,23 +568,23 @@ E = \{2, 4, 6\} \subseteq \Omega
 <p><strong>Write a function that computes your likelihood of winning (i.e., your likelihood of getting this sequence of three rolls), for any die with any probability of producing an outcome greater than 4.</strong></p>
 <p>In this case, you could now take your code and transform it into a function, like</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>compute_win_prob <span class="ot">&lt;-</span> <span class="cf">function</span>(p_greater) {</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    p_less_or_equal <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> p_greater</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    p_sequence <span class="ot">&lt;-</span> p_greater <span class="sc">*</span> p_less_or_equal <span class="sc">*</span> p_greater</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(p_sequence)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>compute_win_prob <span class="ot">&lt;-</span> <span class="cf">function</span>(p_greater) {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    p_less_or_equal <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> p_greater</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    p_sequence <span class="ot">&lt;-</span> p_greater <span class="sc">*</span> p_less_or_equal <span class="sc">*</span> p_greater</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(p_sequence)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And then test it on some values:</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compute_win_prob</span>(<span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compute_win_prob</span>(<span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9.9e-05</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compute_win_prob</span>(<span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compute_win_prob</span>(<span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.125</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compute_win_prob</span>(<span class="fl">0.99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">compute_win_prob</span>(<span class="fl">0.99</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.009801</code></pre>
 </div>
@@ -553,19 +595,19 @@ E = \{2, 4, 6\} \subseteq \Omega
 <p><strong>Produce a plot showing your likelihood of winning for 1000 different values of <code>p_greater</code>, evenly spread between 0 and 1</strong></p>
 <p>and you could use the function you wrote like</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>p_greater_vals <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">#p_greater_vals</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>win_prob_vals <span class="ot">&lt;-</span> <span class="fu">sapply</span>(p_greater_vals, compute_win_prob)</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>win_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">p_greater=</span>p_greater_vals, <span class="at">win_prob=</span>win_prob_vals)</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(win_df, <span class="fu">aes</span>(<span class="at">x=</span>p_greater, <span class="at">y=</span>win_prob)) <span class="sc">+</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"full"</span>) <span class="sc">+</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Probability of Winning With Rigged Die"</span>,</span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Pr(Result &gt; 4)"</span>,</span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Pr(Win)"</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>p_greater_vals <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">1000</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">#p_greater_vals</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>win_prob_vals <span class="ot">&lt;-</span> <span class="fu">sapply</span>(p_greater_vals, compute_win_prob)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>win_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">p_greater=</span>p_greater_vals, <span class="at">win_prob=</span>win_prob_vals)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(win_df, <span class="fu">aes</span>(<span class="at">x=</span>p_greater, <span class="at">y=</span>win_prob)) <span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"full"</span>) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Probability of Winning With Rigged Die"</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Pr(Result &gt; 4)"</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Pr(Win)"</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -578,9 +620,9 @@ E = \{2, 4, 6\} \subseteq \Omega
 <p><strong>Looking at the plot, approximately what value for the rigged die looks like it produces the maximum likelihood of winning? Now write code to compute the actual value, out of the 1000 evenly-spaced values you computed the win probability for, that maximizes your probability of winning. Does it match your guess from earlier?</strong></p>
 <p>For which you could write code like</p>
 <div class="cell" data-layout-align="center">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>max_prob <span class="ot">&lt;-</span> <span class="fu">max</span>(win_df<span class="sc">$</span>win_prob)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>max_row <span class="ot">&lt;-</span> win_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(win_prob <span class="sc">==</span> max_prob)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>max_row</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>max_prob <span class="ot">&lt;-</span> <span class="fu">max</span>(win_df<span class="sc">$</span>win_prob)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>max_row <span class="ot">&lt;-</span> win_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(win_prob <span class="sc">==</span> max_prob)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>max_row</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top table table-sm table-striped small">
