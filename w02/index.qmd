@@ -402,23 +402,19 @@ $$
     * Count the number of ways the event $E$ can happen, count the total number of things that can happen, and divide!
 * This is why we begin studying probability by studying **combinatorics**: the mathematics of **counting**
 
-## Combinatorics: Ice Cream Possibilities {.smaller}
+## Combinatorics: Ice Cream Possibilities {.smaller .crunch-title .crunch-quarto-figure .squeeze-quarto-figure}
 
-```{=html}
-<style>
-.quarto-layout-cell {
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-}
-</style>
-```
+:::: {.columns style="display: flex !important; height: 85%;"}
+::: {.column width="50%" style="display: flex; align-items: center; justify-content: center;"}
 
-::: {layout-ncol=2}
+![The $6 = \color{red}\boxed{\color{black}2 \cdot 3}$ possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.](images/ice_cream1.svg){width=406}
 
-![The $6 = 2 \cdot 3$ possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.](images/ice_cream1.svg){width=406}
+:::
+::: {.column width="50%" style="display: flex; align-items: center; justify-content: center;"}
 
-![The $6 = 3 \cdot 2$ possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.](images/ice_cream2.svg)
+![The $6 = \color{red}\boxed{\color{black}3 \cdot 2}$ possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.](images/ice_cream2.svg)
 
+:::
 :::
 
 ## Grouping vs. Ordering
@@ -427,7 +423,7 @@ $$
 * This is not a **mathematical** distinction so much as a **pragmatic** distinction: what are you trying to **accomplish** by counting?
 * Problems with extremely similar descriptions can differ in small detail, so that the **units you need to distinguish between** in one version differ from the units you need to distinguish between in the other.
 
-## Does Order Matter? {.smaller .crunch-title .small-title .crunch-lists .crunch-ul .crunch-callout}
+## Does Order Matter? {.smaller .crunch-title .small-title .crunch-li .crunch-ul .crunch-callout}
 
 ::: {.callout-tip icon="false" title="<i class='bi bi-info-circle pe-1'></i> Example: Student Government vs. Student Sports"}
 
@@ -482,11 +478,11 @@ Where does $k!$ come from? *(How many different orderings can we make of the sam
 
 | Without Replacement | With Replacement |
 | - | - |
-| **Most statistical problems**: "Check off" objects as you collect data about them, so that each observation in your data is **unique** | Special (but important!) set of statistical problems: allow objects to appear in your sample **multiple times**, to "squeeze" more information out of the sample (*called [Bootstrapping](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)){target="_blank"}---much more on this later in the course!*) |
+| **Most statistical problems**: "Check off" objects as you collect data about them, so that each observation in your data is **unique** | Special (but important!) set of statistical problems: let objects appear in your sample **multiple times**, to "squeeze" more information out of the sample (*called [Bootstrapping](https://en.wikipedia.org/wiki/Bootstrapping_(statistics)){target="_blank"}---much more later in the course!*) |
 
 ## How Many Possible Samples? {.smaller}
 
-**Example**: From a population of $N = 3$, how many ways can we take samples of size $k = 2$?
+**Example**: From $N = 3$ population, how many ways can we take samples of size $k = 2$?
 
 | Without Replacement | With Replacement |
 | - | - |
@@ -504,7 +500,7 @@ Where does $k!$ come from? *(How many different orderings can we make of the sam
 
 # Probability Fundamentals {data-stack-name="Probability"}
 
-## Logic, Sets, and Probability {.smaller}
+## Logic, Sets, and Probability {.smaller .crunch-title .inline-90}
 
 There is a **deep connection**[^iso] between the **objects** and **operations** of logic, set theory, and probability:
 
@@ -563,7 +559,7 @@ There is a **deep connection**[^iso] between the **objects** and **operations** 
 | $f_2 = p_1 \vee q_2$ | $$\begin{align*} F_2 &= P_1 \cup Q_2 \\ &= \{HT, HH\} \cup \{TT, HT\} \\ &= \{TT, HT, HH\} \end{align*}$$ | $$\begin{align*} \Pr(F_2) &= \Pr(\{TT, HT, HH\}) \\ &= \frac{|\{TT, HT, HH\}|}{|S|} = \frac{3}{4} \end{align*}$$ |
 | $f_3 = \neg p_1$ | $$\begin{align*} F_3 &= P_1^c \\ &= \{HT, HH\}^c \phantom{\cup \{TT, HT\}} \\ &= \{TT, TH\}\end{align*}$$ | $$\begin{align*} \Pr(F_3) &= \Pr(\{TT, TH\}) \\ &= \frac{|\{TT, TH\}|}{|S|} = \frac{2}{4} = \frac{1}{2} \end{align*}$$ |
 
-## Using "Rules" of Probability {.smaller .crunch-math .crunch-title .crunch-ul .inline-90 .math-80}
+## Using "Rules" of Probability {.smaller .crunch-math .crunch-title .crunch-ul .inline-90 .math-80 .crunch-li}
 
 * Hopefully, you found all this churning through set theory to be tedious... ☠️
 * This is where **rules of probability** come from! They **simplify** set-theoretic computations into simple multiplications, additions, and subtractions:
@@ -578,7 +574,7 @@ There is a **deep connection**[^iso] between the **objects** and **operations** 
 | $f_2 = p_1 \vee q_2$ | $F_2 = P_1 \cup Q_2$ | $$\textstyle{\begin{align*} \textstyle \Pr(F_2) &= \Pr(P_1) + \Pr(Q_2) - \Pr(P_1 \cap Q_2) \\ \textstyle &= \frac{1}{2} + \frac{1}{2} - \frac{1}{4} = \frac{3}{4} \end{align*}}$$ |
 | $f_3 = \neg p_1$ | $F_3 = P_1^c$ | $\Pr(F_3) = 1 - \Pr(P_1) = 1 - \frac{1}{2} = \frac{1}{2}$ |
 
-## "Importing" Results from Logic {.crunch-math .crunch-title}
+## "Importing" Results from Logic {.crunch-math .crunch-title .crunch-ul}
 
 * This deep connection between the three fields means that, if we have some useful theorem or formula from one field, we can immediately put it to use in another!
 * For example: **DeMorgan's Laws** were developed in logic (DeMorgan was a 19th-century logician), and basically just tell us how to **distribute** logic operators:
@@ -590,7 +586,7 @@ $$
 \end{align*}
 $$
 
-## Converting to Probability Theory {.smaller .crunch-math}
+## Converting to Probability Theory {.smaller .crunch-math .crunch-ul}
 
 * So, using the same principles we used in our coin flipping examples, we can consider **events** $P$ and $Q$, and get the following "translation" of DeMorgan's Laws:
 
@@ -614,7 +610,7 @@ $$
 
 # Statistics: Univariate and Multivariate {data-stack-name="Statistics"}
 
-## Random Variables {.crunch-math .crunch-title}
+## Random Variables {.crunch-math .crunch-title .crunch-ul}
 
 * Recall our discussion of **random variables**: used by analogy to **algebra**, since we can do math with them:
 * Just as $2 \cdot 3$ is shorthand for $2 + 2 + 2$, can define $X$ as shorthand for possible outcomes of random process:
@@ -644,7 +640,7 @@ $$
 | Result of dice roll is 5 | $X = 5$ |
 | Result of dice roll is 6 | $X = 6$ |
 
-## Doing Math with Events {.smaller .crunch-title .crunch-math .math-90 .crunch-ul}
+## Doing Math with Events {.smaller .crunch-title .crunch-math .math-90 .crunch-ul .crunch-p}
 
 * We've seen how $\Pr()$ "encodes" logical expressions involving uncertain outcomes.
 * Even more powerful when paired with the notion of **random variables**: lets us also "encode" **mathematical** expressions involving uncertain quantities!
@@ -681,7 +677,7 @@ The answer is, broadly, any situation where you're modeling things, like dice ro
 
 :::
 
-## Recall: Types of Variables {.smaller}
+## Recall: Types of Variables {.smaller .crunch-title}
 
 * **Categorical**
   * No meaningful way to order values: $\{\text{trout}, \text{bass}, \ldots \}$
@@ -690,7 +686,7 @@ The answer is, broadly, any situation where you're modeling things, like dice ro
   * ${\color{orange}\text{greater}} \overset{?}{=} 2\cdot {\color{orange}\text{great}} - 1$
 * **Cardinal**
   * Can place in order, and gaps are meaningful $\implies$ can do "standard" math with them! Example: $\{{\color{blue}1},{\color{blue}2},\ldots,{\color{blue}10}\}$
-  * ${\color{blue}7} \overset{\text{✅}}{=} 2 \cdot {\color{blue}4} - 1$
+  * ${\color{blue}7} \overset{\text{~✅~}}{=} 2 \cdot {\color{blue}4} - 1$
   * If events have **this structure** (meaningful way to define multiplication, addition, subtraction), then we can analyze them as **random variables**
 
 ## Visualizing Discrete RVs {.smaller}
@@ -795,8 +791,7 @@ shaded_plot
 #| fig-align: center
 #| fig-cap: "(Data from [Metacritic](https://www.metacritic.com/game/switch/the-legend-of-zelda-tears-of-the-kingdom?ref=hp))"
 library(readr)
-fig_title <- "Review for a Popular Nintendo Switch Game"
-fig_subtitle <- "(That I definitely didn't play for >400 hours this summer...)"
+fig_title <- "Reviews for a Popular Nintendo Switch Game"
 #score_df <- read_csv("https://gist.githubusercontent.com/jpowerj/8b2b6a50cef5a682db640e874a14646b/raw/bbe07891a90874d1fe624224c1b82212b1ac8378/totk_scores.csv")
 score_df <- read_csv("https://gist.githubusercontent.com/jpowerj/8b2b6a50cef5a682db640e874a14646b/raw/e3c2b9d258380e817289fbb64f91ba9ed4357d62/totk_scores.csv")
 mean_score <- mean(score_df$score)
@@ -806,7 +801,6 @@ ggplot(score_df, aes(x=score)) +
   #geom_vline(xintercept=mean_score) +
   labs(
     title=fig_title,
-    subtitle=fig_subtitle,
     x="Review Score",
     y="Number of Reviews"
   ) +
@@ -831,7 +825,6 @@ ggplot(score_df, aes(x=score)) +
   scale_x_continuous(breaks=c(60, 70, 80, 90, mean_score, 100), labels=c("60","70","80","90",mean_score_label,"100")) +
   labs(
     title=fig_title,
-    subtitle=fig_subtitle,
     x="Review Score",
     y="Number of Reviews"
   ) +
@@ -919,7 +912,7 @@ ggplot(mean_df, aes(x=x, y=mean)) +
 
 :::
 
-## Example: The Normal Distribution {.smaller .crunch-figures .crunch-title}
+## Example: The Normal Distribution {.smaller .crunch-figures .crunch-title .crunch-quarto-figure}
 
 ::: columns
 ::: {.column width="50%"}
@@ -962,24 +955,24 @@ ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
 
 * The parameters in this case give **natural summaries** of the data:
   * ${\color{\purple}\mu}$ = center (mean), ${\color{purple}\sigma}$ = [square root of] variance around center
-* **Mean** can usually be interpreted intuitively; for **standard deviation**, we usually use the [**68-95-99.7 rule**](https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule){target="_blank"}, which will make more sense relative to some **real-world data**...
+* **Mean** can usually be interpreted intuitively; for **standard deviation**, can use the [**68-95-99.7 rule**](https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule){target="_blank"}, which will make more sense relative to some **real-world data**...
 
 [^purple]: Throughout the course, remember, <span style="color:purple;">**purrple**</span> is for <span style="color:purple;">**purrameters**</span>
 [^mathcal]: Throughout the course, this "calligraphic" font $\mathcal{N}$, $\mathcal{D}$, etc., will be used to denote **distributions**
 
-## Real Data and the 68-95-99.7 Rule {.smaller .crunch-layout-panel .crunch-title .crunch-figures .crunch-lists .crunch-images .crunch-quarto-figure}
+## Real Data and the 68-95-99.7 Rule {.smaller .crunch-layout-panel .crunch-title .crunch-figures .crunch-lists .crunch-images .crunch-quarto-figure .crunch-details}
 
 :::: {.columns}
 ::: {.column width="50%"}
 
 ```{r}
 #| code-fold: true
-#| echo: false
+#| echo: true
 #| warning: false
 #| label: fig-height-plot
 #| fig-align: center
 #| fig-cap: "Heights (cm) for 18K professional athletes"
-#| fig-height: 6.25
+#| fig-height: 5.5
 library(readr)
 height_df <- read_csv("https://gist.githubusercontent.com/jpowerj/9a23807fb71a5f6b6c2f37c09eb92ab3/raw/89fc6b8f0c57e41ebf4ce5cdf2b3cad6b2dd798c/sports_heights.csv")
 mean_height <- mean(height_df$height_cm)
@@ -1017,7 +1010,7 @@ ggplot(height_df, aes(x = height_cm)) +
 
 <img src="images/empirical_rule.svg" height="256">
 
-The 68-95-99.7 Rule visualized (<a href="https://commons.wikimedia.org/wiki/File:Empirical_rule_histogram.svg" target="_blank">Wikimedia Commons</a>)
+68-95-99.7 Rule visualized (<a href="https://commons.wikimedia.org/wiki/File:Empirical_rule_histogram.svg" target="_blank">Wiki Commons</a>)
 :::
 
 :::
@@ -1067,11 +1060,9 @@ The **point estimate** ${\color{purple}\mu} = 186.48$ is straightforward: *the a
 
 :::
 ::: {.column width="50%" style='display: flex; justify-content: center; align-items: center;'}
-::: {#div-around-thing}
 
-![From <a href="https://commons.wikimedia.org/wiki/File:Boxplot_of_Average_Article_Feedback_ratings_by_project_rated_quality.svg">Wikimedia Commons</a>](images/multiple_boxplots.svg){#thing fig-align="center"}
+![From <a href="https://commons.wikimedia.org/wiki/File:Boxplot_of_Average_Article_Feedback_ratings_by_project_rated_quality.svg">Wikimedia Commons</a>](images/multiple_boxplots.svg){fig-align="center"}
 
-:::
 :::
 :::
 
@@ -1120,15 +1111,15 @@ $$
 :::
 
 
-::: {.footnote .crunch-math style="font-size: 1.2rem !important; margin-top: 24px !important;"}
+::: {.footnote .crunch-math style="font-size: 1.2rem !important; margin-top: 12px !important;"}
 
 *Note: In the future I'll use the notation $\mathbf{X}_{[a \times b]}$ to denote the dimensions of the vectors/matrices, like $\mathbf{X}_{[k \times 1]} \sim \boldsymbol{\mathcal{N}}_k(\boldsymbol{\mu}_{[k \times 1]}, \mathbf{\Sigma}_{[k \times k]})$*
 
 :::
 
-## Visualizing 3D Distributions: Projection {.smaller}
+## Visualizing 3D Distributions: Projection {.smaller .crunch-title .title-12}
 
-* Since most of our intuitions about plots come from **2D** plots, it is **extremely useful** to be able to take a 3D plot like this and imagine "projecting" it down into different 2D plots:
+* Most of our intuitions about plots come from **2D** $\Rightarrow$ super helpful exercise to take a 3D plot like this and imagine **"projecting" it** onto different 2D surfaces:
 
 ![(Adapted via LaTeX from <a href="https://tex.stackexchange.com/questions/31708/draw-a-bivariate-normal-distribution-in-tikz">StackExchange discussion</a>)](images/bivariate_normal_corrected.svg)
 
@@ -1175,3 +1166,14 @@ ggplot(data.frame(x = c(-3, 3)), aes(x = x)) +
   * $\mathcal{H}_1 = \text{Tomorrow's temperature} > 20^\circ$, $\mathcal{H}_0 = \text{Tomorrow's temperature} \leq 20^\circ$,<br>$X = \text{Historical temperature data}$
  
 --->
+
+# Lab Time! {data-stack-name="Lab Time!"}
+
+## Link to Colab Notebook
+
+* [DSAN 5100-03 Lab 02](https://colab.research.google.com/drive/1DOK4vfq43GD2IsMd1JFd0jrAhVRbwNTG?usp=sharing)
+
+## References
+
+::: {#refs}
+:::

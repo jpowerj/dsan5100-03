@@ -196,6 +196,11 @@ figcaption {
   font-size: 75% !important;
 }
 
+.squeeze-quarto-figure .quarto-figure {
+  margin-right: 2px !important;
+  margin-left: 2px !important;
+}
+
 /* and one small fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
 table thead th {
   background-clip: padding-box;

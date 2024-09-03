@@ -95,7 +95,26 @@
     code span.va { color: #111111; } /* Variable */
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
   <link rel="stylesheet" href="../dsan-globals/jjstyles.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -908,37 +927,24 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 <li>This is why we begin studying probability by studying <strong>combinatorics</strong>: the mathematics of <strong>counting</strong></li>
 </ul>
 </section>
-<section id="combinatorics-ice-cream-possibilities" class="slide level2 smaller">
+<section id="combinatorics-ice-cream-possibilities" class="slide level2 smaller crunch-title crunch-quarto-figure squeeze-quarto-figure">
 <h2>Combinatorics: Ice Cream Possibilities</h2>
-<style>
-.quarto-layout-cell {
-    margin-left: 0px !important;
-    margin-right: 0px !important;
-}
-</style>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="columns" style="display: flex !important; height: 85%;">
+<div class="column" style="display: flex; align-items: center; justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/ice_cream1.svg" width="406"></p>
-<figcaption>The <span class="math inline">\(6 = 2 \cdot 3\)</span> possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.</figcaption>
+<figcaption>The <span class="math inline">\(6 = \color{red}\boxed{\color{black}2 \cdot 3}\)</span> possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.</figcaption>
 </figure>
 </div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+</div><div class="column" style="display: flex; align-items: center; justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/ice_cream2.svg"></p>
-<figcaption>The <span class="math inline">\(6 = 3 \cdot 2\)</span> possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.</figcaption>
+<figcaption>The <span class="math inline">\(6 = \color{red}\boxed{\color{black}3 \cdot 2}\)</span> possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.</figcaption>
 </figure>
 </div>
-</div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="grouping-vs.-ordering" class="slide level2">
 <h2>Grouping vs.&nbsp;Ordering</h2>
@@ -948,7 +954,7 @@ Figure&nbsp;1: <a href="https://en.wikipedia.org/wiki/Newton%27s_law_of_universa
 <li>Problems with extremely similar descriptions can differ in small detail, so that the <strong>units you need to distinguish between</strong> in one version differ from the units you need to distinguish between in the other.</li>
 </ul>
 </section>
-<section id="does-order-matter" class="slide level2 smaller crunch-title small-title crunch-lists crunch-ul crunch-callout">
+<section id="does-order-matter" class="slide level2 smaller crunch-title small-title crunch-li crunch-ul crunch-callout">
 <h2>Does Order Matter?</h2>
 <div title="<i class='bi bi-info-circle pe-1'></i> Example: Student Government vs. Student Sports">
 <div class="callout callout-tip no-icon callout-titled callout-style-default">
@@ -1030,14 +1036,14 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 <tbody>
 <tr class="odd">
 <td><strong>Most statistical problems</strong>: “Check off” objects as you collect data about them, so that each observation in your data is <strong>unique</strong></td>
-<td>Special (but important!) set of statistical problems: allow objects to appear in your sample <strong>multiple times</strong>, to “squeeze” more information out of the sample (<em>called <a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)" target="_blank">Bootstrapping</a>—much more on this later in the course!</em>)</td>
+<td>Special (but important!) set of statistical problems: let objects appear in your sample <strong>multiple times</strong>, to “squeeze” more information out of the sample (<em>called <a href="https://en.wikipedia.org/wiki/Bootstrapping_(statistics)" target="_blank">Bootstrapping</a>—much more later in the course!</em>)</td>
 </tr>
 </tbody>
 </table>
 </section>
 <section id="how-many-possible-samples" class="slide level2 smaller">
 <h2>How Many Possible Samples?</h2>
-<p><strong>Example</strong>: From a population of <span class="math inline">\(N = 3\)</span>, how many ways can we take samples of size <span class="math inline">\(k = 2\)</span>?</p>
+<p><strong>Example</strong>: From <span class="math inline">\(N = 3\)</span> population, how many ways can we take samples of size <span class="math inline">\(k = 2\)</span>?</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 50%">
@@ -1083,7 +1089,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 <h1>Probability Fundamentals</h1>
 
 </section>
-<section id="logic-sets-and-probability" class="slide level2 smaller scrollable">
+<section id="logic-sets-and-probability" class="slide level2 smaller crunch-title inline-90 scrollable">
 <h2>Logic, Sets, and Probability</h2>
 <p>There is a <strong>deep connection</strong><sup>1</sup> between the <strong>objects</strong> and <strong>operations</strong> of logic, set theory, and probability:</p>
 <table class="caption-top">
@@ -1243,7 +1249,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </tbody>
 </table>
 </section>
-<section id="using-rules-of-probability" class="slide level2 smaller crunch-math crunch-title crunch-ul inline-90 math-80">
+<section id="using-rules-of-probability" class="slide level2 smaller crunch-math crunch-title crunch-ul inline-90 math-80 crunch-li">
 <h2>Using “Rules” of Probability</h2>
 <ul>
 <li>Hopefully, you found all this churning through set theory to be tedious… ☠️</li>
@@ -1287,7 +1293,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 </tbody>
 </table>
 </section>
-<section id="importing-results-from-logic" class="slide level2 crunch-math crunch-title">
+<section id="importing-results-from-logic" class="slide level2 crunch-math crunch-title crunch-ul">
 <h2>“Importing” Results from Logic</h2>
 <ul>
 <li>This deep connection between the three fields means that, if we have some useful theorem or formula from one field, we can immediately put it to use in another!</li>
@@ -1300,7 +1306,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 \end{align*}
 \]</span></p>
 </section>
-<section id="converting-to-probability-theory" class="slide level2 smaller crunch-math">
+<section id="converting-to-probability-theory" class="slide level2 smaller crunch-math crunch-ul">
 <h2>Converting to Probability Theory</h2>
 <ul>
 <li>So, using the same principles we used in our coin flipping examples, we can consider <strong>events</strong> <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span>, and get the following “translation” of DeMorgan’s Laws:</li>
@@ -1350,7 +1356,7 @@ C_{n,k} = \frac{P_{n,k}}{k!} \genfrac{}{}{0pt}{}{\leftarrow \text{Permutations}}
 <h1>Statistics: Univariate and Multivariate</h1>
 
 </section>
-<section id="random-variables-1" class="slide level2 crunch-math crunch-title">
+<section id="random-variables-1" class="slide level2 crunch-math crunch-title crunch-ul">
 <h2>Random Variables</h2>
 <ul>
 <li>Recall our discussion of <strong>random variables</strong>: used by analogy to <strong>algebra</strong>, since we can do math with them:</li>
@@ -1408,7 +1414,7 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
 </tbody>
 </table>
 </section>
-<section id="doing-math-with-events" class="slide level2 smaller crunch-title crunch-math math-90 crunch-ul">
+<section id="doing-math-with-events" class="slide level2 smaller crunch-title crunch-math math-90 crunch-ul crunch-p">
 <h2>Doing Math with Events</h2>
 <ul>
 <li>We’ve seen how <span class="math inline">\(\Pr()\)</span> “encodes” logical expressions involving uncertain outcomes.</li>
@@ -1459,7 +1465,7 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
           display:block!important;
       }</style></aside>
 </section>
-<section id="recall-types-of-variables" class="slide level2 smaller">
+<section id="recall-types-of-variables" class="slide level2 smaller crunch-title">
 <h2>Recall: Types of Variables</h2>
 <ul>
 <li><strong>Categorical</strong>
@@ -1474,7 +1480,7 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
 <li><strong>Cardinal</strong>
 <ul>
 <li>Can place in order, and gaps are meaningful <span class="math inline">\(\implies\)</span> can do “standard” math with them! Example: <span class="math inline">\(\{{\color{blue}1},{\color{blue}2},\ldots,{\color{blue}10}\}\)</span></li>
-<li><span class="math inline">\({\color{blue}7} \overset{\text{✅}}{=} 2 \cdot {\color{blue}4} - 1\)</span></li>
+<li><span class="math inline">\({\color{blue}7} \overset{\text{~✅~}}{=} 2 \cdot {\color{blue}4} - 1\)</span></li>
 <li>If events have <strong>this structure</strong> (meaningful way to define multiplication, addition, subtraction), then we can analyze them as <strong>random variables</strong></li>
 </ul></li>
 </ul>
@@ -1571,7 +1577,7 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
 </div>
 </div>
 </section>
-<section id="example-the-normal-distribution" class="slide level2 smaller crunch-figures crunch-title scrollable">
+<section id="example-the-normal-distribution" class="slide level2 smaller crunch-figures crunch-title crunch-quarto-figure scrollable">
 <h2>Example: The Normal Distribution</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -1601,14 +1607,45 @@ S = \{ &amp;\text{result of dice roll is 1}, \\
 <ul>
 <li><span class="math inline">\({\color{\purple}\mu}\)</span> = center (mean), <span class="math inline">\({\color{purple}\sigma}\)</span> = [square root of] variance around center</li>
 </ul></li>
-<li><strong>Mean</strong> can usually be interpreted intuitively; for <strong>standard deviation</strong>, we usually use the <a href="https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule" target="_blank"><strong>68-95-99.7 rule</strong></a>, which will make more sense relative to some <strong>real-world data</strong>…</li>
+<li><strong>Mean</strong> can usually be interpreted intuitively; for <strong>standard deviation</strong>, can use the <a href="https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule" target="_blank"><strong>68-95-99.7 rule</strong></a>, which will make more sense relative to some <strong>real-world data</strong>…</li>
 </ul>
 <aside><ol class="aside-footnotes"><li id="fn2"><p>Throughout the course, this “calligraphic” font <span class="math inline">\(\mathcal{N}\)</span>, <span class="math inline">\(\mathcal{D}\)</span>, etc., will be used to denote <strong>distributions</strong></p></li><li id="fn3"><p>Throughout the course, remember, <span style="color:purple;"><strong>purrple</strong></span> is for <span style="color:purple;"><strong>purrameters</strong></span></p></li></ol></aside></section>
-<section id="real-data-and-the-68-95-99.7-rule" class="slide level2 smaller crunch-layout-panel crunch-title crunch-figures crunch-lists crunch-images crunch-quarto-figure">
+<section id="real-data-and-the-68-95-99.7-rule" class="slide level2 smaller crunch-layout-panel crunch-title crunch-figures crunch-lists crunch-images crunch-quarto-figure crunch-details">
 <h2>Real Data and the 68-95-99.7 Rule</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">library</span>(readr)</span>
+<span id="cb3-2"><a></a>height_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://gist.githubusercontent.com/jpowerj/9a23807fb71a5f6b6c2f37c09eb92ab3/raw/89fc6b8f0c57e41ebf4ce5cdf2b3cad6b2dd798c/sports_heights.csv"</span>)</span>
+<span id="cb3-3"><a></a>mean_height <span class="ot">&lt;-</span> <span class="fu">mean</span>(height_df<span class="sc">$</span>height_cm)</span>
+<span id="cb3-4"><a></a>sd_height <span class="ot">&lt;-</span> <span class="fu">sd</span>(height_df<span class="sc">$</span>height_cm)</span>
+<span id="cb3-5"><a></a>height_density <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, mean_height, sd_height)</span>
+<span id="cb3-6"><a></a>m2_sd <span class="ot">&lt;-</span> mean_height <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> sd_height</span>
+<span id="cb3-7"><a></a>m1_sd <span class="ot">&lt;-</span> mean_height <span class="sc">-</span> <span class="dv">1</span> <span class="sc">*</span> sd_height</span>
+<span id="cb3-8"><a></a>p1_sd <span class="ot">&lt;-</span> mean_height <span class="sc">+</span> <span class="dv">1</span> <span class="sc">*</span> sd_height</span>
+<span id="cb3-9"><a></a>p2_sd <span class="ot">&lt;-</span> mean_height <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> sd_height</span>
+<span id="cb3-10"><a></a>vlines_data <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb3-11"><a></a>  <span class="sc">~</span>x, <span class="sc">~</span>xend, <span class="sc">~</span>y, <span class="sc">~</span>yend, <span class="sc">~</span>Params,</span>
+<span id="cb3-12"><a></a>  mean_height, mean_height, <span class="dv">0</span>, <span class="fu">height_density</span>(mean_height), <span class="st">"Mean"</span>,</span>
+<span id="cb3-13"><a></a>  m2_sd, m2_sd, <span class="dv">0</span>, <span class="fu">height_density</span>(m2_sd), <span class="st">"SD"</span>,</span>
+<span id="cb3-14"><a></a>  m1_sd, m1_sd, <span class="dv">0</span>, <span class="fu">height_density</span>(m1_sd), <span class="st">"SD"</span>,</span>
+<span id="cb3-15"><a></a>  p1_sd, p1_sd, <span class="dv">0</span>, <span class="fu">height_density</span>(p1_sd), <span class="st">"SD"</span>,</span>
+<span id="cb3-16"><a></a>  p2_sd, p2_sd, <span class="dv">0</span>, <span class="fu">height_density</span>(p2_sd), <span class="st">"SD"</span></span>
+<span id="cb3-17"><a></a>)</span>
+<span id="cb3-18"><a></a><span class="fu">ggplot</span>(height_df, <span class="fu">aes</span>(<span class="at">x =</span> height_cm)) <span class="sc">+</span></span>
+<span id="cb3-19"><a></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">binwidth =</span> <span class="fl">5.0</span>) <span class="sc">+</span></span>
+<span id="cb3-20"><a></a>    <span class="co">#stat_function(fun = height_density, linewidth = g_linewidth) +</span></span>
+<span id="cb3-21"><a></a>    <span class="fu">geom_area</span>(<span class="at">stat =</span> <span class="st">"function"</span>, <span class="at">fun =</span> height_density, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">linewidth =</span> g_linewidth, <span class="at">fill =</span> cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb3-22"><a></a>    <span class="fu">geom_segment</span>(<span class="at">data=</span>vlines_data, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">xend=</span>xend, <span class="at">y=</span>y, <span class="at">yend=</span>yend, <span class="at">linetype =</span> Params), <span class="at">linewidth =</span> g_linewidth, <span class="at">color=</span>cbPalette[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb3-23"><a></a>    <span class="fu">labs</span>(</span>
+<span id="cb3-24"><a></a>      <span class="at">title=</span><span class="fu">paste0</span>(<span class="st">"Distribution of heights (cm), N="</span>,<span class="fu">nrow</span>(height_df),<span class="st">" athletes</span><span class="sc">\n</span><span class="st">Mean="</span>,<span class="fu">round</span>(mean_height,<span class="dv">2</span>),<span class="st">", SD="</span>,<span class="fu">round</span>(sd_height,<span class="dv">2</span>)),</span>
+<span id="cb3-25"><a></a>      <span class="at">x=</span><span class="st">"Height (cm)"</span>,</span>
+<span id="cb3-26"><a></a>      <span class="at">y=</span><span class="st">"Probability Density"</span></span>
+<span id="cb3-27"><a></a>    ) <span class="sc">+</span></span>
+<span id="cb3-28"><a></a>    <span class="fu">dsan_theme</span>(<span class="st">"full"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div id="fig-height-plot" class="quarto-float quarto-figure quarto-figure-center" data-fig-align="center">
 <figure class="quarto-float quarto-float-fig">
@@ -1629,7 +1666,7 @@ Figure&nbsp;2: Heights (cm) for 18K professional athletes
 <p><img src="images/empirical_rule.svg" height="256"></p>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-empirical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3: The 68-95-99.7 Rule visualized (<a href="https://commons.wikimedia.org/wiki/File:Empirical_rule_histogram.svg" target="_blank">Wikimedia Commons</a>)
+Figure&nbsp;3: 68-95-99.7 Rule visualized (<a href="https://commons.wikimedia.org/wiki/File:Empirical_rule_histogram.svg" target="_blank">Wiki Commons</a>)
 </figcaption>
 </figure>
 </div>
@@ -1705,13 +1742,11 @@ Figure&nbsp;3: The 68-95-99.7 Rule visualized (<a href="https://commons.wikimedi
 </figure>
 </div>
 </div><div class="column" style="display: flex; justify-content: center; align-items: center;">
-<div id="div-around-thing">
-<div id="thing" class="quarto-figure quarto-figure-center">
+<div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/multiple_boxplots.svg"></p>
 <figcaption>From <a href="https://commons.wikimedia.org/wiki/File:Boxplot_of_Average_Article_Feedback_ratings_by_project_rated_quality.svg">Wikimedia Commons</a></figcaption>
 </figure>
-</div>
 </div>
 </div></div>
 </section>
@@ -1766,14 +1801,14 @@ Figure&nbsp;5: <a href="https://cs.stanford.edu/~jjacobs3/Jacobs_Translations_Id
 \end{align*}
 \]</span></p>
 </div>
-<div class="footnote crunch-math" style="font-size: 1.2rem !important; margin-top: 24px !important;">
+<div class="footnote crunch-math" style="font-size: 1.2rem !important; margin-top: 12px !important;">
 <p><em>Note: In the future I’ll use the notation <span class="math inline">\(\mathbf{X}_{[a \times b]}\)</span> to denote the dimensions of the vectors/matrices, like <span class="math inline">\(\mathbf{X}_{[k \times 1]} \sim \boldsymbol{\mathcal{N}}_k(\boldsymbol{\mu}_{[k \times 1]}, \mathbf{\Sigma}_{[k \times k]})\)</span></em></p>
 </div>
 </section>
-<section id="visualizing-3d-distributions-projection" class="slide level2 smaller">
+<section id="visualizing-3d-distributions-projection" class="slide level2 smaller crunch-title title-12">
 <h2>Visualizing 3D Distributions: Projection</h2>
 <ul>
-<li>Since most of our intuitions about plots come from <strong>2D</strong> plots, it is <strong>extremely useful</strong> to be able to take a 3D plot like this and imagine “projecting” it down into different 2D plots:</li>
+<li>Most of our intuitions about plots come from <strong>2D</strong> <span class="math inline">\(\Rightarrow\)</span> super helpful exercise to take a 3D plot like this and imagine <strong>“projecting” it</strong> onto different 2D surfaces:</li>
 </ul>
 
 <img data-src="images/bivariate_normal_corrected.svg" class="r-stretch quarto-figure-center"><p class="caption">(Adapted via LaTeX from <a href="https://tex.stackexchange.com/questions/31708/draw-a-bivariate-normal-distribution-in-tikz">StackExchange discussion</a>)</p></section>
@@ -1819,8 +1854,25 @@ Figure&nbsp;5: <a href="https://cs.stanford.edu/~jjacobs3/Jacobs_Translations_Id
   * $\mathcal{H}_1 = \text{Tomorrow's temperature} > 20^\circ$, $\mathcal{H}_0 = \text{Tomorrow's temperature} \leq 20^\circ$,<br>$X = \text{Historical temperature data}$
  
 --->
+<img data-src="images/contour_corr.png" class="r-stretch quarto-figure-center"><p class="caption">Also from <a href="https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-correlated" target="_blank">Prof.&nbsp;Hickman’s slides!</a></p></section></section>
+<section>
+<section id="lab-time" class="title-slide slide level1 center" data-stack-name="Lab Time!">
+<h1>Lab Time!</h1>
 
-<img data-src="images/contour_corr.png" class="r-stretch quarto-figure-center"><p class="caption">Also from <a href="https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-correlated" target="_blank">Prof.&nbsp;Hickman’s slides!</a></p><div class="quarto-auto-generated-content">
+</section>
+<section id="link-to-colab-notebook" class="slide level2">
+<h2>Link to Colab Notebook</h2>
+<ul>
+<li><a href="https://colab.research.google.com/drive/1DOK4vfq43GD2IsMd1JFd0jrAhVRbwNTG?usp=sharing">DSAN 5100-03 Lab 02</a></li>
+</ul>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
+<div id="refs" role="list">
+
+</div>
+
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>DSAN 5100-03 W02: Probabilistic Modeling</p>
 </div>

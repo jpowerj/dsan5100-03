@@ -239,7 +239,7 @@
     "href": "w02/slides.html#combinatorics-ice-cream-possibilities",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Combinatorics: Ice Cream Possibilities",
-    "text": "Combinatorics: Ice Cream Possibilities\n\n\n\n\n\n\n\n\n\n\nThe \\(6 = 2 \\cdot 3\\) possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.\n\n\n\n\n\n\n\nThe \\(6 = 3 \\cdot 2\\) possible cone+flavor combinations which can result from choosing a flavor first and a cone type second."
+    "text": "Combinatorics: Ice Cream Possibilities\n\n\n\n\n\nThe \\(6 = \\color{red}\\boxed{\\color{black}2 \\cdot 3}\\) possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.\n\n\n\n\n\n\nThe \\(6 = \\color{red}\\boxed{\\color{black}3 \\cdot 2}\\) possible cone+flavor combinations which can result from choosing a flavor first and a cone type second."
   },
   {
     "objectID": "w02/slides.html#grouping-vs.-ordering",
@@ -274,14 +274,14 @@
     "href": "w02/slides.html#with-or-without-replacement",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "With or Without Replacement?",
-    "text": "With or Without Replacement?\n\nBoils down to: can the same object be included in my sample more than once?\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\nMost statistical problems: “Check off” objects as you collect data about them, so that each observation in your data is unique\nSpecial (but important!) set of statistical problems: allow objects to appear in your sample multiple times, to “squeeze” more information out of the sample (called Bootstrapping—much more on this later in the course!)"
+    "text": "With or Without Replacement?\n\nBoils down to: can the same object be included in my sample more than once?\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\nMost statistical problems: “Check off” objects as you collect data about them, so that each observation in your data is unique\nSpecial (but important!) set of statistical problems: let objects appear in your sample multiple times, to “squeeze” more information out of the sample (called Bootstrapping—much more later in the course!)"
   },
   {
     "objectID": "w02/slides.html#how-many-possible-samples",
     "href": "w02/slides.html#how-many-possible-samples",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "How Many Possible Samples?",
-    "text": "How Many Possible Samples?\nExample: From a population of \\(N = 3\\), how many ways can we take samples of size \\(k = 2\\)?\n\n\n\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\n\\(3 \\cdot 2 = 6\\) ways (3 objects to choose from for first element of sample, 2 remaining objects to choose from for second element of sample)\n\\(3\\cdot 3 = 3^2 = 9\\) ways (3 objects to choose from for first element of sample, still 3 objects to choose from for second element of sample)\n\n\n\nGeneral Case: From population of size \\(N\\), how many ways can we take samples of size \\(k\\)? (Try to extrapolate from above example before looking at answer!)\n\n\n\n\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\n\\(\\displaystyle \\underbrace{N \\cdot (N-1) \\cdot \\cdots \\cdot (N - k + 1)}_{k\\text{ times}} = \\frac{N!}{(N - k )!}\\)(This formula should look somewhat familiar…)\n\\(\\displaystyle \\underbrace{N \\cdot N \\cdot \\cdots \\cdot N}_{k\\text{ times}} = N^k\\)"
+    "text": "How Many Possible Samples?\nExample: From \\(N = 3\\) population, how many ways can we take samples of size \\(k = 2\\)?\n\n\n\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\n\\(3 \\cdot 2 = 6\\) ways (3 objects to choose from for first element of sample, 2 remaining objects to choose from for second element of sample)\n\\(3\\cdot 3 = 3^2 = 9\\) ways (3 objects to choose from for first element of sample, still 3 objects to choose from for second element of sample)\n\n\n\nGeneral Case: From population of size \\(N\\), how many ways can we take samples of size \\(k\\)? (Try to extrapolate from above example before looking at answer!)\n\n\n\n\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\n\\(\\displaystyle \\underbrace{N \\cdot (N-1) \\cdot \\cdots \\cdot (N - k + 1)}_{k\\text{ times}} = \\frac{N!}{(N - k )!}\\)(This formula should look somewhat familiar…)\n\\(\\displaystyle \\underbrace{N \\cdot N \\cdot \\cdots \\cdot N}_{k\\text{ times}} = N^k\\)"
   },
   {
     "objectID": "w02/slides.html#logic-sets-and-probability",
@@ -372,7 +372,7 @@
     "href": "w02/slides.html#recall-types-of-variables",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Recall: Types of Variables",
-    "text": "Recall: Types of Variables\n\nCategorical\n\nNo meaningful way to order values: \\(\\{\\text{trout}, \\text{bass}, \\ldots \\}\\)\n\nOrdinal\n\nCan place in order (bigger, smaller), though gaps aren’t meaningful: \\(\\{{\\color{orange}\\text{great}},{\\color{orange}\\text{greater}},{\\color{orange}\\text{greatest}}\\}\\)\n\\({\\color{orange}\\text{greater}} \\overset{?}{=} 2\\cdot {\\color{orange}\\text{great}} - 1\\)\n\nCardinal\n\nCan place in order, and gaps are meaningful \\(\\implies\\) can do “standard” math with them! Example: \\(\\{{\\color{blue}1},{\\color{blue}2},\\ldots,{\\color{blue}10}\\}\\)\n\\({\\color{blue}7} \\overset{\\text{✅}}{=} 2 \\cdot {\\color{blue}4} - 1\\)\nIf events have this structure (meaningful way to define multiplication, addition, subtraction), then we can analyze them as random variables"
+    "text": "Recall: Types of Variables\n\nCategorical\n\nNo meaningful way to order values: \\(\\{\\text{trout}, \\text{bass}, \\ldots \\}\\)\n\nOrdinal\n\nCan place in order (bigger, smaller), though gaps aren’t meaningful: \\(\\{{\\color{orange}\\text{great}},{\\color{orange}\\text{greater}},{\\color{orange}\\text{greatest}}\\}\\)\n\\({\\color{orange}\\text{greater}} \\overset{?}{=} 2\\cdot {\\color{orange}\\text{great}} - 1\\)\n\nCardinal\n\nCan place in order, and gaps are meaningful \\(\\implies\\) can do “standard” math with them! Example: \\(\\{{\\color{blue}1},{\\color{blue}2},\\ldots,{\\color{blue}10}\\}\\)\n\\({\\color{blue}7} \\overset{\\text{~✅~}}{=} 2 \\cdot {\\color{blue}4} - 1\\)\nIf events have this structure (meaningful way to define multiplication, addition, subtraction), then we can analyze them as random variables"
   },
   {
     "objectID": "w02/slides.html#visualizing-discrete-rvs",
@@ -421,21 +421,21 @@
     "href": "w02/slides.html#example-the-normal-distribution",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Example: The Normal Distribution",
-    "text": "Example: The Normal Distribution\n\n\n\n(The distribution you saw a few slides ago)\n\n\n\n\n\n\n\n\n\n\n\n\n“RV \\(X\\) is normally distributed with mean \\({\\color{purple}\\mu}\\) and standard deviation \\({\\color{purple}\\sigma}\\)”\n\nTranslates to \\(X \\sim \\mathcal{N}(\\color{purple}{\\mu},\\color{purple}{\\sigma})\\)1\n\\(\\color{purple}{\\mu}\\) and \\(\\color{purple}{\\sigma}\\) are parameters2: the “knobs” or “sliders” which change the location/shape of the distribution\n\n\n\n\nThe parameters in this case give natural summaries of the data:\n\n\\({\\color{\\purple}\\mu}\\) = center (mean), \\({\\color{purple}\\sigma}\\) = [square root of] variance around center\n\nMean can usually be interpreted intuitively; for standard deviation, we usually use the 68-95-99.7 rule, which will make more sense relative to some real-world data…\n\nThroughout the course, this “calligraphic” font \\(\\mathcal{N}\\), \\(\\mathcal{D}\\), etc., will be used to denote distributionsThroughout the course, remember, purrple is for purrameters"
+    "text": "Example: The Normal Distribution\n\n\n\n(The distribution you saw a few slides ago)\n\n\n\n\n\n\n\n\n\n\n\n\n“RV \\(X\\) is normally distributed with mean \\({\\color{purple}\\mu}\\) and standard deviation \\({\\color{purple}\\sigma}\\)”\n\nTranslates to \\(X \\sim \\mathcal{N}(\\color{purple}{\\mu},\\color{purple}{\\sigma})\\)1\n\\(\\color{purple}{\\mu}\\) and \\(\\color{purple}{\\sigma}\\) are parameters2: the “knobs” or “sliders” which change the location/shape of the distribution\n\n\n\n\nThe parameters in this case give natural summaries of the data:\n\n\\({\\color{\\purple}\\mu}\\) = center (mean), \\({\\color{purple}\\sigma}\\) = [square root of] variance around center\n\nMean can usually be interpreted intuitively; for standard deviation, can use the 68-95-99.7 rule, which will make more sense relative to some real-world data…\n\nThroughout the course, this “calligraphic” font \\(\\mathcal{N}\\), \\(\\mathcal{D}\\), etc., will be used to denote distributionsThroughout the course, remember, purrple is for purrameters"
   },
   {
     "objectID": "w02/slides.html#real-data-and-the-68-95-99.7-rule",
     "href": "w02/slides.html#real-data-and-the-68-95-99.7-rule",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Real Data and the 68-95-99.7 Rule",
-    "text": "Real Data and the 68-95-99.7 Rule\n\n\n\n\n\n\n\n\n\n\nFigure 2: Heights (cm) for 18K professional athletes\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: The 68-95-99.7 Rule visualized (Wikimedia Commons)\n\n\n\n\nThe point estimate \\({\\color{purple}\\mu} = 186.48\\) is straightforward: the average height of the athletes is 186.48cm. Using the 68-95-99.7 Rule to interpret the SD, \\({\\color{purple}\\sigma} = 9.7\\), we get:\n\n\n\nAbout 68% of the heights fall between\n\n\n\n\n\n\n\n\n\n[\\({\\color{purple}\\mu} - 1\\cdot {\\color{purple}\\sigma}\\)\nand\n\\({\\color{purple}\\mu} + 1\\cdot {\\color{purple}\\sigma}\\)]\n\n\n[186.48 - 1 · 9.7\nand\n186.48 + 1 · 9.7]\n\n\n[176.78\nand\n196.18]\n\n\n\n\n\nAbout 95% of the heights fall between\n\n\n\n\n\n\n\n\n\n[\\({\\color{purple}\\mu} - 2 \\cdot {\\color{purple}\\sigma}\\)\nand\n\\({\\color{purple}\\mu} + 2 \\cdot {\\color{purple}\\sigma}\\)]\n\n\n[186.48 - 2 · 9.7\nand\n186.48 + 2 · 9.7]\n\n\n[167.08\nand\n205.88]"
+    "text": "Real Data and the 68-95-99.7 Rule\n\n\n\n\nCode\nlibrary(readr)\nheight_df &lt;- read_csv(\"https://gist.githubusercontent.com/jpowerj/9a23807fb71a5f6b6c2f37c09eb92ab3/raw/89fc6b8f0c57e41ebf4ce5cdf2b3cad6b2dd798c/sports_heights.csv\")\nmean_height &lt;- mean(height_df$height_cm)\nsd_height &lt;- sd(height_df$height_cm)\nheight_density &lt;- function(x) dnorm(x, mean_height, sd_height)\nm2_sd &lt;- mean_height - 2 * sd_height\nm1_sd &lt;- mean_height - 1 * sd_height\np1_sd &lt;- mean_height + 1 * sd_height\np2_sd &lt;- mean_height + 2 * sd_height\nvlines_data &lt;- tibble::tribble(\n  ~x, ~xend, ~y, ~yend, ~Params,\n  mean_height, mean_height, 0, height_density(mean_height), \"Mean\",\n  m2_sd, m2_sd, 0, height_density(m2_sd), \"SD\",\n  m1_sd, m1_sd, 0, height_density(m1_sd), \"SD\",\n  p1_sd, p1_sd, 0, height_density(p1_sd), \"SD\",\n  p2_sd, p2_sd, 0, height_density(p2_sd), \"SD\"\n)\nggplot(height_df, aes(x = height_cm)) +\n    geom_histogram(aes(y = after_stat(density)), binwidth = 5.0) +\n    #stat_function(fun = height_density, linewidth = g_linewidth) +\n    geom_area(stat = \"function\", fun = height_density, color=\"black\", linewidth = g_linewidth, fill = cbPalette[1], alpha=0.2) +\n    geom_segment(data=vlines_data, aes(x=x, xend=xend, y=y, yend=yend, linetype = Params), linewidth = g_linewidth, color=cbPalette[2]) +\n    labs(\n      title=paste0(\"Distribution of heights (cm), N=\",nrow(height_df),\" athletes\\nMean=\",round(mean_height,2),\", SD=\",round(sd_height,2)),\n      x=\"Height (cm)\",\n      y=\"Probability Density\"\n    ) +\n    dsan_theme(\"full\")\n\n\n\n\n\n\n\n\nFigure 2: Heights (cm) for 18K professional athletes\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: 68-95-99.7 Rule visualized (Wiki Commons)\n\n\n\n\nThe point estimate \\({\\color{purple}\\mu} = 186.48\\) is straightforward: the average height of the athletes is 186.48cm. Using the 68-95-99.7 Rule to interpret the SD, \\({\\color{purple}\\sigma} = 9.7\\), we get:\n\n\n\nAbout 68% of the heights fall between\n\n\n\n\n\n\n\n\n\n[\\({\\color{purple}\\mu} - 1\\cdot {\\color{purple}\\sigma}\\)\nand\n\\({\\color{purple}\\mu} + 1\\cdot {\\color{purple}\\sigma}\\)]\n\n\n[186.48 - 1 · 9.7\nand\n186.48 + 1 · 9.7]\n\n\n[176.78\nand\n196.18]\n\n\n\n\n\nAbout 95% of the heights fall between\n\n\n\n\n\n\n\n\n\n[\\({\\color{purple}\\mu} - 2 \\cdot {\\color{purple}\\sigma}\\)\nand\n\\({\\color{purple}\\mu} + 2 \\cdot {\\color{purple}\\sigma}\\)]\n\n\n[186.48 - 2 · 9.7\nand\n186.48 + 2 · 9.7]\n\n\n[167.08\nand\n205.88]"
   },
   {
     "objectID": "w02/slides.html#boxplots-comparing-multiple-distributions",
     "href": "w02/slides.html#boxplots-comparing-multiple-distributions",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Boxplots: Comparing Multiple Distributions",
-    "text": "Boxplots: Comparing Multiple Distributions\n\n\n\n\n\nFrom Wikimedia Commons\n\n\n\n\n\n\n\nFrom Wikimedia Commons"
+    "text": "Boxplots: Comparing Multiple Distributions\n\n\n\n\n\nFrom Wikimedia Commons\n\n\n\n\n\n\nFrom Wikimedia Commons"
   },
   {
     "objectID": "w02/slides.html#another-option-joyplots",
@@ -456,7 +456,7 @@
     "href": "w02/slides.html#visualizing-3d-distributions-projection",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Visualizing 3D Distributions: Projection",
-    "text": "Visualizing 3D Distributions: Projection\n\nSince most of our intuitions about plots come from 2D plots, it is extremely useful to be able to take a 3D plot like this and imagine “projecting” it down into different 2D plots:\n\n\n(Adapted via LaTeX from StackExchange discussion)"
+    "text": "Visualizing 3D Distributions: Projection\n\nMost of our intuitions about plots come from 2D \\(\\Rightarrow\\) super helpful exercise to take a 3D plot like this and imagine “projecting” it onto different 2D surfaces:\n\n\n(Adapted via LaTeX from StackExchange discussion)"
   },
   {
     "objectID": "w02/slides.html#visualizing-3d-distributions-contours",
@@ -470,7 +470,21 @@
     "href": "w02/slides.html#visualizing-3d-distributions-contours-1",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Visualizing 3D Distributions: Contours",
-    "text": "Visualizing 3D Distributions: Contours\n\n\n\n\n\nAlso from Prof. Hickman’s slides!\n\nDSAN 5100-03 W02: Probabilistic Modeling"
+    "text": "Visualizing 3D Distributions: Contours\n\n\n\n\nAlso from Prof. Hickman’s slides!"
+  },
+  {
+    "objectID": "w02/slides.html#link-to-colab-notebook",
+    "href": "w02/slides.html#link-to-colab-notebook",
+    "title": "Week 2: Introduction to Probabilistic Modeling",
+    "section": "Link to Colab Notebook",
+    "text": "Link to Colab Notebook\n\nDSAN 5100-03 Lab 02"
+  },
+  {
+    "objectID": "w02/slides.html#references",
+    "href": "w02/slides.html#references",
+    "title": "Week 2: Introduction to Probabilistic Modeling",
+    "section": "References",
+    "text": "References\n\n\n\n\n\n\nDSAN 5100-03 W02: Probabilistic Modeling"
   },
   {
     "objectID": "w02/index.html",
@@ -647,7 +661,7 @@
     "href": "w02/index.html#combinatorics-ice-cream-possibilities",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Combinatorics: Ice Cream Possibilities",
-    "text": "Combinatorics: Ice Cream Possibilities\n\n\n\n\n\n\n\n\n\n\nThe \\(6 = 2 \\cdot 3\\) possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.\n\n\n\n\n\n\n\nThe \\(6 = 3 \\cdot 2\\) possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.",
+    "text": "Combinatorics: Ice Cream Possibilities\n\n\n\n\n\nThe \\(6 = \\color{red}\\boxed{\\color{black}2 \\cdot 3}\\) possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.\n\n\n\n\n\n\nThe \\(6 = \\color{red}\\boxed{\\color{black}3 \\cdot 2}\\) possible cone+flavor combinations which can result from choosing a flavor first and a cone type second.",
     "crumbs": [
       "Week 2: Sep 3"
     ]
@@ -697,7 +711,7 @@
     "href": "w02/index.html#with-or-without-replacement",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "With or Without Replacement?",
-    "text": "With or Without Replacement?\n\nBoils down to: can the same object be included in my sample more than once?\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\nMost statistical problems: “Check off” objects as you collect data about them, so that each observation in your data is unique\nSpecial (but important!) set of statistical problems: allow objects to appear in your sample multiple times, to “squeeze” more information out of the sample (called Bootstrapping—much more on this later in the course!)",
+    "text": "With or Without Replacement?\n\nBoils down to: can the same object be included in my sample more than once?\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\nMost statistical problems: “Check off” objects as you collect data about them, so that each observation in your data is unique\nSpecial (but important!) set of statistical problems: let objects appear in your sample multiple times, to “squeeze” more information out of the sample (called Bootstrapping—much more later in the course!)",
     "crumbs": [
       "Week 2: Sep 3"
     ]
@@ -707,7 +721,7 @@
     "href": "w02/index.html#how-many-possible-samples",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "How Many Possible Samples?",
-    "text": "How Many Possible Samples?\nExample: From a population of \\(N = 3\\), how many ways can we take samples of size \\(k = 2\\)?\n\n\n\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\n\\(3 \\cdot 2 = 6\\) ways (3 objects to choose from for first element of sample, 2 remaining objects to choose from for second element of sample)\n\\(3\\cdot 3 = 3^2 = 9\\) ways (3 objects to choose from for first element of sample, still 3 objects to choose from for second element of sample)\n\n\n\nGeneral Case: From population of size \\(N\\), how many ways can we take samples of size \\(k\\)? (Try to extrapolate from above example before looking at answer!)\n\n\n\n\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\n\\(\\displaystyle \\underbrace{N \\cdot (N-1) \\cdot \\cdots \\cdot (N - k + 1)}_{k\\text{ times}} = \\frac{N!}{(N - k )!}\\)(This formula should look somewhat familiar…)\n\\(\\displaystyle \\underbrace{N \\cdot N \\cdot \\cdots \\cdot N}_{k\\text{ times}} = N^k\\)",
+    "text": "How Many Possible Samples?\nExample: From \\(N = 3\\) population, how many ways can we take samples of size \\(k = 2\\)?\n\n\n\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\n\\(3 \\cdot 2 = 6\\) ways (3 objects to choose from for first element of sample, 2 remaining objects to choose from for second element of sample)\n\\(3\\cdot 3 = 3^2 = 9\\) ways (3 objects to choose from for first element of sample, still 3 objects to choose from for second element of sample)\n\n\n\nGeneral Case: From population of size \\(N\\), how many ways can we take samples of size \\(k\\)? (Try to extrapolate from above example before looking at answer!)\n\n\n\n\n\n\n\n\nWithout Replacement\nWith Replacement\n\n\n\n\n\\(\\displaystyle \\underbrace{N \\cdot (N-1) \\cdot \\cdots \\cdot (N - k + 1)}_{k\\text{ times}} = \\frac{N!}{(N - k )!}\\)(This formula should look somewhat familiar…)\n\\(\\displaystyle \\underbrace{N \\cdot N \\cdot \\cdots \\cdot N}_{k\\text{ times}} = N^k\\)",
     "crumbs": [
       "Week 2: Sep 3"
     ]
@@ -837,7 +851,7 @@
     "href": "w02/index.html#recall-types-of-variables",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Recall: Types of Variables",
-    "text": "Recall: Types of Variables\n\nCategorical\n\nNo meaningful way to order values: \\(\\{\\text{trout}, \\text{bass}, \\ldots \\}\\)\n\nOrdinal\n\nCan place in order (bigger, smaller), though gaps aren’t meaningful: \\(\\{{\\color{orange}\\text{great}},{\\color{orange}\\text{greater}},{\\color{orange}\\text{greatest}}\\}\\)\n\\({\\color{orange}\\text{greater}} \\overset{?}{=} 2\\cdot {\\color{orange}\\text{great}} - 1\\)\n\nCardinal\n\nCan place in order, and gaps are meaningful \\(\\implies\\) can do “standard” math with them! Example: \\(\\{{\\color{blue}1},{\\color{blue}2},\\ldots,{\\color{blue}10}\\}\\)\n\\({\\color{blue}7} \\overset{\\text{✅}}{=} 2 \\cdot {\\color{blue}4} - 1\\)\nIf events have this structure (meaningful way to define multiplication, addition, subtraction), then we can analyze them as random variables",
+    "text": "Recall: Types of Variables\n\nCategorical\n\nNo meaningful way to order values: \\(\\{\\text{trout}, \\text{bass}, \\ldots \\}\\)\n\nOrdinal\n\nCan place in order (bigger, smaller), though gaps aren’t meaningful: \\(\\{{\\color{orange}\\text{great}},{\\color{orange}\\text{greater}},{\\color{orange}\\text{greatest}}\\}\\)\n\\({\\color{orange}\\text{greater}} \\overset{?}{=} 2\\cdot {\\color{orange}\\text{great}} - 1\\)\n\nCardinal\n\nCan place in order, and gaps are meaningful \\(\\implies\\) can do “standard” math with them! Example: \\(\\{{\\color{blue}1},{\\color{blue}2},\\ldots,{\\color{blue}10}\\}\\)\n\\({\\color{blue}7} \\overset{\\text{~✅~}}{=} 2 \\cdot {\\color{blue}4} - 1\\)\nIf events have this structure (meaningful way to define multiplication, addition, subtraction), then we can analyze them as random variables",
     "crumbs": [
       "Week 2: Sep 3"
     ]
@@ -877,7 +891,7 @@
     "href": "w02/index.html#example-game-reviews",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Example: Game Reviews",
-    "text": "Example: Game Reviews\n\nlibrary(readr)\nfig_title &lt;- \"Review for a Popular Nintendo Switch Game\"\nfig_subtitle &lt;- \"(That I definitely didn't play for &gt;400 hours this summer...)\"\n#score_df &lt;- read_csv(\"https://gist.githubusercontent.com/jpowerj/8b2b6a50cef5a682db640e874a14646b/raw/bbe07891a90874d1fe624224c1b82212b1ac8378/totk_scores.csv\")\nscore_df &lt;- read_csv(\"https://gist.githubusercontent.com/jpowerj/8b2b6a50cef5a682db640e874a14646b/raw/e3c2b9d258380e817289fbb64f91ba9ed4357d62/totk_scores.csv\")\nmean_score &lt;- mean(score_df$score)\nlibrary(ggplot2)\nggplot(score_df, aes(x=score)) +\n  geom_histogram() +\n  #geom_vline(xintercept=mean_score) +\n  labs(\n    title=fig_title,\n    subtitle=fig_subtitle,\n    x=\"Review Score\",\n    y=\"Number of Reviews\"\n  ) +\n  dsan_theme(\"full\")\n\n\n\n\n(Data from Metacritic)",
+    "text": "Example: Game Reviews\n\nlibrary(readr)\nfig_title &lt;- \"Reviews for a Popular Nintendo Switch Game\"\n#score_df &lt;- read_csv(\"https://gist.githubusercontent.com/jpowerj/8b2b6a50cef5a682db640e874a14646b/raw/bbe07891a90874d1fe624224c1b82212b1ac8378/totk_scores.csv\")\nscore_df &lt;- read_csv(\"https://gist.githubusercontent.com/jpowerj/8b2b6a50cef5a682db640e874a14646b/raw/e3c2b9d258380e817289fbb64f91ba9ed4357d62/totk_scores.csv\")\nmean_score &lt;- mean(score_df$score)\nlibrary(ggplot2)\nggplot(score_df, aes(x=score)) +\n  geom_histogram() +\n  #geom_vline(xintercept=mean_score) +\n  labs(\n    title=fig_title,\n    x=\"Review Score\",\n    y=\"Number of Reviews\"\n  ) +\n  dsan_theme(\"full\")\n\n\n\n\n(Data from Metacritic)",
     "crumbs": [
       "Week 2: Sep 3"
     ]
@@ -887,7 +901,7 @@
     "href": "w02/index.html#adding-a-single-line",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Adding a Single Line",
-    "text": "Adding a Single Line\n\nlibrary(readr)\nmean_score &lt;- mean(score_df$score)\nmean_score_label &lt;- sprintf(\"%0.2f\", mean_score)\nlibrary(ggplot2)\nggplot(score_df, aes(x=score)) +\n  geom_histogram() +\n  geom_vline(aes(xintercept=mean_score, linetype=\"dashed\"), color=\"purple\", size=1) +\n  scale_linetype_manual(\"\", values=c(\"dashed\"=\"dashed\"), labels=c(\"dashed\"=\"Mean Score\")) +\n  # Add single additional tick\n  scale_x_continuous(breaks=c(60, 70, 80, 90, mean_score, 100), labels=c(\"60\",\"70\",\"80\",\"90\",mean_score_label,\"100\")) +\n  labs(\n    title=fig_title,\n    subtitle=fig_subtitle,\n    x=\"Review Score\",\n    y=\"Number of Reviews\"\n  ) +\n  dsan_theme(\"full\") +\n  theme(\n    legend.title = element_blank(),\n    legend.spacing.y = unit(0, \"mm\")\n  ) +\n  theme(axis.text.x = element_text(colour = c('black', 'black','black', 'black', 'purple', 'black')))\n\n\n\n\n(Data from Metacritic)",
+    "text": "Adding a Single Line\n\nlibrary(readr)\nmean_score &lt;- mean(score_df$score)\nmean_score_label &lt;- sprintf(\"%0.2f\", mean_score)\nlibrary(ggplot2)\nggplot(score_df, aes(x=score)) +\n  geom_histogram() +\n  geom_vline(aes(xintercept=mean_score, linetype=\"dashed\"), color=\"purple\", size=1) +\n  scale_linetype_manual(\"\", values=c(\"dashed\"=\"dashed\"), labels=c(\"dashed\"=\"Mean Score\")) +\n  # Add single additional tick\n  scale_x_continuous(breaks=c(60, 70, 80, 90, mean_score, 100), labels=c(\"60\",\"70\",\"80\",\"90\",mean_score_label,\"100\")) +\n  labs(\n    title=fig_title,\n    x=\"Review Score\",\n    y=\"Number of Reviews\"\n  ) +\n  dsan_theme(\"full\") +\n  theme(\n    legend.title = element_blank(),\n    legend.spacing.y = unit(0, \"mm\")\n  ) +\n  theme(axis.text.x = element_text(colour = c('black', 'black','black', 'black', 'purple', 'black')))\n\n\n\n\n(Data from Metacritic)",
     "crumbs": [
       "Week 2: Sep 3"
     ]
@@ -907,7 +921,7 @@
     "href": "w02/index.html#example-the-normal-distribution",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Example: The Normal Distribution",
-    "text": "Example: The Normal Distribution\n\n\n\n(The distribution you saw a few slides ago)\n\n\nvlines_std_normal &lt;- tibble::tribble(\n  ~x, ~xend, ~y, ~yend, ~Params,\n  0, 0, 0, dnorm(0), \"Mean\",\n  -2, -2, 0, dnorm(-2), \"SD\",\n  -1, -1, 0, dnorm(-1), \"SD\",\n  1, 1, 0, dnorm(1), \"SD\",\n  2, 2, 0, dnorm(2), \"SD\"\n)\nggplot(data.frame(x = c(-3, 3)), aes(x = x)) +\n    stat_function(fun = dnorm, linewidth = g_linewidth) +\n    geom_segment(data=vlines_std_normal, aes(x=x, xend=xend, y=y, yend=yend, linetype = Params), linewidth = g_linewidth, color=\"purple\") +\n    geom_area(stat = \"function\", fun = dnorm, fill = cbPalette[1], xlim = c(-3, 3), alpha=0.2) +\n    #geom_area(stat = \"function\", fun = dnorm, fill = \"blue\", xlim = c(0, 2))\n    dsan_theme(\"quarter\") +\n    labs(\n      x = \"v\",\n      y = \"Density f(v)\"\n    )\n\n\n\n\n\n\n\n\n\n\n“RV \\(X\\) is normally distributed with mean \\({\\color{purple}\\mu}\\) and standard deviation \\({\\color{purple}\\sigma}\\)”\n\nTranslates to \\(X \\sim \\mathcal{N}(\\color{purple}{\\mu},\\color{purple}{\\sigma})\\)2\n\\(\\color{purple}{\\mu}\\) and \\(\\color{purple}{\\sigma}\\) are parameters3: the “knobs” or “sliders” which change the location/shape of the distribution\n\n\n\n\n\nThe parameters in this case give natural summaries of the data:\n\n\\({\\color{\\purple}\\mu}\\) = center (mean), \\({\\color{purple}\\sigma}\\) = [square root of] variance around center\n\nMean can usually be interpreted intuitively; for standard deviation, we usually use the 68-95-99.7 rule, which will make more sense relative to some real-world data…",
+    "text": "Example: The Normal Distribution\n\n\n\n(The distribution you saw a few slides ago)\n\n\nvlines_std_normal &lt;- tibble::tribble(\n  ~x, ~xend, ~y, ~yend, ~Params,\n  0, 0, 0, dnorm(0), \"Mean\",\n  -2, -2, 0, dnorm(-2), \"SD\",\n  -1, -1, 0, dnorm(-1), \"SD\",\n  1, 1, 0, dnorm(1), \"SD\",\n  2, 2, 0, dnorm(2), \"SD\"\n)\nggplot(data.frame(x = c(-3, 3)), aes(x = x)) +\n    stat_function(fun = dnorm, linewidth = g_linewidth) +\n    geom_segment(data=vlines_std_normal, aes(x=x, xend=xend, y=y, yend=yend, linetype = Params), linewidth = g_linewidth, color=\"purple\") +\n    geom_area(stat = \"function\", fun = dnorm, fill = cbPalette[1], xlim = c(-3, 3), alpha=0.2) +\n    #geom_area(stat = \"function\", fun = dnorm, fill = \"blue\", xlim = c(0, 2))\n    dsan_theme(\"quarter\") +\n    labs(\n      x = \"v\",\n      y = \"Density f(v)\"\n    )\n\n\n\n\n\n\n\n\n\n\n“RV \\(X\\) is normally distributed with mean \\({\\color{purple}\\mu}\\) and standard deviation \\({\\color{purple}\\sigma}\\)”\n\nTranslates to \\(X \\sim \\mathcal{N}(\\color{purple}{\\mu},\\color{purple}{\\sigma})\\)2\n\\(\\color{purple}{\\mu}\\) and \\(\\color{purple}{\\sigma}\\) are parameters3: the “knobs” or “sliders” which change the location/shape of the distribution\n\n\n\n\n\nThe parameters in this case give natural summaries of the data:\n\n\\({\\color{\\purple}\\mu}\\) = center (mean), \\({\\color{purple}\\sigma}\\) = [square root of] variance around center\n\nMean can usually be interpreted intuitively; for standard deviation, can use the 68-95-99.7 rule, which will make more sense relative to some real-world data…",
     "crumbs": [
       "Week 2: Sep 3"
     ]
@@ -917,7 +931,7 @@
     "href": "w02/index.html#real-data-and-the-68-95-99.7-rule",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Real Data and the 68-95-99.7 Rule",
-    "text": "Real Data and the 68-95-99.7 Rule\n\n\n\n\n\n\n\n\n\n\nFigure 2: Heights (cm) for 18K professional athletes\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: The 68-95-99.7 Rule visualized (Wikimedia Commons)\n\n\n\n\n\nThe point estimate \\({\\color{purple}\\mu} = 186.48\\) is straightforward: the average height of the athletes is 186.48cm. Using the 68-95-99.7 Rule to interpret the SD, \\({\\color{purple}\\sigma} = 9.7\\), we get:\n\n\n\nAbout 68% of the heights fall between\n\n\n\n\n\n\n\n\n\n[\\({\\color{purple}\\mu} - 1\\cdot {\\color{purple}\\sigma}\\)\nand\n\\({\\color{purple}\\mu} + 1\\cdot {\\color{purple}\\sigma}\\)]\n\n\n[186.48 - 1 · 9.7\nand\n186.48 + 1 · 9.7]\n\n\n[176.78\nand\n196.18]\n\n\n\n\n\nAbout 95% of the heights fall between\n\n\n\n\n\n\n\n\n\n[\\({\\color{purple}\\mu} - 2 \\cdot {\\color{purple}\\sigma}\\)\nand\n\\({\\color{purple}\\mu} + 2 \\cdot {\\color{purple}\\sigma}\\)]\n\n\n[186.48 - 2 · 9.7\nand\n186.48 + 2 · 9.7]\n\n\n[167.08\nand\n205.88]",
+    "text": "Real Data and the 68-95-99.7 Rule\n\n\n\n\nCode\nlibrary(readr)\nheight_df &lt;- read_csv(\"https://gist.githubusercontent.com/jpowerj/9a23807fb71a5f6b6c2f37c09eb92ab3/raw/89fc6b8f0c57e41ebf4ce5cdf2b3cad6b2dd798c/sports_heights.csv\")\nmean_height &lt;- mean(height_df$height_cm)\nsd_height &lt;- sd(height_df$height_cm)\nheight_density &lt;- function(x) dnorm(x, mean_height, sd_height)\nm2_sd &lt;- mean_height - 2 * sd_height\nm1_sd &lt;- mean_height - 1 * sd_height\np1_sd &lt;- mean_height + 1 * sd_height\np2_sd &lt;- mean_height + 2 * sd_height\nvlines_data &lt;- tibble::tribble(\n  ~x, ~xend, ~y, ~yend, ~Params,\n  mean_height, mean_height, 0, height_density(mean_height), \"Mean\",\n  m2_sd, m2_sd, 0, height_density(m2_sd), \"SD\",\n  m1_sd, m1_sd, 0, height_density(m1_sd), \"SD\",\n  p1_sd, p1_sd, 0, height_density(p1_sd), \"SD\",\n  p2_sd, p2_sd, 0, height_density(p2_sd), \"SD\"\n)\nggplot(height_df, aes(x = height_cm)) +\n    geom_histogram(aes(y = after_stat(density)), binwidth = 5.0) +\n    #stat_function(fun = height_density, linewidth = g_linewidth) +\n    geom_area(stat = \"function\", fun = height_density, color=\"black\", linewidth = g_linewidth, fill = cbPalette[1], alpha=0.2) +\n    geom_segment(data=vlines_data, aes(x=x, xend=xend, y=y, yend=yend, linetype = Params), linewidth = g_linewidth, color=cbPalette[2]) +\n    labs(\n      title=paste0(\"Distribution of heights (cm), N=\",nrow(height_df),\" athletes\\nMean=\",round(mean_height,2),\", SD=\",round(sd_height,2)),\n      x=\"Height (cm)\",\n      y=\"Probability Density\"\n    ) +\n    dsan_theme(\"full\")\n\n\n\n\n\n\n\n\nFigure 2: Heights (cm) for 18K professional athletes\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 3: 68-95-99.7 Rule visualized (Wiki Commons)\n\n\n\n\n\nThe point estimate \\({\\color{purple}\\mu} = 186.48\\) is straightforward: the average height of the athletes is 186.48cm. Using the 68-95-99.7 Rule to interpret the SD, \\({\\color{purple}\\sigma} = 9.7\\), we get:\n\n\n\nAbout 68% of the heights fall between\n\n\n\n\n\n\n\n\n\n[\\({\\color{purple}\\mu} - 1\\cdot {\\color{purple}\\sigma}\\)\nand\n\\({\\color{purple}\\mu} + 1\\cdot {\\color{purple}\\sigma}\\)]\n\n\n[186.48 - 1 · 9.7\nand\n186.48 + 1 · 9.7]\n\n\n[176.78\nand\n196.18]\n\n\n\n\n\nAbout 95% of the heights fall between\n\n\n\n\n\n\n\n\n\n[\\({\\color{purple}\\mu} - 2 \\cdot {\\color{purple}\\sigma}\\)\nand\n\\({\\color{purple}\\mu} + 2 \\cdot {\\color{purple}\\sigma}\\)]\n\n\n[186.48 - 2 · 9.7\nand\n186.48 + 2 · 9.7]\n\n\n[167.08\nand\n205.88]",
     "crumbs": [
       "Week 2: Sep 3"
     ]
@@ -927,7 +941,7 @@
     "href": "w02/index.html#boxplots-comparing-multiple-distributions",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Boxplots: Comparing Multiple Distributions",
-    "text": "Boxplots: Comparing Multiple Distributions\n\n\n\n\n\nFrom Wikimedia Commons\n\n\n\n\n\n\n\nFrom Wikimedia Commons",
+    "text": "Boxplots: Comparing Multiple Distributions\n\n\n\n\n\nFrom Wikimedia Commons\n\n\n\n\n\n\nFrom Wikimedia Commons",
     "crumbs": [
       "Week 2: Sep 3"
     ]
@@ -957,7 +971,7 @@
     "href": "w02/index.html#visualizing-3d-distributions-projection",
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Visualizing 3D Distributions: Projection",
-    "text": "Visualizing 3D Distributions: Projection\n\nSince most of our intuitions about plots come from 2D plots, it is extremely useful to be able to take a 3D plot like this and imagine “projecting” it down into different 2D plots:\n\n\n\n\n(Adapted via LaTeX from StackExchange discussion)",
+    "text": "Visualizing 3D Distributions: Projection\n\nMost of our intuitions about plots come from 2D \\(\\Rightarrow\\) super helpful exercise to take a 3D plot like this and imagine “projecting” it onto different 2D surfaces:\n\n\n\n\n(Adapted via LaTeX from StackExchange discussion)",
     "crumbs": [
       "Week 2: Sep 3"
     ]
@@ -978,6 +992,26 @@
     "title": "Week 2: Introduction to Probabilistic Modeling",
     "section": "Visualizing 3D Distributions: Contours",
     "text": "Visualizing 3D Distributions: Contours\n\n\n\nAlso from Prof. Hickman’s slides!",
+    "crumbs": [
+      "Week 2: Sep 3"
+    ]
+  },
+  {
+    "objectID": "w02/index.html#link-to-colab-notebook",
+    "href": "w02/index.html#link-to-colab-notebook",
+    "title": "Week 2: Introduction to Probabilistic Modeling",
+    "section": "Link to Colab Notebook",
+    "text": "Link to Colab Notebook\n\nDSAN 5100-03 Lab 02",
+    "crumbs": [
+      "Week 2: Sep 3"
+    ]
+  },
+  {
+    "objectID": "w02/index.html#references",
+    "href": "w02/index.html#references",
+    "title": "Week 2: Introduction to Probabilistic Modeling",
+    "section": "References",
+    "text": "References",
     "crumbs": [
       "Week 2: Sep 3"
     ]
