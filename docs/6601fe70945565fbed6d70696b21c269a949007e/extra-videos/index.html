@@ -189,8 +189,14 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="https://georgetown.zoom.us/j/92478089466?pwd=cSBmcjACL6EJJW0vHbzIqimH7imkVx.1" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Zoom Link <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="https://georgetown.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=98022271-76d6-457f-83ee-b1dd00143dbc" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Recordings <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+ <span class="menu-text">Recordings <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -215,25 +221,25 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="https://georgetown.instructure.com/courses/193275" class="sidebar-item-text sidebar-link">
- <span class="menu-text">S03 Canvas Page <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+ <span class="menu-text">S03 Canvas Page <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="https://jjacobs.me/meet" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Book Office Hours <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+ <span class="menu-text">Book Office Hours <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="https://forms.gle/3CYWo8xHUxMvvowbA" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Suggestion Box <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+ <span class="menu-text">Suggestion Box <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="https://jjacobs.me/dsps" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Textbook <i class="bi bi-box-arrow-up-right ps-1"></i></span></a>
+ <span class="menu-text">Textbook <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
   </div>
 </li>
     </ul>
@@ -471,6 +477,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         if (link.dataset.originalHref !== undefined) {
           link.href = link.dataset.originalHref;
         }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
       }
     }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
