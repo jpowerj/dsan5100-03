@@ -14,7 +14,7 @@ project:
 website:
   title: "DSAN 5100-03"
   favicon: "favicon.png"
-  repo-url: "https://github.com/jpowerj/ppol6805"
+  repo-url: "https://github.com/jpowerj/dsan5100-03"
   repo-actions: [source]
   repo-link-target: "_blank"
   sidebar:
