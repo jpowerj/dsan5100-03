@@ -6,6 +6,8 @@ project:
   output-dir: docs/6601fe70945565fbed6d70696b21c269a949007e/
   preview:
     port: 4321
+  pre-render:
+    - _pre-set-updated.py
   post-render:
     - _post_fix_figures.py
     - _post_pw_protect.py
@@ -20,6 +22,7 @@ website:
   sidebar:
     title: "DSAN 5100-03"
     id: mainnav
+    footer: "*Updated {{< env PPOL6805_LAST_UPDATED \"2024-08-28\" >}}*"
     contents:
       - href: "https://dsan.georgetown.domains/dsan5100/"
         text: "<i class='bi bi-arrow-left pe-1'></i> Main Course Page"
