@@ -57,8 +57,10 @@ website:
       - "---"
       - href: "https://georgetown.zoom.us/j/92478089466?pwd=cSBmcjACL6EJJW0vHbzIqimH7imkVx.1"
         text: "Zoom Link <i class='bi bi-box-arrow-up-right ps-1' style='font-size: 85%;'></i>"
+        target: "_blank"
       - href: "https://georgetown.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=98022271-76d6-457f-83ee-b1dd00143dbc"
         text: "Recordings <i class='bi bi-box-arrow-up-right ps-1' style='font-size: 85%;'></i>"
+        target: "_blank"
       - href: extra-videos/index.qmd
         text: "Extra Videos"
       - href: writeups/index.qmd
@@ -70,12 +72,16 @@ website:
       - "---"
       - href: "https://georgetown.instructure.com/courses/193275"
         text: "S03 Canvas Page <i class='bi bi-box-arrow-up-right ps-1' style='font-size: 85%;'></i>"
+        target: "_blank"
       - href: "https://jjacobs.me/meet"
         text: "Book Office Hours <i class='bi bi-box-arrow-up-right ps-1' style='font-size: 85%;'></i>"
+        target: "_blank"
       - href: "https://forms.gle/3CYWo8xHUxMvvowbA"
         text: "Suggestion Box <i class='bi bi-box-arrow-up-right ps-1' style='font-size: 85%;'></i>"
+        target: "_blank"
       - href: "https://jjacobs.me/dsps"
         text: "Textbook <i class='bi bi-box-arrow-up-right ps-1' style='font-size: 85%;'></i>"
+        target: "_blank"
 
 format:
   html:

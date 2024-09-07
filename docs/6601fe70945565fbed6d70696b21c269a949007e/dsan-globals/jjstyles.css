@@ -65,15 +65,6 @@ a.disabled {
   margin-bottom: 0px !important;
 }
 
-.crunch-callout .callout {
-  margin-top: 0px !important;
-  margin-bottom: 0px !important;
-}
-
-.crunch-details details {
-  margin-bottom: 0px !important;
-}
-
 .crunch-hr {
   margin-top: 8px !important;
   margin-bottom: 6px !important;
@@ -85,25 +76,13 @@ a.disabled {
 }
 
 .crunch-li li {
-  margin-top: 3px !important;
-  margin-bottom: 3px !important;
-}
-.crunch-li-5 li {
-  margin-top: 5px !important;
-  margin-bottom: 5px !important;
+  margin-top: unset !important;
+  /* margin-bottom: 2px !important; */
 }
 
-.crunch-math-8 mjx-container {
-  margin-top: 8px !important;
-  margin-bottom: 8px !important;
-}
 .crunch-math mjx-container {
   margin-top: 10px !important;
   margin-bottom: 10px !important;
-}
-.crunch-math-15 mjx-container {
-  margin-top: 15px !important;
-  margin-bottom: 15px !important;
 }
 
 .crunch-p p {
@@ -124,30 +103,16 @@ a.disabled {
   margin-bottom: 2px !important;
 }
 
+details {
+  margin-bottom: 0px !important;
+}
+
 figcaption {
   text-align: center !important;
 }
 
-.inline-80 .math.inline {
-  font-size: 80% !important;
-}
-.inline-90 .math.inline {
-  font-size: 90% !important;
-}
-
-.math-80 .math.display {
-  font-size: 80% !important;
-}
-.math-90 .math.display {
-  font-size: 90% !important;
-}
-
 .new-unit {
   border-top: 2px solid gray !important;
-}
-
-.nobotmargin {
-  margin-bottom: 0px !important;
 }
 
 .sidebar-footer-item {
@@ -188,24 +153,15 @@ figcaption {
   line-height: 0.7em !important;
 }
 
-.smaller-caption figcaption {
-  font-size: 0.6em !important;
-}
-
-.smaller-text {
-  font-size: 75% !important;
-}
-
-.squeeze-quarto-figure .quarto-figure {
-  margin-right: 2px !important;
-  margin-left: 2px !important;
-}
-
 /* and one small fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+
 table thead th {
   background-clip: padding-box;
 }
 
+summary {
+  font-size: 70% !important;
+}
 
 /* td centering */
 .tdc {
