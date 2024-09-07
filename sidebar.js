@@ -1,5 +1,5 @@
 window.document.addEventListener("DOMContentLoaded", function (event) {
-  var roomHtml = "<span class='sidebar-subtitle'>Tues 6:30-9pm, Car Barn 309</span>";
+  var roomHtml = "<span class='sidebar-subtitle'>Section 03, Tues 6:30-9pm, Car Barn 309</span>";
   var termHtml = "<span class='sidebar-subtitle'>Georgetown Fall 2024</span>";
   var emailHtml = "<span class='sidebar-subtitle w-100'>Prof. Jeff Jacobs&nbsp;<a href='mailto:jj1088@georgetown.edu' target='_blank'><i class='bi bi-envelope-at ps-1 pe-1'></i></a></span>";
   // https://icons8.com/icon/set/zoom/group-color

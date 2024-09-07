@@ -20,7 +20,7 @@ website:
   repo-actions: [source]
   repo-link-target: "_blank"
   sidebar:
-    title: "DSAN 5100-03"
+    title: "DSAN 5100: Probabilistic Modeling and Statistical Computing"
     id: mainnav
     footer: "*Updated {{< env PPOL6805_LAST_UPDATED \"2024-08-28\" >}}*"
     contents:
