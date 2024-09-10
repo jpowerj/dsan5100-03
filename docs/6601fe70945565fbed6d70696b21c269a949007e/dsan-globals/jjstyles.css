@@ -65,6 +65,10 @@ a.disabled {
   margin-bottom: 0px !important;
 }
 
+.crunch-code-filename .code-with-filename {
+  margin-left: 0px !important;
+}
+
 .crunch-hr {
   margin-top: 8px !important;
   margin-bottom: 6px !important;
@@ -76,8 +80,16 @@ a.disabled {
 }
 
 .crunch-li li {
-  margin-top: unset !important;
-  /* margin-bottom: 2px !important; */
+  margin-top: 2px !important;
+  margin-bottom: 2px !important;
+}
+.crunch-li-5 li {
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}
+.crunch-li-8 li {
+  margin-top: 8px !important;
+  margin-bottom: 8px !important;
 }
 
 .crunch-math mjx-container {
@@ -109,6 +121,30 @@ details {
 
 figcaption {
   text-align: center !important;
+}
+
+/* fix mapview... */
+.fix-mapview .leaflet {
+  height: 400px !important;
+}
+.leaflet {
+  width: 100% !important;
+}
+.leaflet-350 .leaflet {
+  height: 350px !important;
+}
+.leaflet-375 .leaflet {
+  height: 375px !important;
+}
+
+.math-90 .math.display {
+  font-size: 90% !important;
+}
+.math-80 .math.display {
+  font-size: 80% !important;
+}
+.inline-90 .math.inline {
+  font-size: 90% !important;
 }
 
 .new-unit {
@@ -160,7 +196,7 @@ table thead th {
 }
 
 summary {
-  font-size: 70% !important;
+  font-size: 1.2rem !important;
 }
 
 /* td centering */

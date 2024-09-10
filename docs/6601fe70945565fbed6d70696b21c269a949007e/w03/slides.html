@@ -1,0 +1,3057 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.5.57">
+
+  <meta name="author" content="Jeff Jacobs">
+  <title>DSAN 5100-03 – Week 2: Introduction to Probabilistic Modeling</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
+  <link rel="stylesheet" href="../dsan-globals/jjstyles.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/simplemenu/simplemenu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-titled.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-titled) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-titled .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-titled .callout-title  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-titled.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-titled.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-title {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-title {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-title {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
+  }
+
+  .callout.callout-titled .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-titled) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-title {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-title {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-title {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-title {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-title {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Week 2: Introduction to Probabilistic Modeling</h1>
+  <p class="subtitle"><em>DSAN 5100: Probabilistic Modeling and Statistical Computing</em><br>Section 03</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Jeff Jacobs 
+</div>
+        <p class="quarto-title-affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+    </div>
+</div>
+
+  <p class="date">Tuesday, September 3, 2024</p>
+</section>
+<section id="schedule" class="title-slide slide level1 smaller smaller-title center" data-name="Schedule">
+<h1>Schedule</h1>
+<div class="hidden">
+
+</div>
+<table class="caption-top" style="width:95%;">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 54%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: left;">Start</th>
+<th style="text-align: left;">End</th>
+<th style="text-align: left;">Topic</th>
+<th style="text-align: center;"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Lecture</strong></td>
+<td style="text-align: left;">12:30pm</td>
+<td style="text-align: left;">12:40pm</td>
+<td style="text-align: left;"><a href="#/recap">Recap →</a></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">12:40pm</td>
+<td style="text-align: left;">1:20pm</td>
+<td style="text-align: left;"><a href="#/what-is-conditional-probability">What is Conditional Probability? →</a></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">1:20pm</td>
+<td style="text-align: left;">2:00pm</td>
+<td style="text-align: left;"><a href="#/bayes-theorem-and-its-implications">Bayes’ Theorem and its Implications →</a></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Break!</strong></td>
+<td style="text-align: left;">2:00pm</td>
+<td style="text-align: left;">2:10pm</td>
+<td style="text-align: left;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Lab</strong></td>
+<td style="text-align: left;">2:10pm</td>
+<td style="text-align: left;">2:50pm</td>
+<td style="text-align: left;"><a href="https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-demo.html" target="_blank">Lab 2 Demo</a></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+<td style="text-align: left;">2:50pm</td>
+<td style="text-align: left;">3:00pm</td>
+<td style="text-align: left;"><a href="https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-1/lab-1-assignment.html" target="_blank">Lab 2 Assignment Overview</a></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+</section>
+
+<section>
+<section id="probability-fundamentals" class="title-slide slide level1 center" data-stack-name="Probability">
+<h1>Probability Fundamentals</h1>
+
+</section>
+<section id="logic-sets-and-probability" class="slide level2 smaller crunch-title inline-90">
+<h2>Logic, Sets, and Probability</h2>
+<p><strong>Deep connection</strong> between <strong>objects</strong> and <strong>operations</strong> of logic, set theory, and probability:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 32%">
+<col style="width: 32%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Logic</th>
+<th>Set Theory</th>
+<th>Probability Theory</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Objects</strong></td>
+<td>Predicates<br><span class="math inline">\(p, q \in \{T, F\}\)</span></td>
+<td>Sets<br><span class="math inline">\(S = \{a, b, \ldots\}\)</span></td>
+<td>Events<br><span class="math inline">\(E = \{TT, TH, HT, HH\}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Conjunction</strong></td>
+<td><strong>And</strong> (<span class="math inline">\(\wedge\)</span>)<br><span class="math inline">\(p \wedge q\)</span></td>
+<td><strong>Intersection</strong> (<span class="math inline">\(\cap\)</span>)<br><span class="math inline">\(A \cap B\)</span></td>
+<td><strong>Multiplication</strong> (<span class="math inline">\(\times\)</span>):<br><span class="math inline">\(\Pr(E_1 \cap E_2) = \Pr(E_1)\times \Pr(E_2)\)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Disjunction</strong></td>
+<td><strong>Or</strong> (<span class="math inline">\(\vee\)</span>)<br><span class="math inline">\(p \vee q\)</span></td>
+<td><strong>Union</strong> (<span class="math inline">\(\cup\)</span>)<br><span class="math inline">\(A \cup B\)</span></td>
+<td><strong>Addition</strong> (<span class="math inline">\(+\)</span>): <span class="math inline">\(\Pr(E_1 \cup E_2) =\)</span><br><span class="math inline">\(\Pr(E_1) + \Pr(E_2) - \Pr(E_1 \wedge E_2)\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Negation</strong></td>
+<td><strong>Not</strong> (<span class="math inline">\(\neg\)</span>)<br><span class="math inline">\(\neg p\)</span></td>
+<td><strong>Complement</strong> (<span class="math inline">\(^c\)</span>)<br><span class="math inline">\(S^c\)</span></td>
+<td><strong>Subtract from 1</strong><br><span class="math inline">\(\Pr(A^c) = 1 - \Pr(A)\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example-flipping-two-coins" class="slide level2 smaller">
+<h2>Example: Flipping Two Coins</h2>
+<ul>
+<li><strong>Logic</strong>: We can define 4 predicates:
+<ul>
+<li><span class="math inline">\(p_1\)</span> = “First result is <span class="math inline">\(H\)</span>”, <span class="math inline">\(q_1\)</span> = “First result is <span class="math inline">\(T\)</span>”</li>
+<li><span class="math inline">\(p_2\)</span> = “Second result is <span class="math inline">\(H\)</span>”, <span class="math inline">\(q_2\)</span> = “Second result is <span class="math inline">\(T\)</span>”</li>
+</ul></li>
+<li><strong>Logical formulas</strong>:
+<ul>
+<li><span class="math inline">\(f_1 = p_1 \wedge q_2\)</span>: “First result is <span class="math inline">\(H\)</span> <strong>and</strong> second result is <span class="math inline">\(T\)</span>”</li>
+<li><span class="math inline">\(f_2 = p_1 \vee q_2\)</span>: “First result is <span class="math inline">\(H\)</span> <strong>or</strong> second result is <span class="math inline">\(T\)</span>”</li>
+<li><span class="math inline">\(f_3 = \neg p_1\)</span>: “First result is <strong>not</strong> <span class="math inline">\(H\)</span>”</li>
+</ul></li>
+<li><strong>The issue?</strong>: We don’t know, until <strong>after</strong> the coins have been flipped, whether these are <strong>true</strong> or <strong>false</strong>!</li>
+<li>But, we should still be able to say something about their <strong>likelihood</strong>, for example, whether <span class="math inline">\(f_1\)</span> or <span class="math inline">\(f_2\)</span> is more likely to happen… <strong>Enter probability theory!</strong></li>
+</ul>
+</section>
+<section id="logic-rightarrow-probability" class="slide level2 crunch-title inline-90 crunch-li-5 scrollable">
+<h2>Logic <span class="math inline">\(\rightarrow\)</span> Probability</h2>
+<ul>
+<li>Probability theory lets us reason about the <strong>uncertainty</strong> surrounding <strong>logical</strong> predicates like <span class="math inline">\(p\)</span> and <span class="math inline">\(q\)</span>, by:
+<ol type="a">
+<li>encoding them as <strong>sets of possibilities</strong> <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span>, and</li>
+<li>representing uncertainty around a given possibility using a <strong>probability measure</strong> <span class="math inline">\(\Pr: S \mapsto [0,1]\)</span>,</li>
+</ol></li>
+<li>thus allowing us to reason about
+<ol type="a">
+<li>the likelihood of these set-encoded predicates on their own: <span class="math inline">\(\Pr(P)\)</span> and <span class="math inline">\(\Pr(Q)\)</span>, but also</li>
+<li>their <strong>logical connections</strong>: <span class="math inline">\(\Pr(p \wedge q) = \Pr(P \cap Q)\)</span>, <span class="math inline">\(\Pr(\neg p) = \Pr(P^c)\)</span>, and so on.</li>
+</ol></li>
+</ul>
+</section>
+<section id="flipping-two-coins-logic-rightarrow-probability" class="slide level2 smaller title-12">
+<h2>Flipping Two Coins: Logic <span class="math inline">\(\rightarrow\)</span> Probability</h2>
+<ul>
+<li>Returning to the two coins example: we can look at the predicates and see that they exhaust all possibilities, so that we can define a <strong>sample space</strong> <span class="math inline">\(\Omega = \{TT, TH, HT, HH\}\)</span> of all possible <strong>outcomes</strong> of our coin-flipping experiment, noting that <span class="math inline">\(|\Omega| = 4\)</span>, so there are 4 possible outcomes.</li>
+<li>Then we can associate each <strong>predicate</strong> with an <strong>event</strong>, a <strong>subset</strong> of the sample space, and use our <strong>naïve definition</strong> to compute the probability of these events:</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Predicate</th>
+<th>Event</th>
+<th>Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(p_1\)</span> = “First result is <span class="math inline">\(H\)</span>”</td>
+<td><span class="math inline">\(P_1 = \{HT, HH\}\)</span></td>
+<td><span class="math inline">\(\Pr(P_1) = \frac{|P_1|}{|\Omega|} = \frac{2}{4} = \frac{1}{2}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(q_1\)</span> = “First result is <span class="math inline">\(T\)</span>”</td>
+<td><span class="math inline">\(Q_1 = \{TT, TH\}\)</span></td>
+<td><span class="math inline">\(\Pr(Q_1) = \frac{|Q_1|}{|\Omega|} = \frac{2}{4} = \frac{1}{2}\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(p_2\)</span> = “Second result is <span class="math inline">\(H\)</span>”</td>
+<td><span class="math inline">\(P_2 = \{TH, HH\}\)</span></td>
+<td><span class="math inline">\(\Pr(P_2) = \frac{|P_2|}{|\Omega|} = \frac{2}{4} = \frac{1}{2}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(q_2\)</span> = “Second result is <span class="math inline">\(T\)</span>”</td>
+<td><span class="math inline">\(Q_2 = \{TT, HT\}\)</span></td>
+<td><span class="math inline">\(\Pr(Q_2) = \frac{|Q_2|}{|\Omega|} = \frac{2}{4} = \frac{1}{2}\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="moving-from-predicates-to-formulas" class="slide level2 smaller crunch-table crunch-title crunch-math math-80 inline-90 crunch-ul crunch-li-8">
+<h2>Moving from Predicates to Formulas</h2>
+<ul>
+<li>Notice that, in the four rows of the previous table, we were only computing the probabilities of “simple” events: events corresponding to a <strong>single</strong> predicate</li>
+<li>But we promised that probability theory lets us compute probabilities for <strong>logical formulas</strong> as well! …The magic of encoding events as <strong>sets</strong> becomes clear:</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 40%">
+<col style="width: 40%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formula</th>
+<th style="text-align: left;">Event</th>
+<th style="text-align: left;">Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(f_1 = p_1 \wedge q_2\)</span></td>
+<td style="text-align: left;"><span class="math display">\[ \begin{align*} F_1 &amp;= P_1 \cap Q_2 \\ &amp;= \{HT, HH\} \cap \{TT, HT\} \\ &amp;= \{HT\} \end{align*} \]</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} \Pr(F_1) &amp;= \Pr(\{HT\}) \\ &amp;= \frac{|\{HT\}|}{|S|} = \frac{1}{4} \phantom{= \frac{1}{4} = \frac{1}{4}} \end{align*}\]</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(f_2 = p_1 \vee q_2\)</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} F_2 &amp;= P_1 \cup Q_2 \\ &amp;= \{HT, HH\} \cup \{TT, HT\} \\ &amp;= \{TT, HT, HH\} \end{align*}\]</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} \Pr(F_2) &amp;= \Pr(\{TT, HT, HH\}) \\ &amp;= \frac{|\{TT, HT, HH\}|}{|S|} = \frac{3}{4} \end{align*}\]</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(f_3 = \neg p_1\)</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} F_3 &amp;= P_1^c \\ &amp;= \{HT, HH\}^c \phantom{\cup \{TT, HT\}} \\ &amp;= \{TT, TH\}\end{align*}\]</span></td>
+<td style="text-align: left;"><span class="math display">\[\begin{align*} \Pr(F_3) &amp;= \Pr(\{TT, TH\}) \\ &amp;= \frac{|\{TT, TH\}|}{|S|} = \frac{2}{4} = \frac{1}{2} \end{align*}\]</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="using-rules-of-probability" class="slide level2 smaller crunch-math crunch-title crunch-ul inline-90 math-80 crunch-li">
+<h2>Using “Rules” of Probability</h2>
+<ul>
+<li>Hopefully, you found all this churning through set theory to be tedious… ☠️</li>
+<li>This is where <strong>rules of probability</strong> come from! They <strong>simplify</strong> set-theoretic computations into simple multiplications, additions, and subtractions:
+<ul>
+<li><span class="math inline">\(\Pr(A \cap B) = \Pr(A) \times \Pr(B)\)</span></li>
+<li><span class="math inline">\(\Pr(A \cup B) = \Pr(A) + \Pr(B) - \Pr(A \cap B)\)</span></li>
+<li><span class="math inline">\(\Pr(A^c) = 1 - \Pr(A)\)</span></li>
+</ul></li>
+<li>Since we know probabilities of the “simple” events <span class="math inline">\(P_1\)</span>, <span class="math inline">\(Q_1\)</span>, <span class="math inline">\(P_2\)</span>, <span class="math inline">\(Q_2\)</span>, we don’t need to “look inside them”! Just take the probabilities and multiply/add/subtract as needed:</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Formula</th>
+<th>Event</th>
+<th>Probability</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(f_1 = p_1 \wedge q_2\)</span></td>
+<td><span class="math inline">\(F_1 = P_1 \cap Q_2\)</span></td>
+<td><span class="math inline">\(\Pr(F_1) = \Pr(P_1) \times \Pr(Q_2) = \frac{1}{2}\times \frac{1}{2} = \frac{1}{4}\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(f_2 = p_1 \vee q_2\)</span></td>
+<td><span class="math inline">\(F_2 = P_1 \cup Q_2\)</span></td>
+<td><span class="math display">\[\textstyle{\begin{align*} \textstyle \Pr(F_2) &amp;= \Pr(P_1) + \Pr(Q_2) - \Pr(P_1 \cap Q_2) \\ \textstyle &amp;= \frac{1}{2} + \frac{1}{2} - \frac{1}{4} = \frac{3}{4} \end{align*}}\]</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(f_3 = \neg p_1\)</span></td>
+<td><span class="math inline">\(F_3 = P_1^c\)</span></td>
+<td><span class="math inline">\(\Pr(F_3) = 1 - \Pr(P_1) = 1 - \frac{1}{2} = \frac{1}{2}\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="importing-results-from-logic" class="slide level2 crunch-math crunch-title crunch-ul crunch-li-8">
+<h2>“Importing” Results from Logic</h2>
+<ul>
+<li>This deep connection between the three fields means that, if we have some useful theorem or formula from one field, we can immediately put it to use in another!</li>
+<li>For example: <strong>DeMorgan’s Laws</strong> were developed in logic (DeMorgan was a 19th-century logician), and basically just tell us how to <strong>distribute</strong> logic operators:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\underbrace{\neg(p \wedge q)}_{\text{``}p\text{ and }q\text{'' is not true}} &amp;\iff \underbrace{\neg p \vee \neg q}_{p\text{ is not true or }q\text{ is not true}} \\
+\underbrace{\neg(p \vee q)}_{\text{``}p\text{ or }q\text{'' is not true}} &amp;\iff \underbrace{\neg p \wedge \neg q}_{p\text{ is not true and }q\text{ is not true}}
+\end{align*}
+\]</span></p>
+</section>
+<section id="converting-to-probability-theory" class="slide level2 smaller crunch-math crunch-ul crunch-title">
+<h2>Converting to Probability Theory</h2>
+<ul>
+<li>So, using the same principles we used in our coin flipping examples, we can consider <strong>events</strong> <span class="math inline">\(P\)</span> and <span class="math inline">\(Q\)</span>, and get the following “translation” of DeMorgan’s Laws:</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Logic</th>
+<th>Set Theory</th>
+<th>Probability Theory</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\neg(p \wedge q) = \neg p \vee \neg q\)</span></td>
+<td><span class="math inline">\((P \cap Q)^c = P^c \cup Q^c\)</span></td>
+<td><span class="math inline">\(\Pr((P \cap Q)^c) = \Pr(P^c \cup Q^c)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\neg(p \vee q) = \neg p \wedge \neg q\)</span></td>
+<td><span class="math inline">\((P \cup Q)^c = P^c \cap Q^c\)</span></td>
+<td><span class="math inline">\(\Pr((P \cup Q)^c) = \Pr(P^c \cap Q^c)\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Note that, since these are <strong>isomorphic</strong> to one another, we could have derived DeMorgan’s Laws from <strong>within</strong> probability theory, rather than the other way around:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Pr((P \cap Q)^c) &amp;= 1 - \Pr(P \cap Q) = 1 - \Pr(P)\Pr(Q) \\
+&amp;= 1 - (1-\Pr(P^c))(1 - \Pr(Q^c)) \\
+&amp;= 1 - [1 - \Pr(P^c) - \Pr(Q^c) + \Pr(P^c)\Pr(Q^c)] \\
+&amp;= \Pr(P^c) + \Pr(Q^c) - \Pr(P^c)\Pr(Q^c) \\
+&amp;= \Pr(P^c) + \Pr(Q^c) - \Pr(P^c \cap Q^c) \\
+&amp;= \Pr(P^c \cup Q^c) \; ✅
+\end{align*}
+\]</span></p>
+</section></section>
+<section>
+<section id="univariate-statistics" class="title-slide slide level1 center" data-stack-name="Statistics">
+<h1>Univariate Statistics</h1>
+
+</section>
+<section id="random-variables" class="slide level2 crunch-math crunch-title crunch-ul">
+<h2>Random Variables</h2>
+<ul>
+<li>Recall our discussion of <strong>random variables</strong>: used by analogy to <strong>algebra</strong>, since we can do math with them:</li>
+<li>Just as <span class="math inline">\(2 \cdot 3\)</span> is shorthand for <span class="math inline">\(2 + 2 + 2\)</span>, can define <span class="math inline">\(X\)</span> as shorthand for possible outcomes of random process:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+S = \{ &amp;\text{result of dice roll is 1}, \\
+&amp;\text{result of dice roll is 2}, \\
+&amp;\text{result of dice roll is 3}, \\
+&amp;\text{result of dice roll is 4}, \\
+&amp;\text{result of dice roll is 5}, \\
+&amp;\text{result of dice roll is 6}\} \rightsquigarrow X \in \{1,\ldots,6\}
+\end{align*}
+\]</span></p>
+</section>
+<section id="random-variables-as-events" class="slide level2 smaller">
+<h2>Random Variables as Events</h2>
+<ul>
+<li>Each value <span class="math inline">\(v_X\)</span> that a random variable <span class="math inline">\(X\)</span> can take on gives rise to an <strong>event</strong> <span class="math inline">\(X = v_X\)</span>: the <strong>event</strong> that the random variable <span class="math inline">\(X\)</span> takes on value <span class="math inline">\(v\)</span>.</li>
+<li>Since <span class="math inline">\(X = v_X\)</span> is an <strong>event</strong>, we can compute its probability <span class="math inline">\(\Pr(X = v_X)\)</span>!</li>
+</ul>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Event in words</th>
+<th style="text-align: center;">Event in terms of RV</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Result of dice roll is 1</td>
+<td style="text-align: center;"><span class="math inline">\(X = 1\)</span></td>
+</tr>
+<tr class="even">
+<td>Result of dice roll is 2</td>
+<td style="text-align: center;"><span class="math inline">\(X = 2\)</span></td>
+</tr>
+<tr class="odd">
+<td>Result of dice roll is 3</td>
+<td style="text-align: center;"><span class="math inline">\(X = 3\)</span></td>
+</tr>
+<tr class="even">
+<td>Result of dice roll is 4</td>
+<td style="text-align: center;"><span class="math inline">\(X = 4\)</span></td>
+</tr>
+<tr class="odd">
+<td>Result of dice roll is 5</td>
+<td style="text-align: center;"><span class="math inline">\(X = 5\)</span></td>
+</tr>
+<tr class="even">
+<td>Result of dice roll is 6</td>
+<td style="text-align: center;"><span class="math inline">\(X = 6\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="doing-math-with-events" class="slide level2 smaller crunch-title crunch-math math-90 crunch-ul crunch-p crunch-li-8">
+<h2>Doing Math with Events</h2>
+<ul>
+<li>We’ve seen how <span class="math inline">\(\Pr()\)</span> “encodes” logical expressions involving uncertain outcomes.</li>
+<li>Even more powerful when paired with the notion of <strong>random variables</strong>: lets us also “encode” <strong>mathematical</strong> expressions involving uncertain quantities!</li>
+<li>Consider an experiment where we <strong>roll two dice</strong>. Let <span class="math inline">\(X\)</span> be the RV encoding the outcome of the first roll, and <span class="math inline">\(Y\)</span> be the RV encoding the outcome of the second roll.</li>
+<li>We can compute probabilities involving <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> separately, e.g., <span class="math inline">\(\Pr(X = 1) = \frac{1}{6}\)</span>, but we can <strong>also</strong> reason probabilistically about <strong>mathematical expressions</strong> involving <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>! For example, we can reason about their <strong>sum</strong>:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(\text{rolls sum to 10}) &amp;= \Pr(X + Y = 10) \\
+&amp;= \Pr(Y = 10 - X)
+\end{align*}
+\]</span></p>
+<ul>
+<li>Or about how the outcome of one roll will relate to the outcome of the other:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(\text{first roll above mean}) &amp;= \Pr\left(X &gt; \frac{X+Y}{2}\right) \\
+&amp;= \Pr(2X &gt; X+Y) = \Pr(X &gt; Y)
+\end{align*}
+\]</span></p>
+</section>
+<section id="are-random-variables-all-powerful" class="slide level2">
+<h2>Are Random Variables All-Powerful??</h2>
+<ul>
+<li>Just remember that probability <span class="math inline">\(\Pr(\cdot)\)</span> is always probability of an <strong>event</strong>—random variables are just shorthand for quantifiable events.</li>
+<li>Not all events can be simplified via random variables!
+<ul>
+<li><span class="math inline">\(\text{catch a fish} \mapsto \Pr(\text{trout}), \Pr(\text{bass}), \ldots\)</span></li>
+</ul></li>
+<li>What types of events <em>can</em> be quantified like this?
+<ul>
+<li><em>(Hint: It has to do with a key topic in the early weeks of both DSAN 5000 and 5100…)</em></li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>The answer is, broadly, any situation where you’re modeling things, like dice rolls, where mathematical operations like addition, multiplication, etc. make sense. So, if we’re modeling dice, it makes sense to say e.g.&nbsp;“result is 6” + “result is 3” = “total is 9”. More on the next page!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="recall-types-of-variables" class="slide level2 smaller crunch-title">
+<h2>Recall: Types of Variables</h2>
+<ul>
+<li><strong>Categorical</strong>
+<ul>
+<li>No meaningful way to order values: <span class="math inline">\(\{\text{trout}, \text{bass}, \ldots \}\)</span></li>
+</ul></li>
+<li><strong>Ordinal</strong>
+<ul>
+<li>Can place in order (bigger, smaller), though <em>gaps</em> aren’t meaningful: <span class="math inline">\(\{{\color{orange}\text{great}},{\color{orange}\text{greater}},{\color{orange}\text{greatest}}\}\)</span></li>
+<li><span class="math inline">\({\color{orange}\text{greater}} \overset{?}{=} 2\cdot {\color{orange}\text{great}} - 1\)</span></li>
+</ul></li>
+<li><strong>Cardinal</strong>
+<ul>
+<li>Can place in order, and gaps are meaningful <span class="math inline">\(\implies\)</span> can do “standard” math with them! Example: <span class="math inline">\(\{{\color{blue}1},{\color{blue}2},\ldots,{\color{blue}10}\}\)</span></li>
+<li><span class="math inline">\({\color{blue}7} \overset{\text{~✅~}}{=} 2 \cdot {\color{blue}4} - 1\)</span></li>
+<li>If events have <strong>this structure</strong> (meaningful way to define multiplication, addition, subtraction), then we can analyze them as <strong>random variables</strong></li>
+</ul></li>
+</ul>
+</section>
+<section id="visualizing-discrete-rvs" class="slide level2 smaller">
+<h2>Visualizing Discrete RVs</h2>
+<ul>
+<li><strong>Ultimate Probability Pro-Tip</strong>: When you hear “discrete distribution”, think of a bar graph: <span class="math inline">\(x\)</span>-axis = events, bar height = probability of events</li>
+<li><strong>Two coins example</strong>: <span class="math inline">\(X\)</span> = RV representing <strong>number of heads</strong> obtained in two coin flips</li>
+</ul>
+
+<img data-src="index_files/figure-revealjs/dicrete-bar-graph-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="preview-visualizing-continuous-rvs" class="slide level2">
+<h2>(Preview:) Visualizing Continuous RVs</h2>
+<ul>
+<li>This works even for <strong>continuous</strong> distributions, if you focus on the <strong>area under the curve</strong> instead of the height:</li>
+</ul>
+
+<img data-src="index_files/figure-revealjs/continuous-area-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="probability-theory-gives-us-distributions-for-rvs-not-numbers" class="slide level2">
+<h2>Probability Theory Gives Us <em>Distributions</em> for RVs, not Numbers!</h2>
+<ul>
+<li>We’re going beyond “base” probability theory if we want to <strong>summarize</strong> these distributions</li>
+<li>However, we can understand a lot about the full distribution by looking at some basic <strong>summary statistics</strong>. Most common way to summarize:</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 45%">
+<col style="width: 10%">
+<col style="width: 45%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(\underbrace{\text{point estimate}}_{\text{mean/median}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\pm\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\underbrace{\text{uncertainty}}_{\text{variance/standard deviation}}\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="example-game-reviews" class="slide level2">
+<h2>Example: Game Reviews</h2>
+
+<img data-src="index_files/figure-revealjs/game-reviews-plot-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">(Data from <a href="https://www.metacritic.com/game/switch/the-legend-of-zelda-tears-of-the-kingdom?ref=hp">Metacritic</a>)</p></section>
+<section id="adding-a-single-line" class="slide level2">
+<h2>Adding a Single Line</h2>
+
+<img data-src="index_files/figure-revealjs/game-reviews-mean-line-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">(Data from <a href="https://www.metacritic.com/game/switch/the-legend-of-zelda-tears-of-the-kingdom?ref=hp">Metacritic</a>)</p></section>
+<section id="or-a-single-ribbon" class="slide level2 crunch-title crunch-quarto-figure">
+<h2>Or a Single Ribbon</h2>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[[1,1], [1,1]]">
+<div class="quarto-layout-row">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/noribbon-demo-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/ribbon-demo-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/noribbon-demo-lowvar-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/ribbon-demo-lowvar-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="example-the-normal-distribution" class="slide level2 smaller crunch-figures crunch-title crunch-quarto-figure scrollable">
+<h2>Example: The Normal Distribution</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<center>
+<em>(The distribution you saw a few slides ago)</em>
+</center>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="index_files/figure-revealjs/standard-normal-demo-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>“RV <span class="math inline">\(X\)</span> is normally distributed with <span class="param"><strong>mean</strong></span> <span class="math inline">\({\color{purple}\mu}\)</span> and <span class="param"><strong>standard deviation</strong></span> <span class="math inline">\({\color{purple}\sigma}\)</span>”
+<ul>
+<li>Translates to <span class="math inline">\(X \sim \mathcal{N}(\color{purple}{\mu},\color{purple}{\sigma})\)</span><sup>1</sup></li>
+<li><span class="math inline">\(\color{purple}{\mu}\)</span> and <span class="math inline">\(\color{purple}{\sigma}\)</span> are <span style="color: purple;"><strong>parameters</strong></span><sup>2</sup>: the “knobs” or “sliders” which change the location/shape of the distribution</li>
+</ul></li>
+</ul>
+</div></div>
+<ul>
+<li>The parameters in this case give <strong>natural summaries</strong> of the data:
+<ul>
+<li><span class="math inline">\({\color{\purple}\mu}\)</span> = center (mean), <span class="math inline">\({\color{purple}\sigma}\)</span> = [square root of] variance around center</li>
+</ul></li>
+<li><strong>Mean</strong> can usually be interpreted intuitively; for <strong>standard deviation</strong>, can use the <a href="https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule" target="_blank"><strong>68-95-99.7 rule</strong></a>, which will make more sense relative to some <strong>real-world data</strong>…</li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Throughout the course, this “calligraphic” font <span class="math inline">\(\mathcal{N}\)</span>, <span class="math inline">\(\mathcal{D}\)</span>, etc., will be used to denote <strong>distributions</strong></p></li><li id="fn2"><p>Throughout the course, remember, <span style="color:purple;"><strong>purrple</strong></span> is for <span style="color:purple;"><strong>purrameters</strong></span></p></li></ol></aside></section>
+<section id="real-data-and-the-68-95-99.7-rule" class="slide level2 smaller crunch-layout-panel crunch-title crunch-figures crunch-lists crunch-images crunch-quarto-figure crunch-details">
+<h2>Real Data and the 68-95-99.7 Rule</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-2"><a></a>height_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"https://gist.githubusercontent.com/jpowerj/9a23807fb71a5f6b6c2f37c09eb92ab3/raw/89fc6b8f0c57e41ebf4ce5cdf2b3cad6b2dd798c/sports_heights.csv"</span>)</span>
+<span id="cb1-3"><a></a>mean_height <span class="ot">&lt;-</span> <span class="fu">mean</span>(height_df<span class="sc">$</span>height_cm)</span>
+<span id="cb1-4"><a></a>sd_height <span class="ot">&lt;-</span> <span class="fu">sd</span>(height_df<span class="sc">$</span>height_cm)</span>
+<span id="cb1-5"><a></a>height_density <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, mean_height, sd_height)</span>
+<span id="cb1-6"><a></a>m2_sd <span class="ot">&lt;-</span> mean_height <span class="sc">-</span> <span class="dv">2</span> <span class="sc">*</span> sd_height</span>
+<span id="cb1-7"><a></a>m1_sd <span class="ot">&lt;-</span> mean_height <span class="sc">-</span> <span class="dv">1</span> <span class="sc">*</span> sd_height</span>
+<span id="cb1-8"><a></a>p1_sd <span class="ot">&lt;-</span> mean_height <span class="sc">+</span> <span class="dv">1</span> <span class="sc">*</span> sd_height</span>
+<span id="cb1-9"><a></a>p2_sd <span class="ot">&lt;-</span> mean_height <span class="sc">+</span> <span class="dv">2</span> <span class="sc">*</span> sd_height</span>
+<span id="cb1-10"><a></a>vlines_data <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb1-11"><a></a>  <span class="sc">~</span>x, <span class="sc">~</span>xend, <span class="sc">~</span>y, <span class="sc">~</span>yend, <span class="sc">~</span>Params,</span>
+<span id="cb1-12"><a></a>  mean_height, mean_height, <span class="dv">0</span>, <span class="fu">height_density</span>(mean_height), <span class="st">"Mean"</span>,</span>
+<span id="cb1-13"><a></a>  m2_sd, m2_sd, <span class="dv">0</span>, <span class="fu">height_density</span>(m2_sd), <span class="st">"SD"</span>,</span>
+<span id="cb1-14"><a></a>  m1_sd, m1_sd, <span class="dv">0</span>, <span class="fu">height_density</span>(m1_sd), <span class="st">"SD"</span>,</span>
+<span id="cb1-15"><a></a>  p1_sd, p1_sd, <span class="dv">0</span>, <span class="fu">height_density</span>(p1_sd), <span class="st">"SD"</span>,</span>
+<span id="cb1-16"><a></a>  p2_sd, p2_sd, <span class="dv">0</span>, <span class="fu">height_density</span>(p2_sd), <span class="st">"SD"</span></span>
+<span id="cb1-17"><a></a>)</span>
+<span id="cb1-18"><a></a><span class="fu">ggplot</span>(height_df, <span class="fu">aes</span>(<span class="at">x =</span> height_cm)) <span class="sc">+</span></span>
+<span id="cb1-19"><a></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">binwidth =</span> <span class="fl">5.0</span>) <span class="sc">+</span></span>
+<span id="cb1-20"><a></a>    <span class="co">#stat_function(fun = height_density, linewidth = g_linewidth) +</span></span>
+<span id="cb1-21"><a></a>    <span class="fu">geom_area</span>(<span class="at">stat =</span> <span class="st">"function"</span>, <span class="at">fun =</span> height_density, <span class="at">color=</span><span class="st">"black"</span>, <span class="at">linewidth =</span> g_linewidth, <span class="at">fill =</span> cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb1-22"><a></a>    <span class="fu">geom_segment</span>(<span class="at">data=</span>vlines_data, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">xend=</span>xend, <span class="at">y=</span>y, <span class="at">yend=</span>yend, <span class="at">linetype =</span> Params), <span class="at">linewidth =</span> g_linewidth, <span class="at">color=</span>cbPalette[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb1-23"><a></a>    <span class="fu">labs</span>(</span>
+<span id="cb1-24"><a></a>      <span class="at">title=</span><span class="fu">paste0</span>(<span class="st">"Distribution of heights (cm), N="</span>,<span class="fu">nrow</span>(height_df),<span class="st">" athletes</span><span class="sc">\n</span><span class="st">Mean="</span>,<span class="fu">round</span>(mean_height,<span class="dv">2</span>),<span class="st">", SD="</span>,<span class="fu">round</span>(sd_height,<span class="dv">2</span>)),</span>
+<span id="cb1-25"><a></a>      <span class="at">x=</span><span class="st">"Height (cm)"</span>,</span>
+<span id="cb1-26"><a></a>      <span class="at">y=</span><span class="st">"Probability Density"</span></span>
+<span id="cb1-27"><a></a>    ) <span class="sc">+</span></span>
+<span id="cb1-28"><a></a>    <span class="fu">dsan_theme</span>(<span class="st">"full"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-height-plot" class="quarto-float quarto-figure quarto-figure-center" data-fig-align="center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-height-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="index_files/figure-revealjs/fig-height-plot-1.png" class="quarto-figure quarto-figure-center" width="960">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-height-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Heights (cm) for 18K professional athletes
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="fig-empirical" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-empirical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><img src="images/empirical_rule.svg" height="256"></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-empirical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: 68-95-99.7 Rule visualized (<a href="https://commons.wikimedia.org/wiki/File:Empirical_rule_histogram.svg" target="_blank">Wiki Commons</a>)
+</figcaption>
+</figure>
+</div>
+</div></div>
+<p>The <strong>point estimate</strong> <span class="math inline">\({\color{purple}\mu} = 186.48\)</span> is straightforward: <em>the average height of the athletes is 186.48cm</em>. Using the 68-95-99.7 Rule to interpret the <strong>SD</strong>, <span class="math inline">\({\color{purple}\sigma} = 9.7\)</span>, we get:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<center>
+<em>About <strong>68% of the heights</strong> fall between</em>
+</center>
+<table class="caption-top">
+<colgroup>
+<col style="width: 45%">
+<col style="width: 10%">
+<col style="width: 45%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">[<span class="math inline">\({\color{purple}\mu} - 1\cdot {\color{purple}\sigma}\)</span></td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;"><span class="math inline">\({\color{purple}\mu} + 1\cdot {\color{purple}\sigma}\)</span>]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[186.48 - 1 · 9.7</td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;">186.48 + 1 · 9.7]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[176.78</td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;">196.18]</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<center>
+<em>About <strong>95% of the heights</strong> fall between</em>
+</center>
+<table class="caption-top">
+<colgroup>
+<col style="width: 45%">
+<col style="width: 10%">
+<col style="width: 45%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">[<span class="math inline">\({\color{purple}\mu} - 2 \cdot {\color{purple}\sigma}\)</span></td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;"><span class="math inline">\({\color{purple}\mu} + 2 \cdot {\color{purple}\sigma}\)</span>]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">[186.48 - 2 · 9.7</td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;">186.48 + 2 · 9.7]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">[167.08</td>
+<td style="text-align: center;">and</td>
+<td style="text-align: right;">205.88]</td>
+</tr>
+</tbody>
+</table>
+</div></div>
+</section>
+<section id="boxplots-comparing-multiple-distributions" class="slide level2 smaller title-12 crunch-title crunch-quarto-figure">
+<h2>Boxplots: Comparing Multiple Distributions</h2>
+<div class="columns" style="display: flex !important; height: 90%;">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/boxplot_vs_pdf.svg"></p>
+<figcaption>From <a href="https://commons.wikimedia.org/wiki/File:Boxplot_vs_PDF.svg">Wikimedia Commons</a></figcaption>
+</figure>
+</div>
+</div><div class="column" style="display: flex; justify-content: center; align-items: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/multiple_boxplots.svg"></p>
+<figcaption>From <a href="https://commons.wikimedia.org/wiki/File:Boxplot_of_Average_Article_Feedback_ratings_by_project_rated_quality.svg">Wikimedia Commons</a></figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="another-option-joyplots" class="slide level2 smaller">
+<h2>Another Option: Joyplots</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div id="fig-joy-division" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-joy-division-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img data-src="images/joy_division.jpg">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-joy-division-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: <a href="https://www.esri.com/arcgis-blog/products/arcgis-pro/mapping/joy-plots-in-arcgis-pro/" target="_blank">(Iconic album cover)</a>
+</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div id="fig-manifesto" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-manifesto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><img src="images/manifesto_distances.png" height="500"></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-manifesto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: <a href="https://cs.stanford.edu/~jjacobs3/Jacobs_Translations_Ideological_Interventions_2019_11_22.pdf" target="_blank"><em>(Tooting my own horn)</em></a>
+</figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="multivariate-distributions-preview" class="slide level2 smaller crunch-title">
+<h2>Multivariate Distributions: Preview</h2>
+<ul>
+<li>The <strong>bivariate normal</strong> distribution represents the distribution of <strong>two</strong> normally-distributed RVs <span class="math inline">\(\mathbf{X} = [\begin{smallmatrix} X_1 &amp; X_2\end{smallmatrix}]\)</span>, which may or may not be correlated:</li>
+</ul>
+<p><span class="math display">\[
+\mathbf{X} = \begin{bmatrix}X_1 \\ X_2\end{bmatrix}, \; \boldsymbol{\mu} =
+%\begin{bmatrix}\mu_1 \\ \mu_2\end{bmatrix}
+\begin{bmatrix}\smash{\overbrace{\mu_1}^{\mathbb{E}[X_1]}} \\ \smash{\underbrace{\mu_2}_{\mathbb{E}[X_2]}}\end{bmatrix}
+, \; \mathbf{\Sigma} = \begin{bmatrix}\smash{\overbrace{\sigma_1^2}^{\text{Var}[X_1]}} &amp; \smash{\overbrace{\rho\sigma_1\sigma_2}^{\text{Cov}[X_1,X_2]}} \\ \smash{\underbrace{\rho\sigma_2\sigma_1}_{\text{Cov}[X_2,X_1]}} &amp; \smash{\underbrace{\sigma_2^2}_{\text{Var}[X_2]}}\end{bmatrix}
+% \begin{bmatrix}\sigma_1^2 &amp; \rho\sigma_1\sigma_2 \\ \rho\sigma_2\sigma_1 &amp; \sigma_2^2 \end{bmatrix}
+% = \begin{bmatrix}\text{Var}[X_1] &amp; \text{Cov}[X_1,X_2] \\ \text{Cov}[X_2,X_1] &amp; \text{Var}[X_2] \end{bmatrix}
+\]</span></p>
+<ul>
+<li>By squishing all this information intro matrices, we can specify the parameters of <strong>multivariate-normally-distributed</strong> <em>vectors</em> of RVs similarly to how we specify single-dimensional normally-distributed RVs:</li>
+</ul>
+<div class="crunch-math">
+<p><span class="math display">\[
+\begin{align*}
+\overbrace{X}^{\mathclap{\text{scalar}}} &amp;\sim \mathcal{N}\phantom{_k}(\overbrace{\mu}^{\text{scalar}}, \overbrace{\sigma}^{\text{scalar}}) \tag{Univariate} \\
+\underbrace{\mathbf{X}}_{\text{vector}} &amp;\sim \boldsymbol{\mathcal{N}}_k(\smash{\underbrace{\boldsymbol{\mu}}_{\text{vector}}}, \underbrace{\mathbf{\Sigma}}_{\text{matrix}}) \tag{Multivariate}
+\end{align*}
+\]</span></p>
+</div>
+<div class="footnote crunch-math" style="font-size: 1.2rem !important; margin-top: 12px !important;">
+<p><em>Note: In the future I’ll use the notation <span class="math inline">\(\mathbf{X}_{[a \times b]}\)</span> to denote the dimensions of the vectors/matrices, like <span class="math inline">\(\mathbf{X}_{[k \times 1]} \sim \boldsymbol{\mathcal{N}}_k(\boldsymbol{\mu}_{[k \times 1]}, \mathbf{\Sigma}_{[k \times k]})\)</span></em></p>
+</div>
+</section>
+<section id="visualizing-3d-distributions-projection" class="slide level2 smaller crunch-title title-12">
+<h2>Visualizing 3D Distributions: Projection</h2>
+<ul>
+<li>Most of our intuitions about plots come from <strong>2D</strong> <span class="math inline">\(\Rightarrow\)</span> super helpful exercise to take a 3D plot like this and imagine <strong>“projecting” it</strong> onto different 2D surfaces:</li>
+</ul>
+
+<img data-src="images/bivariate_normal_corrected.svg" class="r-stretch quarto-figure-center"><p class="caption">(Adapted via LaTeX from <a href="https://tex.stackexchange.com/questions/31708/draw-a-bivariate-normal-distribution-in-tikz">StackExchange discussion</a>)</p></section>
+<section id="visualizing-3d-distributions-contours" class="slide level2 smaller">
+<h2>Visualizing 3D Distributions: Contours</h2>
+
+<img data-src="images/contour_nocorr.png" class="r-stretch quarto-figure-center"><p class="caption">From <a href="https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-normal-uncorrelated" target="_blank">Prof.&nbsp;Hickman’s slides!</a></p></section>
+<section id="visualizing-3d-distributions-contours-1" class="slide level2 smaller">
+<h2>Visualizing 3D Distributions: Contours</h2>
+
+<!---
+ 
+## Looking Ahead: Classification vs. Regression {.smaller}
+
+* What types of vars are we guessing for **classification** tasks?
+  * Answer: Discrete variables
+  * Binary classification $\leftrightarrow$ Dichotomous variables: $X \in \{T, F\}$. Example: $X \in \{\text{spam}, \text{not spam}\}$
+* **Regression** tasks?
+  * Answer: Continuous variables. $X \in \mathbb{R}$. Example: predicted temperature
+* And where does probability come in?
+  * Answer: Allows us to quantify $\Pr(\mathcal{H} \mid X)$!
+  * $\mathcal{H}_1 = \text{email is spam}$, $\mathcal{H}_0 = \text{email is not spam}$, $X = \text{email contents}$
+  * $\mathcal{H}_1 = \text{Tomorrow's temperature} > 20^\circ$, $\mathcal{H}_0 = \text{Tomorrow's temperature} \leq 20^\circ$,<br>$X = \text{Historical temperature data}$
+ 
+--->
+<img data-src="images/contour_corr.png" class="r-stretch quarto-figure-center"><p class="caption">Also from <a href="https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-correlated" target="_blank">Prof.&nbsp;Hickman’s slides!</a></p></section></section>
+<section>
+<section id="rules-of-probability" class="title-slide slide level1 center" data-stack-name="«Rules»">
+<h1>“Rules” of Probability</h1>
+
+</section>
+<section id="summarizing-what-we-know-so-far" class="slide level2 smaller">
+<h2>Summarizing What We Know So Far</h2>
+<ul>
+<li>Logic <span class="math inline">\(\rightarrow\)</span> Set Theory <span class="math inline">\(\rightarrow\)</span> Probability Theory</li>
+<li>Entirety of probability theory can be derived from <strong>two axioms</strong>:</li>
+</ul>
+<div title="The Entirety of Probability Theory Follows From...">
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>The Entirety of Probability Theory Follows From…</strong></p>
+</div>
+<div class="callout-content">
+<p><strong>Axiom 1</strong> (<em>Unitarity</em>): <span class="math inline">\(\Pr(\Omega) = 1\)</span> (The probability that <strong>something</strong> happens is 1)</p>
+<p><strong>Axiom 2</strong> (<em><span class="math inline">\(\sigma\)</span>-additivity</em>): For mutually-exclusive events <span class="math inline">\(E_1, E_2, \ldots\)</span>,</p>
+<p><span class="math display">\[
+\underbrace{\Pr\left(\bigcup_{i=1}^{\infty}E_i\right)}_{\Pr(E_1\text{ occurs }\vee E_2\text{ occurs } \vee \cdots)} = \underbrace{\sum_{i=1}^{\infty}\Pr(E_i)}_{\Pr(E_1\text{ occurs}) + \Pr(E_2\text{ occurs}) + \cdots}
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>But what does “mutually exclusive” mean…?</li>
+</ul>
+</section>
+<section id="venn-diagrams-sets" class="slide level2 smaller">
+<h2>Venn Diagrams: Sets</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="math display">\[
+\begin{align*}
+&amp;A = \{1, 2, 3\}, \; B = \{4, 5, 6\} \\
+&amp;\implies A \cap B = \varnothing
+\end{align*}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/venn_disjoint.svg" style="width:100.0%"></p>
+<figcaption>Mutually-exclusive (disjoint) sets</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p><span class="math display">\[
+\begin{align*}
+&amp;A = \{1, 2, 3, 4\}, \; B = \{3, 4, 5, 6\} \\
+&amp;\implies A \cap B = \{3, 4\}
+\end{align*}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/venn_two_circs.svg" style="width:75.0%"></p>
+<figcaption>Non-mutually-exclusive sets</figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="venn-diagrams-events-dice" class="slide level2 smaller">
+<h2>Venn Diagrams: Events (Dice)</h2>
+<p><span class="math display">\[
+\begin{align*}
+A &amp;= \{\text{Roll is even}\} = \{2, 4, 6\} \\
+B &amp;= \{\text{Roll is odd}\} = \{1, 3, 5\} \\
+C &amp;= \{\text{Roll is in Fibonnaci sequence}\} = \{1, 2, 3, 5\}
+\end{align*}
+\]</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 30%">
+<col style="width: 27%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Set 1</th>
+<th style="text-align: center;">Set 2</th>
+<th>Intersection</th>
+<th>Mutually Exclusive?</th>
+<th>Can Happen Simultaneously?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(A\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(B\)</span></td>
+<td><span class="math inline">\(A \cap B = \varnothing\)</span></td>
+<td><strong>Yes</strong></td>
+<td><strong>No</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(A\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(C\)</span></td>
+<td><span class="math inline">\(A \cap C = \{2\}\)</span></td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(B\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(C\)</span></td>
+<td><span class="math inline">\(B \cap C = \{1, 3, 5\}\)</span></td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="rules-of-probability-1" class="slide level2 smaller scrollable">
+<h2>“Rules” of Probability</h2>
+<p>(Remember: not <em>“rules”</em> but <em>“facts resulting from the logic <span class="math inline">\(\leftrightarrow\)</span> probability connection”</em>)</p>
+<div title="&quot;Rules&quot; of Probability">
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>“Rules” of Probability</strong></p>
+</div>
+<div class="callout-content">
+<p>For logical predicates <span class="math inline">\(p, q \in \{T, F\}\)</span>, events <span class="math inline">\(P, Q\)</span> defined so <span class="math inline">\(P\)</span> = event that <span class="math inline">\(p\)</span> becomes true, <span class="math inline">\(Q\)</span> = event that <span class="math inline">\(q\)</span> becomes true,</p>
+<ol type="1">
+<li><strong>Logical AND = Probabilistic Multiplication</strong></li>
+</ol>
+<p><span class="math display">\[
+\Pr(p \wedge q) = \Pr(P \cap Q) = \Pr(P) \cdot \Pr(Q)
+\]</span></p>
+<ol start="2" type="1">
+<li><strong>Logical OR = Probabilistic Addition</strong></li>
+</ol>
+<p><span class="math display">\[
+\Pr(p \vee q) = \Pr(P \cup Q) = \Pr(P) + \Pr(Q) - \underbrace{\Pr(P \cap Q)}_{\text{(see rule 1)}}
+\]</span></p>
+<ol start="3" type="1">
+<li><strong>Logical NOT = Probabilistic Complement</strong></li>
+</ol>
+<p><span class="math display">\[
+\Pr(\neg p) = \Pr(P^c) = 1 - \Pr(P)
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="what-is-conditional-probability" class="title-slide slide level1 center" data-stack-name="Conditional Prob">
+<h1>What is Conditional Probability?</h1>
+
+</section>
+<section id="conditional-probability" class="slide level2 smaller crunch-title crunch-li-8 inline-90">
+<h2>Conditional Probability</h2>
+<ul>
+<li>Usually if someone asks you probabilistic questions, like
+<ul>
+<li>“What is the likelihood that [our team] wins?”</li>
+<li>“Do you think it will rain tomorrow?”</li>
+</ul></li>
+<li>You don’t guess a random number, you <strong>consider</strong> and <strong>incorporate evidence</strong>.</li>
+<li>Example: <span class="math inline">\(\Pr(\text{rain})\)</span> on its own, no other info? Tough question… maybe <span class="math inline">\(0.5\)</span>?</li>
+<li>In reality, we would think about
+<ul>
+<li><span class="math inline">\(\Pr(\text{rain} \mid \text{month of the year})\)</span></li>
+<li><span class="math inline">\(\Pr(\text{rain} \mid \text{where we live})\)</span></li>
+<li><span class="math inline">\(\Pr(\text{rain} \mid \text{did it rain yesterday?})\)</span></li>
+</ul></li>
+<li>Psychologically, breaks down into two steps: (1) Think of <strong>baseline probability</strong>, (2) <strong>Update</strong> baseline to incorporate <strong>relevant evidence</strong> (more on this in a bit…)</li>
+<li>Also recall: <strong>all</strong> probability is <strong>conditional</strong> probability, even if just conditioned on “something happened” (<span class="math inline">\(\Omega\)</span>, the thing defined so <span class="math inline">\(\Pr(\Omega) = 1\)</span>)</li>
+</ul>
+</section>
+<section id="naïve-definition-2.0" class="slide level2 smaller">
+<h2>Naïve Definition 2.0</h2>
+<div title="[Slightly Less] Naïve Definition of Probability">
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>[Slightly Less] Naïve Definition of Probability</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math display">\[
+\Pr(A \mid B) = \frac{\text{\# of Desired Outcomes in world where }B\text{ happened}}{\text{\# Total outcomes in world where }B\text{ happened}} = \frac{|B \cap A|}{|B|}
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 50%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>World Name</th>
+<th>Weather in World</th>
+<th style="text-align: center;">Likelihood of Rain Today</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(R\)</span></td>
+<td><strong>Rained for the past 5 days</strong></td>
+<td style="text-align: center;"><span class="math inline">\(\Pr(\text{rain} \mid R) &gt; 0.5\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(M\)</span></td>
+<td><strong>Mix of rain and non-rain over past 5 days</strong></td>
+<td style="text-align: center;"><span class="math inline">\(\Pr(\text{rain} \mid M) \approx 0.5\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(S\)</span></td>
+<td><strong>Sunny for the past 5 days</strong></td>
+<td style="text-align: center;"><span class="math inline">\(\Pr(\text{rain} \mid S) &lt; 0.5\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="law-of-total-probability" class="slide level2 smaller crunch-title math-80">
+<h2>Law of Total Probability</h2>
+<ul>
+<li><p>Suppose the events <span class="math inline">\(B_1, \ldots, B_k\)</span> form a partition of the space <span class="math inline">\(\Omega\)</span> and <span class="math inline">\(\Pr(B_j) &gt; 0 \forall j\)</span>.</p></li>
+<li><p>Then, for every event <span class="math inline">\(A\)</span> in <span class="math inline">\(\Omega\)</span>,</p>
+<p><span class="math display">\[
+  \Pr(A) = \sum_{i=1}^k \Pr(B_j)\Pr(A \mid B_j)
+  \]</span></p></li>
+<li><p>Probability of an event is the sum of its conditional probabilities across all conditions.</p></li>
+<li><p>In other words: <span class="math inline">\(A\)</span> is some event, <span class="math inline">\(B_1, \ldots, B_n\)</span> are mutually exclusive events filling entire sample-space, then</p>
+<p><span class="math display">\[
+  \Pr(A) = \Pr(A \mid B_1)\Pr(B_1) + \Pr(A \mid B_2)\Pr(B_2) + \cdots + \Pr(A \mid B_n)\Pr(B_n)
+  \]</span></p>
+<p>i.e.&nbsp;Compute the probability by <strong>summing over all possible cases</strong>.</p></li>
+</ul>
+<aside class="notes">
+<p>Draw pic on board!</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="example" class="slide level2 smaller crunch-title">
+<h2>Example</h2>
+<ul>
+<li>Probability of completing job on time with and without rain: 0.42 and 0.9.</li>
+<li>Probability of rain is 0.45. What is probability job will be completed on time?</li>
+<li><span class="math inline">\(A\)</span> = job will be completed on time, <span class="math inline">\(B\)</span> = rain</li>
+</ul>
+<p><span class="math display">\[
+\Pr(B) = 0.45 \implies \Pr(B^c) = 1 - \Pr(B) = 0.55.
+\]</span></p>
+<ul>
+<li>Note: Events <span class="math inline">\(B\)</span> and <span class="math inline">\(B^c\)</span> are exclusive and form partitions of the sample space <span class="math inline">\(S\)</span></li>
+<li>We know <span class="math inline">\(\Pr(A \mid B) = 0.24\)</span>, <span class="math inline">\(\Pr(A \mid B^c) = 0.9\)</span>.</li>
+<li>By the Law of Total Probability, we have</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(A) &amp;= \Pr(B)\Pr(A \mid B) + \Pr(B^c)\Pr(A \mid B^c) \\
+&amp;= 0.45(0.42) + 0.55(0.9) = 0.189 + 0.495 = 0684.
+\end{align*}
+\]</span></p>
+<p>So, the probability that the job will be completed on time is <strong>0.684</strong>. <a href="https://byjus.com/maths/total-probability-theorem/" target="_blank">(source)</a></p>
+</section></section>
+<section>
+<section id="bayes-theorem-and-its-implications" class="title-slide slide level1 center" data-stack-name="Bayes">
+<h1>Bayes’ Theorem and its Implications</h1>
+
+</section>
+<section id="deriving-bayes-theorem" class="slide level2 smaller crunch-math scrollable">
+<h2>Deriving Bayes’ Theorem</h2>
+<ul>
+<li>Literally just a re-writing of the conditional probability definition (don’t be scared)!</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ol type="1">
+<li>For two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, definition of conditional probability says that</li>
+</ol>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(A \mid B) &amp;= \frac{\Pr(A \cap B)}{\Pr(B)} \tag{1} \\
+\Pr(B \mid A) &amp;= \frac{\Pr(B \cap A)}{\Pr(A)} \tag{2}
+\end{align*}
+\]</span></p>
+<ol start="2" type="1">
+<li>Multiply to get rid of fractions</li>
+</ol>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(A \mid B)\Pr(B) &amp;= \Pr(A \cap B) \tag{1*} \\
+\Pr(B \mid A)\Pr(A) &amp;= \Pr(B \cap A) \tag{2*}
+\end{align*}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<ol start="3" type="1">
+<li>But <strong>set intersection</strong> is <strong>associative</strong> (just like multiplication…), <span class="math inline">\(A \cap B = B \cap A\)</span>! So, we know LHS of <span class="math inline">\((\text{1*})\)</span> = LHS of <span class="math inline">\((\text{2*})\)</span>:</li>
+</ol>
+<p><span class="math display">\[
+\Pr(A \mid B)\Pr(B) = \Pr(B \mid A)\Pr(A)
+\]</span></p>
+<ol start="4" type="1">
+<li>Divide both sides by <span class="math inline">\(\Pr(B)\)</span> to get a <strong>new definition</strong> of <span class="math inline">\(\Pr(A \mid B)\)</span>, <strong>Bayes’ Theorem</strong>!</li>
+</ol>
+<div id="fig-bayes-thm" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-fig">
+<div aria-describedby="fig-bayes-thm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><span class="math display">\[
+\boxed{\Pr(A \mid B) = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}}
+\]</span></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes-thm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Bayes’ Theorem
+</figcaption>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="why-is-this-helpful" class="slide level2 smaller crunch-title crunch-math crunch-li-8 inline-90 scrollable">
+<h2>Why Is This Helpful?</h2>
+<div title="Bayes' Theorem">
+<div class="callout callout-tip no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Bayes’ Theorem</strong></p>
+</div>
+<div class="callout-content">
+<p>For any two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, <span class="math display">\[
+\Pr(A \mid B) = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<ul>
+<li>In words (as exciting as I can make it, for now): <strong>Bayes’ Theorem allows us to take information about <span class="math inline">\(B \mid A\)</span> and use it to infer information about <span class="math inline">\(A \mid B\)</span></strong></li>
+<li>It isn’t until you work through some examples that this becomes mind-blowing, the most powerful equation we have for inferring <strong>unknowns</strong> from <strong>knowns</strong>…</li>
+<li>Consider <span class="math inline">\(A = \{\text{person has disease}\}\)</span>, <span class="math inline">\(B = \{\text{person tests positive for disease}\}\)</span>
+<ol type="1">
+<li>Is <span class="math inline">\(A\)</span> observable on its own? <strong>No</strong>, but…</li>
+<li><ol type="a">
+<li>Is <span class="math inline">\(B\)</span> observable on its own? <strong>Yes</strong>, and</li>
+<li>Can we <strong>infer</strong> info about <span class="math inline">\(A\)</span> from knowing <span class="math inline">\(B\)</span>? <strong>Also Yes, thx Bayes!</strong></li>
+</ol></li>
+<li>Therefore, we can <strong>use <span class="math inline">\(B\)</span> to infer information about <span class="math inline">\(A\)</span></strong>, i.e., calculate <span class="math inline">\(\Pr(A \mid B)\)</span>…</li>
+</ol></li>
+</ul>
+</section>
+<section id="why-is-this-helpful-for-data-science" class="slide level2 smaller">
+<h2>Why Is This Helpful for <em>Data Science</em>?</h2>
+<ul>
+<li>It merges <strong>probability theory</strong> and <strong>hypothesis testing</strong> into a single framework:</li>
+</ul>
+<p><span class="math display">\[
+\Pr(\text{hypothesis} \mid \text{data}) = \frac{\Pr(\text{data} \mid \text{hypothesis})\Pr(\text{hypothesis})}{\Pr(\text{data})}
+\]</span></p>
+</section>
+<section id="probability-forwards-and-backwards" class="slide level2 nostretch smaller">
+<h2>Probability Forwards and Backwards</h2>
+<ul>
+<li><p>Two discrete RVs:</p>
+<ul>
+<li>Weather on a given day, <span class="math inline">\(W \in \{\textsf{Rain},\textsf{Sun}\}\)</span></li>
+<li>Action that day, <span class="math inline">\(A \in \{\textsf{Go}, \textsf{Stay}\}\)</span>: go to party or stay in and watch movie</li>
+</ul></li>
+<li><p>Data-generating process: if <span class="math inline">\(\textsf{Sun}\)</span>, rolls a die <span class="math inline">\(R\)</span> and goes out unless <span class="math inline">\(R = 6\)</span>. If <span class="math inline">\(\textsf{Rain}\)</span>, flips a coin and goes out if <span class="math inline">\(\textsf{H}\)</span>.</p></li>
+<li><p>Probabilistic Graphical Model (PGM):</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/pgm.svg" class="quarto-figure quarto-figure-center" style="width:60.0%"></p>
+</figure>
+</div>
+</section>
+<section id="section" class="slide level2 unnumbered nostretch">
+<h2></h2>
+<ul>
+<li><p>So, if we know <span class="math inline">\(W = \textsf{Sun}\)</span>, what is <span class="math inline">\(P(A = \textsf{Go})\)</span>? <span class="math display">\[
+\begin{align*}
+P(A = \textsf{Go} \mid W) &amp;= 1 - P(R = 6) \\
+&amp;= 1 - \frac{1}{6} = \frac{5}{6}
+\end{align*}
+\]</span></p></li>
+<li><p>Conditional probability lets us go <strong>forwards</strong> (left to right):</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/pgm_forwards.svg" class="quarto-figure quarto-figure-center" style="width:60.0%"></p>
+</figure>
+</div>
+<aside class="notes">
+<p>But what if we want to perform inference going <strong>backwards</strong>?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="section-1" class="slide level2 unnumbered smaller smallishmath">
+<h2></h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>If we see Ana at the party, we know <span class="math inline">\(A = \textsf{Go}\)</span></li>
+<li>What does this tell us about the weather?</li>
+<li>Intuitively, we should increase our degree of belief that <span class="math inline">\(W = \textsf{Sun}\)</span>. But, by how much?</li>
+<li>We don’t know <span class="math inline">\(P(W \mid A)\)</span>, only <span class="math inline">\(P(A \mid W)\)</span>…</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/koolaid_bayes.png" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="section-2" class="slide level2 unnumbered smaller">
+<h2></h2>
+<p><span class="math display">\[
+P(W = \textsf{Sun} \mid A = \textsf{Go}) = \frac{\overbrace{P(A = \textsf{Go} \mid W = \textsf{Sun})}^{5/6~ ✅}\overbrace{P(W = \textsf{Sun})}^{❓}}{\underbrace{P(A = \textsf{Go})}_{❓}}
+\]</span></p>
+<ul>
+<li>We’ve seen <span class="math inline">\(P(W = \textsf{Sun})\)</span> before, it’s our <strong>prior</strong>: the probability without having any additional relevant knowledge. So, let’s say 50/50. <span class="math inline">\(P(W = \textsf{Sun}) = \frac{1}{2}\)</span></li>
+<li>If we lived in Seattle, we could pick <span class="math inline">\(P(W = \textsf{Sun}) = \frac{1}{4}\)</span></li>
+</ul>
+</section>
+<section id="section-3" class="slide level2 unnumbered smaller small-math">
+<h2></h2>
+<p><span class="math display">\[
+P(W = \textsf{Sun} \mid A = \textsf{Go}) = \frac{\overbrace{P(A = \textsf{Go} \mid W = \textsf{Sunny})}^{5/6~ ✅}\overbrace{P(W = \textsf{Sun})}^{1/2~ ✅}}{\underbrace{P(A = \textsf{Go})}_{❓}}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(P(A = \textsf{Go})\)</span> is trickier: the probability that Ana goes out <strong>regardless of what the weather is</strong>. But there are only two possible weather outcomes! So we just compute</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+&amp;P(A = \textsf{Go}) = \sum_{\omega \in S(W)}P(A = \textsf{Go}, \omega) = \sum_{\omega \in S(W)}P(A = \textsf{Go} \mid \omega)P(\omega) \\
+&amp;= P(A = \textsf{Go} \mid W = \textsf{Rain})P(W = \textsf{Rain}) + P(A = \textsf{Go} \mid W = \textsf{Sun})P(W = \textsf{Sun}) \\
+&amp;= \left( \frac{1}{2} \right)\left( \frac{1}{2} \right) + \left( \frac{5}{6} \right)\left( \frac{1}{2} \right) = \frac{1}{4} + \frac{5}{12} = \frac{2}{3}
+\end{align*}
+\]</span></p>
+</section>
+<section id="putting-it-all-together" class="slide level2 smaller-math">
+<h2>Putting it All Together</h2>
+<p><span class="math display">\[
+\begin{align*}
+P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{Go} \mid W = \textsf{Sunny})}^{3/4~ ✅}\overbrace{P(W = \textsf{Sun})}^{1/2~ ✅}}{\underbrace{P(A = \textsf{Go})}_{1/2~ ✅}} \\
+&amp;= \frac{\left(\frac{3}{4}\right)\left(\frac{1}{2}\right)}{\frac{1}{2}} = \frac{\frac{3}{8}}{\frac{1}{2}} = \frac{3}{4}.
+\end{align*}
+\]</span></p>
+<ul>
+<li>Given that we see Ana at the party, we should <strong>update our beliefs</strong>, so that <span class="math inline">\(P(W = \textsf{Sun}) = \frac{3}{4}, P(W = \textsf{Rain}) = \frac{1}{4}\)</span>.</li>
+</ul>
+</section>
+<section id="a-scarier-example" class="slide level2 smaller">
+<h2>A Scarier Example</h2>
+<ul>
+<li>Bo worries he has a <strong>rare disease</strong>. He takes a test with <strong>99% accuracy</strong> and tests <strong>positive</strong>. What’s the probability Bo has the disease? (Intuition: 99%? …Let’s do the math!)</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><span class="math inline">\(H \in \{\textsf{sick}, \textsf{healthy}\}, T \in \{\textsf{T}^+, \textsf{T}^-\}\)</span></li>
+<li><strong>The test</strong>: 99% accurate. <span class="math inline">\(\Pr(T = \textsf{T}^+ \mid H = \textsf{sick}) = 0.99\)</span>, <span class="math inline">\(\Pr(T = \textsf{T}^- \mid H = \textsf{healthy}) = 0.99\)</span>.</li>
+<li><strong>The disease</strong>: 1 in 10K. <span class="math inline">\(\Pr(H = \textsf{sick}) = \frac{1}{10000}\)</span></li>
+<li><strong>What do we want to know?</strong> <span class="math inline">\(\Pr(H = \textsf{sick} \mid T = \textsf{T}^+)\)</span></li>
+<li><strong>How do we get there?</strong></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/bayes.jpg" style="width:65.0%"></p>
+<figcaption>This photo, originally thought to be of Thomas Bayes, turns out to be <a href="https://www.york.ac.uk/depts/maths/histstat/bayespic.htm">probably someone else</a>… <span class="math inline">\(\Pr(\textsf{Bayes})\)</span>?</figcaption>
+</figure>
+</div>
+</div></div>
+<aside class="notes">
+<p><span class="math inline">\(H\)</span> for health, <span class="math inline">\(T\)</span> for test result</p>
+<p>Photo credit: https://thedatascientist.com/wp-content/uploads/2019/04/reverend-thomas-bayes.jpg</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="section-4" class="slide level2 unnumbered small-math">
+<h2></h2>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(H = \textsf{sick} \mid T = \textsf{T}^+) &amp;= \frac{\Pr(T = \textsf{T}^+ \mid H = \textsf{sick})\Pr(H = \textsf{sick})}{\Pr(T = \textsf{T}^+)} \\
+&amp;= \frac{(0.99)\left(\frac{1}{10000}\right)}{(0.99)\left( \frac{1}{10000} \right) + (0.01)\left( \frac{9999}{10000} \right)}
+\end{align*}
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>p_sick <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">10000</span></span>
+<span id="cb2-2"><a></a>p_healthy <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> p_sick</span>
+<span id="cb2-3"><a></a>p_pos_given_sick <span class="ot">&lt;-</span> <span class="fl">0.99</span></span>
+<span id="cb2-4"><a></a>p_neg_given_sick <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> p_pos_given_sick</span>
+<span id="cb2-5"><a></a>p_neg_given_healthy <span class="ot">&lt;-</span> <span class="fl">0.99</span></span>
+<span id="cb2-6"><a></a>p_pos_given_healthy <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> p_neg_given_healthy</span>
+<span id="cb2-7"><a></a>numer <span class="ot">&lt;-</span> p_pos_given_sick <span class="sc">*</span> p_sick</span>
+<span id="cb2-8"><a></a>denom1 <span class="ot">&lt;-</span> numer</span>
+<span id="cb2-9"><a></a>denom2 <span class="ot">&lt;-</span> p_pos_given_healthy <span class="sc">*</span> p_healthy</span>
+<span id="cb2-10"><a></a>final_prob <span class="ot">&lt;-</span> numer <span class="sc">/</span> (denom1 <span class="sc">+</span> denom2)</span>
+<span id="cb2-11"><a></a>final_prob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.009803922</code></pre>
+</div>
+</div>
+<ul>
+<li>… Less than 1% 😱</li>
+</ul>
+</section>
+<section id="proof-in-the-pudding" class="slide level2 smaller">
+<h2>Proof in the Pudding</h2>
+<ul>
+<li>Let’s generate a dataset of <strong>5,000</strong> people, using <span class="math inline">\(\Pr(\textsf{Disease}) = \frac{1}{10000}\)</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">library</span>(tibble)</span>
+<span id="cb4-2"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-3"><a></a><span class="co"># Disease rarity</span></span>
+<span id="cb4-4"><a></a>p_disease <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">10000</span></span>
+<span id="cb4-5"><a></a><span class="co"># 1K people</span></span>
+<span id="cb4-6"><a></a>num_people <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb4-7"><a></a><span class="co"># Give them ids</span></span>
+<span id="cb4-8"><a></a>ppl_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">id=</span><span class="fu">seq</span>(<span class="dv">1</span>,num_people))</span>
+<span id="cb4-9"><a></a><span class="co"># Whether they have the disease or not</span></span>
+<span id="cb4-10"><a></a>has_disease <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(num_people, <span class="dv">1</span>, p_disease)</span>
+<span id="cb4-11"><a></a>ppl_df <span class="ot">&lt;-</span> ppl_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">has_disease=</span>has_disease)</span>
+<span id="cb4-12"><a></a>ppl_df <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="binary-variable-trick" class="slide level2 smaller crunch-code">
+<h2>Binary Variable Trick</h2>
+<ul>
+<li>Since <code>has_disease</code> <span class="math inline">\(\in \{0, 1\}\)</span>, we can use
+<ul>
+<li><code>sum(has_disease)</code> to obtain the <strong>count</strong> of people with the disease, or</li>
+<li><code>mean(has_disease)</code> to obtain the <strong>proportion</strong> of people who have the disease</li>
+</ul></li>
+<li>To see this (or, if you forget in the future), just make a fake dataset with a binary variable and 3 rows, and think about <strong>sums</strong> vs.&nbsp;<strong>means</strong> of that variable:</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>binary_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb5-2"><a></a>  <span class="at">id=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),</span>
+<span id="cb5-3"><a></a>  <span class="at">x=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span>
+<span id="cb5-4"><a></a>)</span>
+<span id="cb5-5"><a></a>binary_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:60%;">
+<p>Taking the <strong>sum</strong> tells us: <strong>one</strong> row where <code>x == 1</code>:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="fu">sum</span>(binary_df<span class="sc">$</span>x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<p>Taking the <strong>mean</strong> tells us: <strong>1/3</strong> of rows have <code>x == 1</code>:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a><span class="fu">mean</span>(binary_df<span class="sc">$</span>x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3333333</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="applying-this-to-the-disease-data" class="slide level2 smaller">
+<h2>Applying This to the Disease Data</h2>
+<ul>
+<li>If we want the <strong>number</strong> of people who have the disease:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="co"># Compute the *number* of people who have the disease</span></span>
+<span id="cb10-2"><a></a><span class="fu">sum</span>(ppl_df<span class="sc">$</span>has_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<ul>
+<li>If we want the <strong>proportion</strong> of people who have the disease:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a><span class="co"># Compute the *proportion* of people who have the disease</span></span>
+<span id="cb12-2"><a></a><span class="fu">mean</span>(ppl_df<span class="sc">$</span>has_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1e-04</code></pre>
+</div>
+</div>
+<ul>
+<li>(And if you dislike scientific notation like I do…)</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="fu">format</span>(<span class="fu">mean</span>(ppl_df<span class="sc">$</span>has_disease), <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "0.0001"</code></pre>
+</div>
+</div>
+<aside class="notes">
+<p>(Foreshadowing Monte Carlo methods)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="data-generating-process-test-results" class="slide level2 smaller">
+<h2>Data-Generating Process: Test Results</h2>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb16-2"><a></a><span class="co"># Data Generating Process</span></span>
+<span id="cb16-3"><a></a>take_test <span class="ot">&lt;-</span> <span class="cf">function</span>(is_sick) {</span>
+<span id="cb16-4"><a></a>  <span class="cf">if</span> (is_sick) {</span>
+<span id="cb16-5"><a></a>    <span class="fu">return</span>(<span class="fu">rbinom</span>(<span class="dv">1</span>,<span class="dv">1</span>,p_pos_given_sick))</span>
+<span id="cb16-6"><a></a>  } <span class="cf">else</span> {</span>
+<span id="cb16-7"><a></a>    <span class="fu">return</span>(<span class="fu">rbinom</span>(<span class="dv">1</span>,<span class="dv">1</span>,p_pos_given_healthy))</span>
+<span id="cb16-8"><a></a>  }</span>
+<span id="cb16-9"><a></a>}</span>
+<span id="cb16-10"><a></a>ppl_df[<span class="st">'test_result'</span>] <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(ppl_df<span class="sc">$</span>has_disease, take_test))</span>
+<span id="cb16-11"><a></a>num_positive <span class="ot">&lt;-</span> <span class="fu">sum</span>(ppl_df<span class="sc">$</span>test_result)</span>
+<span id="cb16-12"><a></a>p_positive <span class="ot">&lt;-</span> <span class="fu">mean</span>(ppl_df<span class="sc">$</span>test_result)</span>
+<span id="cb16-13"><a></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(num_positive,<span class="st">" positive tests / "</span>,num_people,<span class="st">" total = "</span>,p_positive))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>99 positive tests / 10000 total = 0.0099</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+<th style="text-align: right;">test_result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="zooming-in-on-positive-tests" class="slide level2 smaller">
+<h2>Zooming In On Positive Tests</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+<th style="text-align: right;">test_result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">316</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">371</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">531</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">600</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">751</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Bo doesn’t have it, and neither do 110 of the 111 total people who tested positive!</li>
+<li>But, in the real world, we only observe <span class="math inline">\(T\)</span></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/pgm_sick.svg" class="quarto-figure quarto-figure-center" style="width:100.0%"></p>
+</figure>
+</div>
+</div></div>
+</section>
+<section id="zooming-in-on-disease-havers" class="slide level2 smaller">
+<h2>Zooming In On Disease-Havers</h2>
+<ul>
+<li>What if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="co">#disp(ppl_df[ppl_df$has_disease == 1,])</span></span>
+<span id="cb18-2"><a></a>ppl_df[ppl_df<span class="sc">$</span>has_disease <span class="sc">==</span> <span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+<th style="text-align: right;">test_result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">6826</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Is this always going to be the case?</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>Num with disease: 0
+Proportion with disease: 0
+Number of positive tests: 47</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+<th style="text-align: right;">test_result</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>Num with disease: 2
+Proportion with disease: 0.0004
+Number of positive tests: 59</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+<th style="text-align: right;">test_result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">565</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3239</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="worst-case-worlds" class="slide level2 smaller">
+<h2>Worst-Case Worlds</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>World #1 / 1000 (5000 people):
+# A tibble: 2 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1   821           1           0
+2  4241           1           1
+
+
+World #129 / 1000 (5000 people):
+# A tibble: 2 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1   195           1           0
+2  1900           1           1
+
+
+World #600 / 1000 (5000 people):
+# A tibble: 2 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1  3014           1           0
+2  3789           1           1
+
+
+World #665 / 1000 (5000 people):
+# A tibble: 2 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1  2933           1           0
+2  4825           1           1
+
+
+World #691 / 1000 (5000 people):
+# A tibble: 2 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1   728           1           1
+2  3793           1           0
+
+
+World #959 / 1000 (5000 people):
+# A tibble: 2 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1   631           1           0
+2  4172           1           1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "0.0000008"</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>How unlikely is this? Math:</p>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(\textsf{T}^- \cap \textsf{Sick}) &amp;= \Pr(\textsf{T}^- \mid \textsf{Sick})\Pr(\textsf{Sick}) \\
+&amp;= (0.01)\frac{1}{10000} \\
+&amp;= \frac{1}{1000000}
+\end{align*}
+\]</span></p>
+<p>Computers:</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>False Negatives: 0, Total Cases: 1000000</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>False Negative Rate: 0</code></pre>
+</div>
+</div>
+<p>(Perfect match!)</p>
+</div></div>
+</section>
+<section id="bayes-takeaway" class="slide level2">
+<h2>Bayes: Takeaway</h2>
+<ul>
+<li>Bayesian approach <strong>allows new evidence to be weighed against existing evidence</strong>, with <strong>statistically principled</strong> way to derive these weights:</li>
+</ul>
+<p><span class="math display">\[
+\begin{array}{ccccc}
+\Pr_{\text{post}}(\mathcal{H}) &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm} \Pr(X \mid \mathcal{H}) &amp;\hspace{-6mm} \times &amp;\hspace{-6mm} \Pr_{\text{pre}}(\mathcal{H}) \\
+\text{Posterior} &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm}\text{Evidence} &amp;\hspace{-6mm} \times &amp;\hspace{-6mm} \text{Prior}
+\end{array}
+\]</span></p>
+</section>
+<section id="monte-carlo-methods-overview" class="slide level2" data-name="Monte Carlo">
+<h2>Monte Carlo Methods: Overview</h2>
+<ul>
+<li>You already saw an example, in our rare disease simulation!</li>
+<li>Generally, <strong>using computers</strong> (rather than math, “by hand”) <strong>to estimate probabilistic quantities</strong></li>
+</ul>
+<div class="columns">
+<div class="column smaller" style="width:50%;">
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Most real-world processes have no analytic solution</li>
+<li>Step-by-step breakdown of complex processes</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Can require immense computing power</li>
+<li>⚠️ Can generate <strong>incorrect answers</strong> ⚠️</li>
+</ul>
+</div></div>
+<aside class="notes">
+<p>By step-by-step I mean, a lot of the time you are just walking through, generating the next column using previously-generated columns. Like we did in the example above, generating <code>test_result</code> based on <code>has_disease</code>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="birthday-problem" class="slide level2">
+<h2>Birthday Problem</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>30 people gather in a room together. What is the probability that two of them share the same birthday?</li>
+<li>Analytic solution is fun, but requires some thought… Monte Carlo it!</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>gen_bday_room <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">room_num=</span><span class="cn">NULL</span>) {</span>
+<span id="cb25-2"><a></a>  num_people <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb25-3"><a></a>  num_days <span class="ot">&lt;-</span> <span class="dv">366</span></span>
+<span id="cb25-4"><a></a>  ppl_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">id=</span><span class="fu">seq</span>(<span class="dv">1</span>,num_people))</span>
+<span id="cb25-5"><a></a>birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>num_days, num_people,<span class="at">replace =</span> T)</span>
+<span id="cb25-6"><a></a>  ppl_df[<span class="st">'birthday'</span>] <span class="ot">&lt;-</span> birthdays</span>
+<span id="cb25-7"><a></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(room_num)) {</span>
+<span id="cb25-8"><a></a>    ppl_df <span class="ot">&lt;-</span> ppl_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">room_num=</span>room_num) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(room_num)</span>
+<span id="cb25-9"><a></a>  }</span>
+<span id="cb25-10"><a></a>  <span class="fu">return</span>(ppl_df)</span>
+<span id="cb25-11"><a></a>}</span>
+<span id="cb25-12"><a></a>ppl_df <span class="ot">&lt;-</span> <span class="fu">gen_bday_room</span>(<span class="dv">1</span>)</span>
+<span id="cb25-13"><a></a><span class="co">#disp(ppl_df %&gt;% head())</span></span>
+<span id="cb25-14"><a></a>ppl_df <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">room_num</th>
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">birthday</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">55</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">199</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">322</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">284</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">362</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div></div>
+</section>
+<section id="section-5" class="slide level2 unnumbered">
+<h2></h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">i</th>
+<th style="text-align: right;">j</th>
+<th style="text-align: right;">bday</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">55</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">268</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">79</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="section-6" class="slide level2 unnumbered smaller">
+<h2></h2>
+<p>Let’s try more rooms…</p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a><span class="co"># Get tibbles for each room</span></span>
+<span id="cb26-2"><a></a><span class="fu">library</span>(purrr)</span>
+<span id="cb26-3"><a></a>gen_bday_rooms <span class="ot">&lt;-</span> <span class="cf">function</span>(num_rooms) {</span>
+<span id="cb26-4"><a></a>  rooms_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb26-5"><a></a>  <span class="cf">for</span> (r <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, num_rooms)) {</span>
+<span id="cb26-6"><a></a>      cur_room <span class="ot">&lt;-</span> <span class="fu">gen_bday_room</span>(r)</span>
+<span id="cb26-7"><a></a>      rooms_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(rooms_df, cur_room)</span>
+<span id="cb26-8"><a></a>  }</span>
+<span id="cb26-9"><a></a>  <span class="fu">return</span>(rooms_df)</span>
+<span id="cb26-10"><a></a>}</span>
+<span id="cb26-11"><a></a>num_rooms <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb26-12"><a></a>rooms_df <span class="ot">&lt;-</span> <span class="fu">gen_bday_rooms</span>(num_rooms)</span>
+<span id="cb26-13"><a></a>rooms_df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(room_num) <span class="sc">%&gt;%</span> <span class="fu">group_map</span>(<span class="sc">~</span> <span class="fu">get_shared_bdays</span>(.x, <span class="at">is_grouped=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+# A tibble: 1 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     1    26   200
+
+[[2]]
+# A tibble: 2 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1    11    27   277
+2    16    29   199
+
+[[3]]
+# A tibble: 1 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1    19    29    21
+
+[[4]]
+# A tibble: 3 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1    11    23   317
+2    14    20   316
+3    18    29   174
+
+[[5]]
+# A tibble: 2 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     4    23   275
+2     9    12    51
+
+[[6]]
+# A tibble: 1 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1    25    29   309
+
+[[7]]
+# A tibble: 1 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1    12    18    11
+
+[[8]]
+# A tibble: 2 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     5    30    37
+2    20    23    28
+
+[[9]]
+# A tibble: 0 × 0
+
+[[10]]
+# A tibble: 2 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     9    15   159
+2    19    25   317</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:48%;">
+<p>Number of shared birthdays per room:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="co"># Now just get the # shared bdays</span></span>
+<span id="cb28-2"><a></a>shared_per_room <span class="ot">&lt;-</span> rooms_df <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a></a>    <span class="fu">group_by</span>(room_num) <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a></a>    <span class="fu">group_map</span>(<span class="sc">~</span> <span class="fu">get_shared_bdays</span>(.x, <span class="at">is_grouped =</span> <span class="cn">TRUE</span>, <span class="at">return_num=</span><span class="cn">TRUE</span>))</span>
+<span id="cb28-5"><a></a>shared_per_room <span class="ot">&lt;-</span> <span class="fu">unlist</span>(shared_per_room)</span>
+<span id="cb28-6"><a></a>shared_per_room</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1 2 1 3 2 1 1 2 0 2</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(\widehat{\Pr}(\text{shared})\)</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.9</code></pre>
+</div>
+</div>
+</div></div>
+</section>
+<section id="section-7" class="slide level2 unnumbered smaller">
+<h2></h2>
+<ul>
+<li>How about <strong>A THOUSAND ROOMS</strong>?</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 1 1 1 1 0 1 1 1 1 0 1 1 1 1 1 1 0 1 0 1 1 0 1 1 1 1 1 0 1 1 1 1 1 1 0 0 1
+ [38] 1 1 1 0 1 1 1 0 1 1 1 0 1 0 0 1 0 0 1 1 1 1 0 1 0 0 0 1 1 1 0 1 1 1 1 0 1
+ [75] 0 1 1 1 1 0 1 0 1 1 1 1 1 0 1 1 1 1 0 1 1 0 1 1 1 0</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(\widehat{\Pr}(\text{shared bday})\)</span>?</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.72</code></pre>
+</div>
+</div>
+<ul>
+<li>The analytic solution: <span class="math inline">\(\Pr(\text{shared} \mid k\text{ people in room}) = 1 - \frac{366!}{366^{k}(366-k)!}\)</span></li>
+<li>In our case: <span class="math inline">\(1 - \frac{366!}{366^{30}(366-30)!} = 1 - \frac{366!}{366^{30}336!} = 1 - \frac{\prod_{i=337}^{366}i}{366^{30}}\)</span></li>
+<li><code>R</code> can juust barely handle these numbers:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7053034</code></pre>
+</div>
+</div>
+</section>
+<section id="wrapping-up" class="slide level2 smaller nostretch">
+<h2>Wrapping Up</h2>
+<style>
+#bday-solns-plot {
+  width: 50% !important;
+}
+</style>
+<center>
+<div class="quarto-embed-nb-cell" data-notebook="/Users/jpj/gtown-local/dsan5100-03/w03/_bday-solutions-plot.ipynb" data-notebook-cellid="cell-bday-solns-plot">
+<div id="cell-bday-solns-plot" class="cell" data-vscode="{&quot;languageId&quot;:&quot;r&quot;}" data-fig-width="8" data-fig-height="6" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="index_files/figure-revealjs/_bday-solutions-plot-bday-solns-plot-output-1.png" id="bday-solns-plot" width="420" height="420"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</center>
+</section>
+<section id="final-note-functions-of-random-variables" class="slide level2">
+<h2>Final Note: Functions of Random Variables</h2>
+<ul>
+<li><span class="math inline">\(X \sim U[0,1], Y \sim U[0,1]\)</span>.</li>
+<li><span class="math inline">\(P(Y &lt; X^2)\)</span>?</li>
+<li>The hard way: solve analytically</li>
+<li>The easy way: simulate!</li>
+</ul>
+</section></section>
+<section>
+<section id="lab-2" class="title-slide slide level1 center" data-stack-name="Lab 2">
+<h1>Lab 2</h1>
+
+</section>
+<section id="lab-2-demonstrations" class="slide level2">
+<h2>Lab 2 Demonstrations</h2>
+<p><a href="https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-2/lab-2-demo/lab-2-demo-1.html" target="_blank">Lab 2 Demonstrations</a></p>
+</section>
+<section id="lab-2-assignment-overview" class="slide level2">
+<h2>Lab 2 Assignment Overview</h2>
+<p><a href="https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-2/lab-2-assignment.html">Lab 2 Assignment</a></p>
+
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+<p>DSAN 5100-03 W02: Probabilistic Modeling</p>
+</div>
+</div>
+</section></section>
+
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/simplemenu/simplemenu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'simplemenu': {"menubarclass":"menubar","menuclass":"menu","activeclass":"active","activeelement":"li","flat":true,"barhtml":{"header":"<div class='menubar'><span style='position: absolute; left: 8; padding-left: 8px;'><a href='./index.html'>&larr; Return to Notes</a></span><ul class='menu'></ul></div>","footer":""},"scale":0.5},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, Simplemenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
+        }
+        return false;
+      }
+      const onCopySuccess = function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
+        setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
+      });
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+              // target, if specified
+              link.setAttribute("target", "_blank");
+              if (link.getAttribute("rel") === null) {
+                link.setAttribute("rel", "noopener");
+              }
+              // default icon
+              link.classList.add("external");
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+        const config = {
+          allowHTML: true,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'light-border',
+          placement: 'bottom-start',
+        };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
+        });
+      }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
+          });
+        }
+      }
+    });
+    </script>
+    
+
+</body></html>

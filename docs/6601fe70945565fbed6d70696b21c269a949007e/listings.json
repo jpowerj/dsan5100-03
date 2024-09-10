@@ -25,6 +25,7 @@
     "listing": "/index.html",
     "items": [
       "/w01/index.html",
+      "/w03/index.html",
       "/w02/index.html"
     ]
   }
