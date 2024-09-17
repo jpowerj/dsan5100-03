@@ -1,18 +1,18 @@
 ---
-title: "Week 2: Introduction to Probabilistic Modeling"
+title: "Week 3: Random Variables"
 subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
 author: "Jeff Jacobs"
 institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
-date: 2024-09-03
+date: 2024-09-10
 date-format: full
-lecnum: 2
+lecnum: 3
 categories:
   - "Class Sessions"
 format:
   revealjs:
     cache: false
     css: "../dsan-globals/jjstyles.css"
-    footer: "DSAN 5100-03 W02: Probabilistic Modeling"
+    footer: "DSAN 5100-03 W03: Random Variables"
     output-file: slides.html
     df-print: kable
     code-fold: true

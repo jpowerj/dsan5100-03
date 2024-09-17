@@ -1,0 +1,2499 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jeff Jacobs">
+
+<title>Week 4: Discrete Distributions – DSAN 5100-03</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script><script src="../sidebar.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../dsan-globals/jjstyles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#rules-of-probability" id="toc-rules-of-probability" class="nav-link active" data-scroll-target="#rules-of-probability">“Rules” of Probability</a>
+  <ul class="collapse">
+  <li><a href="#summarizing-what-we-know-so-far" id="toc-summarizing-what-we-know-so-far" class="nav-link" data-scroll-target="#summarizing-what-we-know-so-far">Summarizing What We Know So Far</a></li>
+  <li><a href="#venn-diagrams-sets" id="toc-venn-diagrams-sets" class="nav-link" data-scroll-target="#venn-diagrams-sets">Venn Diagrams: Sets</a></li>
+  <li><a href="#venn-diagrams-events-dice" id="toc-venn-diagrams-events-dice" class="nav-link" data-scroll-target="#venn-diagrams-events-dice">Venn Diagrams: Events (Dice)</a></li>
+  <li><a href="#rules-of-probability-1" id="toc-rules-of-probability-1" class="nav-link" data-scroll-target="#rules-of-probability-1">“Rules” of Probability</a></li>
+  </ul></li>
+  <li><a href="#what-is-conditional-probability" id="toc-what-is-conditional-probability" class="nav-link" data-scroll-target="#what-is-conditional-probability">What is Conditional Probability?</a>
+  <ul class="collapse">
+  <li><a href="#conditional-probability" id="toc-conditional-probability" class="nav-link" data-scroll-target="#conditional-probability">Conditional Probability</a></li>
+  <li><a href="#naïve-definition-2.0" id="toc-naïve-definition-2.0" class="nav-link" data-scroll-target="#naïve-definition-2.0">Naïve Definition 2.0</a></li>
+  <li><a href="#law-of-total-probability" id="toc-law-of-total-probability" class="nav-link" data-scroll-target="#law-of-total-probability">Law of Total Probability</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  </ul></li>
+  <li><a href="#bayes-theorem-and-its-implications" id="toc-bayes-theorem-and-its-implications" class="nav-link" data-scroll-target="#bayes-theorem-and-its-implications">Bayes’ Theorem and its Implications</a>
+  <ul class="collapse">
+  <li><a href="#deriving-bayes-theorem" id="toc-deriving-bayes-theorem" class="nav-link" data-scroll-target="#deriving-bayes-theorem">Deriving Bayes’ Theorem</a></li>
+  <li><a href="#why-is-this-helpful" id="toc-why-is-this-helpful" class="nav-link" data-scroll-target="#why-is-this-helpful">Why Is This Helpful?</a></li>
+  <li><a href="#why-is-this-helpful-for-data-science" id="toc-why-is-this-helpful-for-data-science" class="nav-link" data-scroll-target="#why-is-this-helpful-for-data-science">Why Is This Helpful for <em>Data Science</em>?</a></li>
+  <li><a href="#probability-forwards-and-backwards" id="toc-probability-forwards-and-backwards" class="nav-link" data-scroll-target="#probability-forwards-and-backwards">Probability Forwards and Backwards</a></li>
+  <li><a href="#probability-forwards-and-backwards-1" id="toc-probability-forwards-and-backwards-1" class="nav-link" data-scroll-target="#probability-forwards-and-backwards-1">Probability Forwards and Backwards</a></li>
+  <li><a href="#probability-forwards-and-backwards-2" id="toc-probability-forwards-and-backwards-2" class="nav-link" data-scroll-target="#probability-forwards-and-backwards-2">Probability Forwards and Backwards</a></li>
+  <li><a href="#probability-forwards-and-backwards-3" id="toc-probability-forwards-and-backwards-3" class="nav-link" data-scroll-target="#probability-forwards-and-backwards-3">Probability Forwards and Backwards</a></li>
+  <li><a href="#probability-forwards-and-backwards-4" id="toc-probability-forwards-and-backwards-4" class="nav-link" data-scroll-target="#probability-forwards-and-backwards-4">Probability Forwards and Backwards</a></li>
+  <li><a href="#putting-it-all-together" id="toc-putting-it-all-together" class="nav-link" data-scroll-target="#putting-it-all-together">Putting it All Together</a></li>
+  <li><a href="#a-scarier-example" id="toc-a-scarier-example" class="nav-link" data-scroll-target="#a-scarier-example">A Scarier Example</a></li>
+  <li><a href="#a-scarier-example-1" id="toc-a-scarier-example-1" class="nav-link" data-scroll-target="#a-scarier-example-1">A Scarier Example</a></li>
+  <li><a href="#proof-in-the-pudding" id="toc-proof-in-the-pudding" class="nav-link" data-scroll-target="#proof-in-the-pudding">Proof in the Pudding</a></li>
+  <li><a href="#binary-variable-trick" id="toc-binary-variable-trick" class="nav-link" data-scroll-target="#binary-variable-trick">Binary Variable Trick</a></li>
+  <li><a href="#applying-this-to-the-disease-data" id="toc-applying-this-to-the-disease-data" class="nav-link" data-scroll-target="#applying-this-to-the-disease-data">Applying This to the Disease Data</a></li>
+  <li><a href="#data-generating-process-test-results" id="toc-data-generating-process-test-results" class="nav-link" data-scroll-target="#data-generating-process-test-results">Data-Generating Process: Test Results</a></li>
+  <li><a href="#zooming-in-on-positive-tests" id="toc-zooming-in-on-positive-tests" class="nav-link" data-scroll-target="#zooming-in-on-positive-tests">Zooming In On Positive Tests</a></li>
+  <li><a href="#zooming-in-on-disease-havers" id="toc-zooming-in-on-disease-havers" class="nav-link" data-scroll-target="#zooming-in-on-disease-havers">Zooming In On Disease-Havers</a></li>
+  <li><a href="#worst-case-worlds" id="toc-worst-case-worlds" class="nav-link" data-scroll-target="#worst-case-worlds">Worst-Case Worlds</a></li>
+  <li><a href="#bayes-takeaway" id="toc-bayes-takeaway" class="nav-link" data-scroll-target="#bayes-takeaway">Bayes: Takeaway</a></li>
+  <li><a href="#monte-carlo-methods-overview" id="toc-monte-carlo-methods-overview" class="nav-link" data-scroll-target="#monte-carlo-methods-overview">Monte Carlo Methods: Overview</a></li>
+  <li><a href="#birthday-problem" id="toc-birthday-problem" class="nav-link" data-scroll-target="#birthday-problem">Birthday Problem</a></li>
+  <li><a href="#birthday-problem-1" id="toc-birthday-problem-1" class="nav-link" data-scroll-target="#birthday-problem-1">Birthday Problem</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1"></a></li>
+  <li><a href="#wrapping-up" id="toc-wrapping-up" class="nav-link" data-scroll-target="#wrapping-up">Wrapping Up</a></li>
+  <li><a href="#final-note-functions-of-random-variables" id="toc-final-note-functions-of-random-variables" class="nav-link" data-scroll-target="#final-note-functions-of-random-variables">Final Note: Functions of Random Variables</a></li>
+  </ul></li>
+  <li><a href="#probability-distributions-in-general" id="toc-probability-distributions-in-general" class="nav-link" data-scroll-target="#probability-distributions-in-general">Probability Distributions in General</a>
+  <ul class="collapse">
+  <li><a href="#discrete-vs.-continuous" id="toc-discrete-vs.-continuous" class="nav-link" data-scroll-target="#discrete-vs.-continuous">Discrete vs.&nbsp;Continuous</a></li>
+  <li><a href="#the-technical-difference-tldr" id="toc-the-technical-difference-tldr" class="nav-link" data-scroll-target="#the-technical-difference-tldr">The Technical Difference tl;dr</a></li>
+  <li><a href="#the-practical-difference" id="toc-the-practical-difference" class="nav-link" data-scroll-target="#the-practical-difference">The Practical Difference</a></li>
+  <li><a href="#probability-mass-vs.-probability-density" id="toc-probability-mass-vs.-probability-density" class="nav-link" data-scroll-target="#probability-mass-vs.-probability-density">Probability Mass vs.&nbsp;Probability Density</a></li>
+  <li><a href="#probability-density-neq-probability" id="toc-probability-density-neq-probability" class="nav-link" data-scroll-target="#probability-density-neq-probability">Probability Density <span class="math inline">\(\neq\)</span> Probability</a></li>
+  </ul></li>
+  <li><a href="#common-discrete-distributions" id="toc-common-discrete-distributions" class="nav-link" data-scroll-target="#common-discrete-distributions">Common Discrete Distributions</a>
+  <ul class="collapse">
+  <li><a href="#bernoulli-distribution" id="toc-bernoulli-distribution" class="nav-link" data-scroll-target="#bernoulli-distribution">Bernoulli Distribution</a></li>
+  <li><a href="#binomial-distribution" id="toc-binomial-distribution" class="nav-link" data-scroll-target="#binomial-distribution">Binomial Distribution</a></li>
+  <li><a href="#visualizing-the-binomial" id="toc-visualizing-the-binomial" class="nav-link" data-scroll-target="#visualizing-the-binomial">Visualizing the Binomial</a></li>
+  <li><a href="#multiple-classes-multinomial-distribution" id="toc-multiple-classes-multinomial-distribution" class="nav-link" data-scroll-target="#multiple-classes-multinomial-distribution">Multiple Classes: Multinomial Distribution</a></li>
+  <li><a href="#geometric-distribution" id="toc-geometric-distribution" class="nav-link" data-scroll-target="#geometric-distribution">Geometric Distribution</a></li>
+  <li><a href="#less-common-but-important-distributions" id="toc-less-common-but-important-distributions" class="nav-link" data-scroll-target="#less-common-but-important-distributions">Less Common (But Important) Distributions</a></li>
+  <li><a href="#interactive-visualizations" id="toc-interactive-visualizations" class="nav-link" data-scroll-target="#interactive-visualizations">Interactive Visualizations!</a></li>
+  <li><a href="#appendix-countability-of-mathbbq" id="toc-appendix-countability-of-mathbbq" class="nav-link" data-scroll-target="#appendix-countability-of-mathbbq">Appendix: Countability of <span class="math inline">\(\mathbb{Q}\)</span></a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w04/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div><div class="quarto-alternate-notebooks"><h2>Notebooks</h2><ul><li><a href="_bday-solutions-plot-preview.html"><i class="bi bi-journal-code"></i>_bday-solutions-plot.ipynb</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 4: Discrete Distributions</h1>
+<p class="subtitle lead"><em>DSAN 5100: Probabilistic Modeling and Statistical Computing</em><br>Section 03</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Class Sessions</div>
+  </div>
+  </div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jeff Jacobs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Tuesday, September 17, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window →</a>
+</center>
+<section id="rules-of-probability" class="level1" data-stack-name="«Rules»">
+<h1 data-stack-name="«Rules»">“Rules” of Probability</h1>
+<div class="hidden">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../dsan-globals/_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<section id="summarizing-what-we-know-so-far" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="summarizing-what-we-know-so-far">Summarizing What We Know So Far</h2>
+<ul>
+<li>Logic <span class="math inline">\(\rightarrow\)</span> Set Theory <span class="math inline">\(\rightarrow\)</span> Probability Theory</li>
+<li>Entirety of probability theory can be derived from <strong>two axioms</strong>:</li>
+</ul>
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="The Entirety of Probability Theory Follows From...">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+The Entirety of Probability Theory Follows From…
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Axiom 1</strong> (<em>Unitarity</em>): <span class="math inline">\(\Pr(\Omega) = 1\)</span> (The probability that <strong>something</strong> happens is 1)</p>
+<p><strong>Axiom 2</strong> (<em><span class="math inline">\(\sigma\)</span>-additivity</em>): For mutually-exclusive events <span class="math inline">\(E_1, E_2, \ldots\)</span>,</p>
+<p><span class="math display">\[
+\underbrace{\Pr\left(\bigcup_{i=1}^{\infty}E_i\right)}_{\Pr(E_1\text{ occurs }\vee E_2\text{ occurs } \vee \cdots)} = \underbrace{\sum_{i=1}^{\infty}\Pr(E_i)}_{\Pr(E_1\text{ occurs}) + \Pr(E_2\text{ occurs}) + \cdots}
+\]</span></p>
+</div>
+</div>
+<ul>
+<li>But what does “mutually exclusive” mean…?</li>
+</ul>
+</section>
+<section id="venn-diagrams-sets" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="venn-diagrams-sets">Venn Diagrams: Sets</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="math display">\[
+\begin{align*}
+&amp;A = \{1, 2, 3\}, \; B = \{4, 5, 6\} \\
+&amp;\implies A \cap B = \varnothing
+\end{align*}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/venn_disjoint.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>Mutually-exclusive (disjoint) sets</figcaption>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p><span class="math display">\[
+\begin{align*}
+&amp;A = \{1, 2, 3, 4\}, \; B = \{3, 4, 5, 6\} \\
+&amp;\implies A \cap B = \{3, 4\}
+\end{align*}
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/venn_two_circs.svg" class="img-fluid figure-img" style="width:75.0%"></p>
+<figcaption>Non-mutually-exclusive sets</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="venn-diagrams-events-dice" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="venn-diagrams-events-dice">Venn Diagrams: Events (Dice)</h2>
+<p><span class="math display">\[
+\begin{align*}
+A &amp;= \{\text{Roll is even}\} = \{2, 4, 6\} \\
+B &amp;= \{\text{Roll is odd}\} = \{1, 3, 5\} \\
+C &amp;= \{\text{Roll is in Fibonnaci sequence}\} = \{1, 2, 3, 5\}
+\end{align*}
+\]</span></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 30%">
+<col style="width: 27%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Set 1</th>
+<th style="text-align: center;">Set 2</th>
+<th>Intersection</th>
+<th>Mutually Exclusive?</th>
+<th>Can Happen Simultaneously?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(A\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(B\)</span></td>
+<td><span class="math inline">\(A \cap B = \varnothing\)</span></td>
+<td><strong>Yes</strong></td>
+<td><strong>No</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">\(A\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(C\)</span></td>
+<td><span class="math inline">\(A \cap C = \{2\}\)</span></td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">\(B\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(C\)</span></td>
+<td><span class="math inline">\(B \cap C = \{1, 3, 5\}\)</span></td>
+<td><strong>No</strong></td>
+<td><strong>Yes</strong></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="rules-of-probability-1" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="rules-of-probability-1">“Rules” of Probability</h2>
+<p>(Remember: not <em>“rules”</em> but <em>“facts resulting from the logic <span class="math inline">\(\leftrightarrow\)</span> probability connection”</em>)</p>
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="&quot;Rules&quot; of Probability">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+“Rules” of Probability
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For logical predicates <span class="math inline">\(p, q \in \{T, F\}\)</span>, events <span class="math inline">\(P, Q\)</span> defined so <span class="math inline">\(P\)</span> = event that <span class="math inline">\(p\)</span> becomes true, <span class="math inline">\(Q\)</span> = event that <span class="math inline">\(q\)</span> becomes true,</p>
+<ol type="1">
+<li><strong>Logical AND = Probabilistic Multiplication</strong></li>
+</ol>
+<p><span class="math display">\[
+\Pr(p \wedge q) = \Pr(P \cap Q) = \Pr(P) \cdot \Pr(Q)
+\]</span></p>
+<ol start="2" type="1">
+<li><strong>Logical OR = Probabilistic Addition</strong></li>
+</ol>
+<p><span class="math display">\[
+\Pr(p \vee q) = \Pr(P \cup Q) = \Pr(P) + \Pr(Q) - \underbrace{\Pr(P \cap Q)}_{\text{(see rule 1)}}
+\]</span></p>
+<ol start="3" type="1">
+<li><strong>Logical NOT = Probabilistic Complement</strong></li>
+</ol>
+<p><span class="math display">\[
+\Pr(\neg p) = \Pr(P^c) = 1 - \Pr(P)
+\]</span></p>
+</div>
+</div>
+</section>
+</section>
+<section id="what-is-conditional-probability" class="level1" data-stack-name="Conditional Prob">
+<h1 data-stack-name="Conditional Prob">What is Conditional Probability?</h1>
+<section id="conditional-probability" class="level2 smaller crunch-title crunch-li-8 inline-90">
+<h2 class="smaller crunch-title crunch-li-8 inline-90 anchored" data-anchor-id="conditional-probability">Conditional Probability</h2>
+<ul>
+<li>Usually if someone asks you probabilistic questions, like
+<ul>
+<li>“What is the likelihood that [our team] wins?”</li>
+<li>“Do you think it will rain tomorrow?”</li>
+</ul></li>
+<li>You don’t guess a random number, you <strong>consider</strong> and <strong>incorporate evidence</strong>.</li>
+<li>Example: <span class="math inline">\(\Pr(\text{rain})\)</span> on its own, no other info? Tough question… maybe <span class="math inline">\(0.5\)</span>?</li>
+<li>In reality, we would think about
+<ul>
+<li><span class="math inline">\(\Pr(\text{rain} \mid \text{month of the year})\)</span></li>
+<li><span class="math inline">\(\Pr(\text{rain} \mid \text{where we live})\)</span></li>
+<li><span class="math inline">\(\Pr(\text{rain} \mid \text{did it rain yesterday?})\)</span></li>
+</ul></li>
+<li>Psychologically, breaks down into two steps: (1) Think of <strong>baseline probability</strong>, (2) <strong>Update</strong> baseline to incorporate <strong>relevant evidence</strong> (more on this in a bit…)</li>
+<li>Also recall: <strong>all</strong> probability is <strong>conditional</strong> probability, even if just conditioned on “something happened” (<span class="math inline">\(\Omega\)</span>, the thing defined so <span class="math inline">\(\Pr(\Omega) = 1\)</span>)</li>
+</ul>
+</section>
+<section id="naïve-definition-2.0" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="naïve-definition-2.0">Naïve Definition 2.0</h2>
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="[Slightly Less] Naïve Definition of Probability">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+[Slightly Less] Naïve Definition of Probability
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="math display">\[
+\Pr(A \mid B) = \frac{\text{\# of Desired Outcomes in world where }B\text{ happened}}{\text{\# Total outcomes in world where }B\text{ happened}} = \frac{|B \cap A|}{|B|}
+\]</span></p>
+</div>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 50%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>World Name</th>
+<th>Weather in World</th>
+<th style="text-align: center;">Likelihood of Rain Today</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(R\)</span></td>
+<td><strong>Rained for the past 5 days</strong></td>
+<td style="text-align: center;"><span class="math inline">\(\Pr(\text{rain} \mid R) &gt; 0.5\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(M\)</span></td>
+<td><strong>Mix of rain and non-rain over past 5 days</strong></td>
+<td style="text-align: center;"><span class="math inline">\(\Pr(\text{rain} \mid M) \approx 0.5\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(S\)</span></td>
+<td><strong>Sunny for the past 5 days</strong></td>
+<td style="text-align: center;"><span class="math inline">\(\Pr(\text{rain} \mid S) &lt; 0.5\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="law-of-total-probability" class="level2 smaller crunch-title math-80">
+<h2 class="smaller crunch-title math-80 anchored" data-anchor-id="law-of-total-probability">Law of Total Probability</h2>
+<ul>
+<li><p>Suppose the events <span class="math inline">\(B_1, \ldots, B_k\)</span> form a partition of the space <span class="math inline">\(\Omega\)</span> and <span class="math inline">\(\Pr(B_j) &gt; 0 \forall j\)</span>.</p></li>
+<li><p>Then, for every event <span class="math inline">\(A\)</span> in <span class="math inline">\(\Omega\)</span>,</p>
+<p><span class="math display">\[
+  \Pr(A) = \sum_{i=1}^k \Pr(B_j)\Pr(A \mid B_j)
+  \]</span></p></li>
+<li><p>Probability of an event is the sum of its conditional probabilities across all conditions.</p></li>
+<li><p>In other words: <span class="math inline">\(A\)</span> is some event, <span class="math inline">\(B_1, \ldots, B_n\)</span> are mutually exclusive events filling entire sample-space, then</p>
+<p><span class="math display">\[
+  \Pr(A) = \Pr(A \mid B_1)\Pr(B_1) + \Pr(A \mid B_2)\Pr(B_2) + \cdots + \Pr(A \mid B_n)\Pr(B_n)
+  \]</span></p>
+<p>i.e.&nbsp;Compute the probability by <strong>summing over all possible cases</strong>.</p></li>
+</ul>
+<div class="notes">
+<p>Draw pic on board!</p>
+</div>
+</section>
+<section id="example" class="level2 smaller crunch-title">
+<h2 class="smaller crunch-title anchored" data-anchor-id="example">Example</h2>
+<ul>
+<li>Probability of completing job on time with and without rain: 0.42 and 0.9.</li>
+<li>Probability of rain is 0.45. What is probability job will be completed on time?</li>
+<li><span class="math inline">\(A\)</span> = job will be completed on time, <span class="math inline">\(B\)</span> = rain</li>
+</ul>
+<p><span class="math display">\[
+\Pr(B) = 0.45 \implies \Pr(B^c) = 1 - \Pr(B) = 0.55.
+\]</span></p>
+<ul>
+<li>Note: Events <span class="math inline">\(B\)</span> and <span class="math inline">\(B^c\)</span> are exclusive and form partitions of the sample space <span class="math inline">\(S\)</span></li>
+<li>We know <span class="math inline">\(\Pr(A \mid B) = 0.24\)</span>, <span class="math inline">\(\Pr(A \mid B^c) = 0.9\)</span>.</li>
+<li>By the Law of Total Probability, we have</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(A) &amp;= \Pr(B)\Pr(A \mid B) + \Pr(B^c)\Pr(A \mid B^c) \\
+&amp;= 0.45(0.42) + 0.55(0.9) = 0.189 + 0.495 = 0684.
+\end{align*}
+\]</span></p>
+<p>So, the probability that the job will be completed on time is <strong>0.684</strong>. <a href="https://byjus.com/maths/total-probability-theorem/" target="_blank">(source)</a></p>
+</section>
+</section>
+<section id="bayes-theorem-and-its-implications" class="level1" data-stack-name="Bayes">
+<h1 data-stack-name="Bayes">Bayes’ Theorem and its Implications</h1>
+<section id="deriving-bayes-theorem" class="level2 smaller crunch-math">
+<h2 class="smaller crunch-math anchored" data-anchor-id="deriving-bayes-theorem">Deriving Bayes’ Theorem</h2>
+<ul>
+<li>Literally just a re-writing of the conditional probability definition (don’t be scared)!</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ol type="1">
+<li>For two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, definition of conditional probability says that</li>
+</ol>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(A \mid B) &amp;= \frac{\Pr(A \cap B)}{\Pr(B)} \tag{1} \\
+\Pr(B \mid A) &amp;= \frac{\Pr(B \cap A)}{\Pr(A)} \tag{2}
+\end{align*}
+\]</span></p>
+<ol start="2" type="1">
+<li>Multiply to get rid of fractions</li>
+</ol>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(A \mid B)\Pr(B) &amp;= \Pr(A \cap B) \tag{1*} \\
+\Pr(B \mid A)\Pr(A) &amp;= \Pr(B \cap A) \tag{2*}
+\end{align*}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<ol start="3" type="1">
+<li>But <strong>set intersection</strong> is <strong>associative</strong> (just like multiplication…), <span class="math inline">\(A \cap B = B \cap A\)</span>! So, we know LHS of <span class="math inline">\((\text{1*})\)</span> = LHS of <span class="math inline">\((\text{2*})\)</span>:</li>
+</ol>
+<p><span class="math display">\[
+\Pr(A \mid B)\Pr(B) = \Pr(B \mid A)\Pr(A)
+\]</span></p>
+<ol start="4" type="1">
+<li>Divide both sides by <span class="math inline">\(\Pr(B)\)</span> to get a <strong>new definition</strong> of <span class="math inline">\(\Pr(A \mid B)\)</span>, <strong>Bayes’ Theorem</strong>!</li>
+</ol>
+<div id="fig-bayes-thm" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bayes-thm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><span class="math display">\[
+\boxed{\Pr(A \mid B) = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}}
+\]</span></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bayes-thm-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Bayes’ Theorem
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="why-is-this-helpful" class="level2 smaller crunch-title crunch-math crunch-li-5 inline-90">
+<h2 class="smaller crunch-title crunch-math crunch-li-5 inline-90 anchored" data-anchor-id="why-is-this-helpful">Why Is This Helpful?</h2>
+<div class="callout callout-style-default callout-tip no-icon callout-titled" title="Bayes' Theorem">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Bayes’ Theorem
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>For any two events <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span>, <span class="math display">\[
+\Pr(A \mid B) = \frac{\Pr(B \mid A)\Pr(A)}{\Pr(B)}
+\]</span></p>
+</div>
+</div>
+<ul>
+<li>In words (as exciting as I can make it, for now): <strong>Bayes’ Theorem allows us to take information about <span class="math inline">\(B \mid A\)</span> and use it to infer information about <span class="math inline">\(A \mid B\)</span></strong></li>
+<li>It isn’t until you work through some examples that this becomes mind-blowing, the most powerful equation we have for inferring <strong>unknowns</strong> from <strong>knowns</strong>…</li>
+<li>Consider <span class="math inline">\(A = \{\text{person has disease}\}\)</span>, <span class="math inline">\(B = \{\text{person tests positive for disease}\}\)</span>
+<ol type="1">
+<li>Is <span class="math inline">\(A\)</span> observable on its own? <strong>No</strong>, but…</li>
+<li><ol type="a">
+<li>Is <span class="math inline">\(B\)</span> observable on its own? <strong>Yes</strong>, and</li>
+<li>Can we <strong>infer</strong> info about <span class="math inline">\(A\)</span> from knowing <span class="math inline">\(B\)</span>? <strong>Also Yes, thx Bayes!</strong></li>
+</ol></li>
+<li>Therefore, we can <strong>use <span class="math inline">\(B\)</span> to infer information about <span class="math inline">\(A\)</span></strong>, i.e., calculate <span class="math inline">\(\Pr(A \mid B)\)</span></li>
+</ol></li>
+</ul>
+</section>
+<section id="why-is-this-helpful-for-data-science" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="why-is-this-helpful-for-data-science">Why Is This Helpful for <em>Data Science</em>?</h2>
+<ul>
+<li>It merges <strong>probability theory</strong> and <strong>hypothesis testing</strong> into a single framework:</li>
+</ul>
+<p><span class="math display">\[
+\Pr(\text{hypothesis} \mid \text{data}) = \frac{\Pr(\text{data} \mid \text{hypothesis})\Pr(\text{hypothesis})}{\Pr(\text{data})}
+\]</span></p>
+</section>
+<section id="probability-forwards-and-backwards" class="level2 nostretch smaller">
+<h2 class="nostretch smaller anchored" data-anchor-id="probability-forwards-and-backwards">Probability Forwards and Backwards</h2>
+<ul>
+<li><p>Two discrete RVs:</p>
+<ul>
+<li>Weather on a given day, <span class="math inline">\(W \in \{\textsf{Rain},\textsf{Sun}\}\)</span></li>
+<li>Action that day, <span class="math inline">\(A \in \{\textsf{Go}, \textsf{Stay}\}\)</span>: go to party or stay in and watch movie</li>
+</ul></li>
+<li><p>Data-generating process: if <span class="math inline">\(\textsf{Sun}\)</span>, rolls a die <span class="math inline">\(R\)</span> and goes out unless <span class="math inline">\(R = 6\)</span>. If <span class="math inline">\(\textsf{Rain}\)</span>, flips a coin and goes out if <span class="math inline">\(\textsf{H}\)</span>.</p></li>
+<li><p>Probabilistic Graphical Model (PGM):</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/pgm.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</section>
+<section id="probability-forwards-and-backwards-1" class="level2 unnumbered nostretch">
+<h2 class="unnumbered nostretch anchored" data-anchor-id="probability-forwards-and-backwards-1">Probability Forwards and Backwards</h2>
+<ul>
+<li><p>So, if we know <span class="math inline">\(W = \textsf{Sun}\)</span>, what is <span class="math inline">\(P(A = \textsf{Go})\)</span>? <span class="math display">\[
+\begin{align*}
+P(A = \textsf{Go} \mid W) &amp;= 1 - P(R = 6) \\
+&amp;= 1 - \frac{1}{6} = \frac{5}{6}
+\end{align*}
+\]</span></p></li>
+<li><p>Conditional probability lets us go <strong>forwards</strong> (left to right):</p></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/pgm_forwards.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+<div class="notes">
+<p>But what if we want to perform inference going <strong>backwards</strong>?</p>
+</div>
+</section>
+<section id="probability-forwards-and-backwards-2" class="level2 unnumbered smaller smallishmath">
+<h2 class="unnumbered smaller smallishmath anchored" data-anchor-id="probability-forwards-and-backwards-2">Probability Forwards and Backwards</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>If we see Ana at the party, we know <span class="math inline">\(A = \textsf{Go}\)</span></li>
+<li>What does this tell us about the weather?</li>
+<li>Intuitively, we should increase our degree of belief that <span class="math inline">\(W = \textsf{Sun}\)</span>. But, by how much?</li>
+<li>We don’t know <span class="math inline">\(P(W \mid A)\)</span>, only <span class="math inline">\(P(A \mid W)\)</span>…</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/koolaid_bayes.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="probability-forwards-and-backwards-3" class="level2 unnumbered smaller">
+<h2 class="unnumbered smaller anchored" data-anchor-id="probability-forwards-and-backwards-3">Probability Forwards and Backwards</h2>
+<p><span class="math display">\[
+P(W = \textsf{Sun} \mid A = \textsf{Go}) = \frac{\overbrace{P(A = \textsf{Go} \mid W = \textsf{Sun})}^{5/6~ ✅}\overbrace{P(W = \textsf{Sun})}^{❓}}{\underbrace{P(A = \textsf{Go})}_{❓}}
+\]</span></p>
+<ul>
+<li>We’ve seen <span class="math inline">\(P(W = \textsf{Sun})\)</span> before, it’s our <strong>prior</strong>: the probability without having any additional relevant knowledge. So, let’s say 50/50. <span class="math inline">\(P(W = \textsf{Sun}) = \frac{1}{2}\)</span></li>
+<li>If we lived in Seattle, we could pick <span class="math inline">\(P(W = \textsf{Sun}) = \frac{1}{4}\)</span></li>
+</ul>
+</section>
+<section id="probability-forwards-and-backwards-4" class="level2 unnumbered smaller small-math">
+<h2 class="unnumbered smaller small-math anchored" data-anchor-id="probability-forwards-and-backwards-4">Probability Forwards and Backwards</h2>
+<p><span class="math display">\[
+P(W = \textsf{Sun} \mid A = \textsf{Go}) = \frac{\overbrace{P(A = \textsf{Go} \mid W = \textsf{Sunny})}^{5/6~ ✅}\overbrace{P(W = \textsf{Sun})}^{1/2~ ✅}}{\underbrace{P(A = \textsf{Go})}_{❓}}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(P(A = \textsf{Go})\)</span> is trickier: the probability that Ana goes out <strong>regardless of what the weather is</strong>. But there are only two possible weather outcomes! So we just compute</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+&amp;P(A = \textsf{Go}) = \sum_{\omega \in S(W)}P(A = \textsf{Go}, \omega) = \sum_{\omega \in S(W)}P(A = \textsf{Go} \mid \omega)P(\omega) \\
+&amp;= P(A = \textsf{Go} \mid W = \textsf{Rain})P(W = \textsf{Rain}) + P(A = \textsf{Go} \mid W = \textsf{Sun})P(W = \textsf{Sun}) \\
+&amp;= \left( \frac{1}{2} \right)\left( \frac{1}{2} \right) + \left( \frac{5}{6} \right)\left( \frac{1}{2} \right) = \frac{1}{4} + \frac{5}{12} = \frac{2}{3}
+\end{align*}
+\]</span></p>
+</section>
+<section id="putting-it-all-together" class="level2 math-80">
+<h2 class="math-80 anchored" data-anchor-id="putting-it-all-together">Putting it All Together</h2>
+<p><span class="math display">\[
+\begin{align*}
+P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{Go} \mid W = \textsf{Sunny})}^{3/4~ ✅}\overbrace{P(W = \textsf{Sun})}^{1/2~ ✅}}{\underbrace{P(A = \textsf{Go})}_{1/2~ ✅}} \\
+&amp;= \frac{\left(\frac{3}{4}\right)\left(\frac{1}{2}\right)}{\frac{1}{2}} = \frac{\frac{3}{8}}{\frac{1}{2}} = \frac{3}{4}.
+\end{align*}
+\]</span></p>
+<ul>
+<li>Given that we see Ana at the party, we should <strong>update our beliefs</strong>, so that <span class="math inline">\(P(W = \textsf{Sun}) = \frac{3}{4}, P(W = \textsf{Rain}) = \frac{1}{4}\)</span>.</li>
+</ul>
+</section>
+<section id="a-scarier-example" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="a-scarier-example">A Scarier Example</h2>
+<ul>
+<li>Bo worries he has a <strong>rare disease</strong>. He takes a test with <strong>99% accuracy</strong> and tests <strong>positive</strong>. What’s the probability Bo has the disease? (Intuition: 99%? …Let’s do the math!)</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><span class="math inline">\(H \in \{\textsf{sick}, \textsf{healthy}\}, T \in \{\textsf{T}^+, \textsf{T}^-\}\)</span></li>
+<li><strong>The test</strong>: 99% accurate. <span class="math inline">\(\Pr(T = \textsf{T}^+ \mid H = \textsf{sick}) = 0.99\)</span>, <span class="math inline">\(\Pr(T = \textsf{T}^- \mid H = \textsf{healthy}) = 0.99\)</span>.</li>
+<li><strong>The disease</strong>: 1 in 10K. <span class="math inline">\(\Pr(H = \textsf{sick}) = \frac{1}{10000}\)</span></li>
+<li><strong>What do we want to know?</strong> <span class="math inline">\(\Pr(H = \textsf{sick} \mid T = \textsf{T}^+)\)</span></li>
+<li><strong>How do we get there?</strong></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/bayes.jpg" class="img-fluid figure-img" style="width:65.0%"></p>
+<figcaption>This photo, originally thought to be of Thomas Bayes, turns out to be <a href="https://www.york.ac.uk/depts/maths/histstat/bayespic.htm">probably someone else</a>… <span class="math inline">\(\Pr(\textsf{Bayes})\)</span>?</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="notes">
+<p><span class="math inline">\(H\)</span> for health, <span class="math inline">\(T\)</span> for test result</p>
+<p>Photo credit: https://thedatascientist.com/wp-content/uploads/2019/04/reverend-thomas-bayes.jpg</p>
+</div>
+</section>
+<section id="a-scarier-example-1" class="level2 unnumbered math-80">
+<h2 class="unnumbered math-80 anchored" data-anchor-id="a-scarier-example-1">A Scarier Example</h2>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(H = \textsf{sick} \mid T = \textsf{T}^+) &amp;= \frac{\Pr(T = \textsf{T}^+ \mid H = \textsf{sick})\Pr(H = \textsf{sick})}{\Pr(T = \textsf{T}^+)} \\
+&amp;= \frac{(0.99)\left(\frac{1}{10000}\right)}{(0.99)\left( \frac{1}{10000} \right) + (0.01)\left( \frac{9999}{10000} \right)}
+\end{align*}
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>p_sick <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">10000</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>p_healthy <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> p_sick</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>p_pos_given_sick <span class="ot">&lt;-</span> <span class="fl">0.99</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>p_neg_given_sick <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> p_pos_given_sick</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>p_neg_given_healthy <span class="ot">&lt;-</span> <span class="fl">0.99</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>p_pos_given_healthy <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> p_neg_given_healthy</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>numer <span class="ot">&lt;-</span> p_pos_given_sick <span class="sc">*</span> p_sick</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>denom1 <span class="ot">&lt;-</span> numer</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>denom2 <span class="ot">&lt;-</span> p_pos_given_healthy <span class="sc">*</span> p_healthy</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>final_prob <span class="ot">&lt;-</span> numer <span class="sc">/</span> (denom1 <span class="sc">+</span> denom2)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>final_prob</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.009803922</code></pre>
+</div>
+</div>
+<ul>
+<li>… Less than 1% 😱</li>
+</ul>
+</section>
+<section id="proof-in-the-pudding" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="proof-in-the-pudding">Proof in the Pudding</h2>
+<ul>
+<li>Let’s generate a dataset of <strong>5,000</strong> people, using <span class="math inline">\(\Pr(\textsf{Disease}) = \frac{1}{10000}\)</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Disease rarity</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>p_disease <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">/</span> <span class="dv">10000</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="co"># 1K people</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>num_people <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Give them ids</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>ppl_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">id=</span><span class="fu">seq</span>(<span class="dv">1</span>,num_people))</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Whether they have the disease or not</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>has_disease <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(num_people, <span class="dv">1</span>, p_disease)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>ppl_df <span class="ot">&lt;-</span> ppl_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">has_disease=</span>has_disease)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>ppl_df <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="binary-variable-trick" class="level2 smaller crunch-code">
+<h2 class="smaller crunch-code anchored" data-anchor-id="binary-variable-trick">Binary Variable Trick</h2>
+<ul>
+<li>Since <code>has_disease</code> <span class="math inline">\(\in \{0, 1\}\)</span>, we can use
+<ul>
+<li><code>sum(has_disease)</code> to obtain the <strong>count</strong> of people with the disease, or</li>
+<li><code>mean(has_disease)</code> to obtain the <strong>proportion</strong> of people who have the disease</li>
+</ul></li>
+<li>To see this (or, if you forget in the future), just make a fake dataset with a binary variable and 3 rows, and think about <strong>sums</strong> vs.&nbsp;<strong>means</strong> of that variable:</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:40%;">
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>binary_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">id=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">x=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>binary_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:60%;">
+<p>Taking the <strong>sum</strong> tells us: <strong>one</strong> row where <code>x == 1</code>:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(binary_df<span class="sc">$</span>x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1</code></pre>
+</div>
+</div>
+<p>Taking the <strong>mean</strong> tells us: <strong>1/3</strong> of rows have <code>x == 1</code>:</p>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(binary_df<span class="sc">$</span>x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.3333333</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="applying-this-to-the-disease-data" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="applying-this-to-the-disease-data">Applying This to the Disease Data</h2>
+<ul>
+<li>If we want the <strong>number</strong> of people who have the disease:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the *number* of people who have the disease</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(ppl_df<span class="sc">$</span>has_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<ul>
+<li>If we want the <strong>proportion</strong> of people who have the disease:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute the *proportion* of people who have the disease</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ppl_df<span class="sc">$</span>has_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0</code></pre>
+</div>
+</div>
+<ul>
+<li>(And if you dislike scientific notation like I do…)</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">mean</span>(ppl_df<span class="sc">$</span>has_disease), <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "0"</code></pre>
+</div>
+</div>
+<div class="notes">
+<p>(Foreshadowing Monte Carlo methods)</p>
+</div>
+</section>
+<section id="data-generating-process-test-results" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="data-generating-process-test-results">Data-Generating Process: Test Results</h2>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Data Generating Process</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>take_test <span class="ot">&lt;-</span> <span class="cf">function</span>(is_sick) {</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (is_sick) {</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">rbinom</span>(<span class="dv">1</span>,<span class="dv">1</span>,p_pos_given_sick))</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">rbinom</span>(<span class="dv">1</span>,<span class="dv">1</span>,p_pos_given_healthy))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>ppl_df[<span class="st">'test_result'</span>] <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="fu">lapply</span>(ppl_df<span class="sc">$</span>has_disease, take_test))</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>num_positive <span class="ot">&lt;-</span> <span class="fu">sum</span>(ppl_df<span class="sc">$</span>test_result)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>p_positive <span class="ot">&lt;-</span> <span class="fu">mean</span>(ppl_df<span class="sc">$</span>test_result)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(num_positive,<span class="st">" positive tests / "</span>,num_people,<span class="st">" total = "</span>,p_positive))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>91 positive tests / 10000 total = 0.0091</code></pre>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#disp(ppl_df %&gt;% head(50), obs_per_page = 3)</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ppl_df <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+<th style="text-align: right;">test_result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="zooming-in-on-positive-tests" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="zooming-in-on-positive-tests">Zooming In On Positive Tests</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pos_ppl <span class="ot">&lt;-</span> ppl_df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(test_result <span class="sc">==</span> <span class="dv">1</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">#disp(pos_ppl, obs_per_page = 10)</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>pos_ppl <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+<th style="text-align: right;">test_result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">162</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">250</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">490</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">690</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">697</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">709</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li>Bo doesn’t have it, and neither do 110 of the 111 total people who tested positive!</li>
+<li>But, in the real world, we only observe <span class="math inline">\(T\)</span></li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/pgm_sick.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="zooming-in-on-disease-havers" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="zooming-in-on-disease-havers">Zooming In On Disease-Havers</h2>
+<ul>
+<li>What if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">#disp(ppl_df[ppl_df$has_disease == 1,])</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ppl_df[ppl_df<span class="sc">$</span>has_disease <span class="sc">==</span> <span class="dv">1</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+<th style="text-align: right;">test_result</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Is this always going to be the case?</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="cell-output cell-output-stdout">
+<pre><code>Num with disease: 0
+Proportion with disease: 0
+Number of positive tests: 47</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+<th style="text-align: right;">test_result</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">#disp(simulate_disease(5000, 1/10000))</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">simulate_disease</span>(<span class="dv">5000</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">10000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Num with disease: 0
+Proportion with disease: 0
+Number of positive tests: 67</code></pre>
+</div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">has_disease</th>
+<th style="text-align: right;">test_result</th>
+</tr>
+</thead>
+<tbody>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="worst-case-worlds" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="worst-case-worlds">Worst-Case Worlds</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">1000</span>)) {</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  sim_result <span class="ot">&lt;-</span> <span class="fu">simulate_disease</span>(<span class="dv">5000</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">10000</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">return_all_detected =</span> <span class="cn">FALSE</span>, <span class="at">return_df =</span> <span class="cn">FALSE</span>, <span class="at">return_info =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>sim_result<span class="sc">$</span>all_detected) {</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeLines</span>(<span class="fu">paste0</span>(<span class="st">"World #"</span>,i,<span class="st">" / 1000 ("</span>,sim_result<span class="sc">$</span>num_people,<span class="st">" people):"</span>))</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">print</span>(sim_result<span class="sc">$</span>df)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">writeLines</span>(<span class="st">'</span><span class="sc">\n</span><span class="st">'</span>)</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>World #721 / 1000 (5000 people):
+# A tibble: 1 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1  3285           1           0
+
+
+World #973 / 1000 (5000 people):
+# A tibble: 1 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1  4286           1           0</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="dv">4</span> <span class="sc">/</span> <span class="dv">5000000</span>, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "0.0000008"</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>How unlikely is this? Math:</p>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(\textsf{T}^- \cap \textsf{Sick}) &amp;= \Pr(\textsf{T}^- \mid \textsf{Sick})\Pr(\textsf{Sick}) \\
+&amp;= (0.01)\frac{1}{10000} \\
+&amp;= \frac{1}{1000000}
+\end{align*}
+\]</span></p>
+<p>Computers:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>result_df <span class="ot">&lt;-</span> <span class="fu">simulate_disease</span>(<span class="dv">1000000</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">10000</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">return_full_df =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>false_negatives <span class="ot">&lt;-</span> result_df[result_df<span class="sc">$</span>has_disease <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;</span> result_df<span class="sc">$</span>test_result <span class="sc">==</span> <span class="dv">0</span>,]</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>num_false_negatives <span class="ot">&lt;-</span> <span class="fu">nrow</span>(false_negatives)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(<span class="st">"False Negatives: "</span>,num_false_negatives,<span class="st">", Total Cases: "</span>, <span class="fu">nrow</span>(result_df)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>False Negatives: 2, Total Cases: 1000000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>false_negative_rate <span class="ot">&lt;-</span> num_false_negatives <span class="sc">/</span> <span class="fu">nrow</span>(result_df)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>false_negative_rate_decimal <span class="ot">&lt;-</span> <span class="fu">format</span>(false_negative_rate, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(<span class="st">"False Negative Rate: "</span>, false_negative_rate_decimal))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>False Negative Rate: 0.000002</code></pre>
+</div>
+</div>
+<p>(Perfect match!)</p>
+</div>
+</div>
+</section>
+<section id="bayes-takeaway" class="level2">
+<h2 class="anchored" data-anchor-id="bayes-takeaway">Bayes: Takeaway</h2>
+<ul>
+<li>Bayesian approach <strong>allows new evidence to be weighed against existing evidence</strong>, with <strong>statistically principled</strong> way to derive these weights:</li>
+</ul>
+<p><span class="math display">\[
+\begin{array}{ccccc}
+\Pr_{\text{post}}(\mathcal{H}) &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm} \Pr(X \mid \mathcal{H}) &amp;\hspace{-6mm} \times &amp;\hspace{-6mm} \Pr_{\text{pre}}(\mathcal{H}) \\
+\text{Posterior} &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm}\text{Evidence} &amp;\hspace{-6mm} \times &amp;\hspace{-6mm} \text{Prior}
+\end{array}
+\]</span></p>
+</section>
+<section id="monte-carlo-methods-overview" class="level2" data-name="Monte Carlo">
+<h2 data-name="Monte Carlo" class="anchored" data-anchor-id="monte-carlo-methods-overview">Monte Carlo Methods: Overview</h2>
+<ul>
+<li>You already saw an example, in our rare disease simulation!</li>
+<li>Generally, <strong>using computers</strong> (rather than math, “by hand”) <strong>to estimate probabilistic quantities</strong></li>
+</ul>
+<div class="columns">
+<div class="column smaller" style="width:50%;">
+<p><strong>Pros:</strong></p>
+<ul>
+<li>Most real-world processes have no analytic solution</li>
+<li>Step-by-step breakdown of complex processes</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Cons:</strong></p>
+<ul>
+<li>Can require immense computing power</li>
+<li>⚠️ Can generate <strong>incorrect answers</strong> ⚠️</li>
+</ul>
+</div>
+</div>
+<div class="notes">
+<p>By step-by-step I mean, a lot of the time you are just walking through, generating the next column using previously-generated columns. Like we did in the example above, generating <code>test_result</code> based on <code>has_disease</code>.</p>
+</div>
+</section>
+<section id="birthday-problem" class="level2">
+<h2 class="anchored" data-anchor-id="birthday-problem">Birthday Problem</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>30 people gather in a room together. What is the probability that two of them share the same birthday?</li>
+<li>Analytic solution is fun, but requires some thought… Monte Carlo it!</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>gen_bday_room <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">room_num=</span><span class="cn">NULL</span>) {</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  num_people <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  num_days <span class="ot">&lt;-</span> <span class="dv">366</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  ppl_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">id=</span><span class="fu">seq</span>(<span class="dv">1</span>,num_people))</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>num_days, num_people,<span class="at">replace =</span> T)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  ppl_df[<span class="st">'birthday'</span>] <span class="ot">&lt;-</span> birthdays</span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(room_num)) {</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>    ppl_df <span class="ot">&lt;-</span> ppl_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">room_num=</span>room_num) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(room_num)</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ppl_df)</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>ppl_df <span class="ot">&lt;-</span> <span class="fu">gen_bday_room</span>(<span class="dv">1</span>)</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co">#disp(ppl_df %&gt;% head())</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a>ppl_df <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">room_num</th>
+<th style="text-align: right;">id</th>
+<th style="text-align: right;">birthday</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">182</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">359</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">365</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">294</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">281</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">135</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="birthday-problem-1" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="birthday-problem-1">Birthday Problem</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inefficient version (return_num=FALSE) is for: if you want tibbles of *all* shared bdays for each room</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>get_shared_bdays <span class="ot">&lt;-</span> <span class="cf">function</span>(df, <span class="at">is_grouped=</span><span class="cn">NULL</span>, <span class="at">return_num=</span><span class="cn">FALSE</span>, <span class="at">return_bool=</span><span class="cn">FALSE</span>) {</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  bday_pairs <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>(<span class="fu">nrow</span>(df)<span class="sc">-</span><span class="dv">1</span>)) {</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>    i_data <span class="ot">&lt;-</span> df[i,]</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>    i_bday <span class="ot">&lt;-</span> i_data<span class="sc">$</span>birthday</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> (i<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span><span class="fu">nrow</span>(df)) {</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>      j_data <span class="ot">&lt;-</span> df[j,]</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>      j_bday <span class="ot">&lt;-</span> j_data<span class="sc">$</span>birthday</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Check if they're the same</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>      same_bday <span class="ot">&lt;-</span> i_bday <span class="sc">==</span> j_bday</span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (same_bday) {</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (return_bool) {</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>          <span class="fu">return</span>(<span class="dv">1</span>)</span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>        pair_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">i=</span>i,<span class="at">j=</span>j,<span class="at">bday=</span>i_bday)</span>
+<span id="cb33-17"><a href="#cb33-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(is_grouped)) {</span>
+<span id="cb33-18"><a href="#cb33-18" aria-hidden="true" tabindex="-1"></a>          i_room <span class="ot">&lt;-</span> i_data<span class="sc">$</span>room_num</span>
+<span id="cb33-19"><a href="#cb33-19" aria-hidden="true" tabindex="-1"></a>          pair_data[<span class="st">'room'</span>] <span class="ot">&lt;-</span> i_room</span>
+<span id="cb33-20"><a href="#cb33-20" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb33-21"><a href="#cb33-21" aria-hidden="true" tabindex="-1"></a>        bday_pairs <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(bday_pairs, pair_data)</span>
+<span id="cb33-22"><a href="#cb33-22" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb33-23"><a href="#cb33-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb33-24"><a href="#cb33-24" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-25"><a href="#cb33-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (return_bool) {</span>
+<span id="cb33-26"><a href="#cb33-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="dv">0</span>)</span>
+<span id="cb33-27"><a href="#cb33-27" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-28"><a href="#cb33-28" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (return_num) {</span>
+<span id="cb33-29"><a href="#cb33-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">nrow</span>(bday_pairs))</span>
+<span id="cb33-30"><a href="#cb33-30" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb33-31"><a href="#cb33-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(bday_pairs)</span>
+<span id="cb33-32"><a href="#cb33-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb33-33"><a href="#cb33-33" aria-hidden="true" tabindex="-1"></a><span class="co">#get_shared_bdays(ppl_df)</span></span>
+<span id="cb33-34"><a href="#cb33-34" aria-hidden="true" tabindex="-1"></a><span class="fu">get_shared_bdays</span>(ppl_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+
+</div>
+</div>
+</div>
+</section>
+<section id="section" class="level2 unnumbered smaller">
+<h2 class="unnumbered smaller anchored" data-anchor-id="section"></h2>
+<p>Let’s try more rooms…</p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get tibbles for each room</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(purrr)</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>gen_bday_rooms <span class="ot">&lt;-</span> <span class="cf">function</span>(num_rooms) {</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  rooms_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (r <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, num_rooms)) {</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>      cur_room <span class="ot">&lt;-</span> <span class="fu">gen_bday_room</span>(r)</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>      rooms_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(rooms_df, cur_room)</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(rooms_df)</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>num_rooms <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>rooms_df <span class="ot">&lt;-</span> <span class="fu">gen_bday_rooms</span>(num_rooms)</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>rooms_df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(room_num) <span class="sc">%&gt;%</span> <span class="fu">group_map</span>(<span class="sc">~</span> <span class="fu">get_shared_bdays</span>(.x, <span class="at">is_grouped=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+# A tibble: 1 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1    19    27    17
+
+[[2]]
+# A tibble: 3 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     1     6   169
+2     4    21    54
+3    16    23   127
+
+[[3]]
+# A tibble: 0 × 0
+
+[[4]]
+# A tibble: 3 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     2     4   130
+2     7    20   182
+3    16    30   260
+
+[[5]]
+# A tibble: 2 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1    17    20   341
+2    18    30   294
+
+[[6]]
+# A tibble: 0 × 0
+
+[[7]]
+# A tibble: 0 × 0
+
+[[8]]
+# A tibble: 2 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     5    21   321
+2    20    30   194
+
+[[9]]
+# A tibble: 0 × 0
+
+[[10]]
+# A tibble: 0 × 0</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:48%;">
+<p>Number of shared birthdays per room:</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Now just get the # shared bdays</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>shared_per_room <span class="ot">&lt;-</span> rooms_df <span class="sc">%&gt;%</span></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(room_num) <span class="sc">%&gt;%</span></span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_map</span>(<span class="sc">~</span> <span class="fu">get_shared_bdays</span>(.x, <span class="at">is_grouped =</span> <span class="cn">TRUE</span>, <span class="at">return_num=</span><span class="cn">TRUE</span>))</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>shared_per_room <span class="ot">&lt;-</span> <span class="fu">unlist</span>(shared_per_room)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>shared_per_room</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] 1 3 0 3 2 0 0 2 0 0</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(\widehat{\Pr}(\text{shared})\)</span></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(shared_per_room <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">/</span> num_rooms</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="section-1" class="level2 unnumbered smaller">
+<h2 class="unnumbered smaller anchored" data-anchor-id="section-1"></h2>
+<ul>
+<li>How about <strong>A THOUSAND ROOMS</strong>?</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>num_rooms_many <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>many_rooms_df <span class="ot">&lt;-</span> <span class="fu">gen_bday_rooms</span>(num_rooms_many)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>anyshared_per_room <span class="ot">&lt;-</span> many_rooms_df <span class="sc">%&gt;%</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_by</span>(room_num) <span class="sc">%&gt;%</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">group_map</span>(<span class="sc">~</span> <span class="fu">get_shared_bdays</span>(.x, <span class="at">is_grouped =</span> <span class="cn">TRUE</span>, <span class="at">return_bool =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>anyshared_per_room <span class="ot">&lt;-</span> <span class="fu">unlist</span>(anyshared_per_room)</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>anyshared_per_room</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1] 1 1 1 1 0 1 0 1 1 1 1 0 1 0 1 1 1 0 0 1 1 1 1 0 0 1 1 0 0 1 1 1 1 1 1 1 1
+ [38] 0 0 1 1 1 1 1 1 0 1 1 0 1 1 1 1 1 0 1 1 0 1 0 1 1 0 1 1 0 1 1 0 1 1 0 1 1
+ [75] 1 1 1 0 1 1 1 1 1 1 0 1 1 0 1 1 0 1 0 1 0 0 1 1 1 1</code></pre>
+</div>
+</div>
+<ul>
+<li><span class="math inline">\(\widehat{\Pr}(\text{shared bday})\)</span>?</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># And now the probability estimate</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(anyshared_per_room <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">/</span> num_rooms_many</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.72</code></pre>
+</div>
+</div>
+<ul>
+<li>The analytic solution: <span class="math inline">\(\Pr(\text{shared} \mid k\text{ people in room}) = 1 - \frac{366!}{366^{k}(366-k)!}\)</span></li>
+<li>In our case: <span class="math inline">\(1 - \frac{366!}{366^{30}(366-30)!} = 1 - \frac{366!}{366^{30}336!} = 1 - \frac{\prod_{i=337}^{366}i}{366^{30}}\)</span></li>
+<li><code>R</code> can juust barely handle these numbers:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>(exact_solution <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (<span class="fu">prod</span>(<span class="fu">seq</span>(<span class="dv">337</span>,<span class="dv">366</span>))) <span class="sc">/</span> (<span class="dv">366</span><span class="sc">^</span><span class="dv">30</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.7053034</code></pre>
+</div>
+</div>
+</section>
+<section id="wrapping-up" class="level2 smaller nostretch">
+<h2 class="smaller nostretch anchored" data-anchor-id="wrapping-up">Wrapping Up</h2>
+<style>
+#bday-solns-plot {
+  width: 50% !important;
+}
+</style>
+<center>
+<div class="quarto-embed-nb-cell">
+<div id="cell-bday-solns-plot" class="cell" data-vscode="{&quot;languageId&quot;:&quot;r&quot;}" data-fig-width="8" data-fig-height="6" data-execution_count="16">
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/_bday-solutions-plot-bday-solns-plot-output-1.png" id="bday-solns-plot" width="420" height="420" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<a class="quarto-notebook-link" id="nblink-1" href="_bday-solutions-plot-preview.html#cell-bday-solns-plot">Source: _bday-solutions-plot.ipynb</a></div>
+</center>
+</section>
+<section id="final-note-functions-of-random-variables" class="level2">
+<h2 class="anchored" data-anchor-id="final-note-functions-of-random-variables">Final Note: Functions of Random Variables</h2>
+<ul>
+<li><span class="math inline">\(X \sim U[0,1], Y \sim U[0,1]\)</span>.</li>
+<li><span class="math inline">\(P(Y &lt; X^2)\)</span>?</li>
+<li>The hard way: solve analytically</li>
+<li>The easy way: simulate!</li>
+</ul>
+</section>
+</section>
+<section id="probability-distributions-in-general" class="level1 page-columns page-full" data-stack-name="Probability Distributions">
+<h1 data-stack-name="Probability Distributions">Probability Distributions in General</h1>
+<section id="discrete-vs.-continuous" class="level2 smaller math-80 crunch-ul crunch-img crunch-title crunch-math crunch-cell-output">
+<h2 class="smaller math-80 crunch-ul crunch-img crunch-title crunch-math crunch-cell-output anchored" data-anchor-id="discrete-vs.-continuous">Discrete vs.&nbsp;Continuous</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Discrete</strong> = “Easy mode”: Based (intuitively) on <strong>sets</strong></li>
+<li><span class="math inline">\(\Pr(A)\)</span>: Four marbles <span class="math inline">\(\{A, B, C, D\}\)</span> in box, all equally likely, what is the probability I pull out <span class="math inline">\(A\)</span>?</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>disc_df <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>x, <span class="sc">~</span>y, <span class="sc">~</span>label,</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="dv">0</span>, <span class="st">"A"</span>,</span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">0</span>, <span class="dv">1</span>, <span class="st">"B"</span>,</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">0</span>, <span class="st">"C"</span>,</span>
+<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">1</span>, <span class="st">"D"</span></span>
+<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(disc_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">label=</span>label)) <span class="sc">+</span></span>
+<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">size=</span>g_pointsize) <span class="sc">+</span></span>
+<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(</span>
+<span id="cb46-13"><a href="#cb46-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">size=</span>g_textsize,</span>
+<span id="cb46-14"><a href="#cb46-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust=</span><span class="fl">1.5</span>,</span>
+<span id="cb46-15"><a href="#cb46-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">vjust=</span><span class="sc">-</span><span class="fl">0.5</span></span>
+<span id="cb46-16"><a href="#cb46-16" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb46-17"><a href="#cb46-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlim</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">1.5</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb46-18"><a href="#cb46-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb46-19"><a href="#cb46-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb46-20"><a href="#cb46-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb46-21"><a href="#cb46-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">title=</span><span class="st">"Discrete Probability Space in N"</span></span>
+<span id="cb46-22"><a href="#cb46-22" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/discrete-prob-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="math display">\[
+\Pr(A) = \underbrace{\frac{|\{A\}|}{|\Omega|}}_{\mathclap{\small \text{Probability }\textbf{mass}}} = \frac{1}{|\{A,B,C,D\}|} = \frac{1}{4}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<ul>
+<li><strong>Continuous</strong> = “Hard mode”: Based (intuitively) on <strong>areas</strong></li>
+<li><span class="math inline">\(\Pr(A)\)</span>: If I throw a dart at this square, what is the probability that I hit region <span class="math inline">\(A\)</span>?</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggforce)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(disc_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">label=</span>label)) <span class="sc">+</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">xlim</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">1.5</span>) <span class="sc">+</span> <span class="fu">ylim</span>(<span class="sc">-</span><span class="fl">0.5</span>,<span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">xmax =</span> <span class="fl">1.5</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">ymax =</span> <span class="fl">1.5</span>), <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">color=</span><span class="st">"black"</span>, <span class="at">alpha=</span><span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_circle</span>(<span class="fu">aes</span>(<span class="at">x0=</span>x, <span class="at">y0=</span>y, <span class="at">r=</span><span class="fl">0.25</span>), <span class="at">fill=</span>cbPalette[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">size=</span>g_textsize,</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>      <span class="co">#hjust=1.75,</span></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>      <span class="co">#vjust=-0.75</span></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_text</span>(</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">data=</span><span class="fu">data.frame</span>(<span class="at">label=</span><span class="st">"Ω"</span>),</span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(<span class="at">x=</span><span class="sc">-</span><span class="fl">0.4</span>,<span class="at">y=</span><span class="fl">1.39</span>),</span>
+<span id="cb47-16"><a href="#cb47-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">parse=</span><span class="cn">TRUE</span>,</span>
+<span id="cb47-17"><a href="#cb47-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">size=</span>g_textsize</span>
+<span id="cb47-18"><a href="#cb47-18" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb47-19"><a href="#cb47-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb47-20"><a href="#cb47-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">title=</span><span class="fu">expression</span>(<span class="st">"Continuous Probability Space in "</span><span class="sc">*</span>R<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb47-21"><a href="#cb47-21" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/continuous-prob-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="math display">\[
+\Pr(A) = \underbrace{\frac{\text{Area}(\{A\})}{\text{Area}(\Omega)}}_{\mathclap{\small \text{Probability }\textbf{density}}} = \frac{\pi r^2}{s^2} = \frac{\pi \left(\frac{1}{4}\right)^2}{4} = \frac{\pi}{64}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="the-technical-difference-tldr" class="level2 smaller smallish-math crunch-title crunch-math-less page-columns page-full">
+<h2 class="smaller smallish-math crunch-title crunch-math-less anchored" data-anchor-id="the-technical-difference-tldr">The Technical Difference tl;dr</h2>
+<ul>
+<li><strong>Countable</strong> Sets: Can be put into 1-to-1 correspondence with the <strong>natural numbers</strong> <span class="math inline">\(\mathbb{N}\)</span>
+<ul>
+<li>What are you doing when you’re counting? Saying “first”, “second”, “third”, …</li>
+<li>You’re pairing each object with a natural number! <span class="math inline">\(\{(\texttt{a},1),(\texttt{b},2),\ldots,(\texttt{z},26)\}\)</span> <!-- f(\texttt{a}) = 1, f^{-1}(1) = \texttt{a}$, $f(\texttt{b}) = 2, f^{-1}(2) = \texttt{b}$, ... --></li>
+</ul></li>
+<li><strong>Uncountable</strong> Sets: Cannot be put into 1-to-1 correspondence with the natural numbers.
+<ul>
+<li><strong><span class="math inline">\(\mathbb{R}\)</span> is uncountable</strong>. <em>Intuition</em>: Try counting the real numbers. <em>Proof</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">\[
+\text{Assume }\exists (f: \mathbb{R} \leftrightarrow \mathbb{N}) =
+\begin{array}{|c|c|c|c|c|c|c|}\hline
+\mathbb{R} &amp; &amp; &amp; &amp; &amp; &amp; \Leftrightarrow \mathbb{N} \\ \hline
+\color{orange}{3} &amp; . &amp; 1 &amp; 4 &amp; 1 &amp; \cdots &amp; \Leftrightarrow 1 \\\hline
+4 &amp; . &amp; \color{orange}{9} &amp; 9 &amp; 9 &amp; \cdots &amp; \Leftrightarrow 2 \\\hline
+0 &amp; . &amp; 1 &amp; \color{orange}{2} &amp; 3 &amp; \cdots &amp;\Leftrightarrow 3 \\\hline
+1 &amp; . &amp; 2 &amp; 3 &amp; \color{orange}{4} &amp; \cdots &amp; \Leftrightarrow 4 \\\hline
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\\hline
+\end{array} \overset{\color{blue}{y_{[i]}} = \color{orange}{x_{[i]}} \overset{\mathbb{Z}_{10}}{+} 1}{\longrightarrow} \color{blue}{y = 4.035 \ldots} \Leftrightarrow \; ?
+\]</span></li>
+</ul></li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p><strong>Fun math challenge</strong>: Is <span class="math inline">\(\mathbb{Q}\)</span> countable? See <a href="#appendix-countability-of-mathbbq">this appendix slide</a> for why the answer is yes, despite the fact that <span class="math inline">\(\forall x, y \in \mathbb{Q} \left[ \frac{x+y}{2} \in \mathbb{Q} \right]\)</span></p>
+</div></div></section>
+<section id="the-practical-difference" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="the-practical-difference">The Practical Difference</h2>
+<ul>
+<li>This part of the course (<strong>discrete</strong> probability): <span class="math inline">\(\Pr(X = v), v \in \mathcal{R}_X \subseteq \mathbb{N}\)</span>
+<ul>
+<li>Example: <span class="math inline">\(\Pr(\)</span><span><i class="bi bi-dice-3"></i></span><span class="math inline">\() = \Pr(X = 3), 3 \in \{1,2,3,4,5,6\} \subseteq \mathbb{N}\)</span></li>
+</ul></li>
+<li>Next part of the course (<strong>continuous</strong> probability): <span class="math inline">\(\Pr(X \in V), v \subseteq \mathbb{R}\)</span>
+<ul>
+<li>Example: <span class="math inline">\(\Pr(X \geq 2\pi) = \Pr(X \in [\pi,\infty)), [\pi,\infty) \subseteq \mathbb{R}\)</span></li>
+</ul></li>
+<li>Why do they have to be in separate parts?</li>
+</ul>
+<p><span class="math display">\[
+\Pr(X = 2\pi) = \frac{\text{Area}(\overbrace{2\pi}^{\mathclap{\small \text{Single point}}})}{\text{Area}(\underbrace{\mathbb{R}}_{\mathclap{\small \text{(Uncountably) Infinite set of points}}})} = 0
+\]</span></p>
+</section>
+<section id="probability-mass-vs.-probability-density" class="level2 smaller small-title page-columns page-full">
+<h2 class="smaller small-title anchored" data-anchor-id="probability-mass-vs.-probability-density">Probability Mass vs.&nbsp;Probability Density</h2>
+<ul>
+<li><strong>Cumulative Distribution Function</strong> (<strong>CDF</strong>): <span class="math inline">\(F_X(v) = \Pr(X \leq v)\)</span></li>
+<li>For <strong>discrete</strong> RV <span class="math inline">\(X\)</span>, <strong>Probability Mass Function</strong> (<strong>pmf</strong>) <span class="math inline">\(p_X(v)\)</span>: <span class="math display">\[
+\begin{align*}
+p_X(v) &amp;= \Pr(X = v) = F_X(v) - F_X(v-1) \\
+\implies F_X(v) &amp;= \sum_{\{w \in \mathcal{R}_X: \; w \leq v\}}p_X(w)
+\end{align*}
+\]</span></li>
+<li>For <strong>continuous</strong> RV <span class="math inline">\(X\)</span> (<span class="math inline">\(\mathcal{R}_X \subseteq \mathbb{R}\)</span>), <strong>Probability Density Function</strong> (<strong>pdf</strong>) <span class="math inline">\(f_X(v)\)</span>: <span class="math display">\[
+\begin{align*}
+f_X(v) &amp;= \frac{d}{dx}F_X(v) \\
+\implies F_X(v) &amp;= \int_{-\infty}^v f_X(w)dw
+\end{align*}
+\]</span></li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Frustratingly, the CDF/pmf/pdf is usually written using <span class="math inline">\(X\)</span> and <span class="math inline">\(x\)</span>, like <span class="math inline">\(F_X(x) = \Pr(X \leq x)\)</span>. To me this is extremely confusing, since the capitalized <span class="math inline">\(X\)</span> is a random variable (not a number) while the lowercase <span class="math inline">\(x\)</span> is some particular value, like <span class="math inline">\(3\)</span>. So, to emphasize this difference, I use <span class="math inline">\(X\)</span> for the RV and <span class="math inline">\(v\)</span> for the <strong>value</strong> at which we’re checking the CDF/pmf/pdf.</p>
+<p>Also note the capitalized CDF but lowercase pmf/pdf, matching the mathematical notation where <span class="math inline">\(f_X(v)\)</span> is the derivative of <span class="math inline">\(F_X(v)\)</span>.</p>
+</div></div></section>
+<section id="probability-density-neq-probability" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="probability-density-neq-probability">Probability Density <span class="math inline">\(\neq\)</span> Probability</h2>
+<ul>
+<li><strong>BEWARE</strong>: <span class="math inline">\(f_X(v) \neq \Pr(X = v)\)</span>!</li>
+<li>Long story short, for continuous variables, <span class="math inline">\(\Pr(X = v) = 0\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li>Hence, we instead construct a PDF <span class="math inline">\(f_X(v)\)</span> that enables us to calculate <span class="math inline">\(\Pr(X \in [a,b])\)</span> by integrating: <span class="math inline">\(f_X(v)\)</span> is whatever function satisfies <span class="math inline">\(\Pr(X \in [a,b]) = \int_{a}^bf_X(v)dv\)</span>.</li>
+<li>i.e., instead of <span class="math inline">\(p_X(v) = \Pr(X = v)\)</span> from discrete world, the relevant function here is <span class="math inline">\(f_X(v)\)</span>, the probability <strong>density</strong> of <span class="math inline">\(X\)</span> at <span class="math inline">\(v\)</span>.</li>
+<li>If we <strong>really</strong> want to get something like the “probability of a value” in a continuous space 😪, we can get something kind of like this by using fancy limits <span class="math display">\[
+f_X(v) = \lim_{\varepsilon \to 0}\frac{P(X \in [v-\varepsilon, v + \varepsilon])}{2\varepsilon} = \lim_{\varepsilon \to 0}\frac{F(v + \varepsilon) - F(v - \varepsilon)}{2\varepsilon} = \frac{d}{dx}F_X(v)
+\]</span></li>
+</ul>
+</section>
+</section>
+<section id="common-discrete-distributions" class="level1 page-columns page-full" data-stack-name="Discrete Distributions">
+<h1 data-stack-name="Discrete Distributions">Common Discrete Distributions</h1>
+<ul>
+<li>Bernoulli</li>
+<li>Binomial</li>
+<li>Geometric</li>
+</ul>
+<section id="bernoulli-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="bernoulli-distribution">Bernoulli Distribution</h2>
+<ul>
+<li>Single trial with two outcomes, <strong>“success”</strong> (<strong>1</strong>) or <strong>“failure”</strong> (<strong>0</strong>): basic model of a <strong>coin flip</strong> (heads = 1, tails = 0)</li>
+<li><span class="math inline">\(X \sim \text{Bern}({\color{purple} p}) \implies \mathcal{R}_X = \{0,1\}, \; \Pr(X = 1) = {\color{purple}p}\)</span>.</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>bern_tibble <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>Outcome, <span class="sc">~</span>Probability, <span class="sc">~</span>Color,</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Failure"</span>, <span class="fl">0.2</span>, cbPalette[<span class="dv">1</span>],</span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Success"</span>, <span class="fl">0.8</span>, cbPalette[<span class="dv">2</span>]</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-8"><a href="#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> bern_tibble, <span class="fu">aes</span>(<span class="at">x=</span>Outcome, <span class="at">y=</span>Probability)) <span class="sc">+</span></span>
+<span id="cb48-9"><a href="#cb48-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">fill=</span>Outcome), <span class="at">stat =</span> <span class="st">"identity"</span>) <span class="sc">+</span></span>
+<span id="cb48-10"><a href="#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>) <span class="sc">+</span></span>
+<span id="cb48-11"><a href="#cb48-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb48-12"><a href="#cb48-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Probability Mass"</span></span>
+<span id="cb48-13"><a href="#cb48-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb48-14"><a href="#cb48-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(cbPalette[<span class="dv">1</span>], cbPalette[<span class="dv">2</span>])) <span class="sc">+</span></span>
+<span id="cb48-15"><a href="#cb48-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/bernoulli-demo-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="binomial-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="binomial-distribution">Binomial Distribution</h2>
+<ul>
+<li><strong>Number of successes</strong> in <span class="math inline">\({\color{purple}N}\)</span> Bernoulli trials. <span class="math inline">\(X \sim \text{Binom}({\color{purple}N},{\color{purple}k},{\color{purple}p}) \implies \mathcal{R}_X = \{0, 1, \ldots, N\}\)</span>
+<ul>
+<li><span class="math inline">\(P(X = k)  = \binom{N}{k}p^k(1-p)^{N-k}\)</span>: probability of <span class="math inline">\(k\)</span> successes out of <span class="math inline">\(N\)</span> trials.</li>
+<li><span class="math inline">\(\binom{N}{k} = \frac{N!}{k!(N-k)!}\)</span>: “Binomial coefficient”. How many groups of size <span class="math inline">\(k\)</span> can be formed?<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+</ul></li>
+</ul>
+</section>
+<section id="visualizing-the-binomial" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="visualizing-the-binomial">Visualizing the Binomial</h2>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k, <span class="dv">10</span>, <span class="fl">0.5</span>)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(k, prob)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x=</span>k, <span class="at">y=</span>prob)) <span class="sc">+</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"Binomial Distribution, N = 10, p = 0.5"</span>,</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Probability Mass"</span></span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/binomial-demo-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="notes">
+<p>So who can tell me, from this plot, the approximate probability of getting 4 heads when flipping a coin 10 times?</p>
+</div>
+</section>
+<section id="multiple-classes-multinomial-distribution" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="multiple-classes-multinomial-distribution">Multiple Classes: Multinomial Distribution</h2>
+<ul>
+<li>Bernoulli only allows two outcomes: success or failure.</li>
+<li>What if we’re predicting soccer match outcomes?
+<ul>
+<li><span class="math inline">\(X_i \in \{\text{Win}, \text{Loss}, \text{Draw}\}\)</span></li>
+</ul></li>
+<li><strong>Categorical Distribution</strong>: Generalization of Bernoulli to <span class="math inline">\(k\)</span> outcomes. <span class="math inline">\(X \sim \text{Categorical}(\mathbf{p} = \{p_1, p_2, \ldots, p_k\}), \sum_{i=1}^kp_i = 1\)</span>.
+<ul>
+<li><span class="math inline">\(P(X = k) = p_k\)</span></li>
+</ul></li>
+<li><strong>Multinomial Distribution</strong>: Generalization of Binomial to <span class="math inline">\(k\)</span> outcomes.</li>
+<li><span class="math inline">\(\mathbf{X} \sim \text{Multinom}(N,k,\mathbf{p}=\{p_1,p_2,\ldots,p_k\}), \sum_{i=1}^kp_i=1\)</span>
+<ul>
+<li><span class="math inline">\(P(\mathbf{X} = \{x_1,x_2\ldots,x_k\}) = \frac{N!}{x_1!x_2!\cdots x_k!}p_1^{x_1}p_2^{x_2}\cdots p_k^{x_k}\)</span></li>
+<li><span class="math inline">\(P(\text{30 wins}, \text{4 losses}, \text{4 draws}) = \frac{38!}{30!4!4!}p_{\text{win}}^{30}p_{\text{lose}}^4p_{\text{draw}}^4\)</span>.</li>
+</ul></li>
+</ul>
+</section>
+<section id="geometric-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="geometric-distribution">Geometric Distribution</h2>
+<ul>
+<li><strong>Geometric</strong>: Likelihood that we need <span class="math inline">\({\color{purple}k}\)</span> trials to get our first success. <span class="math inline">\(X \sim \text{Geom}({\color{purple}k},{\color{purple}p}) \implies \mathcal{R}_X = \{0, 1, \ldots\}\)</span>
+<ul>
+<li><span class="math inline">\(P(X = k) = \underbrace{(1-p)^{k-1}}_{\small k - 1\text{ failures}}\cdot \underbrace{p}_{\mathclap{\small \text{success}}}\)</span></li>
+<li>Probability of <span class="math inline">\(k-1\)</span> failures followed by a success</li>
+</ul></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">dgeom</span>(k, <span class="fl">0.5</span>)</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(k, prob)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob)) <span class="sc">+</span></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb50-8"><a href="#cb50-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Geometric Distribution, p = 0.5"</span>,</span>
+<span id="cb50-9"><a href="#cb50-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Probability Mass"</span></span>
+<span id="cb50-10"><a href="#cb50-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb50-11"><a href="#cb50-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>)) <span class="sc">+</span></span>
+<span id="cb50-12"><a href="#cb50-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/geometric-demo-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="less-common-but-important-distributions" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="less-common-but-important-distributions">Less Common (But Important) Distributions</h2>
+<ul>
+<li><strong>Discrete Uniform</strong>: <span class="math inline">\(N\)</span> equally-likely outcomes
+<ul>
+<li><span class="math inline">\(X \sim U\{{\color{purple}a},{\color{purple}b}\} \implies \mathcal{R}_X = \{a, a+1, \ldots, b\}, P(X = k) = \frac{1}{{\color{purple}b} - {\color{purple}a} + 1}\)</span></li>
+</ul></li>
+<li><strong>Beta</strong>: <span class="math inline">\(X \sim \text{Beta}({\color{purple}\alpha}, {\color{purple}\beta})\)</span>: <em>conjugate prior</em> for Bernoulli, Binomial, and Geometric dists.
+<ul>
+<li>Intuition: If we use Beta to encode our prior hypothesis, then observe data drawn from Binomial, distribution of our <em>updated</em> hypothesis is still Beta.</li>
+<li><span class="math inline">\(\underbrace{\Pr(\text{biased}) = \Pr(\text{unbiased})}_{\text{Prior: }\text{Beta}({\color{purple}\alpha}, {\color{purple}\beta})} \rightarrow\)</span> Observe <span class="math inline">\(\underbrace{\frac{8}{10}\text{ heads}}_{\text{Data}} \rightarrow \underbrace{\Pr(\text{biased}) = 0.65}_{\text{Posterior: }\text{Beta}({\color{purple}\alpha + 8}, {\color{purple}\beta + 2})}\)</span></li>
+</ul></li>
+<li><strong>Dirichlet</strong>: <span class="math inline">\(\mathbf{X} = (X_1, X_2, \ldots, X_K) \sim \text{Dir}({\color{purple} \boldsymbol\alpha})\)</span>
+<ul>
+<li><span class="math inline">\(K\)</span>-dimensional extension of Beta (thus, conjugate prior for Multinomial)</li>
+</ul></li>
+</ul>
+<!-- TODO: see why \param doesn't work for the bolded \alpha -->
+<div class="notes">
+<p>We can now use <span class="math inline">\(\text{Beta}(\alpha + 8, \beta + 2)\)</span> as a prior for our next set of trials (encoding our knowledge up to that point), and update further once we know the results (to yet another Beta distribution).</p>
+</div>
+</section>
+<section id="interactive-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="interactive-visualizations">Interactive Visualizations!</h2>
+<p><a href="https://seeing-theory.brown.edu/probability-distributions/index.html" target="_blank">Seeing Theory</a>, Brown University</p>
+<!-- APPENDIX SLIDES -->
+</section>
+<section id="appendix-countability-of-mathbbq" class="level2 smaller small-math page-columns page-full">
+<h2 class="smaller small-math anchored" data-anchor-id="appendix-countability-of-mathbbq">Appendix: Countability of <span class="math inline">\(\mathbb{Q}\)</span></h2>
+<ul>
+<li><strong>Bad</strong> definition: “<span class="math inline">\(\mathbb{N}\)</span> is countable because no <span class="math inline">\(x \in \mathbb{N}\)</span> between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. <span class="math inline">\(\mathbb{R}\)</span> is uncountable because infinitely-many <span class="math inline">\(x \in \mathbb{R}\)</span> between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>.” (<span class="math inline">\(\implies \mathbb{Q}\)</span> uncountable)</li>
+<li>And yet, <span class="math inline">\(\mathbb{Q}\)</span> <strong>is</strong> countable…</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/rationals_countable.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div><div class="column" style="width:55%;">
+<p><span class="math display">\[
+\begin{align*}
+\begin{array}{ll}
+s: \mathbb{N} \leftrightarrow \mathbb{Z} &amp; s(n) = (-1)^n \left\lfloor \frac{n+1}{2} \right\rfloor \\
+h_+: \mathbb{Z}^+ \leftrightarrow \mathbb{Q}^+ &amp; p_1^{a_1}p_2^{a_2}\cdots \mapsto p_1^{s(a_1)}p_2^{s(a_2)}\cdots \\
+h: \mathbb{Z} \leftrightarrow \mathbb{Q} &amp; h(n) = \begin{cases}h_+(n) &amp;n &gt; 0 \\ 0 &amp; n = 0 \\
+-h_+(-n) &amp; n &lt; 0\end{cases} \\
+(h \circ s): \mathbb{N} \leftrightarrow \mathbb{Q} &amp; ✅🤯
+\end{array}
+\end{align*}
+\]</span></p>
+</div>
+</div>
+
+
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Image credit: <a href="https://math.stackexchange.com/a/659373" target="_blank">Rebecca J. Stones, Math StackExchange</a>. Math credit: <a href="https://math.stackexchange.com/a/1067928" target="_blank">Thomas Andrews, Math StackExchange</a></p>
+</div></div></section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>The method used in this proof, if you haven’t seen it before, is called <a href="https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument" target="_blank"><strong>Cantor diagonalization</strong></a>, and it is extremely fun and applicable to a wide variety of levels-of-infinity proofs<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>For intuition: <span class="math inline">\(X \sim U[0,10] \implies \Pr(X = \pi) = \frac{|\{v \in \mathbb{R}:\; v = \pi\}|}{|\mathbb{R}|} = \frac{1}{2^{\aleph_0}} \approx 0\)</span>. That is, finding the <span class="math inline">\(\pi\)</span> needle in the <span class="math inline">\(\mathbb{R}\)</span> haystack is a one-in-<span class="math inline">\(\left(\infty^\infty\right)\)</span> event. A similar issue occurs if <span class="math inline">\(S\)</span> is countably-infinite, like <span class="math inline">\(S = \mathbb{N}\)</span>: <span class="math inline">\(\Pr(X = 3) = \frac{|\{x \in \mathbb{N} : \; x = 3\}|}{|\mathbb{N}|} = \frac{1}{\aleph_0}\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>A fun way to never have to memorize or compute these: imagine a pyramid like <span class="math inline">\(\genfrac{}{}{0pt}{}{}{\boxed{\phantom{1}}}\genfrac{}{}{0pt}{}{\boxed{\phantom{1}}}{}\genfrac{}{}{0pt}{}{}{\boxed{\phantom{1}}}\)</span>, where the boxes are slots for numbers, and put a <span class="math inline">\(1\)</span> in the box at the top. In the bottom row, fill each slot with the sum of the two numbers above-left and above-right of it. Since <span class="math inline">\(1 + \text{(nothing)} = 1\)</span>, this looks like: <span class="math inline">\(\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}\)</span>. Continue filling in the pyramid this way, so the next row looks like <span class="math inline">\(\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{2}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}\)</span>, then <span class="math inline">\(\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{3}\genfrac{}{}{0pt}{}{2}{}\genfrac{}{}{0pt}{}{}{3}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}\)</span>, and so on. The <span class="math inline">\(k\)</span>th number in the <span class="math inline">\(N\)</span>th row (counting from <span class="math inline">\(0\)</span>) is <span class="math inline">\(\binom{N}{k}\)</span>. For the triangle written out to the 7th row, see Appendix I at end of slideshow.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w04/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

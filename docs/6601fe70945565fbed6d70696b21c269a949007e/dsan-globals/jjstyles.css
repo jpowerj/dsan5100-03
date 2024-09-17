@@ -137,18 +137,26 @@ figcaption {
   height: 375px !important;
 }
 
+.inline-90 .math.inline {
+  font-size: 90% !important;
+}
+.inline-80 .math.inline {
+  font-size: 80% !important;
+}
 .math-90 .math.display {
   font-size: 90% !important;
 }
 .math-80 .math.display {
   font-size: 80% !important;
 }
-.inline-90 .math.inline {
-  font-size: 90% !important;
-}
 
 .new-unit {
   border-top: 2px solid gray !important;
+}
+
+.not-title-slide {
+  display: block !important;
+  top: 0px !important;
 }
 
 .sidebar-footer-item {
@@ -189,8 +197,14 @@ figcaption {
   line-height: 0.7em !important;
 }
 
-/* and one small fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
+.small-title h1 {
+  font-size: var(--r-heading2-size) !important;
+}
+.small-title h2 {
+    font-size: var(--r-heading3-size) !important;
+}
 
+/* and one small fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
 table thead th {
   background-clip: padding-box;
 }
