@@ -1,0 +1,73 @@
+
+```{dot}
+digraph BST {
+  rankdir=LR;
+  node [shape="rect"];
+
+  // Start
+  node [label="Start at x=0"] start;
+
+  // Layer 0
+  subgraph cluster_00 {
+    node [label="Move Left 1"] L;
+    node [label="Move Right 1"] R;
+    penwidth=0
+  }
+  start -> L [label="Tails"];
+  start -> R [label="Heads"];
+
+  // Layer 1a
+  subgraph cluster_01 {
+    node [label="Move Left 1"] LL;
+    node [label="Move Right 1"] LR;
+    penwidth=0;
+  }
+  L -> LL [label="Tails"];
+  L -> LR [label="Heads"];
+
+  // Layer 1b
+  subgraph cluster_02 {
+    node [label="Move Left 1"] RL;
+    node [label="Move Right 1"] RR;
+    penwidth=0;
+  }
+  R -> RL [label="Tails"];
+  R -> RR [label="Heads"];
+
+  // Layer 2a
+  subgraph cluster_03 {
+    node [label="...",penwidth=0] LLL;
+    node [label="...",penwidth=0] LLR;
+    penwidth=0;
+  }
+  LL -> LLL [label="Tails"];
+  LL -> LLR [label="Heads"];
+
+  // Layer 2b
+  subgraph cluster_04 {
+    node [label="...",penwidth=0] LRL;
+    node [label="...",penwidth=0] LRR;
+    penwidth=0;
+  }
+  LR -> LRL [label="Tails"];
+  LR -> LRR [label="Heads"];
+
+  // Layer 2c
+  subgraph cluster_05 {
+    node [label="...",penwidth=0] RLL;
+    node [label="...",penwidth=0] RLR;
+    penwidth=0;
+  }
+  RL -> RLL [label="Tails"];
+  RL -> RLR [label="Heads"];
+
+  // Layer 2d
+  subgraph cluster_06 {
+    node [label="...",penwidth=0] RRL;
+    node [label="...",penwidth=0] RRR;
+    penwidth=0;
+  }
+  RR -> RRL [label="Tails"];
+  RR -> RRR [label="Heads"];
+}
+```

@@ -963,7 +963,6 @@ sum(anyshared_per_room > 0) / num_rooms_many
 * The hard way: solve analytically
 * The easy way: simulate!
 
-
 # Probability Distributions in General {data-stack-name="Probability Distributions"}
 
 ## Discrete vs. Continuous {.smaller .math-80 .crunch-ul .crunch-img .crunch-title .crunch-math .crunch-cell-output}

@@ -1,0 +1,586 @@
+---
+title: "Week 5: Continuous Distributions"
+subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
+author: "Jeff Jacobs"
+institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
+date: 2024-09-24
+date-format: full
+lecnum: 5
+categories:
+  - "Class Sessions"
+format:
+  revealjs:
+    cache: false
+    css: "../dsan-globals/jjstyles.css"
+    footer: "DSAN 5100-03 W05: Continuous Distributions"
+    output-file: slides.html
+    df-print: kable
+    code-fold: true
+    html-math-method: mathjax
+    scrollable: true
+    slide-number: true
+    number-sections: false
+    link-external-icon: true
+    link-external-newwindow: true
+    theme: [default]
+    revealjs-plugins:
+      - simplemenu
+    simplemenu:
+      flat: true
+      barhtml:
+        header: "<div class='menubar'><span style='position: absolute; left: 8; padding-left: 8px;'><a href='./index.html'>&larr; Return to Notes</a></span><ul class='menu'></ul></div>"
+      scale: 0.5
+    include-in-header:
+      text: "<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous'><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>"
+  html:
+    cache: false
+    output-file: index.html
+    df-print: kable
+    warning: false
+    link-external-icon: true
+    link-external-newwindow: true
+---
+
+::: {.content-visible unless-format="revealjs"}
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window &rarr;</a>
+</center>
+
+:::
+
+
+# Recap / Continuous Probability {data-stack-name="Recap"}
+
+* Continuous vs. Discrete
+* What things have distributions?
+* CDFs, pdfs, pmfs
+
+::: {.hidden}
+
+```{r}
+#| label: source-globals
+source("../dsan-globals/_globals.r")
+```
+
+:::
+
+{{< include ../dsan-globals/_tex.globals.qmd >}}
+
+## From Last Week {.smaller .crunch-title .crunch-figures .crunch-math .smaller-math}
+
+::: {layout-ncol=2}
+
+::: {#fig-discrete}
+
+{{< include ../_components/discrete-space.qmd >}}
+
+Visual and mathematical intuition for events in a **discrete** probability space
+:::
+
+::: {#fig-continuous}
+
+{{< include ../_components/continuous-space.qmd >}}
+
+Visual and mathematical intuition for events a **continuous** probability space
+:::
+
+:::
+
+## What Things Have Distributions?
+
+* Answer: **Random Variables**
+
+## CDFs/pdfs/pmfs: *What* Are They? {.smaller .crunch-title .crunch-math}
+
+* Functions which **answer questions** about a **Random Variable** ($X$ in this case) with respect to a **non-random** value ($v$ in this case, for "**v**alue")
+* **CDF**: What is probability that $X$ takes on a value **less than or equal to $v$**?
+
+$$
+F_X(v) \definedas \Pr(X \leq v)
+$$
+
+* **pmf**: What is the probability of **this exact value**? (Discrete only)
+
+$$
+p_X(v) \definedas \Pr(X = v)
+$$
+
+* **pdf**: 🙈 ...It's the thing you integrate to get the CDF
+
+$$
+f_X(v) \definedas \frac{d}{dv}F_X(v) \iff \int_{-\infty}^{v} f_X(v)dv = F_X(v)
+$$
+
+# Continuous Probability {data-stack-name="Continuous Prob"}
+
+## CDFs/pdfs/pmfs: *Why* Do We Use Them? {.smaller}
+
+* CDF is like the "API" that allows you to access **all of the information about the distribution** (pdf/pmf is derived from the CDF)
+* Example: we know there's some "thing" called the *Exponential Distribution*...
+* How do we **use** this distribution to understand a random variable $X \sim \text{Exp}$?
+  * Answer: the **CDF** of $X$!
+  * Since **all exponentially-distributed RVs have the same PDF**, we can call this PDF **"the" exponential distribution**
+* Say we want to find the **median** of $X$: The median is the number(s) $m$ satisfying
+
+$$
+\Pr(X \leq m) = \frac{1}{2}
+$$
+
+## Finding a Median via the CDF
+
+::: {.callout-note title="Median of a Random Variable $X$"}
+
+The **median** of a random variable $X$ with some CDF $F_X(v_X)$ is the [set of] numbers $m$ for which the probability that $X$ is **lower than** $m$ is $\frac{1}{2}$:
+
+$$
+\begin{align*}
+\text{Median}(X) &= \left\{m \left| F_X(m) = \frac{1}{2} \right. \right\} \\
+&= \left\{m \left| \int_{-\infty}^{m}f_X(v_X)dv_X = \frac{1}{2} \right. \right\}
+\end{align*}
+$$
+
+:::
+
+::: {.aside}
+(In case you're wondering why we start with the **median** rather than the more commonly-used **mean**: it's specifically because I want you to get used to calculating **general functions $f(X)$ of a random variable $X$**. It's easy to just e.g. learn how to compute the mean $\expect{X}$ and forget that this is only one of many possible choices for $f(X)$.)
+:::
+
+## Median via CDF Example
+
+**Example**: If $X \sim \text{Exp}(\param{\lambda})$,
+
+$$
+F_X(v) = 1 - e^{-\lambda v}
+$$
+
+So we want to solve for $m$ in
+
+$$
+F_X(m) = \frac{1}{2} \iff 1 - e^{-\lambda m} = \frac{1}{2}
+$$
+
+## Step-by-Step
+
+$$
+\begin{align*}
+1 - e^{-\lambda m} &= \frac{1}{2} \\
+\iff e^{-\lambda m} &= \frac{1}{2} \\
+\iff \ln\left[e^{-\lambda m}\right] &= \ln\left[\frac{1}{2}\right] \\
+\iff -\lambda m &= -\ln(2) \\
+\iff m &= \frac{\ln(2)}{\lambda}
+%3x = 19-2y
+\; \llap{\mathrel{\boxed{\phantom{m = \frac{\ln(2)}{\lambda}}}}}.
+\end{align*}
+$$
+
+## What is a pdf?
+
+* Answer: Has no meaning outside of its **context**: a **random variable** with a **CDF** giving the distribution of its possible values
+
+
+## Top Secret Fun Fact {.smaller .crunch-title .crunch-math .crunch-ul}
+
+<center>
+<span class="px-4" style="border: 2px solid black !important;">**Every Discrete Distribution is <span style='font-size: 50% !important;'>[technically, in a weird way]</span> a Continuous Distribution!**</span>
+</center>
+
+* Same intuition as why every **natural number** is a **real number**, but converse is not true
+* Marble example: Let $X$ be an RV defined on this space, so that $X(A) = 1$, $X(B) = 2$, $X(C) = 3$, $X(D) = 4$. Then the **pmf** for $X$ is $p_X(i) = \frac{1}{4}$ for $i \in \{1, 2, 3, 4\}$.
+* We can then use the [Dirac delta function](#appendix-dirac-delta-function) $\delta(v)$ to define a **continuous pdf**
+
+    $$
+    f_X(v) = \sum_{i \in \mathcal{R}_X}p_X(i)\delta(v - i) = \sum_{i=1}^4p_X(i)\delta(v-i) = \frac{1}{4}\sum_{i=1}^4 \delta(v - i)
+    $$
+    
+    and use **either** the (discrete) pmf $p_X(v)$ or (continuous) pdf $f_X(v)$ to describe $X$:
+
+$$
+\begin{align*}
+\overbrace{\Pr(X \leq 3)}^{\text{CDF}} &= \sum_{i=1}^3\overbrace{p_X(i)}^{\text{pmf}} = \frac{1}{4} + \frac{1}{4} + \frac{1}{4} = \frac{3}{4} \\
+\underbrace{\Pr(X \leq 3)}_{\text{CDF}} &= \int_{-\infty}^{3} \underbrace{f_X(v)}_{\text{pdf}} = \frac{1}{4}\int_{-\infty}^{3} \sum_{i = 1}^{4}\overbrace{\delta(v-i)}^{\small 0\text{ unless }v = i}dv = \frac{3}{4}
+\end{align*}
+$$
+
+# Common Continuous Distributions {data-stack-name="Common Dists"}
+
+* Normal: The friend who shows up everywhere
+* Uniform: The stable, reliable friend
+* Exponential: Good days and bad days
+* Cauchy: Toxic af, stay away ☠️
+
+## Normal Distribution {.crunch-title}
+
+* Recall from last week: the **Binomial** pdf
+
+{{< include ../_components/binomial-plot.qmd >}}
+
+## The Emergence of Order
+
+::: {layout-ncol=2}
+
+* Who can guess the state of this process after 10 steps, with 1 person?
+* 10 people? 50? 100? (If they find themselves on the same spot, they stand on each other's heads)
+* 100 steps? 1000?
+
+![](images/random_walk.svg){fig-align="center"}
+
+:::
+
+## The Result: 16 Steps
+
+```{r}
+#| label: random-walk-16
+#| code-fold: true
+library(tibble)
+library(ggplot2)
+library(ggExtra)
+library(dplyr)
+library(tidyr)
+# From McElreath!
+gen_histo <- function(reps, num_steps) {
+  support <- c(-1,1)
+  pos <-replicate(reps, sum(sample(support,num_steps,replace=TRUE,prob=c(0.5,0.5))))
+  #print(mean(pos))
+  #print(var(pos))
+  pos_df <- tibble(x=pos)
+  clt_distr <- function(x) dnorm(x, 0, sqrt(num_steps))
+  plot <- ggplot(pos_df, aes(x=x)) +
+    geom_histogram(aes(y = after_stat(density)), fill=cbPalette[1], binwidth = 2) +
+    stat_function(fun = clt_distr) +
+    dsan_theme("quarter") +
+    theme(title=element_text(size=16)) +
+    labs(
+      title=paste0(reps," Random Walks, ",num_steps," Steps")
+    )
+  return(plot)
+}
+gen_walkplot <- function(num_people, num_steps, opacity=0.15) {
+  support <- c(-1, 1)
+  # Unique id for each person
+  pid <- seq(1, num_people)
+  pid_tib <- tibble(pid)
+  pos_df <- tibble()
+  end_df <- tibble()
+  all_steps <- t(replicate(num_people, sample(support, num_steps, replace = TRUE, prob = c(0.5, 0.5))))
+  csums <- t(apply(all_steps, 1, cumsum))
+  csums <- cbind(0, csums)
+  # Last col is the ending positions
+  ending_pos <- csums[, dim(csums)[2]]
+  end_tib <- tibble(pid = seq(1, num_people), endpos = ending_pos, x = num_steps)
+  # Now convert to tibble
+  ctib <- as_tibble(csums, name_repair = "none")
+  merged_tib <- bind_cols(pid_tib, ctib)
+  long_tib <- merged_tib %>% pivot_longer(!pid)
+  # Convert name -> step_num
+  long_tib <- long_tib %>% mutate(step_num = strtoi(gsub("V", "", name)) - 1)
+  # print(end_df)
+  grid_color <- rgb(0, 0, 0, 0.1)
+
+  # And plot!
+  walkplot <- ggplot(
+      long_tib,
+      aes(
+          x = step_num,
+          y = value,
+          group = pid,
+          # color=factor(label)
+      )
+  ) +
+      geom_line(linewidth = g_linesize, alpha = opacity, color = cbPalette[1]) +
+      geom_point(data = end_tib, aes(x = x, y = endpos), alpha = 0) +
+      scale_x_continuous(breaks = seq(0, num_steps, num_steps / 4)) +
+      scale_y_continuous(breaks = seq(-20, 20, 10)) +
+      dsan_theme("quarter") +
+      theme(
+          legend.position = "none",
+          title = element_text(size = 16)
+      ) +
+      theme(
+          panel.grid.major.y = element_line(color = grid_color, linewidth = 1, linetype = 1)
+      ) +
+      labs(
+          title = paste0(num_people, " Random Walks, ", num_steps, " Steps"),
+          x = "Number of Steps",
+          y = "Position"
+      )
+}
+wp1 <- gen_walkplot(500, 16, 0.05)
+ggMarginal(wp1, margins = "y", type = "histogram", yparams = list(binwidth = 1))
+```
+
+## The Result: 64 Steps
+
+```{r}
+#| label: random-walk-64
+#| code-fold: true
+library(ggExtra)
+wp2 <- gen_walkplot(5000,64,0.008) +
+  ylim(-30,30)
+ggMarginal(wp2, margins = "y", type = "histogram", yparams = list(binwidth = 1))
+```
+
+::: {.unnumbered .hidden}
+
+<!-- just the histograms -->
+
+```{r}
+#| fig-height: 3.4
+#| label: walk-histo-16
+p2 <- gen_histo(1000, 16)
+p2
+```
+
+```{r}
+#| fig-height: 3.4
+#| label: walk-histo-32
+p3 <- gen_histo(10000, 32)
+p3
+```
+
+:::
+
+## What's Going On Here? {.smaller}
+
+![](images/the_function_msg.jpeg){fig-align="center"}
+
+(Stay tuned for **Markov processes** $\overset{t \rightarrow \infty}{\leadsto}$ **Stationary distributions**!)
+
+## Properties of the Normal Distribution
+
+* If $X \sim \mathcal{N}(\param{\mu}, \param{\theta})$, then $X$ has pdf $f_X(v)$ defined by
+
+$$
+f_X(v) = \frac{1}{\sigma\sqrt{2\pi}}\bigexp{-\frac{1}{2}\left(\frac{v - \mu}{\sigma}\right)^2}
+$$
+
+* I hate memorizing as much as you do, I promise 🥴
+* The important part (imo): this is the **most conservative** out of **all possible (symmetric) prior distributions** defined on $\mathbb{R}$ (defined from $-\infty$ to $\infty$)
+
+## "Most Conservative" How?
+
+* Of all possible distributions with mean $\mu$, variance $\sigma^2$, $\mathcal{N}(\mu, \sigma^2)$ is the **entropy-maximizing** distribution
+* Roughly: using any other distribution (implicitly/secretly) **imports additional information** beyond the fact that mean is $\mu$ and variance is $\sigma^2$
+* Example: let $X$ be an RV. If we know mean is $\mu$, variance is $\sigma^2$, **but then we learn** that $X \neq 3$, or $X$ is even, or the 15th digit of $X$ is 7, can **update** to derive a "better" distribution (incorporating this info)
+
+## The Takeaway
+
+* **Given info we know**, we can find a distribution that "encodes" **only this info**
+* More straightforward example: if we only know that the value is something in the range $[a,b]$, entropy-maximizing distribution is the **Uniform Distribution**
+
+| If We Know | And We Know | (Max-Entropy) Distribution Is... |
+| - | - | - |
+| $\text{Mean}[X] = \mu$ | $\text{Var}[X] = \sigma^2$ | $X \sim \mathcal{N}(\mu, \sigma^2)$ |
+| $\text{Mean}[X] = \lambda$ | $X \geq 0$ | $X \sim \text{Exp}\left(\frac{1}{\lambda}\right)$ |
+| $X \geq a$ | $X \leq b$ | $X \sim \mathcal{U}[a,b]$ |
+
+## [Recall] Discrete Uniform Distribution
+
+```{r}
+#| label: discrete-uniform-pmf
+#| echo: true
+#| code-fold: true
+#| fig-align: center
+library(tibble)
+bar_data <- tribble(
+  ~x, ~prob,
+  1, 1/6,
+  2, 1/6,
+  3, 1/6,
+  4, 1/6,
+  5, 1/6,
+  6, 1/6
+)
+ggplot(bar_data, aes(x=x, y=prob)) +
+  geom_bar(stat="identity", fill=cbPalette[1]) +
+  labs(
+    title="Discrete Uniform pmf: a = 1, b = 6",
+    y="Probability Mass",
+    x="Value"
+  ) +
+  scale_x_continuous(breaks=seq(1,6)) +
+  dsan_theme("half")
+```
+
+## Continuous Uniform Distribution {.small-math .crunch-title .crunch-math}
+
+* If $X \sim \mathcal{U}[a,b]$, then intuitively $X$ is a value randomly selected from within $[a,b]$, with all values equally likely.
+* **Discrete** case: what we've been using all along (e.g., dice): if $X \sim \mathcal{U}\{1,6\}$, then
+
+$$
+\Pr(X = 1) = \Pr(X = 2) = \cdots = \Pr(X = 6) = \frac{1}{6}
+$$
+
+* For **continuous** case... what do we put in the denominator? $X \sim \mathcal{U}[1,6] \implies \Pr(X = \pi) = \frac{1}{?}$...
+  * Answer: $\Pr(X = \pi) = \frac{1}{|[1,6]|} = \frac{1}{\aleph_0} = 0$
+
+## Constructing the Uniform CDF {.smaller .crunch-title}
+
+* We were ready for this! We already knew $\Pr(X = v) = 0$ for continuous distributions.
+* So, we forget about $\Pr(X = v)$, and focus on $\Pr(X \in [v_0, v_1])$.
+* In 2D (dartboard) we had $\Pr(X \in \circ) = \frac{\text{Area}(\circ)}{\text{Area}(\Omega)}$, so here we should have
+
+$$
+P(X \in [v_0,v_1]) = \frac{\text{Length}([v_0,v_1])}{\text{Length}([1,6])}
+$$
+
+* And indeed, the CDF of $X$ is $\boxed{F_X(v) = \Pr(X \leq v) = \frac{v-a}{b-a}}$, so that
+
+$$
+\Pr(X \in [v_0,v_1]) = F_X(v_1) - F_X(v_0) = \frac{v_1-a}{b-a} - \frac{v_0-a}{b-a} = \frac{v_1 - v_0}{b-a}
+$$
+
+* Since $a = 1$, $b = 6$ in our example, $\Pr(X \in [v_0,v_1]) = \frac{v_1-v_0}{6-1} = \frac{\text{Length}([v_0,v_1])}{\text{Length}([1,6])} \; ✅$
+
+<!-- ## References -->
+
+## Exponential Distribution {data-name="Exponential"}
+
+* Recall the (discrete) **Geometric Distribution**:
+
+```{r}
+#| label: geometric-demo
+#| fig-align: center
+#| echo: true
+#| code-fold: true
+library(ggplot2)
+k <- seq(0, 8)
+prob <- dgeom(k, 0.5)
+bar_data <- tibble(k, prob)
+ggplot(bar_data, aes(x = k, y = prob)) +
+    geom_bar(stat = "identity", fill = cbPalette[1]) +
+    labs(
+        title = "Geometric Distribution pmf: p = 0.5",
+        y = "Probability Mass"
+    ) +
+    scale_x_continuous(breaks = seq(0, 8)) +
+    dsan_theme("half")
+```
+
+## Now In Continuous Form!
+
+```{r}
+#| label: exponential-plot
+#| echo: true
+#| code-fold: true
+#| fig-align: center
+my_dexp <- function(x) dexp(x, rate = 1/2)
+ggplot(data.frame(x=c(0,8)), aes(x=x)) +
+  stat_function(fun=my_dexp, size=g_linesize, fill=cbPalette[1], alpha=0.8) +
+  stat_function(fun=my_dexp, geom='area', fill=cbPalette[1], alpha=0.75) +
+  dsan_theme("half") +
+  labs(
+    title="Exponential Distribution pdf: λ (rate) = 0.5",
+    x = "v",
+    y = "f_X(v)"
+  )
+```
+
+
+## The Dreaded Cauchy Distribution {.smaller}
+
+* Paxton is a Denver Nuggets fan, while Jeff is a Washington Wizards fan. Paxton creates an RV $D$ modeling how many games above .500 the Nuggets will be in a given season, while Jeff creates an RV $W$ modeling how many games above .500 the Wizards will be.
+* They decide to combine their RVs to create a new RV, $R = \frac{D}{W}$, which now models **how much better** the Nuggets will be in a season ($R$ for "Ratio")
+* For example, if the Nuggets are $10$ games above .500, while the Wizards are only $5$ above .500, $R = \frac{10}{5} = 2$. If they're both 3 games above .500, $R = \frac{3}{3} = 1$.
+
+```{r}
+#| label: cauchy-pdf
+#| echo: true
+#| code-fold: true
+ggplot(data.frame(x=c(-4,4)), aes(x=x)) +
+  stat_function(fun=dcauchy, size=g_linesize, fill=cbPalette[1], alpha=0.75) +
+  stat_function(fun=dcauchy, geom='area', fill=cbPalette[1], alpha=0.75) +
+  dsan_theme("quarter") +
+  labs(
+    title="PDF of R",
+    x = "r",
+    y = "f(r)"
+  )
+```
+
+## So What's the Issue? {.crunch-title .crunch-figures .small-caption .shift-footnotes-less .crunch-ul}
+
+* So far so good. It turns out (though Paxton and Jeff don't know this) that the teams are actually both mediocre, so that $D \sim N(0,10)$ and $W \sim N(0,10)$... What is the distribution of $R$ in this case?
+
+::: {layout-ncol=2}
+
+::: {#eqns}
+
+$$
+\begin{gather*}
+R \sim \text{Cauchy}\left( 0, 1 \right)
+\end{gather*}
+$$
+
+$$
+\begin{align*}
+\expect{R} &= ☠️ \\
+\Var{R} &= ☠️ \\
+M_R(t) &= ☠️
+\end{align*}
+$$
+
+:::
+
+![From @agnesi_analytical_1801 \[<a href='' target='_blank'>Internet Archive</a>\]](images/agnesi-crop.jpeg)
+
+:::
+
+::: {.aside}
+Even worse, this is true regardless of variances: $D \sim N(0,d), W \sim N(0,w) \implies R \sim \text{Cauchy}\left( 0,\frac{d}{w} \right)$...
+:::
+
+# Lab 4 {data-stack-name="Lab 4"}
+
+## Lab 4 Demo
+
+* [Lab 4 Demo Link](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-4/demo.html){target="_blank"}
+* Choose your own adventure:
+  * Official lab demo
+  * Math puzzle lab demo
+  * Move on to **Expectation, Variance, Moments**
+
+## Lab 4 Assignment Prep {.smaller .crunch-title .crunch-ul}
+
+* One of my favorite math puzzles ever:
+
+::: {.callout-note icon="false" title="The Problem of the Broken Stick [@gardner_colossal_2001, 273-285]"}
+
+If a stick is broken at random into three pieces, what is the probability that the pieces can be put back together into a triangle?
+
+*This cannot be answered without additional information about the exact method of breaking*
+
+* One method is to select, independently and at random, two points from the points that range uniformly along the stick, then break the stick at these two points
+* Suppose, however, that we interpret in a different way the statement "break a stick at random into three pieces". We break the stick at random, we select randomly one of the two pieces, and we break that piece at random.
+
+:::
+
+* Will these two interpretations result in the same probabilities?
+* If yes, what is that probability?
+* If no, what are the probabilities in each case?
+
+## Lab 4 Assignment
+
+* [Lab 4 Assignment Link](https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-4/lab-4-assignment.html){target="_blank"}
+
+## References
+
+::: {#refs}
+:::
+
+## Appendix: Dirac Delta Function {.smaller}
+
+* $\delta(v)$ as used in the ["Top Secret Fun Fact" slide](#top-secret-fun-fact) is called the <a href="https://en.wikipedia.org/wiki/Dirac_delta_function" target="_blank">**Dirac Delta function**</a>.
+* It enables conversion of discrete distributions into continuous distributions as it represents an "infinite point mass" at $0$ that can be integrated[^details]:
+
+$$
+\delta(v) = \begin{cases}\infty & v = 0 \\ 0 & v \neq 0\end{cases}
+$$
+
+* Its integral also has a name: integrating over $v \in (-\infty, \infty)$ produces the [**Heaviside step function**](https://en.wikipedia.org/wiki/Heaviside_step_function){target="_blank"} $\theta(v)$:
+
+$$
+\int_{-\infty}^{\infty}\delta(v)dv = \theta(v) = \begin{cases} 1 & v = 0 \\ 0 & v \neq 0\end{cases}
+$$
+
+[^details]: This is leaving out some of the complexities of defining this function so it "works" in this way: for example, we need to use the [Lebesgue integral](https://en.wikipedia.org/wiki/Lebesgue_integration){target="_blank"} rather than the (standard) [Riemann integral](https://en.wikipedia.org/wiki/Riemann_integral){target="_blank"} for it to be defined at all, and even then it technically fails the conditions necessary for a fully-well-defined Lebesgue integral. For full details see <a href="https://en.wikipedia.org/wiki/Probability_density_function#Link_between_discrete_and_continuous_distributions" target="_blank">this section</a> from the Wiki article on PDFs, and follow the links therein.

@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jeff Jacobs">
+<meta name="dcterms.date" content="2024-09-19">
+
+<title>Continuous Probability and the Order of Integration – DSAN 5100-03</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script><script src="../../sidebar.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../dsan-globals/jjstyles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      DSAN 5100: Probabilistic Modeling and Statistical Computing
+      </li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">DSAN 5100: Probabilistic Modeling and Statistical Computing</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://dsan.georgetown.domains/dsan5100/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="bi bi-arrow-left pe-1"></i> Main Course Page</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../w01/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 1: Aug 30</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../w02/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 2: Sep 3</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../w03/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 3: Sep 10</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../w04/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 4: Sep 17</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../w05/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 5: Sep 24</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.zoom.us/j/92478089466?pwd=cSBmcjACL6EJJW0vHbzIqimH7imkVx.1" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Zoom Link <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=98022271-76d6-457f-83ee-b1dd00143dbc" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Recordings <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../extra-videos/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Videos</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../writeups/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Writeups</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../cheatsheet-math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Math Cheatsheet</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.instructure.com/courses/193275" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">S03 Canvas Page <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/meet" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Book Office Hours <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://forms.gle/3CYWo8xHUxMvvowbA" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Suggestion Box <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/dsps" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Textbook <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<p><em>Updated 2024-09-19, 09:31:44 PM</em></p>
+</div></div></nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#using-our-intuition-without-geometry" id="toc-using-our-intuition-without-geometry" class="nav-link active" data-scroll-target="#using-our-intuition-without-geometry">Using Our Intuition (Without Geometry)</a></li>
+  <li><a href="#finding-the-issue-by-thinking-geometrically" id="toc-finding-the-issue-by-thinking-geometrically" class="nav-link" data-scroll-target="#finding-the-issue-by-thinking-geometrically">Finding The Issue By Thinking Geometrically</a>
+  <ul class="collapse">
+  <li><a href="#approach-1" id="toc-approach-1" class="nav-link" data-scroll-target="#approach-1">Approach 1</a></li>
+  <li><a href="#approach-2" id="toc-approach-2" class="nav-link" data-scroll-target="#approach-2">Approach 2</a></li>
+  </ul></li>
+  <li><a href="#fixing-the-issue" id="toc-fixing-the-issue" class="nav-link" data-scroll-target="#fixing-the-issue">Fixing The Issue</a>
+  <ul class="collapse">
+  <li><a href="#a-technically-correct-fix" id="toc-a-technically-correct-fix" class="nav-link" data-scroll-target="#a-technically-correct-fix">A Technically-Correct Fix</a></li>
+  <li><a href="#avoiding-min-a-quick-fix" id="toc-avoiding-min-a-quick-fix" class="nav-link" data-scroll-target="#avoiding-min-a-quick-fix">Avoiding <span class="math inline">\(\min()\)</span>: A Quick Fix</a></li>
+  <li><a href="#a-more-practicalcorrect-approach" id="toc-a-more-practicalcorrect-approach" class="nav-link" data-scroll-target="#a-more-practicalcorrect-approach">A More Practical/“Correct” Approach</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/writeups/order-of-integration/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Continuous Probability and the Order of Integration</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Extra Writeups</div>
+  </div>
+  </div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jeff Jacobs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">September 19, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="hidden">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../../dsan-globals/_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div>
+<p><a href="https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-5/lab-5-assignment.html" target="_blank">Problem 2e on your Lab 5 Assignment</a>, which asks you to:</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Lab 5 Problem 2e">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lab 5 Problem 2e
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Find the probability <span class="math inline">\(\Pr(X \leq Y)\)</span></p>
+</div>
+</div>
+<p>is trickier than most of the other parts/problems, in the sense that it really requires us to think carefully about what exactly we’re doing when we take integrals to obtain <strong>probabilities</strong> from <strong>probability density functions</strong>. So, in this writeup, I want to walk through that problem step-by-step, showing where the “trickiness” enters into the problem.</p>
+<section id="using-our-intuition-without-geometry" class="level2">
+<h2 class="anchored" data-anchor-id="using-our-intuition-without-geometry">Using Our Intuition (Without Geometry)</h2>
+<p>In this part I’m going to show how, if we ignore some of the details of the problem, we might think of the two following ways to go about obtaining the answer, which on the surface seem like equally “good” ways to go about it:</p>
+<ul>
+<li><strong>Approach 1: Inner integral over <span class="math inline">\(Y\)</span>, outer integral over <span class="math inline">\(X\)</span></strong>
+<ol type="1">
+<li>Integrate the joint pdf <span class="math inline">\(f_{X,Y}(x,y)\)</span> from <span class="math inline">\(y = x\)</span> to the maximum value that <span class="math inline">\(y\)</span> can take on, that is, from <span class="math inline">\(y = x\)</span> to <span class="math inline">\(y = 3\)</span>, then</li>
+<li>Integrate the result from (1) over the full range of values <span class="math inline">\(x\)</span> can take on, that is, from <span class="math inline">\(x = 0\)</span> to <span class="math inline">\(x = 2\)</span>.</li>
+</ol></li>
+<li><strong>Approach 2: Inner integral over <span class="math inline">\(X\)</span>, outer integral over <span class="math inline">\(Y\)</span></strong>
+<ol type="1">
+<li>Integrate the joint pdf <span class="math inline">\(f_{X,Y}(x,y)\)</span> from <span class="math inline">\(x = 0\)</span> to <span class="math inline">\(x = y\)</span>, then</li>
+<li>Integrate the result from (1) over the full range of values <span class="math inline">\(y\)</span> can take on, that is, from <span class="math inline">\(y = 0\)</span> to <span class="math inline">\(y = 3\)</span></li>
+</ol></li>
+</ul>
+<p>Using the joint pdf <span class="math inline">\(f_{X,Y}(x,y)\)</span> that we obtained in earlier parts of the problem,</p>
+<p><span class="math display">\[
+f_{X,Y}(x,y) = 3C(x^2 + 2xy^2) = \frac{1}{44}(x^2 + 2xy^2),
+\]</span></p>
+<p>carrying out the math for <strong>Approach 1</strong> gives us the following result (skipping many many steps):</p>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(X \leq Y) &amp;= \int_{0}^{2}\int_{x}^{3}f_{X,Y}(x,y)~dy~dx \\
+&amp;= \frac{1}{132} \int_0^2 (9x^2 + 54x - 3x^3 - 2x^4)~dx \\
+&amp;= \frac{1}{132}\cdot \frac{536}{5} \approx 0.812~✅
+\end{align*}
+\]</span></p>
+<p>So far, we can at least be a bit assured by the fact that we’ve obtained a value between 0 and 1, hence a valid <strong>probability value</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>Carrying out the math for <strong>Approach 2</strong> in the same way, however, gives us something strange:</p>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(X \leq Y) &amp;= \int_{0}^{3}\int_{0}^{y}f_{X,Y}(x,y)~dx~dy \\
+&amp;= \frac{1}{132}\int_{0}^{3} y^3 + 3y^4 \\
+&amp;= \frac{1}{132}\cdot \frac{3321}{20} \approx 1.258~😳
+\end{align*}
+\]</span></p>
+<p>So what happened?</p>
+</section>
+<section id="finding-the-issue-by-thinking-geometrically" class="level2">
+<h2 class="anchored" data-anchor-id="finding-the-issue-by-thinking-geometrically">Finding The Issue By Thinking Geometrically</h2>
+<p>There are a lot of ways we could stop and try to diagnose what’s going on here, but the approach that helped me most in thinking through this problem was to <strong>plot out the space</strong> over which we’re integrating the joint pdf, <strong>geometrically</strong>:</p>
+<p>Here I create what is sometimes called a “mesh grid”, by running the <code>expand_grid()</code> function (from <code>tidyverse</code>, which <strong>replaces</strong> the base-R <code>expand.grid()</code> function you have already seen, but isn’t very different) to create a grid of points, where these points’ <span class="math inline">\(x\)</span> values are drawn from <code>x</code> and their <span class="math inline">\(y\)</span> values are drawn from <code>y</code>:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">2</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">3</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>xy_df <span class="ot">&lt;-</span> <span class="fu">expand_grid</span>(x, y)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first and last 6 rows</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>xy_df <span class="sc">|&gt;</span> <span class="fu">head</span>(); xy_df <span class="sc">|&gt;</span> <span class="fu">tail</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">x</th>
+<th style="text-align: right;">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.01</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.02</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.03</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.04</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">x</th>
+<th style="text-align: right;">y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2.95</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2.96</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2.97</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2.98</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2.99</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Next I use the <code>mutate()</code> function to create a new variable, <code>x_leq_y</code>, on the basis of this grid, and look at the count of the number of <strong>points</strong> in my grid which do and do not satisfy the boolean expression <code>x &lt;= y</code>:</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>xy_df <span class="ot">&lt;-</span> xy_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x_leq_y =</span> <span class="fu">as.numeric</span>(x <span class="sc">&lt;=</span> y)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>xy_df <span class="sc">|&gt;</span> <span class="fu">group_by</span>(x_leq_y) <span class="sc">|&gt;</span> <span class="fu">count</span>(<span class="at">.drop=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">x_leq_y</th>
+<th style="text-align: right;">n</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">20100</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">40401</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Finally, I use <code>ggplot</code> with the <code>geom_tile()</code> geometry to create a simple but helpful visualization of the <strong>subset</strong> of <span class="math inline">\([0,2] \times [0,3]\)</span> within which the boolean condition is <strong>true</strong> (and where I have explicitly drawn lines showing the <strong>boundaries</strong> within which the point <span class="math inline">\((x,y)\)</span> has a non-zero probability density, as well as the function <span class="math inline">\(f(x) = x\)</span>, which will both come in handy later):</p>
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(latex2exp)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(xy_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">factor</span>(x_leq_y))) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x) x) <span class="sc">+</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="fu">TeX</span>(<span class="st">"$X </span><span class="sc">\\</span><span class="st">leq Y$"</span>),</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"The Integration Space, in 2D"</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_discrete</span>(<span class="at">labels=</span><span class="fu">c</span>(<span class="st">"False"</span>,<span class="st">"True"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/plot-factor-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>And now let’s use this plot to think about what we’re doing in both <strong>Approach 1</strong> and <strong>Approach 2</strong>.</p>
+<section id="approach-1" class="level3">
+<h3 class="anchored" data-anchor-id="approach-1">Approach 1</h3>
+<p>To think through the double integral in this case, visually, I like to imagine “sweeping” over the space across one dimension when computing the <strong>inner</strong> integral, then “sweeping” over the space across the other dimension when computing the <strong>outer</strong> integral.</p>
+<p>Remember that the double integral in <strong>Approach 1</strong> was set up as follows:</p>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(X \leq Y) &amp;= \int_{0}^{2}\int_{x}^{3}f_{X,Y}(x,y)~dy~dx
+\end{align*}
+\]</span></p>
+<p>So, in this case, we can add some arrows to our plot to show the “sweeping” which is occurring when we compute the inner integral. Since the <strong>inner integral</strong> is from <span class="math inline">\(y = x\)</span> to <span class="math inline">\(y = 3\)</span>, I think of arrows sweeping upwards from the line <span class="math inline">\(y = x\)</span> to the (horizontal) line <span class="math inline">\(y = 3\)</span>.</p>
+<p>So, to make the diagram on the left side of the figure below, which represents the <strong>inner</strong> integral, I use:</p>
+<ul>
+<li><strong>Dashed yellow lines</strong> to represent the <strong>bounds</strong> between which we’re “sweeping”, and</li>
+<li><strong>Dashed arrows</strong> to represent the <strong>direction</strong> of the sweeping</li>
+</ul>
+<p>Then to make the diagram on the <strong>right</strong>, which represents the <strong>outer</strong> integral, I use:</p>
+<ul>
+<li><strong>Solid yellow lines</strong> to represent the <strong>bounds</strong> between which we’re sweeping, and</li>
+<li><strong>Solid arrows</strong> to represent the <strong>direction</strong> of the sweeping</li>
+</ul>
+<p>Which means that ultimately, after computing the two integrals, we have integrated over the <strong>region</strong> of the <span class="math inline">\(xy\)</span>-plane bounded by the dashed and solid yellow lines.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(latex2exp)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># blw = Boundary line width</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>blw <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># blc = Boundary line color</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>blc <span class="ot">&lt;-</span> <span class="st">'yellow'</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>a1_inner_xvals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="fl">1.95</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>a1_inner_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x=</span>a1_inner_xvals)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>a1_inner_df <span class="ot">&lt;-</span> a1_inner_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> x,</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> x,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> <span class="dv">3</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>a1_inner_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">factor</span>(x_leq_y))) <span class="sc">+</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x) x) <span class="sc">+</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a1_inner_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'dashed'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, lower bound</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">2</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, upper bound</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A1.1: Inner Integral"</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>a1_outer_yvals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>, <span class="fl">2.5</span>, <span class="fl">2.95</span>)</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>a1_outer_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">y=</span>a1_outer_yvals)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>a1_outer_df <span class="ot">&lt;-</span> a1_outer_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> y,</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="dv">0</span>,</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> <span class="dv">2</span></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>a1_outer_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">factor</span>(x_leq_y))) <span class="sc">+</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a1_inner_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'dashed'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a1_outer_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'solid'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x) x) <span class="sc">+</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, lower bound</span></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">2</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb5-52"><a href="#cb5-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, upper bound</span></span>
+<span id="cb5-53"><a href="#cb5-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb5-54"><a href="#cb5-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Outer integral, lower bound</span></span>
+<span id="cb5-55"><a href="#cb5-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'solid'</span>) <span class="sc">+</span></span>
+<span id="cb5-56"><a href="#cb5-56" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Outer integral, upper bound</span></span>
+<span id="cb5-57"><a href="#cb5-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'solid'</span>) <span class="sc">+</span></span>
+<span id="cb5-58"><a href="#cb5-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb5-59"><a href="#cb5-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb5-60"><a href="#cb5-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-61"><a href="#cb5-61" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A1.2: Outer Integral"</span></span>
+<span id="cb5-62"><a href="#cb5-62" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb5-63"><a href="#cb5-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span>
+<span id="cb5-64"><a href="#cb5-64" aria-hidden="true" tabindex="-1"></a>a1_inner_plot <span class="sc">+</span> a1_outer_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/plot-a1-inner-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Note how, since the <strong>inner integral</strong> in this case already <strong>excluded</strong> all points lying beneath the line <span class="math inline">\(y = x\)</span> (the dashed yellow diagonal line), it actually didn’t matter that our <strong>outer</strong> integral went over this “boundary line”: the overall result of the double-integration only sums up the values of the pdf in the range <strong>bounded by the yellow lines</strong>. In other words, even though the outer integral does “sweep” over the dashed yellow diagonal <span class="math inline">\(y = x\)</span> line, thus sweeping outside of the range of valid values of <span class="math inline">\(x\)</span>, it did not have any density here to sum up, since all of the probability density in this red triangle had been left out of the inner integral.</p>
+<p><em>(If that last paragraph didn’t make sense to you, don’t worry about it! Just stick to the pictures for intuition)</em></p>
+</section>
+<section id="approach-2" class="level3">
+<h3 class="anchored" data-anchor-id="approach-2">Approach 2</h3>
+<p>On the other hand, recall that the double integral in <strong>Approach 2</strong> was set up as follows:</p>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(X \leq Y) &amp;= \int_{0}^{3}\int_{0}^{y}f_{X,Y}(x,y)~dx~dy
+\end{align*}
+\]</span></p>
+<p>Given <strong>this</strong> double integral setup, we can employ this same way of thinking about integration (as “sweeping” across a dimension) to obtain the following diagram, which helps illustrate why we obtain a value <strong>greater than 1</strong> in this case:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>a2_inner_yvals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>, <span class="fl">2.5</span>, <span class="fl">2.95</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>a2_inner_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">y=</span>a2_inner_yvals)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>a2_inner_df <span class="ot">&lt;-</span> a2_inner_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> y,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fl">0.05</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> y</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>ribbon_xvals <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">2</span>, <span class="at">to =</span> <span class="dv">3</span>, <span class="at">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>ribbon_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x=</span>ribbon_xvals, <span class="at">y=</span>ribbon_xvals)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>a2_inner_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">factor</span>(x_leq_y))) <span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a2_inner_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'dashed'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>ribbon_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">ymin=</span>y, <span class="at">ymax=</span><span class="dv">3</span>), <span class="at">alpha=</span><span class="fl">0.333</span>) <span class="sc">+</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span><span class="cf">function</span>(x) x) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, lower bound</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, upper bound</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">3</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A2.1: Inner Integral"</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>a2_outer_xvals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="fl">1.95</span>, <span class="fl">2.5</span>, <span class="fl">2.95</span>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>a2_outer_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x=</span>a2_outer_xvals)</span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>a2_outer_df <span class="ot">&lt;-</span> a2_outer_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> x,</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">0</span>,</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> <span class="fl">2.95</span></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>a2_outer_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">factor</span>(x_leq_y))) <span class="sc">+</span></span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a2_inner_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'dashed'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a2_outer_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'solid'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>ribbon_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">ymin=</span>y, <span class="at">ymax=</span><span class="dv">3</span>), <span class="at">alpha=</span><span class="fl">0.333</span>) <span class="sc">+</span></span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span><span class="cf">function</span>(x) x) <span class="sc">+</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, lower bound</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, upper bound</span></span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">3</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Outer integral, lower bound</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">3</span>, <span class="at">yend=</span><span class="dv">0</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'solid'</span>) <span class="sc">+</span></span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Outer integral, upper bound</span></span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">3</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'solid'</span>) <span class="sc">+</span></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A2.2: Outer Integral"</span></span>
+<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span>
+<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>a2_inner_plot <span class="sc">+</span> a2_outer_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/plot-a2-inner-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So we see that, whereas in <strong>Approach 1</strong> everything worked out since the line <span class="math inline">\(y = x\)</span> was suitable as a mathematical representation of the entire lower bound of <span class="math inline">\(y\)</span>, here in <strong>Approach 2</strong> we <strong>cannot</strong> use the line <span class="math inline">\(y = x\)</span> on its own to characterize the <strong>upper</strong> bound on <span class="math inline">\(x\)</span>, since this will include the grey triangle in the diagram above as part of the region over which we’re integrating the joint pdf.</p>
+</section>
+</section>
+<section id="fixing-the-issue" class="level2">
+<h2 class="anchored" data-anchor-id="fixing-the-issue">Fixing The Issue</h2>
+<section id="a-technically-correct-fix" class="level3">
+<h3 class="anchored" data-anchor-id="a-technically-correct-fix">A Technically-Correct Fix</h3>
+<p>Thinking through the above statement a bit further: if we want to “integrate out” the <span class="math inline">\(x\)</span> variable, the upper bound on <span class="math inline">\(x\)</span> should instead be <span class="math inline">\(\min(2, y)\)</span>. In other words, by looking at the above diagram, we can see that the following <strong>modification</strong> to our integral in Approach 2 would technically “work” to fix the problem, if it was easy to compute:</p>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(X \leq Y) &amp;= \int_{0}^{3}\int_{0}^{\min(2, y)}f_{X,Y}(x,y)~dx~dy
+\end{align*}
+\]</span></p>
+<p>One way of thinking about this is, if we had set our upper bounds in <strong>Approach 2</strong> this way, the diagram showing the “sweeping” over the <span class="math inline">\(x\)</span> dimension would instead look like the following, where the yellow line traces out <span class="math inline">\(x = \min(2,y)\)</span> instead of <span class="math inline">\(x = y\)</span> (the black line):</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>a2_inner_df_fixed <span class="ot">&lt;-</span> a2_inner_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">xend =</span> <span class="fu">ifelse</span>(xend <span class="sc">&gt;=</span> <span class="dv">2</span>, <span class="dv">2</span>, xend)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>a2_fixed_inner_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">factor</span>(x_leq_y))) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a2_inner_df_fixed, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'dashed'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>ribbon_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">ymin=</span>y, <span class="at">ymax=</span><span class="dv">3</span>), <span class="at">alpha=</span><span class="fl">0.333</span>) <span class="sc">+</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span><span class="cf">function</span>(x) x) <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, lower bound</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, upper bound, segment 1</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">2</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, upper bound, segment 2</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">2</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A2.1: Inner Integral"</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>a2_outer_df_fixed <span class="ot">&lt;-</span> a2_outer_df <span class="sc">|&gt;</span> <span class="fu">filter</span>(x <span class="sc">&lt;=</span> <span class="dv">2</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>a2_fixed_outer_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">factor</span>(x_leq_y))) <span class="sc">+</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a2_inner_df_fixed, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'dashed'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a2_outer_df_fixed, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'solid'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>ribbon_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">ymin=</span>y, <span class="at">ymax=</span><span class="dv">3</span>), <span class="at">alpha=</span><span class="fl">0.333</span>) <span class="sc">+</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span><span class="cf">function</span>(x) x) <span class="sc">+</span></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, lower bound</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, upper bound, segment 1</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">2</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Inner integral, upper bound, segment 2</span></span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">2</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Outer integral, lower bound</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'solid'</span>) <span class="sc">+</span></span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Outer integral, upper bound</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span>blc, <span class="at">linewidth=</span>blw, <span class="at">linetype=</span><span class="st">'solid'</span>) <span class="sc">+</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A2.2: Outer Integral"</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>a2_fixed_inner_plot <span class="sc">+</span> a2_fixed_outer_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/plot-a2-fixed-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="avoiding-min-a-quick-fix" class="level3">
+<h3 class="anchored" data-anchor-id="avoiding-min-a-quick-fix">Avoiding <span class="math inline">\(\min()\)</span>: A Quick Fix</h3>
+<p>Since including fancy functions like <span class="math inline">\(\min()\)</span> and/or <span class="math inline">\(\max()\)</span> in our integral bounds makes things more complicated (to me, at least), one “quick fix” way to handle this would be to just take the result of the original Approach 2 integral and <strong>subtract out</strong> the integral of the joint pdf <strong>within</strong> the grey triangle in the above diagrams.</p>
+</section>
+<section id="a-more-practicalcorrect-approach" class="level3">
+<h3 class="anchored" data-anchor-id="a-more-practicalcorrect-approach">A More Practical/“Correct” Approach</h3>
+<p>However, the more “correct” way in a sense would be to ensure that we are <strong>never integrating over an area that is not in the support of <span class="math inline">\((X,Y)\)</span></strong>. To accomplish this, we can observe that our Approach 2 integral <strong>would have worked</strong> and <strong>would have integrated only over the support of <span class="math inline">\((X,Y)\)</span></strong> if we had broken it up as follows:</p>
+<p><span class="math display">\[
+\Pr(X \leq Y) = \int_{0}^{2}\int_{0}^{y}f_{X,Y}(x,y)~dx~dy + \int_{2}^{3}\int_{0}^{2}f_{X,Y}(x,y)~dx~dy
+\]</span></p>
+<p>Thus we’ll call this way of integrating <strong>Approach 3</strong>, which can be visualized as follows:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a31_inner_yvals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="fl">1.95</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>a31_inner_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">y=</span>a31_inner_yvals)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>a31_inner_df <span class="ot">&lt;-</span> a31_inner_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> y,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="fl">0.05</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> y</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>a31_outer_xvals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="fl">1.95</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>a31_outer_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x=</span>a31_outer_xvals)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>a31_outer_df <span class="ot">&lt;-</span> a31_outer_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> x,</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="fl">0.05</span>,</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> <span class="dv">2</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>a31_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">factor</span>(x_leq_y))) <span class="sc">+</span></span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a31_inner_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'dashed'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a31_outer_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'solid'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span><span class="cf">function</span>(x) x) <span class="sc">+</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Lower bound, inner integral</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"yellow"</span>, <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Upper bound, inner integral</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"yellow"</span>, <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Lower bound, outer integral</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>, <span class="at">color=</span><span class="st">"yellow"</span>, <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">linetype=</span><span class="st">'solid'</span>) <span class="sc">+</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">2</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"yellow"</span>, <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">linetype=</span><span class="st">'solid'</span>) <span class="sc">+</span></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A3.1: First Integral"</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>a32_inner_yvals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.05</span>, <span class="fl">2.5</span>, <span class="fl">2.95</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>a32_inner_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">y=</span>a32_inner_yvals)</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>a32_inner_df <span class="ot">&lt;-</span> a32_inner_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> y,</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="dv">0</span>,</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> <span class="fl">1.95</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>a32_outer_xvals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="fl">1.95</span>)</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>a32_outer_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x=</span>a32_outer_xvals)</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>a32_outer_df <span class="ot">&lt;-</span> a32_outer_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    <span class="at">xend =</span> x,</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="dv">2</span>,</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">yend =</span> <span class="fl">2.95</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>a32_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(xy_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">fill=</span><span class="fu">factor</span>(x_leq_y))) <span class="sc">+</span></span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a32_inner_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'dashed'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">data=</span>a32_outer_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">xend=</span>xend, <span class="at">yend=</span>yend), <span class="at">linetype=</span><span class="st">'solid'</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"cm"</span>))) <span class="sc">+</span></span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Lower bound of inner integral</span></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">2</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">"yellow"</span>, <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">2</span>, <span class="at">y=</span><span class="dv">2</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">"yellow"</span>, <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">linetype=</span><span class="st">'dashed'</span>) <span class="sc">+</span></span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">3</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">3</span>, <span class="at">color=</span><span class="st">"yellow"</span>, <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">linetype=</span><span class="st">'solid'</span>) <span class="sc">+</span></span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">2</span>, <span class="at">xend=</span><span class="dv">2</span>, <span class="at">yend=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">'yellow'</span>, <span class="at">linewidth=</span><span class="dv">1</span>, <span class="at">linetype=</span><span class="st">'solid'</span>) <span class="sc">+</span></span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span><span class="cf">function</span>(x) x) <span class="sc">+</span></span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_fixed</span>() <span class="sc">+</span></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"A3.2: Second Integral"</span></span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove_legend</span>()</span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>a31_plot <span class="sc">+</span> a32_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/a3-integral-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>So we see that the following steps give us the correct result:</p>
+<ul>
+<li>We <strong>first</strong> integrate the joint pdf over the region displayed on the left: the triangle with vertices at <span class="math inline">\((0,0)\)</span>, <span class="math inline">\((0,2)\)</span>, and <span class="math inline">\((2,2)\)</span>)</li>
+<li>We then integrate the joint pdf <strong>separately</strong> over the region displayed on the right: the square with vertices at <span class="math inline">\((0,2)\)</span>, <span class="math inline">\((0,3)\)</span>, <span class="math inline">\((2,2)\)</span>, and <span class="math inline">\((2,3)\)</span></li>
+<li>And then we obtain the <strong>total density of the pdf within the admissible (green) region</strong> by <strong>adding</strong> these two results together</li>
+</ul>
+<p>Mathematically, this gives us (skipping many steps like we did before):</p>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(X \leq Y) &amp;= \int_{0}^{2}\int_{0}^{y}f_{X,Y}(x,y)~dx~dy + \int_{2}^{3}\int_{0}^{2}f_{X,Y}(x,y)~dx~dy \\
+&amp;= \frac{29}{165} + \frac{7}{11} = \frac{134}{165} \approx 0.812,
+\end{align*}
+\]</span></p>
+<p>matching the result from our original integral, performed in the opposite order.</p>
+<p>Hopefully this way of breaking down the relationship between integration and probability can help you out: if you find yourself staring at a problem for too long, try breaking your brain out of the rut by seeing if diagrams like the above can help you reason through what the bounds of your integrals should be 😎</p>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Note that this <strong>does not mean we are necessarily <em>correct</em>!</strong> It just means that our result doesn’t “break” any laws of probability.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/writeups/order-of-integration/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

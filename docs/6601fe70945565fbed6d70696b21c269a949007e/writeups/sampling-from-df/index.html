@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Jeff Jacobs">
-<meta name="dcterms.date" content="2024-08-30">
+<meta name="dcterms.date" content="2024-09-19">
 
 <title>Two Ways of Sampling from a Data Frame – DSAN 5100-03</title>
 <style>
@@ -181,6 +181,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Week 4: Sep 17</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../w05/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 5: Sep 24</span></a>
+  </div>
+</li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -240,7 +246,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 <div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
-<p><em>Updated 2024-09-17, 06:28:42 PM</em></p>
+<p><em>Updated 2024-09-19, 09:31:44 PM</em></p>
 </div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -287,7 +293,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">August 30, 2024</p>
+      <p class="date">September 19, 2024</p>
     </div>
   </div>
   
@@ -300,9 +306,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>A few students have run into issues when trying to use the <code>sample()</code> function, from base-R, to sample from a full <code>data.frame</code> or <code>tibble</code>. In this writeup I’ll argue that this is a case where using a function from the <code>tidyverse</code> called <a href="https://dplyr.tidyverse.org/reference/slice.html" target="_blank">slice_sample()</a> will make your life much easier, but I will also show how to do this sampling using only base-R functions.</p>
-<p>Before we start, we make sure to use <code>set.seed(5000)</code> at the beginning, so that your grader gets the same results as you do even when working with random processes!</p>
+<p>Before we start, we make sure to use <code>set.seed(5100)</code> at the beginning, so that your grader gets the same results as you do even when working with random processes!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="creating-a-deck-of-cards-using-expand.grid" class="level2">
 <h2 class="anchored" data-anchor-id="creating-a-deck-of-cards-using-expand.grid">Creating a Deck of Cards Using <code>expand.grid()</code></h2>
@@ -376,9 +382,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Using the "fancier" pipe operator (%&gt;%)</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>deck_sample_df <span class="ot">&lt;-</span> deck_df <span class="sc">%&gt;%</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">12</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>deck_sample_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>deck_sample_df <span class="ot">&lt;-</span> deck_df <span class="sc">|&gt;</span> <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">12</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>deck_sample_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="kable-table">
@@ -391,52 +396,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Ace</td>
+<td style="text-align: left;">Seven</td>
 <td style="text-align: left;">Spades</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Two</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ace</td>
+<td style="text-align: left;">Hearts</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Eight</td>
+<td style="text-align: left;">Diamonds</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ace</td>
+<td style="text-align: left;">Clubs</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Five</td>
-<td style="text-align: left;">Hearts</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Four</td>
-<td style="text-align: left;">Spades</td>
+<td style="text-align: left;">Five</td>
+<td style="text-align: left;">Clubs</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Jack</td>
+<td style="text-align: left;">Nine</td>
 <td style="text-align: left;">Spades</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Nine</td>
-<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Eight</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Seven</td>
 <td style="text-align: left;">Clubs</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Ten</td>
-<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Five</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Queen</td>
-<td style="text-align: left;">Clubs</td>
-</tr>
-<tr class="odd">
 <td style="text-align: left;">King</td>
-<td style="text-align: left;">Spades</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Two</td>
-<td style="text-align: left;">Spades</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Three</td>
-<td style="text-align: left;">Spades</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Spades</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 </tbody>
 </table>
@@ -459,51 +464,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">Four</td>
+<td style="text-align: left;">Nine</td>
 <td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Five</td>
-<td style="text-align: left;">Clubs</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Four</td>
-<td style="text-align: left;">Clubs</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Five</td>
+<td style="text-align: left;">Ten</td>
 <td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">King</td>
-<td style="text-align: left;">Spades</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">King</td>
-<td style="text-align: left;">Diamonds</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Five</td>
-<td style="text-align: left;">Spades</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Two</td>
-<td style="text-align: left;">Clubs</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Queen</td>
+<td style="text-align: left;">Nine</td>
 <td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">Eight</td>
-<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Jack</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Jack</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">King</td>
+<td style="text-align: left;">Spades</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Eight</td>
 <td style="text-align: left;">Spades</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Ace</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">Eight</td>
+<td style="text-align: left;">Diamonds</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Five</td>
+<td style="text-align: left;">Diamonds</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ace</td>
+<td style="text-align: left;">Hearts</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Four</td>
 <td style="text-align: left;">Clubs</td>
 </tr>
 </tbody>
@@ -524,376 +529,376 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <thead>
 <tr class="header">
 <th style="text-align: left;">Suit</th>
-<th style="text-align: left;">Rank</th>
 <th style="text-align: left;">Suit.1</th>
-<th style="text-align: left;">Rank.1</th>
-<th style="text-align: left;">Rank.2</th>
+<th style="text-align: left;">Rank</th>
+<th style="text-align: left;">Suit.2</th>
+<th style="text-align: left;">Suit.3</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Ace</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Ace</td>
-<td style="text-align: left;">Ace</td>
+<td style="text-align: left;">Hearts</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Two</td>
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Two</td>
-<td style="text-align: left;">Two</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Three</td>
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Three</td>
-<td style="text-align: left;">Three</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Four</td>
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Four</td>
-<td style="text-align: left;">Four</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Five</td>
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Five</td>
-<td style="text-align: left;">Five</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Six</td>
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Six</td>
-<td style="text-align: left;">Six</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Seven</td>
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Seven</td>
-<td style="text-align: left;">Seven</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Eight</td>
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Eight</td>
-<td style="text-align: left;">Eight</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Nine</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Nine</td>
-<td style="text-align: left;">Nine</td>
+<td style="text-align: left;">Hearts</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Ten</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Ten</td>
-<td style="text-align: left;">Ten</td>
+<td style="text-align: left;">Hearts</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Jack</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Jack</td>
+<td style="text-align: left;">Hearts</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">Queen</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">Queen</td>
-<td style="text-align: left;">Queen</td>
+<td style="text-align: left;">Hearts</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Hearts</td>
-<td style="text-align: left;">King</td>
 <td style="text-align: left;">Hearts</td>
 <td style="text-align: left;">King</td>
-<td style="text-align: left;">King</td>
+<td style="text-align: left;">Hearts</td>
+<td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Ace</td>
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Ace</td>
-<td style="text-align: left;">Ace</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Two</td>
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Two</td>
-<td style="text-align: left;">Two</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Three</td>
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Three</td>
-<td style="text-align: left;">Three</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Four</td>
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Four</td>
-<td style="text-align: left;">Four</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Five</td>
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Five</td>
-<td style="text-align: left;">Five</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Six</td>
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Six</td>
-<td style="text-align: left;">Six</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Seven</td>
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Seven</td>
-<td style="text-align: left;">Seven</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Eight</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Eight</td>
-<td style="text-align: left;">Eight</td>
+<td style="text-align: left;">Diamonds</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Nine</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Nine</td>
-<td style="text-align: left;">Nine</td>
+<td style="text-align: left;">Diamonds</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Ten</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Ten</td>
-<td style="text-align: left;">Ten</td>
+<td style="text-align: left;">Diamonds</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Jack</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Jack</td>
+<td style="text-align: left;">Diamonds</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">Queen</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">Queen</td>
-<td style="text-align: left;">Queen</td>
+<td style="text-align: left;">Diamonds</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Diamonds</td>
-<td style="text-align: left;">King</td>
 <td style="text-align: left;">Diamonds</td>
 <td style="text-align: left;">King</td>
-<td style="text-align: left;">King</td>
+<td style="text-align: left;">Diamonds</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Ace</td>
 <td style="text-align: left;">Clubs</td>
 <td style="text-align: left;">Ace</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Two</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Three</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Four</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Five</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Six</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Seven</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Eight</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Nine</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Ten</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Jack</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Queen</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">King</td>
+<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Spades</td>
+<td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Ace</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Two</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Two</td>
-<td style="text-align: left;">Two</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Three</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Three</td>
-<td style="text-align: left;">Three</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Four</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Four</td>
-<td style="text-align: left;">Four</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Five</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Five</td>
-<td style="text-align: left;">Five</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Six</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Six</td>
-<td style="text-align: left;">Six</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Seven</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Seven</td>
-<td style="text-align: left;">Seven</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Eight</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Eight</td>
-<td style="text-align: left;">Eight</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Nine</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Nine</td>
-<td style="text-align: left;">Nine</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Ten</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Ten</td>
-<td style="text-align: left;">Ten</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Jack</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Queen</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">Queen</td>
-<td style="text-align: left;">Queen</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">King</td>
-<td style="text-align: left;">Clubs</td>
-<td style="text-align: left;">King</td>
-<td style="text-align: left;">King</td>
-</tr>
-<tr class="even">
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Ace</td>
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Ace</td>
-<td style="text-align: left;">Ace</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Two</td>
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Two</td>
-<td style="text-align: left;">Two</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Three</td>
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Three</td>
-<td style="text-align: left;">Three</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Four</td>
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Four</td>
-<td style="text-align: left;">Four</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Five</td>
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Five</td>
-<td style="text-align: left;">Five</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Six</td>
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Six</td>
-<td style="text-align: left;">Six</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Seven</td>
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Seven</td>
-<td style="text-align: left;">Seven</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Eight</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Eight</td>
-<td style="text-align: left;">Eight</td>
+<td style="text-align: left;">Spades</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Nine</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Nine</td>
-<td style="text-align: left;">Nine</td>
+<td style="text-align: left;">Spades</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Ten</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Ten</td>
-<td style="text-align: left;">Ten</td>
+<td style="text-align: left;">Spades</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Jack</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Jack</td>
-<td style="text-align: left;">Jack</td>
+<td style="text-align: left;">Spades</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">Queen</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">Queen</td>
-<td style="text-align: left;">Queen</td>
+<td style="text-align: left;">Spades</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">Spades</td>
-<td style="text-align: left;">King</td>
 <td style="text-align: left;">Spades</td>
 <td style="text-align: left;">King</td>
-<td style="text-align: left;">King</td>
+<td style="text-align: left;">Spades</td>
+<td style="text-align: left;">Spades</td>
 </tr>
 </tbody>
 </table>
@@ -915,29 +920,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">24</td>
-<td style="text-align: left;">Jack</td>
+<td style="text-align: left;">15</td>
+<td style="text-align: left;">Two</td>
 <td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">19</td>
-<td style="text-align: left;">Six</td>
-<td style="text-align: left;">Diamonds</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">25</td>
-<td style="text-align: left;">Queen</td>
-<td style="text-align: left;">Diamonds</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">19.1</td>
-<td style="text-align: left;">Six</td>
-<td style="text-align: left;">Diamonds</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">3</td>
+<td style="text-align: left;">16</td>
 <td style="text-align: left;">Three</td>
+<td style="text-align: left;">Diamonds</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">37</td>
+<td style="text-align: left;">Jack</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">8</td>
+<td style="text-align: left;">Eight</td>
 <td style="text-align: left;">Hearts</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">32</td>
+<td style="text-align: left;">Six</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">51</td>
+<td style="text-align: left;">Queen</td>
+<td style="text-align: left;">Spades</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">42</td>
+<td style="text-align: left;">Three</td>
+<td style="text-align: left;">Spades</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">34</td>
+<td style="text-align: left;">Eight</td>
+<td style="text-align: left;">Clubs</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">26</td>
+<td style="text-align: left;">King</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">10</td>
@@ -945,49 +970,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: left;">Hearts</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">31</td>
-<td style="text-align: left;">Five</td>
-<td style="text-align: left;">Clubs</td>
+<td style="text-align: left;">19</td>
+<td style="text-align: left;">Six</td>
+<td style="text-align: left;">Diamonds</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">11</td>
-<td style="text-align: left;">Jack</td>
+<td style="text-align: left;">14</td>
+<td style="text-align: left;">Ace</td>
+<td style="text-align: left;">Diamonds</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">7</td>
+<td style="text-align: left;">Seven</td>
 <td style="text-align: left;">Hearts</td>
 </tr>
-<tr class="odd">
-<td style="text-align: left;">47</td>
-<td style="text-align: left;">Eight</td>
-<td style="text-align: left;">Spades</td>
-</tr>
 <tr class="even">
-<td style="text-align: left;">39</td>
-<td style="text-align: left;">King</td>
-<td style="text-align: left;">Clubs</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">39.1</td>
-<td style="text-align: left;">King</td>
-<td style="text-align: left;">Clubs</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">43</td>
-<td style="text-align: left;">Four</td>
+<td style="text-align: left;">49</td>
+<td style="text-align: left;">Ten</td>
 <td style="text-align: left;">Spades</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">22</td>
 <td style="text-align: left;">Nine</td>
 <td style="text-align: left;">Diamonds</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">9</td>
-<td style="text-align: left;">Nine</td>
-<td style="text-align: left;">Hearts</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">27</td>
-<td style="text-align: left;">Ace</td>
-<td style="text-align: left;">Clubs</td>
 </tr>
 </tbody>
 </table>
@@ -999,7 +1004,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sample</span>(<span class="fu">nrow</span>(deck_df), <span class="dv">15</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] 30 32 30 46  7 30 46 27 21 42 25 26 17 35  4</code></pre>
+<pre><code> [1] 37 42 28 29 45 16 20 41 34 25 44 37 35 29 48</code></pre>
 </div>
 </div>
 <p>We see that, in fact, we are not really sampling from the <code>data.frame</code> itself, so much as sampling from a list of its <strong>indices</strong> (from 1 to 52), and then <strong>after</strong> performing this sample we are going and asking R to give us the rows at the indices that ended up in this sample. Keeping this distinction in mind (between the <strong>rows themselves</strong> and their <strong>indices</strong>) can be helpful for debugging code like this.</p>

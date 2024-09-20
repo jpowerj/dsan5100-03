@@ -17,11 +17,11 @@ execute:
 
 A few students have run into issues when trying to use the `sample()` function, from base-R, to sample from a full `data.frame` or `tibble`. In this writeup I'll argue that this is a case where using a function from the `tidyverse` called [slice_sample()](https://dplyr.tidyverse.org/reference/slice.html){target="_blank"} will make your life much easier, but I will also show how to do this sampling using only base-R functions.
 
-Before we start, we make sure to use `set.seed(5000)` at the beginning, so that your grader gets the same results as you do even when working with random processes!
+Before we start, we make sure to use `set.seed(5100)` at the beginning, so that your grader gets the same results as you do even when working with random processes!
 
 ```{r}
 #| label: set-seed
-set.seed(5000)
+set.seed(5100)
 ```
 
 ## Creating a Deck of Cards Using `expand.grid()`
@@ -62,8 +62,7 @@ The following code uses the **pipe operator** `%>%` to take the `data.frame`, `d
 #| code-fold: show
 #| warning: false
 library(tidyverse)
-# Using the "fancier" pipe operator (%>%)
-deck_sample_df <- deck_df %>% slice_sample(n = 12, replace = TRUE)
+deck_sample_df <- deck_df |> slice_sample(n = 12, replace = TRUE)
 deck_sample_df
 ```
 
