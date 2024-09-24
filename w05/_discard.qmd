@@ -1,0 +1,12 @@
+* If we **really** want to get something like the "probability of a value" in a continuous space 😪, we can get something kind of like this by using fancy limits
+  $$
+  f_X(v) = \lim_{\varepsilon \to 0}\frac{P(X \in [v-\varepsilon, v + \varepsilon])}{2\varepsilon} = \lim_{\varepsilon \to 0}\frac{F(v + \varepsilon) - F(v - \varepsilon)}{2\varepsilon} = \frac{d}{dx}F_X(v)
+  $$
+
+---
+
+## What is a pdf?
+
+* Answer: Has no meaning on its own, outside of its **context**, i.e., relative to a CDF!
+* The **CDF** of a random variable $X$ provides us with its **distribution**: its possible values $v_X \in \mathcal{R}_X$ 
+* The **pdf** then helps us compute things about $X$

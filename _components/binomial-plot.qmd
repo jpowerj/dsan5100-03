@@ -1,5 +1,4 @@
 ```{r}
-#| label: binomial-demo
 #| echo: true
 #| code-fold: true
 #| fig-align: center

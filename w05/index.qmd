@@ -6,6 +6,7 @@ institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@g
 date: 2024-09-24
 date-format: full
 lecnum: 5
+bibliography: "../_DSAN5100.bib"
 categories:
   - "Class Sessions"
 format:
@@ -49,12 +50,9 @@ format:
 
 :::
 
+# Probability Distributions in General {data-stack-name="Probability Distributions"}
 
-# Recap / Continuous Probability {data-stack-name="Recap"}
-
-* Continuous vs. Discrete
-* What things have distributions?
-* CDFs, pdfs, pmfs
+{{< include ../dsan-globals/_tex.globals.qmd >}}
 
 ::: {.hidden}
 
@@ -65,31 +63,280 @@ source("../dsan-globals/_globals.r")
 
 :::
 
-{{< include ../dsan-globals/_tex.globals.qmd >}}
+## Discrete vs. Continuous {.smaller .math-80 .inline-90 .crunch-ul .crunch-img .crunch-title .crunch-math .crunch-cell-output .crunch-quarto-figure}
 
-## From Last Week {.smaller .crunch-title .crunch-figures .crunch-math .smaller-math}
+::: columns
+::: {.column width="50%"}
 
-::: {layout-ncol=2}
+* **Discrete** = "Easy mode": Based (intuitively) on **sets**
+* $\Pr(A)$: Four equally-likely marbles $\{A, B, C, D\}$ in box, what is probability I pull out $A$?
 
-::: {#fig-discrete}
+```{r}
+#| label: discrete-prob-plot
+#| fig-height: 5.5
+library(tibble)
+library(ggplot2)
+disc_df <- tribble(
+  ~x, ~y, ~label,
+  0, 0, "A",
+  0, 1, "B",
+  1, 0, "C",
+  1, 1, "D"
+)
+ggplot(disc_df, aes(x=x, y=y, label=label)) +
+    geom_point(size=g_pointsize) +
+    geom_text(
+      size=g_textsize,
+      hjust=1.5,
+      vjust=-0.5
+    ) +
+    xlim(-0.5,1.5) + ylim(-0.5,1.5) +
+    coord_fixed() +
+    dsan_theme("quarter") +
+    labs(
+      title="Discrete Probability Space in N"
+    )
+```
 
-{{< include ../_components/discrete-space.qmd >}}
+$$
+\Pr(A) = \underset{\mathclap{\small \text{Probability }\textbf{mass}}}{\boxed{\frac{|\{A\}|}{|\Omega|}}} = \frac{1}{|\{A,B,C,D\}|} = \frac{1}{4}
+$$
 
-Visual and mathematical intuition for events in a **discrete** probability space
+:::
+::: {.column width="50%"}
+
+* **Continuous** = "Hard mode": Based (intuitively) on **areas**
+* $\Pr(A)$: Throw dart at random point in square, what is probability I hit $\require{enclose}\enclose{circle}{\textsf{A}}$?
+
+```{r}
+#| label: continuous-prob-plot
+#| fig-height: 6
+library(ggforce)
+ggplot(disc_df, aes(x=x, y=y, label=label)) +
+    xlim(-0.5,1.5) + ylim(-0.5,1.5) +
+    geom_rect(aes(xmin = -0.5, xmax = 1.5, ymin = -0.5, ymax = 1.5), fill=cbPalette[1], color="black", alpha=0.3) +
+    geom_circle(aes(x0=x, y0=y, r=0.25), fill=cbPalette[2]) +
+    coord_fixed() +
+    dsan_theme("quarter") +
+    geom_text(
+      size=g_textsize,
+      #hjust=1.75,
+      #vjust=-0.75
+    ) +
+    geom_text(
+      data=data.frame(label="Ω"),
+      aes(x=-0.4,y=1.39),
+      parse=TRUE,
+      size=10
+    ) +
+    labs(
+      title=expression("Continuous Probability Space in "*R^2)
+    )
+```
+
+$$
+\Pr(A) = \underset{\mathclap{\small \text{Probability }\textbf{density}}}{\boxed{\frac{\text{Area}(\{A\})}{\text{Area}(\Omega)}}} = \frac{\pi r^2}{s^2} = \frac{\pi \left(\frac{1}{4}\right)^2}{4} = \frac{\pi}{64}
+$$
+
+:::
 :::
 
-::: {#fig-continuous}
+## The Technical Difference tl;dr {.smaller .math-80 .crunch-title .crunch-math-less .crunch-ul}
 
-{{< include ../_components/continuous-space.qmd >}}
+* **Countable** Sets: Can be put into 1-to-1 correspondence with **natural numbers** $\mathbb{N}$
+  * What are you doing when you're counting? Saying "first", "second", "third", ...
+  * You're pairing each object with a natural number! $\{(\texttt{a},1),(\texttt{b},2),\ldots,(\texttt{z},26)\}$
+  <!-- f(\texttt{a}) = 1, f^{-1}(1) = \texttt{a}$, $f(\texttt{b}) = 2, f^{-1}(2) = \texttt{b}$, ... -->
+* **Uncountable** Sets: Can't be put into 1-to-1 correspondence with natural numbers.
+* **$\mathbb{R}$ is uncountable**. *Intuition*: Try counting the real numbers. *Proof*
+$$
+\text{Assume }\exists \, (f: \mathbb{R} \leftrightarrow \mathbb{N}):
+\begin{array}{|c|c|c|c|c|c|c|}\hline
+\mathbb{R} & & & & & & \Leftrightarrow \mathbb{N} \\ \hline
+\color{orange}{3} & . & 1 & 4 & 1 & \cdots & \Leftrightarrow 1 \\\hline
+4 & . & \color{orange}{9} & 9 & 9 & \cdots & \Leftrightarrow 2 \\\hline
+0 & . & 1 & \color{orange}{2} & 3 & \cdots &\Leftrightarrow 3 \\\hline
+1 & . & 2 & 3 & \color{orange}{4} & \cdots & \Leftrightarrow 4 \\\hline
+\vdots & \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\\hline
+\end{array} \overset{\color{blue}{y_{[i]}} = \color{orange}{x_{[i]}} \overset{\mathbb{Z}_{10}}{+} 1}{\underset{😈}{\longrightarrow}} \color{blue}{y = 4.035 \ldots} \Leftrightarrow \; ?
+$$
 
-Visual and mathematical intuition for events a **continuous** probability space
+::: {.aside}
+
+**Fun math challenge**: Is $\mathbb{Q}$ countable? See [this appendix slide](#appendix-countability-of-mathbbq) for why the answer is yes, despite the fact that $\forall x, y \in \mathbb{Q} \left[ \frac{x+y}{2} \in \mathbb{Q} \right]$❗️ The method used in the above proof is called [**Cantor diagonalization**](https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument){target="_blank"}
+
 :::
 
+## The Practical Difference {.smaller}
+
+* This part of the course (**discrete** probability): $\Pr(X = v), v \in \mathcal{R}_X \subseteq \mathbb{N}$
+  * Example: $\Pr($<span><i class="bi bi-dice-3"></i></span>$) = \Pr(X = 3), 3 \in \{1,2,3,4,5,6\} \subseteq \mathbb{N}$
+* Next part of the course (**continuous** probability): $\Pr(X \in V), V \subseteq \mathbb{R}$
+  * Example: $\Pr(X \geq 2\pi) = \Pr(X \in [\pi,\infty)), [\pi,\infty) \subseteq \mathbb{R}$
+* Why do they have to be in separate parts?
+
+$$
+\Pr(X \underset{\substack{\uparrow \\ 🚩}}{=} 2\pi) = \frac{\text{Area}(\overbrace{2\pi}^{\mathclap{\small \text{Single point}}})}{\text{Area}(\underbrace{\mathbb{R}}_{\mathclap{\small \text{(Uncountably) Infinite set of points}}})} = 0
+$$
+
+
+## The **CDF** Unifies the Two Worlds! {.smaller .title-12 .crunch-title .crunch-ul .crunch-li-8 .crunch-math}
+
+* **Cumulative Distribution Function** (**CDF**): $F_X(v) = \Pr(X \leq v)$^[Textbooks sometimes write $F(x) = \Pr(X \leq x)$, where capital $X$ is a RV while lowercase $x$ is a particular value, like $3$. To reduce confusion, I use $X$ for the RV and $v$ for the **value** at which we're checking the CDF. Also note capitalized CDF but lowercase pmf/pdf, matching mathematical notation: $f_X(v)$ is the derivative of $F_X(v)$.]
+* For **discrete** RV $X$ ($\mathcal{R}_X \cong \mathbb{N}$), **Probability Mass Function** (**pmf**) $p_X(v)$:
+  $$
+  \begin{align*}
+  p_X(v) &\definedas \Delta F_X(v) \definedas F_X(v) - F_X(v - 1) = \underset{\text{Meaningful}}{\boxed{\Pr(X = v)}} \\
+  \implies F_X(v) &= \sum_{\{w \in \mathcal{R}_X: \; w \leq v\}}p_X(w) = \underset{\text{Meaningful}}{\boxed{\Pr(X \leq v)}}
+  \end{align*}
+  $$
+* For **continuous** RV $X$ ($\mathcal{R}_X \subseteq \mathbb{R}$), **Probability Density Function** (**pdf**) $f_X(v)$:
+  $$
+  \begin{align*}
+  f_X(v) &\definedas \frac{d}{dx}F_X(v) \definedas \lim_{h \rightarrow 0}\frac{F(x + h) - F(x)}{h} = \underset{\text{Not Meaningful}}{\boxed{\; ? \;}} \\
+  \implies F_X(v) &= \int_{-\infty}^v f_X(w)dw = \underset{\text{Meaningful}}{\boxed{\Pr(X \leq v)}}
+  \end{align*}
+  $$
+
+## Probability Density $\neq$ Probability {.smaller .crunch-title .crunch-ul .math-90 .crunch-hr-3}
+
+* ☠️**BEWARE**☠️: $f_X(v) \neq \Pr(X = v)$!
+* Long story short, for continuous variables, $\Pr(X = v)$ is just always $0$[^measurezero]
+* Hence, we instead construct a pdf $f_X(v)$ whose **sole purpose** is to allow us to calculate $\Pr(X \in [a,b])$ by **integrating**!
+  * $f_X(v)$ is whatever satisfies $\Pr(X \in [a,b]) = \int_{a}^bf_X(v)dv$, and *nothing more*
+* i.e., instead of $p_X(v) = \Pr(X = v)$ from discrete world, the relevant function here is $f_X(v)$, the probability **density** of $X$ at $v$.
+
+<hr>
+<center>[Scary math zone]{style="font-size: 65%"}</center>
+
+::: {.inline-90 .crunch-li}
+
+* For intuition: think of $X \sim \mathcal{U}(0,10) \implies \Pr(X = \pi) = \frac{|\{v \in \mathbb{R}:\; v = \pi\}|}{|\mathbb{R}|} = \frac{1}{2^{\aleph_0}} \approx 0$. That is, finding the $\pi$ needle in the $\mathbb{R}$ haystack is a one-in-$\left(\infty^\infty\right)$ event.
+* Issue even if $\mathcal{R}_X$ **countably** infinite, like $\mathcal{R}_X = \mathbb{N}$: $\Pr(X = 3) = \frac{|\{x \in \mathbb{N} : \; x = 3\}|}{|\mathbb{N}|} = \frac{1}{\aleph_0}$. Finding the $3$ needle in the $\mathbb{N}$ haystack is a one-in-$\infty$ event
+
 :::
+
+# Common Discrete Distributions {data-stack-name="Discrete Distributions"}
+
+* Bernoulli
+* Binomial
+* Geometric
+
+## Bernoulli Distribution
+
+* Single trial with two outcomes, **"success"** (**1**) or **"failure"** (**0**): basic model of a **coin flip** (heads = 1, tails = 0)
+* $X \sim \text{Bern}({\color{purple} p}) \implies \mathcal{R}_X = \{0,1\}, \; \Pr(X = 1) = {\color{purple}p}$.
+
+```{r}
+#| label: bernoulli-demo
+#| fig-align: center
+library(ggplot2)
+library(tibble)
+bern_tibble <- tribble(
+  ~Outcome, ~Probability, ~Color,
+  "Failure", 0.2, cbPalette[1],
+  "Success", 0.8, cbPalette[2]
+)
+ggplot(data = bern_tibble, aes(x=Outcome, y=Probability)) +
+  geom_bar(aes(fill=Outcome), stat = "identity") +
+  dsan_theme("half") +
+  labs(
+    y = "Probability Mass"
+  ) +
+  scale_fill_manual(values=c(cbPalette[1], cbPalette[2])) +
+  remove_legend()
+```
+
+## Binomial Distribution {.crunch-title .crunch-ul .crunch-li}
+
+* **Number of successes** in ${\color{purple}N}$ Bernoulli trials. $X \sim \text{Binom}({\color{purple}N},{\color{purple}k},{\color{purple}p}) \implies \mathcal{R}_X = \{0, 1, \ldots, N\}$
+  * $\Pr(X = k)  = \binom{N}{k}p^k(1-p)^{N-k}$: probability of $k$ successes out of $N$ trials.
+  * $\binom{N}{k} = \frac{N!}{k!(N-k)!}$: "Binomial coefficient". How many groups of size $k$ can be formed?[^binom]
+
+::: {.inline-90}
+
+[^binom]: Fun way to avoid memorizing! Imagine a pyramid like $\genfrac{}{}{0pt}{}{}{\boxed{\phantom{1}}}\genfrac{}{}{0pt}{}{\boxed{\phantom{1}}}{}\genfrac{}{}{0pt}{}{}{\boxed{\phantom{1}}}$, where boxes are slots for numbers. Put a $1$ in box at the top. In bottom row, fill each slot with the sum of the two numbers above-left and above-right of it. Since $1 + \text{(nothing)} = 1$, this looks like: $\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}$. Continue filling in rows this way, so next row looks like $\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{2}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}$, then $\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{3}\genfrac{}{}{0pt}{}{2}{}\genfrac{}{}{0pt}{}{}{3}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}$, etc. The $k$th number in the $N$th row (counting from $0$) is $\binom{N}{k}$. Appendix shows triangle written out to 7th row!
+
+:::
+
+## Visualizing the Binomial {.smaller}
+
+```{r}
+#| label: binomial-demo
+#| echo: true
+#| code-fold: show
+#| fig-align: center
+k <- seq(0, 10)
+prob <- dbinom(k, 10, 0.5)
+bar_data <- tibble(k, prob)
+ggplot(bar_data, aes(x=k, y=prob)) +
+  geom_bar(stat="identity", fill=cbPalette[1]) +
+  labs(
+    title="Binomial Distribution, N = 10, p = 0.5",
+    y="Probability Mass"
+  ) +
+  scale_x_continuous(breaks=seq(0,10)) +
+  dsan_theme("half")
+```
+
+::: {.notes}
+So who can tell me, from this plot, the approximate probability of getting 4 heads when flipping a coin 10 times?
+:::
+
+
+## Multiple Classes: Multinomial Distribution {.smaller .title-12}
+
+* Bernoulli only allows two outcomes: success or failure.
+* What if we're predicting soccer match outcomes?
+  * $X_i \in \{\text{Win}, \text{Loss}, \text{Draw}\}$
+* **Categorical Distribution**: Generalizes **Bernoulli** to $k$ possible outcomes. $X \sim \text{Categorical}(\mathbf{p} = \{p_1, p_2, \ldots, p_k\}), \sum_{i=1}^kp_i = 1$.
+  * $\Pr(X = k) = p_k$
+* **Multinomial Distribution**: Generalizes **Binomial** to $k$ possible outcomes.
+* $\mathbf{X} \sim \text{Multinom}(N,k,\mathbf{p}=\{p_1,p_2,\ldots,p_k\}), \sum_{i=1}^kp_i=1$
+  * $\Pr(\mathbf{X} = \{x_1,x_2\ldots,x_k\}) = \frac{N!}{x_1!x_2!\cdots x_k!}p_1^{x_1}p_2^{x_2}\cdots p_k^{x_k}$
+  * $\Pr(\text{30 wins}, \text{4 losses}, \text{4 draws}) = \frac{38!}{30!4!4!}p_{\text{win}}^{30}p_{\text{lose}}^4p_{\text{draw}}^4$.
+  * $\leadsto$ "Multinomial Coefficient": $\binom{38}{30,4,4} = \frac{38!}{30!4!4!}$
+
+## Geometric Distribution {.crunch-title .crunch-ul}
+
+* Likelihood that we need ${\color{purple}k}$ **trials** to get our first **success**. $X \sim \text{Geom}({\color{purple}k},{\color{purple}p}) \implies \mathcal{R}_X = \{1, 2, \ldots\}$
+  * $\Pr(X = k) = \underbrace{(1-p)^{k-1}}_{\small k - 1\text{ failures}}\cdot \underbrace{p}_{\mathclap{\small \text{success}}}$
+  * Probability of $k$ trials before first success
+
+{{< include ../_components/geometric-plot.qmd >}}
+
+## Less Common (But Important) Distributions {.smaller .title-12}
+
+* **Discrete Uniform**: $N$ equally-likely outcomes
+  * $X \sim U\{{\color{purple}a},{\color{purple}b}\} \implies \mathcal{R}_X = \{a, a+1, \ldots, b\}, \Pr(X = k) = \frac{1}{{\color{purple}b} - {\color{purple}a} + 1}$
+* **Beta**: $X \sim \text{Beta}({\color{purple}\alpha}, {\color{purple}\beta})$: *conjugate prior* for Bernoulli, Binomial, and Geometric dists.
+  * Intuition: If we use Beta to encode our prior hypothesis, then observe data drawn from Binomial, distribution of our *updated* hypothesis is still Beta.
+  * $\underbrace{\Pr(\text{biased}) = \Pr(\text{unbiased})}_{\text{Prior: }\text{Beta}({\color{purple}\alpha}, {\color{purple}\beta})} \rightarrow$ Observe $\underbrace{\frac{8}{10}\text{ heads}}_{\text{Data}} \rightarrow \underbrace{\Pr(\text{biased}) = 0.65}_{\text{Posterior: }\text{Beta}({\color{purple}\alpha + 8}, {\color{purple}\beta + 2})}$
+* **Dirichlet**: $\mathbf{X} = (X_1, X_2, \ldots, X_K) \sim \text{Dir}({\color{purple} \boldsymbol\alpha})$
+  * $K$-dimensional extension of Beta (thus, conjugate prior for Multinomial)
+
+<!-- TODO: see why \param doesn't work for the bolded \alpha -->
+
+::: {.notes}
+We can now use $\text{Beta}(\alpha + 8, \beta + 2)$ as a prior for our next set of trials (encoding our knowledge up to that point), and update further once we know the results (to yet another Beta distribution).
+:::
+
+## Interactive Visualizations!
+
+<a href="https://seeing-theory.brown.edu/probability-distributions/index.html" target="_blank">Seeing Theory</a>, Brown University
+
+# Continuous Probability {data-stack-name="Continuous Prob"}
+
+* (With some final reminders first!)
 
 ## What Things Have Distributions?
 
 * Answer: **Random Variables**
+* Meaning: $\mathcal{N}(0, 1)$ on its own is a "template", an exhibit at a museum within a glass case
+* To start **using** it, e.g., to generate random values, we need to consider a particular **RV** $X \sim \mathcal{N}(0,1)$, then generate values on basis of this template:
+  * $X = 0$ more likely than $X = 1$ or $X = -1$,
+  * $X = 1$ more likely than $X = 2$ or $X = -2$,
+  * and so on
 
 ## CDFs/pdfs/pmfs: *What* Are They? {.smaller .crunch-title .crunch-math}
 
@@ -112,24 +359,24 @@ $$
 f_X(v) \definedas \frac{d}{dv}F_X(v) \iff \int_{-\infty}^{v} f_X(v)dv = F_X(v)
 $$
 
-# Continuous Probability {data-stack-name="Continuous Prob"}
+## CDFs/pdfs/pmfs: *Why* Do We Use Them? {.smaller .title-12}
 
-## CDFs/pdfs/pmfs: *Why* Do We Use Them? {.smaller}
-
-* CDF is like the "API" that allows you to access **all of the information about the distribution** (pdf/pmf is derived from the CDF)
+* CDF is like the "API" that allows you to access **all of the information about the distribution** (pdf/pmf is **derived from** the CDF)
 * Example: we know there's some "thing" called the *Exponential Distribution*...
-* How do we **use** this distribution to understand a random variable $X \sim \text{Exp}$?
+* How do we **use** this distribution to understand a random variable $X \sim \text{Exp}(\lambda)$?
   * Answer: the **CDF** of $X$!
-  * Since **all exponentially-distributed RVs have the same PDF**, we can call this PDF **"the" exponential distribution**
+  * Since **all exponentially-distributed RVs have the same pdf** (with different $\lambda$ values plugged in), we can call this pdf **"the" exponential distribution**
 * Say we want to find the **median** of $X$: The median is the number(s) $m$ satisfying
 
 $$
 \Pr(X \leq m) = \frac{1}{2}
 $$
 
+* How can we find this? What "tool" do we use to figure this out about $X$?
+
 ## Finding a Median via the CDF
 
-::: {.callout-note title="Median of a Random Variable $X$"}
+::: {.callout-note title="<i class='bi bi-info-circle'></i> Median of a Random Variable $X$" icon="false"}
 
 The **median** of a random variable $X$ with some CDF $F_X(v_X)$ is the [set of] numbers $m$ for which the probability that $X$ is **lower than** $m$ is $\frac{1}{2}$:
 
@@ -143,7 +390,7 @@ $$
 :::
 
 ::: {.aside}
-(In case you're wondering why we start with the **median** rather than the more commonly-used **mean**: it's specifically because I want you to get used to calculating **general functions $f(X)$ of a random variable $X$**. It's easy to just e.g. learn how to compute the mean $\expect{X}$ and forget that this is only one of many possible choices for $f(X)$.)
+(If you're wondering why we start with the **median** rather than the more commonly-used **mean**: it's specifically because I want you to get used to calculating **general functions $f(X)$ of a random variable $X$**. It's easy to just e.g. learn how to compute the mean $\expect{X}$ and forget that this is only one of many possible choices for $f(X)$.)
 :::
 
 ## Median via CDF Example
@@ -174,19 +421,14 @@ $$
 \end{align*}
 $$
 
-## What is a pdf?
+## Top Secret Fun Fact {.smaller .crunch-title .crunch-math .crunch-ul .crunch-li}
 
-* Answer: Has no meaning outside of its **context**: a **random variable** with a **CDF** giving the distribution of its possible values
-
-
-## Top Secret Fun Fact {.smaller .crunch-title .crunch-math .crunch-ul}
-
-<center>
+<center style="margin-bottom: 6px;">
 <span class="px-4" style="border: 2px solid black !important;">**Every Discrete Distribution is <span style='font-size: 50% !important;'>[technically, in a weird way]</span> a Continuous Distribution!**</span>
 </center>
 
-* Same intuition as why every **natural number** is a **real number**, but converse is not true
-* Marble example: Let $X$ be an RV defined on this space, so that $X(A) = 1$, $X(B) = 2$, $X(C) = 3$, $X(D) = 4$. Then the **pmf** for $X$ is $p_X(i) = \frac{1}{4}$ for $i \in \{1, 2, 3, 4\}$.
+* Same intuition as: every **natural number** is a **real number**, but converse not true
+* Marbles: Let $X$ be a RV defined s.t. $X(A) = 1$, $X(B) = 2$, $X(C) = 3$, $X(D) = 4$. Then **pmf** for $X$ is $p_X(i) = \frac{1}{4}$ for $i \in \{1, 2, 3, 4\}$.
 * We can then use the [Dirac delta function](#appendix-dirac-delta-function) $\delta(v)$ to define a **continuous pdf**
 
     $$
@@ -209,23 +451,26 @@ $$
 * Exponential: Good days and bad days
 * Cauchy: Toxic af, stay away ☠️
 
-## Normal Distribution {.crunch-title}
-
-* Recall from last week: the **Binomial** pdf
+## [Recall] Binomial Distribution {.crunch-title}
 
 {{< include ../_components/binomial-plot.qmd >}}
 
-## The Emergence of Order
+## The Emergence of Order {.crunch-title}
 
-::: {layout-ncol=2}
+:::: {.columns}
+::: {.column width="50%"}
 
 * Who can guess the state of this process after 10 steps, with 1 person?
 * 10 people? 50? 100? (If they find themselves on the same spot, they stand on each other's heads)
 * 100 steps? 1000?
 
-![](images/random_walk.svg){fig-align="center"}
+:::
+::: {.column width="50%"}
+
+![](images/random_walk.svg){fig-align="center" width="90%"}
 
 :::
+::::
 
 ## The Result: 16 Steps
 
@@ -360,10 +605,10 @@ $$
 ## "Most Conservative" How?
 
 * Of all possible distributions with mean $\mu$, variance $\sigma^2$, $\mathcal{N}(\mu, \sigma^2)$ is the **entropy-maximizing** distribution
-* Roughly: using any other distribution (implicitly/secretly) **imports additional information** beyond the fact that mean is $\mu$ and variance is $\sigma^2$
-* Example: let $X$ be an RV. If we know mean is $\mu$, variance is $\sigma^2$, **but then we learn** that $X \neq 3$, or $X$ is even, or the 15th digit of $X$ is 7, can **update** to derive a "better" distribution (incorporating this info)
+* Roughly: using any other distribution (implicitly/secretly) **imports additional information** beyond the fact that [mean is $\mu$]{.boxed} and [variance is $\sigma^2$]{.boxed}
+* Example: let $X$ be an RV. If we know mean is $\mu$, variance is $\sigma^2$, **but then we learn** that [$X \neq 3$]{.boxed}, or [$X$ is even]{.boxed}, or the [15th digit of $X$ is 7]{.boxed}, can **update** $\mathcal{N}(\mu,\sigma^2)$ to derive a "better" distribution (incorporating this additional info)
 
-## The Takeaway
+## The Takeaway {.crunch-title .crunch-ul .inline-90}
 
 * **Given info we know**, we can find a distribution that "encodes" **only this info**
 * More straightforward example: if we only know that the value is something in the range $[a,b]$, entropy-maximizing distribution is the **Uniform Distribution**
@@ -402,7 +647,7 @@ ggplot(bar_data, aes(x=x, y=prob)) +
   dsan_theme("half")
 ```
 
-## Continuous Uniform Distribution {.small-math .crunch-title .crunch-math}
+## Continuous Uniform Distribution {.crunch-title .crunch-math .math-90}
 
 * If $X \sim \mathcal{U}[a,b]$, then intuitively $X$ is a value randomly selected from within $[a,b]$, with all values equally likely.
 * **Discrete** case: what we've been using all along (e.g., dice): if $X \sim \mathcal{U}\{1,6\}$, then
@@ -414,9 +659,9 @@ $$
 * For **continuous** case... what do we put in the denominator? $X \sim \mathcal{U}[1,6] \implies \Pr(X = \pi) = \frac{1}{?}$...
   * Answer: $\Pr(X = \pi) = \frac{1}{|[1,6]|} = \frac{1}{\aleph_0} = 0$
 
-## Constructing the Uniform CDF {.smaller .crunch-title}
+## Constructing the Uniform CDF {.smaller .crunch-title .crunch-li}
 
-* We were ready for this! We already knew $\Pr(X = v) = 0$ for continuous distributions.
+* We were ready for this! We already knew $\Pr(X = v) = 0$ for continuous $X$
 * So, we forget about $\Pr(X = v)$, and focus on $\Pr(X \in [v_0, v_1])$.
 * In 2D (dartboard) we had $\Pr(X \in \circ) = \frac{\text{Area}(\circ)}{\text{Area}(\Omega)}$, so here we should have
 
@@ -477,11 +722,7 @@ ggplot(data.frame(x=c(0,8)), aes(x=x)) +
 ```
 
 
-## The Dreaded Cauchy Distribution {.smaller}
-
-* Paxton is a Denver Nuggets fan, while Jeff is a Washington Wizards fan. Paxton creates an RV $D$ modeling how many games above .500 the Nuggets will be in a given season, while Jeff creates an RV $W$ modeling how many games above .500 the Wizards will be.
-* They decide to combine their RVs to create a new RV, $R = \frac{D}{W}$, which now models **how much better** the Nuggets will be in a season ($R$ for "Ratio")
-* For example, if the Nuggets are $10$ games above .500, while the Wizards are only $5$ above .500, $R = \frac{10}{5} = 2$. If they're both 3 games above .500, $R = \frac{3}{3} = 1$.
+## The Dreaded Cauchy Distribution {.smaller .crunch-title .inline-90}
 
 ```{r}
 #| label: cauchy-pdf
@@ -498,13 +739,16 @@ ggplot(data.frame(x=c(-4,4)), aes(x=x)) +
   )
 ```
 
-## So What's the Issue? {.crunch-title .crunch-figures .small-caption .shift-footnotes-less .crunch-ul}
+* Paxton is a Houston Rockets fan, while Jeff is a Chicago Bulls fan. Paxton creates a RV $H$ modeling how many games above .500 (wins minus losses) the Rockets will be in a season, while Jeff creates a similar RV $C$ for the Bulls
+* They decide to combine their RVs to create a new RV, $R = \frac{H}{C}$, which now models **how much better** the Nuggets will be in a season ($R$ for "Ratio")
+* For example, if the Rockets are $10$ games above .500, while the Bulls are only $5$ above .500, $R = \frac{10}{5} = 2$. If they're both 3 games above .500, $R = \frac{3}{3} = 1$.
 
-* So far so good. It turns out (though Paxton and Jeff don't know this) that the teams are actually both mediocre, so that $D \sim N(0,10)$ and $W \sim N(0,10)$... What is the distribution of $R$ in this case?
+## So What's the Issue? {.crunch-title .inline-90 .crunch-figure .crunch-ul}
 
-::: {layout-ncol=2}
+* So far so good. It turns out (though Paxton and Jeff don't know this) the teams are both mediocre: $H \sim \mathcal{N}(0,10)$, $B \sim \mathcal{N}(0,10)$... What is the distribution of $R$?
 
-::: {#eqns}
+:::: {.columns}
+::: {.column width="50%"}
 
 $$
 \begin{gather*}
@@ -521,13 +765,17 @@ M_R(t) &= ☠️
 $$
 
 :::
+::: {.column width="50%"}
 
 ![From @agnesi_analytical_1801 \[<a href='' target='_blank'>Internet Archive</a>\]](images/agnesi-crop.jpeg)
 
 :::
+::::
 
-::: {.aside}
-Even worse, this is true regardless of variances: $D \sim N(0,d), W \sim N(0,w) \implies R \sim \text{Cauchy}\left( 0,\frac{d}{w} \right)$...
+::: {#cauchy-worse style="font-size: 70%"}
+
+Even worse, this is true regardless of variances: $D \sim \mathcal{N}(0,d)$ and $W \sim \mathcal{N}(0,w)$ $\implies R \sim \text{Cauchy}\left( 0,\frac{d}{w} \right)$...
+
 :::
 
 # Lab 4 {data-stack-name="Lab 4"}
@@ -568,7 +816,7 @@ If a stick is broken at random into three pieces, what is the probability that t
 ::: {#refs}
 :::
 
-## Appendix: Dirac Delta Function {.smaller}
+## Appendix I: Dirac Delta Function {.smaller}
 
 * $\delta(v)$ as used in the ["Top Secret Fun Fact" slide](#top-secret-fun-fact) is called the <a href="https://en.wikipedia.org/wiki/Dirac_delta_function" target="_blank">**Dirac Delta function**</a>.
 * It enables conversion of discrete distributions into continuous distributions as it represents an "infinite point mass" at $0$ that can be integrated[^details]:
@@ -584,3 +832,39 @@ $$
 $$
 
 [^details]: This is leaving out some of the complexities of defining this function so it "works" in this way: for example, we need to use the [Lebesgue integral](https://en.wikipedia.org/wiki/Lebesgue_integration){target="_blank"} rather than the (standard) [Riemann integral](https://en.wikipedia.org/wiki/Riemann_integral){target="_blank"} for it to be defined at all, and even then it technically fails the conditions necessary for a fully-well-defined Lebesgue integral. For full details see <a href="https://en.wikipedia.org/wiki/Probability_density_function#Link_between_discrete_and_continuous_distributions" target="_blank">this section</a> from the Wiki article on PDFs, and follow the links therein.
+
+## Appendix II: Countability of $\mathbb{Q}$ {.smaller .small-math}
+
+* **Bad** definition: "$\mathbb{N}$ is countable because no $x \in \mathbb{N}$ between $0$ and $1$. $\mathbb{R}$ is uncountable because infinitely-many $x \in \mathbb{R}$ between $0$ and $1$." ($\implies \mathbb{Q}$ uncountable)
+* And yet, $\mathbb{Q}$ **is** countable...
+
+::: columns
+::: {.column width="45%"}
+
+![](images/rationals_countable.png){fig-align="center"}
+
+:::
+::: {.column width="55%"}
+
+$$
+\begin{align*}
+\begin{array}{ll}
+s: \mathbb{N} \leftrightarrow \mathbb{Z} & s(n) = (-1)^n \left\lfloor \frac{n+1}{2} \right\rfloor \\
+h_+: \mathbb{Z}^+ \leftrightarrow \mathbb{Q}^+ & p_1^{a_1}p_2^{a_2}\cdots \mapsto p_1^{s(a_1)}p_2^{s(a_2)}\cdots \\
+h: \mathbb{Z} \leftrightarrow \mathbb{Q} & h(n) = \begin{cases}h_+(n) &n > 0 \\ 0 & n = 0 \\
+-h_+(-n) & n < 0\end{cases} \\
+(h \circ s): \mathbb{N} \leftrightarrow \mathbb{Q} & ✅🤯
+\end{array}
+\end{align*}
+$$
+
+:::
+:::
+
+::: {.aside}
+Image credit: <a href="https://math.stackexchange.com/a/659373" target="_blank">Rebecca J. Stones, Math StackExchange</a>. Math credit: <a href="https://math.stackexchange.com/a/1067928" target="_blank">Thomas Andrews, Math StackExchange</a>
+:::
+
+## Appendix III: Binomial Triangle
+
+![](images/binomial_triangle.svg){fig-align="center"}

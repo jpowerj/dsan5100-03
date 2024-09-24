@@ -1,7 +1,4 @@
-
-
 ```{r}
-#| label: geometric-demo
 #| fig-align: center
 library(ggplot2)
 k <- seq(0, 8)

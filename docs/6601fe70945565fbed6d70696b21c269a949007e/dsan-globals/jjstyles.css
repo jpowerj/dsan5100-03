@@ -10,6 +10,18 @@ a.disabled {
   border: 1px solid black !important;
 }
 
+.boxed {
+  border: 3px solid black !important;
+  padding: 2px !important;
+}
+
+/* div.callout-note > .callout-header {
+  background-color: #f8f8f8 !important;
+}
+.callout-grey .callout.callout-style-default {
+  border: 1px solid #dee2e6 !important;
+} */
+
 .caption {
   text-align: center;
 }
@@ -69,9 +81,18 @@ a.disabled {
   margin-left: 0px !important;
 }
 
-.crunch-hr {
+.crunch-figure figure {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+.crunch-hr hr {
   margin-top: 8px !important;
   margin-bottom: 6px !important;
+}
+.crunch-hr-3 hr {
+  margin-top: 4px !important;
+  margin-bottom: 3px !important;
 }
 
 .crunch-img img {
@@ -107,12 +128,21 @@ a.disabled {
   margin-bottom: 0px !important;
 }
 
+.crunch-quarto-layout-panel .quarto-layout-panel {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
 .crunch-title h2 {
   margin-bottom: 0px !important;
 }
 
 .crunch-ul ul {
   margin-bottom: 2px !important;
+}
+
+.de9im {
+  width: 75% !important;
 }
 
 details {
@@ -204,13 +234,24 @@ figcaption {
     font-size: var(--r-heading3-size) !important;
 }
 
+summary {
+  font-size: 1.2rem !important;
+}
+
+.table-80 td {
+  font-size: 80% !important;
+}
+
 /* and one small fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
 table thead th {
   background-clip: padding-box;
 }
 
-summary {
-  font-size: 1.2rem !important;
+.table-va td {
+  vertical-align: middle !important;
+}
+.table-valign td {
+  vertical-align: middle !important;
 }
 
 /* td centering */
@@ -237,10 +278,12 @@ summary {
   vertical-align: top !important;
 }
 
+.text-85 {
+  font-size: 85% !important;
+}
 .text-90 {
   font-size: 90% !important;
 }
-
 .text-95 {
   font-size: 95% !important;
 }
@@ -253,7 +296,11 @@ summary {
   font-size: calc(1.0 * var(--r-heading2-size)) !important;
 }
 
-.title-12 h2 {
+.title-11 h2, .title-11 h1 {
+  font-size: calc(1.1 * var(--r-heading2-size)) !important;
+}
+
+.title-12 h2, .title-12 h1 {
   font-size: calc(1.2 * var(--r-heading2-size)) !important;
 }
 
@@ -268,4 +315,8 @@ summary {
 /* For lists, shifting the bullet points */
 .unindent-lists ul {
   margin-left: 0px !important;
+}
+
+.valign-cols div.column {
+  vertical-align: middle;
 }

@@ -99,6 +99,7 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
+      margin-bottom: 0em;
     }
     .hanging-indent div.csl-entry {
       margin-left:2em;
@@ -432,16 +433,8 @@ Jeff Jacobs
   <p class="date">Tuesday, September 24, 2024</p>
 </section>
 <section>
-<section id="recap-continuous-probability" class="title-slide slide level1 center" data-stack-name="Recap">
-<h1>Recap / Continuous Probability</h1>
-<ul>
-<li>Continuous vs.&nbsp;Discrete</li>
-<li>What things have distributions?</li>
-<li>CDFs, pdfs, pmfs</li>
-</ul>
-<div class="hidden">
-
-</div>
+<section id="probability-distributions-in-general" class="title-slide slide level1 center" data-stack-name="Probability Distributions">
+<h1>Probability Distributions in General</h1>
 <div class="hidden">
 <p><span class="math display">\[
 \DeclareMathOperator*{\argmax}{argmax}
@@ -472,18 +465,18 @@ Jeff Jacobs
 \newcommand{\bigVar}[1]{\text{Var}\mkern-4mu \left[ #1 \right]}
 \]</span></p>
 </div>
-</section>
-<section id="from-last-week" class="slide level2 smaller crunch-title crunch-figures crunch-math smaller-math">
-<h2>From Last Week</h2>
-<div>
+<div class="hidden">
 
 </div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-discrete" class="quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-fig">
-<div aria-describedby="fig-discrete-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</section>
+<section id="discrete-vs.-continuous" class="slide level2 smaller math-80 inline-90 crunch-ul crunch-img crunch-title crunch-math crunch-cell-output crunch-quarto-figure">
+<h2>Discrete vs.&nbsp;Continuous</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><strong>Discrete</strong> = “Easy mode”: Based (intuitively) on <strong>sets</strong></li>
+<li><span class="math inline">\(\Pr(A)\)</span>: Four equally-likely marbles <span class="math inline">\(\{A, B, C, D\}\)</span> in box, what is probability I pull out <span class="math inline">\(A\)</span>?</li>
+</ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -494,19 +487,13 @@ Jeff Jacobs
 </div>
 </div>
 <p><span class="math display">\[
-\Pr(A) = \underbrace{\frac{|\{A\}|}{|\Omega|}}_{\mathclap{\small \text{Probability }\textbf{mass}}} = \frac{1}{|\{A,B,C,D\}|} = \frac{1}{4}
+\Pr(A) = \underset{\mathclap{\small \text{Probability }\textbf{mass}}}{\boxed{\frac{|\{A\}|}{|\Omega|}}} = \frac{1}{|\{A,B,C,D\}|} = \frac{1}{4}
 \]</span></p>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-discrete-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: Visual and mathematical intuition for events in a <strong>discrete</strong> probability space
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-continuous" class="quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-fig">
-<div aria-describedby="fig-continuous-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+</div><div class="column" style="width:50%;">
+<ul>
+<li><strong>Continuous</strong> = “Hard mode”: Based (intuitively) on <strong>areas</strong></li>
+<li><span class="math inline">\(\Pr(A)\)</span>: Throw dart at random point in square, what is probability I hit <span class="math inline">\(\require{enclose}\enclose{circle}{\textsf{A}}\)</span>?</li>
+</ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -517,22 +504,241 @@ Figure&nbsp;1: Visual and mathematical intuition for events in a <strong>discret
 </div>
 </div>
 <p><span class="math display">\[
-\Pr(A) = \underbrace{\frac{\text{Area}(\{A\})}{\text{Area}(\Omega)}}_{\mathclap{\small \text{Probability }\textbf{density}}} = \frac{\pi r^2}{s^2} = \frac{\pi \left(\frac{1}{4}\right)^2}{4} = \frac{\pi}{64}
+\Pr(A) = \underset{\mathclap{\small \text{Probability }\textbf{density}}}{\boxed{\frac{\text{Area}(\{A\})}{\text{Area}(\Omega)}}} = \frac{\pi r^2}{s^2} = \frac{\pi \left(\frac{1}{4}\right)^2}{4} = \frac{\pi}{64}
 \]</span></p>
+</div></div>
+</section>
+<section id="the-technical-difference-tldr" class="slide level2 smaller math-80 crunch-title crunch-math-less crunch-ul">
+<h2>The Technical Difference tl;dr</h2>
+<ul>
+<li><strong>Countable</strong> Sets: Can be put into 1-to-1 correspondence with <strong>natural numbers</strong> <span class="math inline">\(\mathbb{N}\)</span>
+<ul>
+<li>What are you doing when you’re counting? Saying “first”, “second”, “third”, …</li>
+<li>You’re pairing each object with a natural number! <span class="math inline">\(\{(\texttt{a},1),(\texttt{b},2),\ldots,(\texttt{z},26)\}\)</span> <!-- f(\texttt{a}) = 1, f^{-1}(1) = \texttt{a}$, $f(\texttt{b}) = 2, f^{-1}(2) = \texttt{b}$, ... --></li>
+</ul></li>
+<li><strong>Uncountable</strong> Sets: Can’t be put into 1-to-1 correspondence with natural numbers.</li>
+<li><strong><span class="math inline">\(\mathbb{R}\)</span> is uncountable</strong>. <em>Intuition</em>: Try counting the real numbers. <em>Proof</em> <span class="math display">\[
+\text{Assume }\exists \, (f: \mathbb{R} \leftrightarrow \mathbb{N}):
+\begin{array}{|c|c|c|c|c|c|c|}\hline
+\mathbb{R} &amp; &amp; &amp; &amp; &amp; &amp; \Leftrightarrow \mathbb{N} \\ \hline
+\color{orange}{3} &amp; . &amp; 1 &amp; 4 &amp; 1 &amp; \cdots &amp; \Leftrightarrow 1 \\\hline
+4 &amp; . &amp; \color{orange}{9} &amp; 9 &amp; 9 &amp; \cdots &amp; \Leftrightarrow 2 \\\hline
+0 &amp; . &amp; 1 &amp; \color{orange}{2} &amp; 3 &amp; \cdots &amp;\Leftrightarrow 3 \\\hline
+1 &amp; . &amp; 2 &amp; 3 &amp; \color{orange}{4} &amp; \cdots &amp; \Leftrightarrow 4 \\\hline
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\\hline
+\end{array} \overset{\color{blue}{y_{[i]}} = \color{orange}{x_{[i]}} \overset{\mathbb{Z}_{10}}{+} 1}{\underset{😈}{\longrightarrow}} \color{blue}{y = 4.035 \ldots} \Leftrightarrow \; ?
+\]</span></li>
+</ul>
+
+<aside><div>
+<p><strong>Fun math challenge</strong>: Is <span class="math inline">\(\mathbb{Q}\)</span> countable? See <a href="#/appendix-countability-of-mathbbq">this appendix slide</a> for why the answer is yes, despite the fact that <span class="math inline">\(\forall x, y \in \mathbb{Q} \left[ \frac{x+y}{2} \in \mathbb{Q} \right]\)</span>❗️ The method used in the above proof is called <a href="https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument" target="_blank"><strong>Cantor diagonalization</strong></a></p>
+</div></aside></section>
+<section id="the-practical-difference" class="slide level2 smaller">
+<h2>The Practical Difference</h2>
+<ul>
+<li>This part of the course (<strong>discrete</strong> probability): <span class="math inline">\(\Pr(X = v), v \in \mathcal{R}_X \subseteq \mathbb{N}\)</span>
+<ul>
+<li>Example: <span class="math inline">\(\Pr(\)</span><span><i class="bi bi-dice-3"></i></span><span class="math inline">\() = \Pr(X = 3), 3 \in \{1,2,3,4,5,6\} \subseteq \mathbb{N}\)</span></li>
+</ul></li>
+<li>Next part of the course (<strong>continuous</strong> probability): <span class="math inline">\(\Pr(X \in V), V \subseteq \mathbb{R}\)</span>
+<ul>
+<li>Example: <span class="math inline">\(\Pr(X \geq 2\pi) = \Pr(X \in [\pi,\infty)), [\pi,\infty) \subseteq \mathbb{R}\)</span></li>
+</ul></li>
+<li>Why do they have to be in separate parts?</li>
+</ul>
+<p><span class="math display">\[
+\Pr(X \underset{\substack{\uparrow \\ 🚩}}{=} 2\pi) = \frac{\text{Area}(\overbrace{2\pi}^{\mathclap{\small \text{Single point}}})}{\text{Area}(\underbrace{\mathbb{R}}_{\mathclap{\small \text{(Uncountably) Infinite set of points}}})} = 0
+\]</span></p>
+</section>
+<section id="the-cdf-unifies-the-two-worlds" class="slide level2 smaller title-12 crunch-title crunch-ul crunch-li-8 crunch-math scrollable">
+<h2>The <strong>CDF</strong> Unifies the Two Worlds!</h2>
+<ul>
+<li><strong>Cumulative Distribution Function</strong> (<strong>CDF</strong>): <span class="math inline">\(F_X(v) = \Pr(X \leq v)\)</span><sup>1</sup></li>
+<li>For <strong>discrete</strong> RV <span class="math inline">\(X\)</span> (<span class="math inline">\(\mathcal{R}_X \cong \mathbb{N}\)</span>), <strong>Probability Mass Function</strong> (<strong>pmf</strong>) <span class="math inline">\(p_X(v)\)</span>: <span class="math display">\[
+\begin{align*}
+p_X(v) &amp;\definedas \Delta F_X(v) \definedas F_X(v) - F_X(v - 1) = \underset{\text{Meaningful}}{\boxed{\Pr(X = v)}} \\
+\implies F_X(v) &amp;= \sum_{\{w \in \mathcal{R}_X: \; w \leq v\}}p_X(w) = \underset{\text{Meaningful}}{\boxed{\Pr(X \leq v)}}
+\end{align*}
+\]</span></li>
+<li>For <strong>continuous</strong> RV <span class="math inline">\(X\)</span> (<span class="math inline">\(\mathcal{R}_X \subseteq \mathbb{R}\)</span>), <strong>Probability Density Function</strong> (<strong>pdf</strong>) <span class="math inline">\(f_X(v)\)</span>: <span class="math display">\[
+\begin{align*}
+f_X(v) &amp;\definedas \frac{d}{dx}F_X(v) \definedas \lim_{h \rightarrow 0}\frac{F(x + h) - F(x)}{h} = \underset{\text{Not Meaningful}}{\boxed{\; ? \;}} \\
+\implies F_X(v) &amp;= \int_{-\infty}^v f_X(w)dw = \underset{\text{Meaningful}}{\boxed{\Pr(X \leq v)}}
+\end{align*}
+\]</span></li>
+</ul>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Textbooks sometimes write <span class="math inline">\(F(x) = \Pr(X \leq x)\)</span>, where capital <span class="math inline">\(X\)</span> is a RV while lowercase <span class="math inline">\(x\)</span> is a particular value, like <span class="math inline">\(3\)</span>. To reduce confusion, I use <span class="math inline">\(X\)</span> for the RV and <span class="math inline">\(v\)</span> for the <strong>value</strong> at which we’re checking the CDF. Also note capitalized CDF but lowercase pmf/pdf, matching mathematical notation: <span class="math inline">\(f_X(v)\)</span> is the derivative of <span class="math inline">\(F_X(v)\)</span>.</p></li></ol></aside></section>
+<section id="probability-density-neq-probability" class="slide level2 smaller crunch-title crunch-ul math-90 crunch-hr-3">
+<h2>Probability Density <span class="math inline">\(\neq\)</span> Probability</h2>
+<ul>
+<li>☠️<strong>BEWARE</strong>☠️: <span class="math inline">\(f_X(v) \neq \Pr(X = v)\)</span>!</li>
+<li>Long story short, for continuous variables, <span class="math inline">\(\Pr(X = v)\)</span> is just always <span class="math inline">\(0\)</span>[^measurezero]</li>
+<li>Hence, we instead construct a pdf <span class="math inline">\(f_X(v)\)</span> whose <strong>sole purpose</strong> is to allow us to calculate <span class="math inline">\(\Pr(X \in [a,b])\)</span> by <strong>integrating</strong>!
+<ul>
+<li><span class="math inline">\(f_X(v)\)</span> is whatever satisfies <span class="math inline">\(\Pr(X \in [a,b]) = \int_{a}^bf_X(v)dv\)</span>, and <em>nothing more</em></li>
+</ul></li>
+<li>i.e., instead of <span class="math inline">\(p_X(v) = \Pr(X = v)\)</span> from discrete world, the relevant function here is <span class="math inline">\(f_X(v)\)</span>, the probability <strong>density</strong> of <span class="math inline">\(X\)</span> at <span class="math inline">\(v\)</span>.</li>
+</ul>
+<hr>
+<center>
+<span style="font-size: 65%">Scary math zone</span>
+</center>
+<div class="inline-90 crunch-li">
+<ul>
+<li>For intuition: think of <span class="math inline">\(X \sim \mathcal{U}(0,10) \implies \Pr(X = \pi) = \frac{|\{v \in \mathbb{R}:\; v = \pi\}|}{|\mathbb{R}|} = \frac{1}{2^{\aleph_0}} \approx 0\)</span>. That is, finding the <span class="math inline">\(\pi\)</span> needle in the <span class="math inline">\(\mathbb{R}\)</span> haystack is a one-in-<span class="math inline">\(\left(\infty^\infty\right)\)</span> event.</li>
+<li>Issue even if <span class="math inline">\(\mathcal{R}_X\)</span> <strong>countably</strong> infinite, like <span class="math inline">\(\mathcal{R}_X = \mathbb{N}\)</span>: <span class="math inline">\(\Pr(X = 3) = \frac{|\{x \in \mathbb{N} : \; x = 3\}|}{|\mathbb{N}|} = \frac{1}{\aleph_0}\)</span>. Finding the <span class="math inline">\(3\)</span> needle in the <span class="math inline">\(\mathbb{N}\)</span> haystack is a one-in-<span class="math inline">\(\infty\)</span> event</li>
+</ul>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-continuous-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Visual and mathematical intuition for events a <strong>continuous</strong> probability space
-</figcaption>
-</figure>
+</section></section>
+<section>
+<section id="common-discrete-distributions" class="title-slide slide level1 center" data-stack-name="Discrete Distributions">
+<h1>Common Discrete Distributions</h1>
+<ul>
+<li>Bernoulli</li>
+<li>Binomial</li>
+<li>Geometric</li>
+</ul>
+</section>
+<section id="bernoulli-distribution" class="slide level2">
+<h2>Bernoulli Distribution</h2>
+<ul>
+<li>Single trial with two outcomes, <strong>“success”</strong> (<strong>1</strong>) or <strong>“failure”</strong> (<strong>0</strong>): basic model of a <strong>coin flip</strong> (heads = 1, tails = 0)</li>
+<li><span class="math inline">\(X \sim \text{Bern}({\color{purple} p}) \implies \mathcal{R}_X = \{0,1\}, \; \Pr(X = 1) = {\color{purple}p}\)</span>.</li>
+</ul>
+
+<img data-src="index_files/figure-revealjs/bernoulli-demo-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="binomial-distribution" class="slide level2 crunch-title crunch-ul crunch-li scrollable">
+<h2>Binomial Distribution</h2>
+<ul>
+<li><strong>Number of successes</strong> in <span class="math inline">\({\color{purple}N}\)</span> Bernoulli trials. <span class="math inline">\(X \sim \text{Binom}({\color{purple}N},{\color{purple}k},{\color{purple}p}) \implies \mathcal{R}_X = \{0, 1, \ldots, N\}\)</span>
+<ul>
+<li><span class="math inline">\(\Pr(X = k)  = \binom{N}{k}p^k(1-p)^{N-k}\)</span>: probability of <span class="math inline">\(k\)</span> successes out of <span class="math inline">\(N\)</span> trials.</li>
+<li><span class="math inline">\(\binom{N}{k} = \frac{N!}{k!(N-k)!}\)</span>: “Binomial coefficient”. How many groups of size <span class="math inline">\(k\)</span> can be formed?<sup>1</sup></li>
+</ul></li>
+</ul>
+<div class="inline-90">
+
 </div>
+<aside><ol class="aside-footnotes"><li id="fn2"><p>Fun way to avoid memorizing! Imagine a pyramid like <span class="math inline">\(\genfrac{}{}{0pt}{}{}{\boxed{\phantom{1}}}\genfrac{}{}{0pt}{}{\boxed{\phantom{1}}}{}\genfrac{}{}{0pt}{}{}{\boxed{\phantom{1}}}\)</span>, where boxes are slots for numbers. Put a <span class="math inline">\(1\)</span> in box at the top. In bottom row, fill each slot with the sum of the two numbers above-left and above-right of it. Since <span class="math inline">\(1 + \text{(nothing)} = 1\)</span>, this looks like: <span class="math inline">\(\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}\)</span>. Continue filling in rows this way, so next row looks like <span class="math inline">\(\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{2}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}\)</span>, then <span class="math inline">\(\genfrac{}{}{0pt}{}{}{1}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{3}\genfrac{}{}{0pt}{}{2}{}\genfrac{}{}{0pt}{}{}{3}\genfrac{}{}{0pt}{}{1}{}\genfrac{}{}{0pt}{}{}{1}\)</span>, etc. The <span class="math inline">\(k\)</span>th number in the <span class="math inline">\(N\)</span>th row (counting from <span class="math inline">\(0\)</span>) is <span class="math inline">\(\binom{N}{k}\)</span>. Appendix shows triangle written out to 7th row!</p></li></ol></aside></section>
+<section id="visualizing-the-binomial" class="slide level2 smaller">
+<h2>Visualizing the Binomial</h2>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb1-2"><a></a>prob <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k, <span class="dv">10</span>, <span class="fl">0.5</span>)</span>
+<span id="cb1-3"><a></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(k, prob)</span>
+<span id="cb1-4"><a></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x=</span>k, <span class="at">y=</span>prob)) <span class="sc">+</span></span>
+<span id="cb1-5"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb1-6"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb1-7"><a></a>    <span class="at">title=</span><span class="st">"Binomial Distribution, N = 10, p = 0.5"</span>,</span>
+<span id="cb1-8"><a></a>    <span class="at">y=</span><span class="st">"Probability Mass"</span></span>
+<span id="cb1-9"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb1-10"><a></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb1-11"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
 </div>
-</div>
-</div>
+<img data-src="index_files/figure-revealjs/binomial-demo-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><aside class="notes">
+<p>So who can tell me, from this plot, the approximate probability of getting 4 heads when flipping a coin 10 times?</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="multiple-classes-multinomial-distribution" class="slide level2 smaller title-12">
+<h2>Multiple Classes: Multinomial Distribution</h2>
+<ul>
+<li>Bernoulli only allows two outcomes: success or failure.</li>
+<li>What if we’re predicting soccer match outcomes?
+<ul>
+<li><span class="math inline">\(X_i \in \{\text{Win}, \text{Loss}, \text{Draw}\}\)</span></li>
+</ul></li>
+<li><strong>Categorical Distribution</strong>: Generalizes <strong>Bernoulli</strong> to <span class="math inline">\(k\)</span> possible outcomes. <span class="math inline">\(X \sim \text{Categorical}(\mathbf{p} = \{p_1, p_2, \ldots, p_k\}), \sum_{i=1}^kp_i = 1\)</span>.
+<ul>
+<li><span class="math inline">\(\Pr(X = k) = p_k\)</span></li>
+</ul></li>
+<li><strong>Multinomial Distribution</strong>: Generalizes <strong>Binomial</strong> to <span class="math inline">\(k\)</span> possible outcomes.</li>
+<li><span class="math inline">\(\mathbf{X} \sim \text{Multinom}(N,k,\mathbf{p}=\{p_1,p_2,\ldots,p_k\}), \sum_{i=1}^kp_i=1\)</span>
+<ul>
+<li><span class="math inline">\(\Pr(\mathbf{X} = \{x_1,x_2\ldots,x_k\}) = \frac{N!}{x_1!x_2!\cdots x_k!}p_1^{x_1}p_2^{x_2}\cdots p_k^{x_k}\)</span></li>
+<li><span class="math inline">\(\Pr(\text{30 wins}, \text{4 losses}, \text{4 draws}) = \frac{38!}{30!4!4!}p_{\text{win}}^{30}p_{\text{lose}}^4p_{\text{draw}}^4\)</span>.</li>
+<li><span class="math inline">\(\leadsto\)</span> “Multinomial Coefficient”: <span class="math inline">\(\binom{38}{30,4,4} = \frac{38!}{30!4!4!}\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="geometric-distribution" class="slide level2 crunch-title crunch-ul">
+<h2>Geometric Distribution</h2>
+<ul>
+<li>Likelihood that we need <span class="math inline">\({\color{purple}k}\)</span> <strong>trials</strong> to get our first <strong>success</strong>. <span class="math inline">\(X \sim \text{Geom}({\color{purple}k},{\color{purple}p}) \implies \mathcal{R}_X = \{1, 2, \ldots\}\)</span>
+<ul>
+<li><span class="math inline">\(\Pr(X = k) = \underbrace{(1-p)^{k-1}}_{\small k - 1\text{ failures}}\cdot \underbrace{p}_{\mathclap{\small \text{success}}}\)</span></li>
+<li>Probability of <span class="math inline">\(k\)</span> trials before first success</li>
+</ul></li>
+</ul>
+
+<img data-src="index_files/figure-revealjs/unnamed-chunk-6-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="less-common-but-important-distributions" class="slide level2 smaller title-12">
+<h2>Less Common (But Important) Distributions</h2>
+<ul>
+<li><strong>Discrete Uniform</strong>: <span class="math inline">\(N\)</span> equally-likely outcomes
+<ul>
+<li><span class="math inline">\(X \sim U\{{\color{purple}a},{\color{purple}b}\} \implies \mathcal{R}_X = \{a, a+1, \ldots, b\}, \Pr(X = k) = \frac{1}{{\color{purple}b} - {\color{purple}a} + 1}\)</span></li>
+</ul></li>
+<li><strong>Beta</strong>: <span class="math inline">\(X \sim \text{Beta}({\color{purple}\alpha}, {\color{purple}\beta})\)</span>: <em>conjugate prior</em> for Bernoulli, Binomial, and Geometric dists.
+<ul>
+<li>Intuition: If we use Beta to encode our prior hypothesis, then observe data drawn from Binomial, distribution of our <em>updated</em> hypothesis is still Beta.</li>
+<li><span class="math inline">\(\underbrace{\Pr(\text{biased}) = \Pr(\text{unbiased})}_{\text{Prior: }\text{Beta}({\color{purple}\alpha}, {\color{purple}\beta})} \rightarrow\)</span> Observe <span class="math inline">\(\underbrace{\frac{8}{10}\text{ heads}}_{\text{Data}} \rightarrow \underbrace{\Pr(\text{biased}) = 0.65}_{\text{Posterior: }\text{Beta}({\color{purple}\alpha + 8}, {\color{purple}\beta + 2})}\)</span></li>
+</ul></li>
+<li><strong>Dirichlet</strong>: <span class="math inline">\(\mathbf{X} = (X_1, X_2, \ldots, X_K) \sim \text{Dir}({\color{purple} \boldsymbol\alpha})\)</span>
+<ul>
+<li><span class="math inline">\(K\)</span>-dimensional extension of Beta (thus, conjugate prior for Multinomial)</li>
+</ul></li>
+</ul>
+<!-- TODO: see why \param doesn't work for the bolded \alpha -->
+<aside class="notes">
+<p>We can now use <span class="math inline">\(\text{Beta}(\alpha + 8, \beta + 2)\)</span> as a prior for our next set of trials (encoding our knowledge up to that point), and update further once we know the results (to yet another Beta distribution).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="interactive-visualizations" class="slide level2">
+<h2>Interactive Visualizations!</h2>
+<p><a href="https://seeing-theory.brown.edu/probability-distributions/index.html" target="_blank">Seeing Theory</a>, Brown University</p>
+</section></section>
+<section>
+<section id="continuous-probability" class="title-slide slide level1 center" data-stack-name="Continuous Prob">
+<h1>Continuous Probability</h1>
+<ul>
+<li>(With some final reminders first!)</li>
+</ul>
 </section>
 <section id="what-things-have-distributions" class="slide level2">
 <h2>What Things Have Distributions?</h2>
 <ul>
 <li>Answer: <strong>Random Variables</strong></li>
+<li>Meaning: <span class="math inline">\(\mathcal{N}(0, 1)\)</span> on its own is a “template”, an exhibit at a museum within a glass case</li>
+<li>To start <strong>using</strong> it, e.g., to generate random values, we need to consider a particular <strong>RV</strong> <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span>, then generate values on basis of this template:
+<ul>
+<li><span class="math inline">\(X = 0\)</span> more likely than <span class="math inline">\(X = 1\)</span> or <span class="math inline">\(X = -1\)</span>,</li>
+<li><span class="math inline">\(X = 1\)</span> more likely than <span class="math inline">\(X = 2\)</span> or <span class="math inline">\(X = -2\)</span>,</li>
+<li>and so on</li>
+</ul></li>
 </ul>
 </section>
 <section id="cdfspdfspmfs-what-are-they" class="slide level2 smaller crunch-title crunch-math">
@@ -556,38 +762,33 @@ p_X(v) \definedas \Pr(X = v)
 <p><span class="math display">\[
 f_X(v) \definedas \frac{d}{dv}F_X(v) \iff \int_{-\infty}^{v} f_X(v)dv = F_X(v)
 \]</span></p>
-</section></section>
-<section>
-<section id="continuous-probability" class="title-slide slide level1 center" data-stack-name="Continuous Prob">
-<h1>Continuous Probability</h1>
-
 </section>
-<section id="cdfspdfspmfs-why-do-we-use-them" class="slide level2 smaller">
+<section id="cdfspdfspmfs-why-do-we-use-them" class="slide level2 smaller title-12">
 <h2>CDFs/pdfs/pmfs: <em>Why</em> Do We Use Them?</h2>
 <ul>
-<li>CDF is like the “API” that allows you to access <strong>all of the information about the distribution</strong> (pdf/pmf is derived from the CDF)</li>
+<li>CDF is like the “API” that allows you to access <strong>all of the information about the distribution</strong> (pdf/pmf is <strong>derived from</strong> the CDF)</li>
 <li>Example: we know there’s some “thing” called the <em>Exponential Distribution</em>…</li>
-<li>How do we <strong>use</strong> this distribution to understand a random variable <span class="math inline">\(X \sim \text{Exp}\)</span>?
+<li>How do we <strong>use</strong> this distribution to understand a random variable <span class="math inline">\(X \sim \text{Exp}(\lambda)\)</span>?
 <ul>
 <li>Answer: the <strong>CDF</strong> of <span class="math inline">\(X\)</span>!</li>
-<li>Since <strong>all exponentially-distributed RVs have the same PDF</strong>, we can call this PDF <strong>“the” exponential distribution</strong></li>
+<li>Since <strong>all exponentially-distributed RVs have the same pdf</strong> (with different <span class="math inline">\(\lambda\)</span> values plugged in), we can call this pdf <strong>“the” exponential distribution</strong></li>
 </ul></li>
 <li>Say we want to find the <strong>median</strong> of <span class="math inline">\(X\)</span>: The median is the number(s) <span class="math inline">\(m\)</span> satisfying</li>
 </ul>
 <p><span class="math display">\[
 \Pr(X \leq m) = \frac{1}{2}
 \]</span></p>
+<ul>
+<li>How can we find this? What “tool” do we use to figure this out about <span class="math inline">\(X\)</span>?</li>
+</ul>
 </section>
 <section id="finding-a-median-via-the-cdf" class="slide level2">
 <h2>Finding a Median via the CDF</h2>
-<div title="Median of a Random Variable $X$">
-<div class="callout callout-note callout-titled callout-style-default">
+<div title="<i class='bi bi-info-circle'></i> Median of a Random Variable $X$">
+<div class="callout callout-note no-icon callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>Median of a Random Variable <span class="math inline">\(X\)</span></strong></p>
+<p><strong><i class="bi bi-info-circle"></i> Median of a Random Variable <span class="math inline">\(X\)</span></strong></p>
 </div>
 <div class="callout-content">
 <p>The <strong>median</strong> of a random variable <span class="math inline">\(X\)</span> with some CDF <span class="math inline">\(F_X(v_X)\)</span> is the [set of] numbers <span class="math inline">\(m\)</span> for which the probability that <span class="math inline">\(X\)</span> is <strong>lower than</strong> <span class="math inline">\(m\)</span> is <span class="math inline">\(\frac{1}{2}\)</span>:</p>
@@ -603,7 +804,7 @@ f_X(v) \definedas \frac{d}{dv}F_X(v) \iff \int_{-\infty}^{v} f_X(v)dv = F_X(v)
 </div>
 
 <aside><div>
-<p>(In case you’re wondering why we start with the <strong>median</strong> rather than the more commonly-used <strong>mean</strong>: it’s specifically because I want you to get used to calculating <strong>general functions <span class="math inline">\(f(X)\)</span> of a random variable <span class="math inline">\(X\)</span></strong>. It’s easy to just e.g.&nbsp;learn how to compute the mean <span class="math inline">\(\expect{X}\)</span> and forget that this is only one of many possible choices for <span class="math inline">\(f(X)\)</span>.)</p>
+<p>(If you’re wondering why we start with the <strong>median</strong> rather than the more commonly-used <strong>mean</strong>: it’s specifically because I want you to get used to calculating <strong>general functions <span class="math inline">\(f(X)\)</span> of a random variable <span class="math inline">\(X\)</span></strong>. It’s easy to just e.g.&nbsp;learn how to compute the mean <span class="math inline">\(\expect{X}\)</span> and forget that this is only one of many possible choices for <span class="math inline">\(f(X)\)</span>.)</p>
 </div></aside></section>
 <section id="median-via-cdf-example" class="slide level2">
 <h2>Median via CDF Example</h2>
@@ -630,20 +831,14 @@ F_X(m) = \frac{1}{2} \iff 1 - e^{-\lambda m} = \frac{1}{2}
 \end{align*}
 \]</span></p>
 </section>
-<section id="what-is-a-pdf" class="slide level2">
-<h2>What is a pdf?</h2>
-<ul>
-<li>Answer: Has no meaning outside of its <strong>context</strong>: a <strong>random variable</strong> with a <strong>CDF</strong> giving the distribution of its possible values</li>
-</ul>
-</section>
-<section id="top-secret-fun-fact" class="slide level2 smaller crunch-title crunch-math crunch-ul">
+<section id="top-secret-fun-fact" class="slide level2 smaller crunch-title crunch-math crunch-ul crunch-li">
 <h2>Top Secret Fun Fact</h2>
-<center>
+<center style="margin-bottom: 6px;">
 <span class="px-4" style="border: 2px solid black !important;"><strong>Every Discrete Distribution is <span style="font-size: 50% !important;">[technically, in a weird way]</span> a Continuous Distribution!</strong></span>
 </center>
 <ul>
-<li><p>Same intuition as why every <strong>natural number</strong> is a <strong>real number</strong>, but converse is not true</p></li>
-<li><p>Marble example: Let <span class="math inline">\(X\)</span> be an RV defined on this space, so that <span class="math inline">\(X(A) = 1\)</span>, <span class="math inline">\(X(B) = 2\)</span>, <span class="math inline">\(X(C) = 3\)</span>, <span class="math inline">\(X(D) = 4\)</span>. Then the <strong>pmf</strong> for <span class="math inline">\(X\)</span> is <span class="math inline">\(p_X(i) = \frac{1}{4}\)</span> for <span class="math inline">\(i \in \{1, 2, 3, 4\}\)</span>.</p></li>
+<li><p>Same intuition as: every <strong>natural number</strong> is a <strong>real number</strong>, but converse not true</p></li>
+<li><p>Marbles: Let <span class="math inline">\(X\)</span> be a RV defined s.t. <span class="math inline">\(X(A) = 1\)</span>, <span class="math inline">\(X(B) = 2\)</span>, <span class="math inline">\(X(C) = 3\)</span>, <span class="math inline">\(X(D) = 4\)</span>. Then <strong>pmf</strong> for <span class="math inline">\(X\)</span> is <span class="math inline">\(p_X(i) = \frac{1}{4}\)</span> for <span class="math inline">\(i \in \{1, 2, 3, 4\}\)</span>.</p></li>
 <li><p>We can then use the <a href="#/appendix-dirac-delta-function">Dirac delta function</a> <span class="math inline">\(\delta(v)\)</span> to define a <strong>continuous pdf</strong></p>
 <p><span class="math display">\[
   f_X(v) = \sum_{i \in \mathcal{R}_X}p_X(i)\delta(v - i) = \sum_{i=1}^4p_X(i)\delta(v-i) = \frac{1}{4}\sum_{i=1}^4 \delta(v - i)
@@ -667,52 +862,42 @@ F_X(m) = \frac{1}{2} \iff 1 - e^{-\lambda m} = \frac{1}{2}
 <li>Cauchy: Toxic af, stay away ☠️</li>
 </ul>
 </section>
-<section id="normal-distribution" class="slide level2 crunch-title">
-<h2>Normal Distribution</h2>
-<ul>
-<li>Recall from last week: the <strong>Binomial</strong> pdf</li>
-</ul>
+<section id="recall-binomial-distribution" class="slide level2 crunch-title">
+<h2>[Recall] Binomial Distribution</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a>k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
-<span id="cb1-2"><a></a>prob <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k, <span class="dv">10</span>, <span class="fl">0.5</span>)</span>
-<span id="cb1-3"><a></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(k, prob)</span>
-<span id="cb1-4"><a></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x=</span>k, <span class="at">y=</span>prob)) <span class="sc">+</span></span>
-<span id="cb1-5"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
-<span id="cb1-6"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb1-7"><a></a>    <span class="at">title=</span><span class="st">"Binomial Distribution, N = 10, p = 0.5"</span>,</span>
-<span id="cb1-8"><a></a>    <span class="at">y=</span><span class="st">"Probability Mass"</span></span>
-<span id="cb1-9"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb1-10"><a></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>)) <span class="sc">+</span></span>
-<span id="cb1-11"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb2-2"><a></a>prob <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(k, <span class="dv">10</span>, <span class="fl">0.5</span>)</span>
+<span id="cb2-3"><a></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(k, prob)</span>
+<span id="cb2-4"><a></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x=</span>k, <span class="at">y=</span>prob)) <span class="sc">+</span></span>
+<span id="cb2-5"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb2-6"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb2-7"><a></a>    <span class="at">title=</span><span class="st">"Binomial Distribution, N = 10, p = 0.5"</span>,</span>
+<span id="cb2-8"><a></a>    <span class="at">y=</span><span class="st">"Probability Mass"</span></span>
+<span id="cb2-9"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb2-10"><a></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb2-11"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="index_files/figure-revealjs/binomial-demo-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="the-emergence-of-order" class="slide level2">
+<img data-src="index_files/figure-revealjs/unnamed-chunk-7-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
+<section id="the-emergence-of-order" class="slide level2 crunch-title">
 <h2>The Emergence of Order</h2>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="columns">
+<div class="column" style="width:50%;">
 <ul>
 <li>Who can guess the state of this process after 10 steps, with 1 person?</li>
 <li>10 people? 50? 100? (If they find themselves on the same spot, they stand on each other’s heads)</li>
 <li>100 steps? 1000?</li>
 </ul>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+</div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/random_walk.svg" class="quarto-figure quarto-figure-center"></p>
+<p><img data-src="images/random_walk.svg" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
 </figure>
 </div>
-</div>
-</div>
-</div>
+</div></div>
 </section>
 <section id="the-result-16-steps" class="slide level2">
 <h2>The Result: 16 Steps</h2>
@@ -773,11 +958,11 @@ f_X(v) = \frac{1}{\sigma\sqrt{2\pi}}\bigexp{-\frac{1}{2}\left(\frac{v - \mu}{\si
 <h2>“Most Conservative” How?</h2>
 <ul>
 <li>Of all possible distributions with mean <span class="math inline">\(\mu\)</span>, variance <span class="math inline">\(\sigma^2\)</span>, <span class="math inline">\(\mathcal{N}(\mu, \sigma^2)\)</span> is the <strong>entropy-maximizing</strong> distribution</li>
-<li>Roughly: using any other distribution (implicitly/secretly) <strong>imports additional information</strong> beyond the fact that mean is <span class="math inline">\(\mu\)</span> and variance is <span class="math inline">\(\sigma^2\)</span></li>
-<li>Example: let <span class="math inline">\(X\)</span> be an RV. If we know mean is <span class="math inline">\(\mu\)</span>, variance is <span class="math inline">\(\sigma^2\)</span>, <strong>but then we learn</strong> that <span class="math inline">\(X \neq 3\)</span>, or <span class="math inline">\(X\)</span> is even, or the 15th digit of <span class="math inline">\(X\)</span> is 7, can <strong>update</strong> to derive a “better” distribution (incorporating this info)</li>
+<li>Roughly: using any other distribution (implicitly/secretly) <strong>imports additional information</strong> beyond the fact that <span class="boxed">mean is <span class="math inline">\(\mu\)</span></span> and <span class="boxed">variance is <span class="math inline">\(\sigma^2\)</span></span></li>
+<li>Example: let <span class="math inline">\(X\)</span> be an RV. If we know mean is <span class="math inline">\(\mu\)</span>, variance is <span class="math inline">\(\sigma^2\)</span>, <strong>but then we learn</strong> that <span class="boxed"><span class="math inline">\(X \neq 3\)</span></span>, or <span class="boxed"><span class="math inline">\(X\)</span> is even</span>, or the <span class="boxed">15th digit of <span class="math inline">\(X\)</span> is 7</span>, can <strong>update</strong> <span class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span> to derive a “better” distribution (incorporating this additional info)</li>
 </ul>
 </section>
-<section id="the-takeaway" class="slide level2">
+<section id="the-takeaway" class="slide level2 crunch-title crunch-ul inline-90">
 <h2>The Takeaway</h2>
 <ul>
 <li><strong>Given info we know</strong>, we can find a distribution that “encodes” <strong>only this info</strong></li>
@@ -820,30 +1005,30 @@ f_X(v) = \frac{1}{\sigma\sqrt{2\pi}}\bigexp{-\frac{1}{2}\left(\frac{v - \mu}{\si
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">library</span>(tibble)</span>
-<span id="cb2-2"><a></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
-<span id="cb2-3"><a></a>  <span class="sc">~</span>x, <span class="sc">~</span>prob,</span>
-<span id="cb2-4"><a></a>  <span class="dv">1</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
-<span id="cb2-5"><a></a>  <span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
-<span id="cb2-6"><a></a>  <span class="dv">3</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
-<span id="cb2-7"><a></a>  <span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
-<span id="cb2-8"><a></a>  <span class="dv">5</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
-<span id="cb2-9"><a></a>  <span class="dv">6</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span></span>
-<span id="cb2-10"><a></a>)</span>
-<span id="cb2-11"><a></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>prob)) <span class="sc">+</span></span>
-<span id="cb2-12"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
-<span id="cb2-13"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb2-14"><a></a>    <span class="at">title=</span><span class="st">"Discrete Uniform pmf: a = 1, b = 6"</span>,</span>
-<span id="cb2-15"><a></a>    <span class="at">y=</span><span class="st">"Probability Mass"</span>,</span>
-<span id="cb2-16"><a></a>    <span class="at">x=</span><span class="st">"Value"</span></span>
-<span id="cb2-17"><a></a>  ) <span class="sc">+</span></span>
-<span id="cb2-18"><a></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">6</span>)) <span class="sc">+</span></span>
-<span id="cb2-19"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">library</span>(tibble)</span>
+<span id="cb3-2"><a></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb3-3"><a></a>  <span class="sc">~</span>x, <span class="sc">~</span>prob,</span>
+<span id="cb3-4"><a></a>  <span class="dv">1</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
+<span id="cb3-5"><a></a>  <span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
+<span id="cb3-6"><a></a>  <span class="dv">3</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
+<span id="cb3-7"><a></a>  <span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
+<span id="cb3-8"><a></a>  <span class="dv">5</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
+<span id="cb3-9"><a></a>  <span class="dv">6</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span></span>
+<span id="cb3-10"><a></a>)</span>
+<span id="cb3-11"><a></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>prob)) <span class="sc">+</span></span>
+<span id="cb3-12"><a></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb3-13"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-14"><a></a>    <span class="at">title=</span><span class="st">"Discrete Uniform pmf: a = 1, b = 6"</span>,</span>
+<span id="cb3-15"><a></a>    <span class="at">y=</span><span class="st">"Probability Mass"</span>,</span>
+<span id="cb3-16"><a></a>    <span class="at">x=</span><span class="st">"Value"</span></span>
+<span id="cb3-17"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb3-18"><a></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">6</span>)) <span class="sc">+</span></span>
+<span id="cb3-19"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
 <img data-src="index_files/figure-revealjs/discrete-uniform-pmf-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="continuous-uniform-distribution" class="slide level2 small-math crunch-title crunch-math">
+<section id="continuous-uniform-distribution" class="slide level2 crunch-title crunch-math math-90">
 <h2>Continuous Uniform Distribution</h2>
 <ul>
 <li>If <span class="math inline">\(X \sim \mathcal{U}[a,b]\)</span>, then intuitively <span class="math inline">\(X\)</span> is a value randomly selected from within <span class="math inline">\([a,b]\)</span>, with all values equally likely.</li>
@@ -859,10 +1044,10 @@ f_X(v) = \frac{1}{\sigma\sqrt{2\pi}}\bigexp{-\frac{1}{2}\left(\frac{v - \mu}{\si
 </ul></li>
 </ul>
 </section>
-<section id="constructing-the-uniform-cdf" class="slide level2 smaller crunch-title">
+<section id="constructing-the-uniform-cdf" class="slide level2 smaller crunch-title crunch-li">
 <h2>Constructing the Uniform CDF</h2>
 <ul>
-<li>We were ready for this! We already knew <span class="math inline">\(\Pr(X = v) = 0\)</span> for continuous distributions.</li>
+<li>We were ready for this! We already knew <span class="math inline">\(\Pr(X = v) = 0\)</span> for continuous <span class="math inline">\(X\)</span></li>
 <li>So, we forget about <span class="math inline">\(\Pr(X = v)\)</span>, and focus on <span class="math inline">\(\Pr(X \in [v_0, v_1])\)</span>.</li>
 <li>In 2D (dartboard) we had <span class="math inline">\(\Pr(X \in \circ) = \frac{\text{Area}(\circ)}{\text{Area}(\Omega)}\)</span>, so here we should have</li>
 </ul>
@@ -888,18 +1073,18 @@ P(X \in [v_0,v_1]) = \frac{\text{Length}([v_0,v_1])}{\text{Length}([1,6])}
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb3-2"><a></a>k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>)</span>
-<span id="cb3-3"><a></a>prob <span class="ot">&lt;-</span> <span class="fu">dgeom</span>(k, <span class="fl">0.5</span>)</span>
-<span id="cb3-4"><a></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(k, prob)</span>
-<span id="cb3-5"><a></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob)) <span class="sc">+</span></span>
-<span id="cb3-6"><a></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
-<span id="cb3-7"><a></a>    <span class="fu">labs</span>(</span>
-<span id="cb3-8"><a></a>        <span class="at">title =</span> <span class="st">"Geometric Distribution pmf: p = 0.5"</span>,</span>
-<span id="cb3-9"><a></a>        <span class="at">y =</span> <span class="st">"Probability Mass"</span></span>
-<span id="cb3-10"><a></a>    ) <span class="sc">+</span></span>
-<span id="cb3-11"><a></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>)) <span class="sc">+</span></span>
-<span id="cb3-12"><a></a>    <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-2"><a></a>k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>)</span>
+<span id="cb4-3"><a></a>prob <span class="ot">&lt;-</span> <span class="fu">dgeom</span>(k, <span class="fl">0.5</span>)</span>
+<span id="cb4-4"><a></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(k, prob)</span>
+<span id="cb4-5"><a></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob)) <span class="sc">+</span></span>
+<span id="cb4-6"><a></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb4-7"><a></a>    <span class="fu">labs</span>(</span>
+<span id="cb4-8"><a></a>        <span class="at">title =</span> <span class="st">"Geometric Distribution pmf: p = 0.5"</span>,</span>
+<span id="cb4-9"><a></a>        <span class="at">y =</span> <span class="st">"Probability Mass"</span></span>
+<span id="cb4-10"><a></a>    ) <span class="sc">+</span></span>
+<span id="cb4-11"><a></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>)) <span class="sc">+</span></span>
+<span id="cb4-12"><a></a>    <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
@@ -909,54 +1094,50 @@ P(X \in [v_0,v_1]) = \frac{\text{Length}([v_0,v_1])}{\text{Length}([1,6])}
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a>my_dexp <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dexp</span>(x, <span class="at">rate =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
-<span id="cb4-2"><a></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>)), <span class="fu">aes</span>(<span class="at">x=</span>x)) <span class="sc">+</span></span>
-<span id="cb4-3"><a></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>my_dexp, <span class="at">size=</span>g_linesize, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.8</span>) <span class="sc">+</span></span>
-<span id="cb4-4"><a></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>my_dexp, <span class="at">geom=</span><span class="st">'area'</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.75</span>) <span class="sc">+</span></span>
-<span id="cb4-5"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>) <span class="sc">+</span></span>
-<span id="cb4-6"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb4-7"><a></a>    <span class="at">title=</span><span class="st">"Exponential Distribution pdf: λ (rate) = 0.5"</span>,</span>
-<span id="cb4-8"><a></a>    <span class="at">x =</span> <span class="st">"v"</span>,</span>
-<span id="cb4-9"><a></a>    <span class="at">y =</span> <span class="st">"f_X(v)"</span></span>
-<span id="cb4-10"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>my_dexp <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dexp</span>(x, <span class="at">rate =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb5-2"><a></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>)), <span class="fu">aes</span>(<span class="at">x=</span>x)) <span class="sc">+</span></span>
+<span id="cb5-3"><a></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>my_dexp, <span class="at">size=</span>g_linesize, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>my_dexp, <span class="at">geom=</span><span class="st">'area'</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb5-5"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>) <span class="sc">+</span></span>
+<span id="cb5-6"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-7"><a></a>    <span class="at">title=</span><span class="st">"Exponential Distribution pdf: λ (rate) = 0.5"</span>,</span>
+<span id="cb5-8"><a></a>    <span class="at">x =</span> <span class="st">"v"</span>,</span>
+<span id="cb5-9"><a></a>    <span class="at">y =</span> <span class="st">"f_X(v)"</span></span>
+<span id="cb5-10"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
 <img data-src="index_files/figure-revealjs/exponential-plot-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="the-dreaded-cauchy-distribution" class="slide level2 smaller">
+<section id="the-dreaded-cauchy-distribution" class="slide level2 smaller crunch-title inline-90">
 <h2>The Dreaded Cauchy Distribution</h2>
-<ul>
-<li>Paxton is a Denver Nuggets fan, while Jeff is a Washington Wizards fan. Paxton creates an RV <span class="math inline">\(D\)</span> modeling how many games above .500 the Nuggets will be in a given season, while Jeff creates an RV <span class="math inline">\(W\)</span> modeling how many games above .500 the Wizards will be.</li>
-<li>They decide to combine their RVs to create a new RV, <span class="math inline">\(R = \frac{D}{W}\)</span>, which now models <strong>how much better</strong> the Nuggets will be in a season (<span class="math inline">\(R\)</span> for “Ratio”)</li>
-<li>For example, if the Nuggets are <span class="math inline">\(10\)</span> games above .500, while the Wizards are only <span class="math inline">\(5\)</span> above .500, <span class="math inline">\(R = \frac{10}{5} = 2\)</span>. If they’re both 3 games above .500, <span class="math inline">\(R = \frac{3}{3} = 1\)</span>.</li>
-</ul>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>)), <span class="fu">aes</span>(<span class="at">x=</span>x)) <span class="sc">+</span></span>
-<span id="cb5-2"><a></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>dcauchy, <span class="at">size=</span>g_linesize, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.75</span>) <span class="sc">+</span></span>
-<span id="cb5-3"><a></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>dcauchy, <span class="at">geom=</span><span class="st">'area'</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.75</span>) <span class="sc">+</span></span>
-<span id="cb5-4"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
-<span id="cb5-5"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb5-6"><a></a>    <span class="at">title=</span><span class="st">"PDF of R"</span>,</span>
-<span id="cb5-7"><a></a>    <span class="at">x =</span> <span class="st">"r"</span>,</span>
-<span id="cb5-8"><a></a>    <span class="at">y =</span> <span class="st">"f(r)"</span></span>
-<span id="cb5-9"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>)), <span class="fu">aes</span>(<span class="at">x=</span>x)) <span class="sc">+</span></span>
+<span id="cb6-2"><a></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>dcauchy, <span class="at">size=</span>g_linesize, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb6-3"><a></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>dcauchy, <span class="at">geom=</span><span class="st">'area'</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb6-4"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb6-5"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-6"><a></a>    <span class="at">title=</span><span class="st">"PDF of R"</span>,</span>
+<span id="cb6-7"><a></a>    <span class="at">x =</span> <span class="st">"r"</span>,</span>
+<span id="cb6-8"><a></a>    <span class="at">y =</span> <span class="st">"f(r)"</span></span>
+<span id="cb6-9"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="index_files/figure-revealjs/cauchy-pdf-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="so-whats-the-issue" class="slide level2 crunch-title crunch-figures small-caption shift-footnotes-less crunch-ul">
+<img data-src="index_files/figure-revealjs/cauchy-pdf-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><ul>
+<li>Paxton is a Houston Rockets fan, while Jeff is a Chicago Bulls fan. Paxton creates a RV <span class="math inline">\(H\)</span> modeling how many games above .500 (wins minus losses) the Rockets will be in a season, while Jeff creates a similar RV <span class="math inline">\(C\)</span> for the Bulls</li>
+<li>They decide to combine their RVs to create a new RV, <span class="math inline">\(R = \frac{H}{C}\)</span>, which now models <strong>how much better</strong> the Nuggets will be in a season (<span class="math inline">\(R\)</span> for “Ratio”)</li>
+<li>For example, if the Rockets are <span class="math inline">\(10\)</span> games above .500, while the Bulls are only <span class="math inline">\(5\)</span> above .500, <span class="math inline">\(R = \frac{10}{5} = 2\)</span>. If they’re both 3 games above .500, <span class="math inline">\(R = \frac{3}{3} = 1\)</span>.</li>
+</ul>
+</section>
+<section id="so-whats-the-issue" class="slide level2 crunch-title inline-90 crunch-figure crunch-ul">
 <h2>So What’s the Issue?</h2>
 <ul>
-<li>So far so good. It turns out (though Paxton and Jeff don’t know this) that the teams are actually both mediocre, so that <span class="math inline">\(D \sim N(0,10)\)</span> and <span class="math inline">\(W \sim N(0,10)\)</span>… What is the distribution of <span class="math inline">\(R\)</span> in this case?</li>
+<li>So far so good. It turns out (though Paxton and Jeff don’t know this) the teams are both mediocre: <span class="math inline">\(H \sim \mathcal{N}(0,10)\)</span>, <span class="math inline">\(B \sim \mathcal{N}(0,10)\)</span>… What is the distribution of <span class="math inline">\(R\)</span>?</li>
 </ul>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
-<div class="quarto-layout-row">
-<div id="eqns" class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="columns">
+<div class="column" style="width:50%;">
 <p><span class="math display">\[
 \begin{gather*}
 R \sim \text{Cauchy}\left( 0, 1 \right)
@@ -969,21 +1150,18 @@ R \sim \text{Cauchy}\left( 0, 1 \right)
 M_R(t) &amp;= ☠️
 \end{align*}
 \]</span></p>
-</div>
-<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+</div><div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/agnesi-crop.jpeg"></p>
-<figcaption>From <span class="citation" data-cites="agnesi_analytical_1801">@agnesi_analytical_1801</span> [<a href="" target="_blank">Internet Archive</a>]</figcaption>
+<figcaption>From <span class="citation" data-cites="agnesi_analytical_1801">Agnesi (<a href="#/references" role="doc-biblioref" onclick="">1801</a>)</span> [<a href="" target="_blank">Internet Archive</a>]</figcaption>
 </figure>
 </div>
+</div></div>
+<div id="cauchy-worse" style="font-size: 70%">
+<p>Even worse, this is true regardless of variances: <span class="math inline">\(D \sim \mathcal{N}(0,d)\)</span> and <span class="math inline">\(W \sim \mathcal{N}(0,w)\)</span> <span class="math inline">\(\implies R \sim \text{Cauchy}\left( 0,\frac{d}{w} \right)\)</span>…</p>
 </div>
-</div>
-</div>
-
-<aside><div>
-<p>Even worse, this is true regardless of variances: <span class="math inline">\(D \sim N(0,d), W \sim N(0,w) \implies R \sim \text{Cauchy}\left( 0,\frac{d}{w} \right)\)</span>…</p>
-</div></aside></section></section>
+</section></section>
 <section>
 <section id="lab-4" class="title-slide slide level1 center" data-stack-name="Lab 4">
 <h1>Lab 4</h1>
@@ -1010,7 +1188,7 @@ M_R(t) &amp;= ☠️
 <div class="callout callout-note no-icon callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
-<p><strong>The Problem of the Broken Stick <span class="citation" data-cites="gardner_colossal_2001">[@gardner_colossal_2001, 273-285]</span></strong></p>
+<p><strong>The Problem of the Broken Stick <span class="citation" data-cites="gardner_colossal_2001">(<a href="#/references" role="doc-biblioref" onclick="">Gardner 2001, 273–85</a>)</span></strong></p>
 </div>
 <div class="callout-content">
 <p>If a stick is broken at random into three pieces, what is the probability that the pieces can be put back together into a triangle?</p>
@@ -1037,12 +1215,17 @@ M_R(t) &amp;= ☠️
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
-<div id="refs" role="list">
-
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-agnesi_analytical_1801" class="csl-entry" role="listitem">
+Agnesi, Maria Gaetana. 1801. <em>Analytical <span>Institutions</span> in <span>Four Books</span>: <span>Originally Written</span> in <span>Italian</span></em>. <span>Taylor and Wilks</span>.
+</div>
+<div id="ref-gardner_colossal_2001" class="csl-entry" role="listitem">
+Gardner, Martin. 2001. <em>Colossal <span>Book</span> of <span>Mathematics</span>: <span>Classic Puzzles Paradoxes And Problems</span></em>. <span>W. W. Norton &amp; Company</span>.
+</div>
 </div>
 </section>
-<section id="appendix-dirac-delta-function" class="slide level2 smaller scrollable">
-<h2>Appendix: Dirac Delta Function</h2>
+<section id="appendix-i-dirac-delta-function" class="slide level2 smaller scrollable">
+<h2>Appendix I: Dirac Delta Function</h2>
 <ul>
 <li><span class="math inline">\(\delta(v)\)</span> as used in the <a href="#/top-secret-fun-fact">“Top Secret Fun Fact” slide</a> is called the <a href="https://en.wikipedia.org/wiki/Dirac_delta_function" target="_blank"><strong>Dirac Delta function</strong></a>.</li>
 <li>It enables conversion of discrete distributions into continuous distributions as it represents an “infinite point mass” at <span class="math inline">\(0\)</span> that can be integrated<sup>1</sup>:</li>
@@ -1056,13 +1239,47 @@ M_R(t) &amp;= ☠️
 <p><span class="math display">\[
 \int_{-\infty}^{\infty}\delta(v)dv = \theta(v) = \begin{cases} 1 &amp; v = 0 \\ 0 &amp; v \neq 0\end{cases}
 \]</span></p>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>This is leaving out some of the complexities of defining this function so it “works” in this way: for example, we need to use the <a href="https://en.wikipedia.org/wiki/Lebesgue_integration" target="_blank">Lebesgue integral</a> rather than the (standard) <a href="https://en.wikipedia.org/wiki/Riemann_integral" target="_blank">Riemann integral</a> for it to be defined at all, and even then it technically fails the conditions necessary for a fully-well-defined Lebesgue integral. For full details see <a href="https://en.wikipedia.org/wiki/Probability_density_function#Link_between_discrete_and_continuous_distributions" target="_blank">this section</a> from the Wiki article on PDFs, and follow the links therein.</p></li></ol></aside></section>
+<section id="appendix-ii-countability-of-mathbbq" class="slide level2 smaller small-math">
+<h2>Appendix II: Countability of <span class="math inline">\(\mathbb{Q}\)</span></h2>
+<ul>
+<li><strong>Bad</strong> definition: “<span class="math inline">\(\mathbb{N}\)</span> is countable because no <span class="math inline">\(x \in \mathbb{N}\)</span> between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>. <span class="math inline">\(\mathbb{R}\)</span> is uncountable because infinitely-many <span class="math inline">\(x \in \mathbb{R}\)</span> between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span>.” (<span class="math inline">\(\implies \mathbb{Q}\)</span> uncountable)</li>
+<li>And yet, <span class="math inline">\(\mathbb{Q}\)</span> <strong>is</strong> countable…</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/rationals_countable.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><div class="column" style="width:55%;">
+<p><span class="math display">\[
+\begin{align*}
+\begin{array}{ll}
+s: \mathbb{N} \leftrightarrow \mathbb{Z} &amp; s(n) = (-1)^n \left\lfloor \frac{n+1}{2} \right\rfloor \\
+h_+: \mathbb{Z}^+ \leftrightarrow \mathbb{Q}^+ &amp; p_1^{a_1}p_2^{a_2}\cdots \mapsto p_1^{s(a_1)}p_2^{s(a_2)}\cdots \\
+h: \mathbb{Z} \leftrightarrow \mathbb{Q} &amp; h(n) = \begin{cases}h_+(n) &amp;n &gt; 0 \\ 0 &amp; n = 0 \\
+-h_+(-n) &amp; n &lt; 0\end{cases} \\
+(h \circ s): \mathbb{N} \leftrightarrow \mathbb{Q} &amp; ✅🤯
+\end{array}
+\end{align*}
+\]</span></p>
+</div></div>
 
-<div class="quarto-auto-generated-content">
+<aside><div>
+<p>Image credit: <a href="https://math.stackexchange.com/a/659373" target="_blank">Rebecca J. Stones, Math StackExchange</a>. Math credit: <a href="https://math.stackexchange.com/a/1067928" target="_blank">Thomas Andrews, Math StackExchange</a></p>
+</div></aside></section>
+<section id="appendix-iii-binomial-triangle" class="slide level2">
+<h2>Appendix III: Binomial Triangle</h2>
+
+
+<img data-src="images/binomial_triangle.svg" class="quarto-figure quarto-figure-center r-stretch"><div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>DSAN 5100-03 W05: Continuous Distributions</p>
 </div>
 </div>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>This is leaving out some of the complexities of defining this function so it “works” in this way: for example, we need to use the <a href="https://en.wikipedia.org/wiki/Lebesgue_integration" target="_blank">Lebesgue integral</a> rather than the (standard) <a href="https://en.wikipedia.org/wiki/Riemann_integral" target="_blank">Riemann integral</a> for it to be defined at all, and even then it technically fails the conditions necessary for a fully-well-defined Lebesgue integral. For full details see <a href="https://en.wikipedia.org/wiki/Probability_density_function#Link_between_discrete_and_continuous_distributions" target="_blank">this section</a> from the Wiki article on PDFs, and follow the links therein.</p></li></ol></aside></section></section>
+</section></section>
 
     </div>
   </div>
