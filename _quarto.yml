@@ -39,8 +39,8 @@ website:
         text: "Week 4: Sep 17"
       - href: w05/index.qmd
         text: "Week 5: Sep 24"
-      # - href: w06/index.qmd
-      #   text: "Week 6: Sep 27"
+      - href: w06/index.qmd
+        text: "Week 6: Oct 1"
       # - href: w07/index.qmd
       #   text: "Week 7: Oct 5"
       # - href: w08/index.qmd

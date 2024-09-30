@@ -1,0 +1,894 @@
+---
+title: "Week 6: Continuous Distributions"
+subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
+author: "Jeff Jacobs"
+institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
+date: 2024-10-01
+date-format: full
+lecnum: 6
+bibliography: "../_DSAN5100.bib"
+categories:
+  - "Class Sessions"
+format:
+  revealjs:
+    cache: false
+    css: "../dsan-globals/jjstyles.css"
+    footer: "DSAN 5100-03 W06: Continuous Distributions"
+    output-file: slides.html
+    df-print: kable
+    code-fold: true
+    html-math-method: mathjax
+    scrollable: true
+    slide-number: true
+    number-sections: false
+    link-external-icon: true
+    link-external-newwindow: true
+    theme: [default]
+    revealjs-plugins:
+      - simplemenu
+    simplemenu:
+      flat: true
+      barhtml:
+        header: "<div class='menubar'><span style='position: absolute; left: 8; padding-left: 8px;'><a href='./index.html'>&larr; Return to Notes</a></span><ul class='menu'></ul></div>"
+      scale: 0.5
+    include-in-header:
+      text: "<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous'><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>"
+  html:
+    cache: false
+    output-file: index.html
+    df-print: kable
+    warning: false
+    link-external-icon: true
+    link-external-newwindow: true
+---
+
+::: {.content-visible unless-format="revealjs"}
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window &rarr;</a>
+</center>
+
+:::
+
+# Common Continuous Distributions {data-stack-name="Common Dists"}
+
+* Normal: The friend who shows up everywhere
+* Uniform: The stable, reliable friend
+* Exponential: Good days and bad days
+* Cauchy: Toxic af, stay away ☠️
+
+{{< include ../dsan-globals/_tex.globals.qmd >}}
+
+::: {.hidden}
+
+```{r}
+#| label: source-globals
+source("../dsan-globals/_globals.r")
+```
+
+:::
+
+## The Emergence of Order {.crunch-title}
+
+:::: {.columns}
+::: {.column width="50%"}
+
+* Who can guess the state of this process after 10 steps, with 1 person?
+* 10 people? 50? 100? (If they find themselves on the same spot, they stand on each other's heads)
+* 100 steps? 1000?
+
+:::
+::: {.column width="50%"}
+
+![](images/random_walk.svg){fig-align="center" width="90%"}
+
+:::
+::::
+
+## The Result: 16 Steps
+
+```{r}
+#| label: random-walk-16
+#| code-fold: true
+library(tidyverse)
+library(ggExtra)
+# From McElreath!
+gen_histo <- function(reps, num_steps) {
+  support <- c(-1,1)
+  pos <-replicate(reps, sum(sample(support,num_steps,replace=TRUE,prob=c(0.5,0.5))))
+  #print(mean(pos))
+  #print(var(pos))
+  pos_df <- tibble::tibble(x=pos)
+  clt_distr <- function(x) dnorm(x, 0, sqrt(num_steps))
+  plot <- ggplot(pos_df, aes(x=x)) +
+    geom_histogram(aes(y = after_stat(density)), fill=cbPalette[1], binwidth = 2) +
+    stat_function(fun = clt_distr) +
+    dsan_theme("quarter") +
+    theme(title=element_text(size=16)) +
+    labs(
+      title=paste0(reps," Random Walks, ",num_steps," Steps")
+    )
+  return(plot)
+}
+gen_walkplot <- function(num_people, num_steps, opacity=0.15) {
+  support <- c(-1, 1)
+  # Unique id for each person
+  pid <- seq(1, num_people)
+  pid_tib <- tibble(pid)
+  pos_df <- tibble()
+  end_df <- tibble()
+  all_steps <- t(replicate(num_people, sample(support, num_steps, replace = TRUE, prob = c(0.5, 0.5))))
+  csums <- t(apply(all_steps, 1, cumsum))
+  csums <- cbind(0, csums)
+  # Last col is the ending positions
+  ending_pos <- csums[, dim(csums)[2]]
+  end_tib <- tibble(pid = seq(1, num_people), endpos = ending_pos, x = num_steps)
+  # Now convert to tibble
+  ctib <- as_tibble(csums, name_repair = "none")
+  merged_tib <- bind_cols(pid_tib, ctib)
+  long_tib <- merged_tib %>% pivot_longer(!pid)
+  # Convert name -> step_num
+  long_tib <- long_tib %>% mutate(step_num = strtoi(gsub("V", "", name)) - 1)
+  # print(end_df)
+  grid_color <- rgb(0, 0, 0, 0.1)
+
+  # And plot!
+  walkplot <- ggplot(
+      long_tib,
+      aes(
+          x = step_num,
+          y = value,
+          group = pid,
+          # color=factor(label)
+      )
+  ) +
+      geom_line(linewidth = g_linesize, alpha = opacity, color = cbPalette[1]) +
+      geom_point(data = end_tib, aes(x = x, y = endpos), alpha = 0) +
+      scale_x_continuous(breaks = seq(0, num_steps, num_steps / 4)) +
+      scale_y_continuous(breaks = seq(-20, 20, 10)) +
+      dsan_theme("quarter") +
+      theme(
+          legend.position = "none",
+          title = element_text(size = 16)
+      ) +
+      theme(
+          panel.grid.major.y = element_line(color = grid_color, linewidth = 1, linetype = 1)
+      ) +
+      labs(
+          title = paste0(num_people, " Random Walks, ", num_steps, " Steps"),
+          x = "Number of Steps",
+          y = "Position"
+      )
+}
+wp1 <- gen_walkplot(500, 16, 0.05)
+ggMarginal(wp1, margins = "y", type = "histogram", yparams = list(binwidth = 1))
+```
+
+## The Result: 64 Steps
+
+```{r}
+#| label: random-walk-64
+#| code-fold: true
+library(ggExtra)
+wp2 <- gen_walkplot(5000,64,0.008) +
+  ylim(-30,30)
+ggMarginal(wp2, margins = "y", type = "histogram", yparams = list(binwidth = 1))
+```
+
+::: {.unnumbered .hidden}
+
+<!-- just the histograms -->
+
+```{r}
+#| fig-height: 3.4
+#| label: walk-histo-16
+p2 <- gen_histo(1000, 16)
+p2
+```
+
+```{r}
+#| fig-height: 3.4
+#| label: walk-histo-32
+p3 <- gen_histo(10000, 32)
+p3
+```
+
+:::
+
+## What's Going On Here? {.smaller}
+
+![](images/the_function_msg.jpeg){fig-align="center"}
+
+(Stay tuned for **Markov processes** $\overset{t \rightarrow \infty}{\leadsto}$ **Stationary distributions**!)
+
+## Properties of the Normal Distribution
+
+* If $X \sim \mathcal{N}(\param{\mu}, \param{\theta})$, then $X$ has pdf $f_X(v)$ defined by
+
+$$
+f_X(v) = \frac{1}{\sigma\sqrt{2\pi}}\bigexp{-\frac{1}{2}\left(\frac{v - \mu}{\sigma}\right)^2}
+$$
+
+* I hate memorizing as much as you do, I promise 🥴
+* The important part (imo): this is the **most conservative** out of **all possible (symmetric) prior distributions** defined on $\mathbb{R}$ (defined from $-\infty$ to $\infty$)
+
+## "Most Conservative" How?
+
+* Of all possible distributions with mean $\mu$, variance $\sigma^2$, $\mathcal{N}(\mu, \sigma^2)$ is the **entropy-maximizing** distribution
+* Roughly: using any other distribution (implicitly/secretly) **imports additional information** beyond the fact that [mean is $\mu$]{.boxed} and [variance is $\sigma^2$]{.boxed}
+* Example: let $X$ be an RV. If we know mean is $\mu$, variance is $\sigma^2$, **but then we learn** that [$X \neq 3$]{.boxed}, or [$X$ is even]{.boxed}, or the [15th digit of $X$ is 7]{.boxed}, can **update** $\mathcal{N}(\mu,\sigma^2)$ to derive a "better" distribution (incorporating this additional info)
+
+## The Takeaway {.crunch-title .crunch-ul .inline-90}
+
+* **Given info we know**, we can find a distribution that "encodes" **only this info**
+* More straightforward example: if we only know that the value is something in the range $[a,b]$, entropy-maximizing distribution is the **Uniform Distribution**
+
+| If We Know | And We Know | (Max-Entropy) Distribution Is... |
+| - | - | - |
+| $\text{Mean}[X] = \mu$ | $\text{Var}[X] = \sigma^2$ | $X \sim \mathcal{N}(\mu, \sigma^2)$ |
+| $\text{Mean}[X] = \lambda$ | $X \geq 0$ | $X \sim \text{Exp}\left(\frac{1}{\lambda}\right)$ |
+| $X \geq a$ | $X \leq b$ | $X \sim \mathcal{U}[a,b]$ |
+
+## [Recall] Discrete Uniform Distribution
+
+```{r}
+#| label: discrete-uniform-pmf
+#| echo: true
+#| code-fold: true
+#| fig-align: center
+library(tibble)
+bar_data <- tribble(
+  ~x, ~prob,
+  1, 1/6,
+  2, 1/6,
+  3, 1/6,
+  4, 1/6,
+  5, 1/6,
+  6, 1/6
+)
+ggplot(bar_data, aes(x=x, y=prob)) +
+  geom_bar(stat="identity", fill=cbPalette[1]) +
+  labs(
+    title="Discrete Uniform pmf: a = 1, b = 6",
+    y="Probability Mass",
+    x="Value"
+  ) +
+  scale_x_continuous(breaks=seq(1,6)) +
+  dsan_theme("half")
+```
+
+## Continuous Uniform Distribution {.crunch-title .crunch-math .math-90}
+
+* If $X \sim \mathcal{U}[a,b]$, then intuitively $X$ is a value randomly selected from within $[a,b]$, with all values equally likely.
+* **Discrete** case: what we've been using all along (e.g., dice): if $X \sim \mathcal{U}\{1,6\}$, then
+
+$$
+\Pr(X = 1) = \Pr(X = 2) = \cdots = \Pr(X = 6) = \frac{1}{6}
+$$
+
+* For **continuous** case... what do we put in the denominator? $X \sim \mathcal{U}[1,6] \implies \Pr(X = \pi) = \frac{1}{?}$...
+  * Answer: $\Pr(X = \pi) = \frac{1}{|[1,6]|} = \frac{1}{\aleph_0} = 0$
+
+## Constructing the Uniform CDF {.smaller .crunch-title .crunch-li}
+
+* We were ready for this! We already knew $\Pr(X = v) = 0$ for continuous $X$
+* So, we forget about $\Pr(X = v)$, and focus on $\Pr(X \in [v_0, v_1])$.
+* In 2D (dartboard) we had $\Pr(X \in \circ) = \frac{\text{Area}(\circ)}{\text{Area}(\Omega)}$, so here we should have
+
+$$
+P(X \in [v_0,v_1]) = \frac{\text{Length}([v_0,v_1])}{\text{Length}([1,6])}
+$$
+
+* And indeed, the CDF of $X$ is $\boxed{F_X(v) = \Pr(X \leq v) = \frac{v-a}{b-a}}$, so that
+
+$$
+\Pr(X \in [v_0,v_1]) = F_X(v_1) - F_X(v_0) = \frac{v_1-a}{b-a} - \frac{v_0-a}{b-a} = \frac{v_1 - v_0}{b-a}
+$$
+
+* Since $a = 1$, $b = 6$ in our example, $\Pr(X \in [v_0,v_1]) = \frac{v_1-v_0}{6-1} = \frac{\text{Length}([v_0,v_1])}{\text{Length}([1,6])} \; ✅$
+
+<!-- ## References -->
+
+## Exponential Distribution {data-name="Exponential"}
+
+* Recall the (discrete) **Geometric Distribution**:
+
+```{r}
+#| label: geometric-demo
+#| fig-align: center
+#| echo: true
+#| code-fold: true
+library(ggplot2)
+k <- seq(0, 8)
+prob <- dgeom(k, 0.5)
+bar_data <- tibble(k, prob)
+ggplot(bar_data, aes(x = k, y = prob)) +
+    geom_bar(stat = "identity", fill = cbPalette[1]) +
+    labs(
+        title = "Geometric Distribution pmf: p = 0.5",
+        y = "Probability Mass"
+    ) +
+    scale_x_continuous(breaks = seq(0, 8)) +
+    dsan_theme("half")
+```
+
+## Now In Continuous Form!
+
+```{r}
+#| label: exponential-plot
+#| echo: true
+#| code-fold: true
+#| fig-align: center
+my_dexp <- function(x) dexp(x, rate = 1/2)
+ggplot(data.frame(x=c(0,8)), aes(x=x)) +
+  stat_function(fun=my_dexp, size=g_linesize, fill=cbPalette[1], alpha=0.8) +
+  stat_function(fun=my_dexp, geom='area', fill=cbPalette[1], alpha=0.75) +
+  dsan_theme("half") +
+  labs(
+    title="Exponential Distribution pdf: λ (rate) = 0.5",
+    x = "v",
+    y = "f_X(v)"
+  )
+```
+
+
+## The Dreaded Cauchy Distribution {.smaller .crunch-title .inline-90}
+
+```{r}
+#| label: cauchy-pdf
+#| echo: true
+#| code-fold: true
+ggplot(data.frame(x=c(-4,4)), aes(x=x)) +
+  stat_function(fun=dcauchy, size=g_linesize, fill=cbPalette[1], alpha=0.75) +
+  stat_function(fun=dcauchy, geom='area', fill=cbPalette[1], alpha=0.75) +
+  dsan_theme("quarter") +
+  labs(
+    title="PDF of R",
+    x = "r",
+    y = "f(r)"
+  )
+```
+
+* Paxton is a Houston Rockets fan, while Jeff is a Chicago Bulls fan. Paxton creates a RV $H$ modeling how many games above .500 (wins minus losses) the Rockets will be in a season, while Jeff creates a similar RV $C$ for the Bulls
+* They decide to combine their RVs to create a new RV, $R = \frac{H}{C}$, which now models **how much better** the Nuggets will be in a season ($R$ for "Ratio")
+* For example, if the Rockets are $10$ games above .500, while the Bulls are only $5$ above .500, $R = \frac{10}{5} = 2$. If they're both 3 games above .500, $R = \frac{3}{3} = 1$.
+
+## So What's the Issue? {.crunch-title .inline-90 .crunch-figure .crunch-ul}
+
+* So far so good. It turns out (though Paxton and Jeff don't know this) the teams are both mediocre: $H \sim \mathcal{N}(0,10)$, $B \sim \mathcal{N}(0,10)$... What is the distribution of $R$?
+
+:::: {.columns}
+::: {.column width="50%"}
+
+$$
+\begin{gather*}
+R \sim \text{Cauchy}\left( 0, 1 \right)
+\end{gather*}
+$$
+
+$$
+\begin{align*}
+\expect{R} &= ☠️ \\
+\Var{R} &= ☠️ \\
+M_R(t) &= ☠️
+\end{align*}
+$$
+
+:::
+::: {.column width="50%"}
+
+![From @agnesi_analytical_1801 \[<a href='' target='_blank'>Internet Archive</a>\]](images/agnesi-crop.jpeg)
+
+:::
+::::
+
+::: {#cauchy-worse style="font-size: 70%"}
+
+Even worse, this is true regardless of variances: $D \sim \mathcal{N}(0,d)$ and $W \sim \mathcal{N}(0,w)$ $\implies R \sim \text{Cauchy}\left( 0,\frac{d}{w} \right)$...
+
+:::
+
+# *Moments* of a Distribution: Expectation and Variance {data-stack-name="Moments"}
+
+## Expectations = Weighted Means {.smaller .math-90 .crunch-title .crunch-ul}
+
+* We already know how to find the (**unweighted**) **mean** of a list of <span style="color: orange;">**numbers**</span>:
+
+$$
+\begin{align*}
+\begin{array}{|p{1cm}||p{1cm}|p{1cm}|p{1cm}|}\hline X & \orange{4} & \orange{10} & \orange{8} \\\hline\end{array} \implies \overline{X} &= \frac{\orange{4} + \orange{10} + \orange{8}}{\purp{3}} = \purp{\left(\frac{1}{3}\right)} \cdot \orange{4} + \purp{\left( \frac{1}{3} \right)} \cdot \orange{10} + \purp{\left( \frac{1}{3} \right)} \cdot \orange{8} \\
+&= \frac{22}{3} \approx 7.33
+\end{align*}
+$$
+
+* Discrete distributions: just lists of <span style="color: orange;">**numbers**</span> and their <span style="color: purple">**probability**</span> of occurring!
+
+$$
+\begin{align*}
+\begin{array}{|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}\hline X & \orange{4} & \orange{10} & \orange{8} \\\hline \Pr(X) & \purp{0.01} & \purp{0.01} & \purp{0.98}\\\hline\end{array} \implies \overline{X} &= \purp{\left( \frac{1}{100} \right)} \cdot \orange{4} + \purp{\left( \frac{1}{100} \right)} \cdot \orange{10} + \purp{\left( \frac{98}{100} \right)} \cdot \orange{8} \\
+&= \left.\frac{798}{100}\right.^{1} \approx 7.98
+\end{align*}
+$$
+
+::: {.aside}
+
+1. It will be helpful for later/life as a data scientist to notice that this is exactly $\frac{4 + 10 + \overbrace{8 + \cdots + 8}^{98\text{ times}}}{100}$. That is: weighted mean = normal mean where numbers are repeated proportionally to their probabilities. (See <a href="https://en.wikipedia.org/wiki/Additive_smoothing" target="_blank">Laplace smoothing</a>!).
+
+:::
+
+## Different Types of "Averages" {.smaller}
+
+* (This will seem like overkill now, but will help us later!)
+* To avoid confusion, we denote the "regular" (**arithmetic**) mean **function** as $M_1(\cdot)$
+  * If $V = \{v_1, \ldots, v_n\}$, $M_1(V) \definedas \frac{v_1+\cdots+v_n}{n}$.
+* Then $\overline{V}$ will denote the **number** which results from applying $M_1$ to the set $V$.
+* Other common **functions** which get called "averages" in Machine Learning: **median**, **harmonic** mean ($M_{-1}$), **geometric** mean ($M_0$), the **hadamard product** $\odot$, etc.---pop up surprisingly often in Data Science/Machine Learning!
+* The **things** we're averaging also take on weird forms: bits, logical predicates, vectors, **tensors** (Hence Google's Machine Learning platform, <a href="https://www.tensorflow.org/" target="_blank">TensorFlow</a>), ...
+
+::: {.aside}
+For what these subscripts ($M_{-1}$, $M_0$, $M_1$) mean, and more on the Hadamard product and its importance to Machine Learning, see @sec-hadamard
+:::
+
+## Definition {.smaller}
+
+* For a **discrete** RV $X$:
+
+$$
+\expect{X} = \sum_{x \in \mathcal{R}_X}x P(x)
+$$
+
+* For a **continuous** RV $X$:
+
+$$
+\expect{X} = \int_{-\infty}^{\infty}xf(x)dx
+$$
+
+::: {.aside}
+Remember that $\mathcal{R}_X$ is the **support** of the random variable $X$. If $X$ is discrete, this is just $\mathcal{R}_X = \{x \in \mathbb{R} \given P(X = x) > 0\}$. If $X$ is continuous, we can almost always* use the similar definition $\mathcal{R}_X = \{x \in \mathbb{R} \given f_X(x) > 0\}$, **remembering that $f_X(x) \neq P(X = x)$!!!** See @sec-continuous-support for the scarier definition that works for **all** continuous RVs.
+:::
+
+## Important Properties {.crunch-title .smaller .smallishish-math}
+
+::: {#above}
+* For RVs $X$, $Y$, and $a, b \in \mathbb{R}$:
+:::
+
+::: columns
+::: {.column width="33%"}
+
+<div style="border: 1px solid black !important; padding: 4px !important;">
+<center>
+**Linear**
+</center>
+
+$$
+\expect{aX} = a\expect{X}
+$$
+
+</div>
+
+:::
+::: {.column width="33%"}
+
+<div style="border: 1px solid black !important; padding: 4px !important;">
+<center>
+**Additive**
+</center>
+
+$$
+\expect{X + Y} = \expect{X} + \expect{Y}
+$$
+
+</div>
+
+:::
+::: {.column width="33%"}
+
+<div style="border: 1px solid black !important; padding: 4px !important;">
+<center>
+**Affine**[^affine]
+</center>
+
+$$
+\expect{aX + b} = a\expect{X} + b
+$$
+
+</div>
+
+:::
+:::
+
+* LOTUS:
+
+$$
+\expect{g(X)} = g(x)f(x)dx
+$$
+
+* **Not** Multiplicative:
+
+$$
+\expect{X \cdot Y} = \expect{X} \cdot \expect{Y} \iff X \perp Y
+$$
+
+[^affine]: Mathematically, it's important to call $aX + b$ an "affine transformation", *not* a linear transformation. In practice, everyone calls this "linear", so I try to use both (for easy Googling!). The reason it matters will come up when we discuss Variance!
+
+::: {.notes}
+Really these should be called **affine** functions, but this property is usually just known as "linearity", so for the sake of being able to google it I'm calling it "Linear" here as well, for now
+:::
+
+## Variance: Motivation {.crunch-title .crunch-ul .inline-90}
+
+* We've now got a "measure of central tendency", the expectation $\expect{X}$, with some nice properties. We can use it to produce **point estimates**.
+* Now, how do we describe and communicate the **spread** of the data in a dataset? Similarly, how can we describe our **uncertainty** about a point estimate?
+* Let's try to develop a function, $\text{Spread}$, that takes in a set of values and computes **how spread out** they are
+* (*Hint*: we can use **arithmetic mean**, applied to **differences between points** rather than points themselves)
+
+## First Attempt {.smaller .crunch-title .crunch-code .crunch-ul .math-90 .crunch-quarto-figure}
+
+* What properties should $\text{Spread}(\cdot)$ have?
+  * Should be $0$ if every data point is identical, then increase as they spread apart
+* How about: average **difference** between each point and the overall (arithmetic) mean?
+$$
+\text{Spread}(X) = M_1(X - \overline{X}) = \frac{(x_1 - \overline{X}) + (x_2 - \overline{X}) + \cdots + (x_n - \overline{X})}{n}
+$$
+
+::: columns
+::: {.column width="75%"}
+
+```{r}
+#| label: spread-first-attempt
+#| fig-height: 3.7
+#| echo: true
+#| code-fold: true
+library(latex2exp)
+N <- 10
+x <- seq(1,N)
+y <- rnorm(N, 0, 10)
+mean_y <- mean(y)
+spread <- y - mean_y
+df <- tibble(x=x, y=y, spread=spread)
+ggplot(df, aes(x=x, y=y)) +
+  geom_hline(aes(yintercept=mean_y, linetype="dashed"), color="purple", size=g_linesize) +
+  geom_segment(aes(xend=x, yend=mean_y, color=ifelse(y>0,"Positive","Negative")), size=g_linesize) +
+  geom_point(size=g_pointsize) +
+  scale_linetype_manual(element_blank(), values=c("dashed"="dashed"), labels=c("dashed"=unname(TeX(c("$M_1(X)$"))))) +
+  dsan_theme("half") +
+  scale_color_manual("Spread", values=c("Positive"=cbPalette[3],"Negative"=cbPalette[6]), labels=c("Positive"="Positive","Negative"="Negative")) +
+  scale_x_continuous(breaks=seq(0,10,2)) +
+  #remove_legend_title() +
+  theme(legend.spacing.y=unit(0.1,"mm")) +
+  labs(
+    title=paste0(N, " Randomly-Generated Points, N(0,10)"),
+    x="Index",
+    y="Value"
+  )
+```
+:::
+::: {.column width="25%"}
+
+The result? To ten decimal places:
+
+```{r}
+#| label: spread-attempt-results
+#| echo: true
+#| code-fold: true
+spread_fmt <- sprintf("%0.10f", mean(df$spread))
+writeLines(spread_fmt)
+```
+
+😞 What happened?
+
+:::
+:::
+
+## Avoiding Cancellation {.smaller .crunch-title .crunch-code .crunch-ul .crunch-quarto-figure}
+
+* How to avoid **positive** and **negative** deviations cancelling out? Two ideas:
+  * Absolute value $\left|X - \overline{X}\right|$
+  * Squared error $\left( X - \overline{X} \right)^2$...
+* Ghost of calculus past: which is **differentiable** everywhere?[^backprop]
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| label: x2-plot
+# Could use facet_grid() here, but it doesn't work too nicely with stat_function() :(
+ggplot(data.frame(x=c(-4,4)), aes(x=x)) +
+  stat_function(fun=~ .x^2, linewidth = g_linewidth) +
+  dsan_theme("quarter") +
+  labs(
+    title="f(x) = x^2",
+    y="f(x)"
+  )
+```
+:::
+::: {.column width="50%"}
+```{r}
+#| label: abs-x-plot
+# Could use facet_grid() here, but it doesn't work too nicely with stat_function() :(
+ggplot(data.frame(x=c(-4,4)), aes(x=x)) +
+  stat_function(fun=~ abs(.x), linewidth=g_linewidth) +
+  dsan_theme("quarter") +
+  labs(
+    title="f(x) = |x|",
+    y="f(x)"
+  )
+```
+:::
+:::
+
+[^backprop]: For why differentiability matters **a lot** for modern Machine Learning, see the <a href="https://en.wikipedia.org/wiki/Backpropagation" target="_blank">Backpropagation algorithm</a>.
+
+## We've Arrived at Variance! {.crunch-math .crunch-title .smallish-math}
+
+$$
+\Var{X} = \bigexpect{ \left(X - \expect{X}\right)^2 }
+$$
+
+* And, we can apply what we know about $\expect{X}$ to derive:
+
+$$
+\begin{align*}
+\Var{X} &= \bigexpect{ \left(X - \expect{X}\right)^2 } = \bigexpect{ X^2 - 2X\expect{X} + \left( \expect{X} \right)^2 } \\
+&= \expect{X^2} - \expect{2 X\expect{X}} + \left( \expect{X} \right)^2 \\
+&= \expect{X^2} - 2\expect{X}\expect{X} + \left(\expect{X}\right)^2 \\
+&= \expect{X^2} - \left( \expect{X} \right)^2 \; \; \green{\small{\text{ (we'll need this in a minute)}}}
+\end{align*}
+$$
+
+::: {.aside}
+Why does $\expect{2X\expect{X}} = 2\expect{X}\expect{X}$? Remember: $X$ is an **RV**, but $\expect{X}$ is a **number**!
+:::
+
+## Standard Deviation {.crunch-title .crunch-ul .small-math}
+
+* When we squared the deviations, we **lost the units** of our datapoints!
+* To see spread, but **in the same units as the original data**, let's just undo the squaring!
+
+$$
+\text{SD}[X] = \sqrt{\Var{X}}
+$$
+
+* But, computers don't care about the unit of this measure (just **minimizing it**). No reason to do this additional step **if** humans aren't looking at the results!
+
+## Properties of Variance {.crunch-title .crunch-ul}
+
+* Recall that Expectation was an **affine** function:
+
+$$
+\mathbb{E}[aX + b] = a\mathbb{E}[X] + b
+$$
+
+* Variance has a similar property, but is called <a href="https://en.wikipedia.org/wiki/Homogeneous_function" target="_blank">**homogeneous**</a> **of degree 2**, which means
+
+$$
+\Var{aX + b} = a^2\Var{X} \; \underbrace{\phantom{+ b}}_{\mathclap{\text{(Something missing?)}}}
+$$
+
+::: {.aside}
+Note that since the expected value function is **linear**, it is also **homogeneous**, **of degree 1**, even though the $b$ term doesn't "disappear" like it does in the variance equation!
+:::
+
+## What Happened to the $b$ Term?
+
+Mathematically:
+
+$$
+\begin{align*}
+\Var{aX + b} \definedas \; &\mathbb{E}[(aX + b - \mathbb{E}[aX + b])^2] \\
+\definedalign \; &\expect{(aX \color{orange}{+ b} - a\expect{X} \color{orange}{- b})^2} \\
+\definedalign \; &\expect{a^2X^2 - 2a^2\expectsq{X} + a^2\expectsq{X}} \\
+\definedalign \; &a^2 \expect{X^2 - \expectsq{X}} = a^2(\expect{X^2} - \expectsq{X})b \\
+\definedas \; & a^2\Var{X}
+\end{align*}
+$$
+
+## What Happened to the $b$ Term? {.smallish-math .nostretch .crunch-title .crunch-code .crunch-figures .crunch-math .crunch-ul}
+
+* Visually (Assuming $X \sim \mathcal{N}(0,1)$)
+
+```{r}
+#| label: shifting-variance
+#| fig-width: 10
+#| fig-height: 3.5
+pdf_alpha <- 0.333
+const_variance <- 0.25
+dnorm_center <- function(x) dnorm(x, 0, const_variance)
+dnorm_p1 <- function(x) dnorm(x, 1, const_variance)
+dnorm_m3 <- function(x) dnorm(x, -3, const_variance)
+ggplot(data.frame(x = c(-4, 2)), aes(x = x)) +
+    # X - 3
+    stat_function(aes(color=cbPalette[1]), fun = dnorm_m3, size=g_linesize) +
+    geom_area(stat = "function", fun = dnorm_m3, fill = cbPalette[3], xlim = c(-4, 2), alpha=pdf_alpha) +
+    # X + 1
+    stat_function(aes(color=cbPalette[2]), fun = dnorm_p1, size=g_linesize) +
+    geom_area(stat = "function", fun = dnorm_p1, fill = cbPalette[2], xlim = c(-4, 2), alpha=pdf_alpha) +
+    # X
+    stat_function(aes(color=cbPalette[3]), fun = dnorm_center, size = g_linesize) +
+    geom_area(stat = "function", fun = dnorm_center, fill = cbPalette[1], xlim = c(-4, 2), alpha=pdf_alpha) +
+    # Scales
+    scale_color_manual("RV", values=c(cbPalette[1], cbPalette[2], cbPalette[3]), labels=c("X", "X + 1", "X - 3")) +
+    geom_segment(x=0, y=0, xend=0, yend=dnorm_center(0), size = g_linesize, color=cbPalette[1]) +
+    geom_segment(x=1, y=0, xend=1, yend=dnorm_p1(1), size = g_linesize, color=cbPalette[2]) +
+    geom_segment(x=-3, y=0, xend=-3, yend=dnorm_m3(-3), size = g_linesize, color=cbPalette[3]) +
+    dsan_theme("quarter") +
+    theme(
+      title = element_text(size=20)
+    ) +
+    labs(
+        title = "Normal Distributions with Shifted Means",
+        y = "f(x)"
+    )
+```
+
+$$
+\begin{align*}
+\expect{{\color{lightblue}X + 1}} = \expect{{\color{orange}X}} + 1, \; \; \Var{{\color{lightblue}X + 1}} = \Var{{\color{orange}X}} \\
+\expect{{\color{green}X - 3}} = \expect{{\color{orange}X}} - 3, \; \; \Var{{\color{green}X - 3}} = \Var{{\color{orange}X}}
+\end{align*}
+$$
+
+# Generalizing Expectation/Variance: The Moment-Generating Function (MGF) {data-stack-name="MGF"}
+
+## Generalizing from Expectation and Variance
+
+* It turns out that, expectation and variance are just two "levels" of a **hierarchy** of **information about a distribution!**
+* In calculus: knowing $f(x)$ is **sufficient information** for us to subsequently figure out $f'(x)$, $f''(x)$, ...
+* In probability/statistics: knowing $M_X(t)$ is **sufficient information** for us to figure out $\expect{X}$, $\Var{X}$, ...
+
+## Not a Metaphor! {.smaller}
+
+* This calculus $\leftrightarrow$ statistics connection is not a metaphor: **differentiating $M_X(t)$ literally gives us $\expect{X}$, $\Var{X}$, ...**
+* Let's look at MGF for $X \sim \text{Bern}(\param{p})$, and try to derive $\expect{X}$^[Recall that, for a Bernoulli-distributed random variable $X$, $\expect{X} = p$].
+
+$$
+\begin{align*}
+M_X(t) &= (1 - p) + pe^t \\
+M'_X(t) &= pe^t,\text{ and }\expect{X} = M'_X(0) = \green{p} \; ✅
+\end{align*}
+$$
+
+* $\Var{X}$?
+
+$$
+\begin{align*}
+M''_{X}(t) &= pe^t,\text{ and }\expect{X^2} = M''_X(0) = p \\
+\Var{X} &\definedas{} \expect{X^2} - (\expect{X})^2 = p - p^2 = \green{p(1-p)} \; ✅
+\end{align*}
+$$
+
+## MGF in Econometrics
+
+![](images/gmm_results.png){fig-align="center"}
+
+::: {style="font-size: 75% !important;"}
+* [Open in new window](https://scholar.google.com/scholar?hl=en&as_sdt=0%2C5&q=generalized+method+of+moments&btnG=)
+:::
+
+::: {.notes}
+In case it doesn't load: [@hansen_large_1982] has 17,253 citations as of 2023-05-21
+:::
+
+## BEWARE ☠️
+
+As we saw last week (the Dreaded Cauchy Distribution):
+
+* Not all random variables **have** moment-generating functions.
+* Worse yet, not all random variables have well-defined **variances**
+* Worse yet, not all random variables have well-defined **means**
+* (This happens in non-contrived cases!)
+
+# Moving Beyond One RV {data-stack-name="Multivariate Dists"}
+
+## Multivariate Distributions (W02) {.smaller .crunch-title}
+
+* The **bivariate normal** distribution represents the distribution of **two** normally-distributed RVs $\mathbf{X} = [\begin{smallmatrix} X_1 & X_2\end{smallmatrix}]$, which may or may not be correlated:
+
+::: {.special-math style="margin-bottom: 42px !important;"}
+$$
+\mathbf{X} = \begin{bmatrix}X_1 \\ X_2\end{bmatrix}, \; \boldsymbol{\mu} =
+%\begin{bmatrix}\mu_1 \\ \mu_2\end{bmatrix}
+\begin{bmatrix}\smash{\overbrace{\mu_1}^{\mathbb{E}[X_1]}} \\ \smash{\underbrace{\mu_2}_{\mathbb{E}[X_2]}}\end{bmatrix}
+, \; \mathbf{\Sigma} = \begin{bmatrix}\smash{\overbrace{\sigma_1^2}^{\text{Var}[X_1]}} & \smash{\overbrace{\rho\sigma_1\sigma_2}^{\text{Cov}[X_1,X_2]}} \\ \smash{\underbrace{\rho\sigma_2\sigma_1}_{\text{Cov}[X_2,X_1]}} & \smash{\underbrace{\sigma_2^2}_{\text{Var}[X_2]}}\end{bmatrix}
+% \begin{bmatrix}\sigma_1^2 & \rho\sigma_1\sigma_2 \\ \rho\sigma_2\sigma_1 & \sigma_2^2 \end{bmatrix}
+% = \begin{bmatrix}\text{Var}[X_1] & \text{Cov}[X_1,X_2] \\ \text{Cov}[X_2,X_1] & \text{Var}[X_2] \end{bmatrix}
+$$
+
+:::
+
+* By squishing all this information intro matrices, we can specify the parameters of **multivariate-normally-distributed** *vectors* of RVs similarly to how we specify single-dimensional normally-distributed RVs:
+
+::: {.crunch-math}
+
+$$
+\begin{align*}
+\overbrace{X}^{\mathclap{\text{scalar}}} &\sim \mathcal{N}\phantom{_k}(\overbrace{\mu}^{\text{scalar}}, \overbrace{\sigma}^{\text{scalar}}) \tag{Univariate} \\
+\underbrace{\mathbf{X}}_{\text{vector}} &\sim \boldsymbol{\mathcal{N}}_k(\smash{\underbrace{\boldsymbol{\mu}}_{\text{vector}}}, \underbrace{\mathbf{\Sigma}}_{\text{matrix}}) \tag{Multivariate}
+\end{align*}
+$$
+
+:::
+
+
+::: {.footnote .crunch-math style="font-size: 1.2rem !important; margin-top: 16px !important;"}
+
+*Note: In the future I'll use the notation $\mathbf{X}_{[a \times b]}$ to denote the dimensions of the vectors/matrices, like $\mathbf{X}_{[k \times 1]} \sim \boldsymbol{\mathcal{N}}_k(\boldsymbol{\mu}_{[k \times 1]}, \mathbf{\Sigma}_{[k \times k]})$*
+
+:::
+
+## Visualizing 3D Distributions: Projection {.smaller .crunch-title .title-12}
+
+* Since most of our intuitions about plots come from **2D** plots, it is **extremely useful** to be able to take a 3D plot like this and imagine "projecting" it down into different 2D plots:
+
+![Adapted (and corrected!) from LaTeX code in [this StackExchange thread](https://tex.stackexchange.com/questions/31708/draw-a-bivariate-normal-distribution-in-tikz){target="_blank"}](images/bivariate_normal_corrected.svg)
+
+## Visualizing 3D Distributions: Contours {.smaller}
+
+![From [Prof. Hickman's slides](https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-normal-uncorrelated){target="_blank"}!](images/contour_nocorr.png){fig-align="center"}
+
+## Visualizing 3D Distributions: Contours {.smaller}
+
+![Also from [Prof. Hickman's slides](https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-correlated){target="_blank"}!](images/contour_corr.png){fig-align="center"}
+
+## Bivariate Distributions
+
+@degroot_probability_2013[118] | [DSPS Sec. 3.4 <i class='bi bi-box-arrow-up-right ps-1'></i>](https://jjacobs.me/dsps/03-random-variables.html#sec-3-4)
+
+* We generalize the concept of the distribution of a random variable to the **joint distribution** of two random variables.
+* In doing so, we introduce the **joint pmf** for two **discrete** random variables, the **joint pdf** for two **continuous** variables, and the **joint CDF** for **any two** random variables.
+
+<!-- APPENDIX -->
+
+# Appendix Slides
+
+## Appendix A: The Hadamard Product {#sec-hadamard .smaller .smallmath}
+
+::: columns
+::: {.column width="60%"}
+
+* Used in nearly all neural NLP algorithms, as the basis of <a href="https://jaketae.github.io/study/dissecting-lstm/" target="_blank">LSTM</a> (see LSTM equations on the right)
+* The subscripts for the harmonic mean $M_{-1}$, geometric mean $M_0$, and arithmetic mean $M_1$ come from the definition of the **generalized mean**:
+
+$$
+M_p(V) = \left( \frac{1}{n} \sum_{i=1}^n v_i^p \right)^{1/p}
+$$
+
+:::
+::: {.column width="40%"}
+
+$$
+\begin{align*}
+f_t &= \sigma(W_f [h_{t - 1}, x_t] + b_f) \\ 
+i_t &= \sigma(W_i [h_{t - 1}, x_t] + b_i) \\
+\tilde{C}_t &= \tanh(W_C [h_{t - 1}, x_t] + b_C) \\
+C_t &= f_t \odot C_{t - 1} + i_t \odot \tilde{C}_t \\
+o_t &= \sigma(W_o [h_{t - 1}, x_t] + b_o) \\
+h_t &= o_t \odot \tanh(C_t) \\
+\hat{y} &= \text{softmax}(W_y h_t + b_y)
+\end{align*}
+$$
+
+:::
+:::
+
+* If you're a dork like me, you can read about <a href="https://en.wikipedia.org/wiki/Generalized_mean" target="_blank">generalized means</a>, <a href="https://en.wikipedia.org/wiki/Fr%C3%A9chet_mean" target="_blank">Fréchet means</a>, or <a href="https://www.stata-journal.com/article.html?article=st0313" target="_blank">Stata's `trimmean` function</a>, all of which bring together seemingly-unrelated functions used throughout Machine Learning!
+
+## Appendix B: Continuous RV Support {#sec-continuous-support}
+
+In most cases, for continuous RVs, the definition
+
+$$
+\mathcal{R}_X = \{x \in \mathsf{Domain}(f_X) \given f_X(x) > 0\}
+$$
+
+works fine. But, to fully capture **all** possible continuous RVs, the following formal definition is necessary:
+
+$$
+\mathcal{R}_X = \left\{x \in \mathbb{R} \given \forall r > 0 \left[ f_X(B(x,r)) > 0 \right] \right\},
+$$
+
+where $B(x,r)$ is a "band"^[In one dimension, this would be an interval; in two dimensions, a circle; in three dimensions, a sphere; etc.] around $x$ with radius $r$.
+
+::: {.aside}
+For a full explanation, see <a href="https://math.stackexchange.com/questions/846011/precise-definition-of-the-support-of-a-random-variable" target="_blank">this StackExchange discussion</a>.
+:::

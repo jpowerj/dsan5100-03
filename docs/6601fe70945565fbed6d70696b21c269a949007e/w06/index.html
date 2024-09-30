@@ -1,0 +1,1990 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jeff Jacobs">
+
+<title>Week 6: Continuous Distributions – DSAN 5100-03</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script><script src="../sidebar.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../dsan-globals/jjstyles.css">
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../w06/index.html">Week 6: Oct 1</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">DSAN 5100: Probabilistic Modeling and Statistical Computing</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://dsan.georgetown.domains/dsan5100/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="bi bi-arrow-left pe-1"></i> Main Course Page</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w01/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 1: Aug 30</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w02/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 2: Sep 3</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w03/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 3: Sep 10</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w04/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 4: Sep 17</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w05/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 5: Sep 24</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w06/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Week 6: Oct 1</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.zoom.us/j/92478089466?pwd=cSBmcjACL6EJJW0vHbzIqimH7imkVx.1" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Zoom Link <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=98022271-76d6-457f-83ee-b1dd00143dbc" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Recordings <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../extra-videos/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Videos</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../writeups/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Writeups</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cheatsheet-math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Math Cheatsheet</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.instructure.com/courses/193275" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">S03 Canvas Page <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/meet" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Book Office Hours <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://forms.gle/3CYWo8xHUxMvvowbA" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Suggestion Box <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/dsps" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Textbook <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<p><em>Updated 2024-09-30, 04:19:21 PM</em></p>
+</div></div></nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#common-continuous-distributions" id="toc-common-continuous-distributions" class="nav-link active" data-scroll-target="#common-continuous-distributions">Common Continuous Distributions</a>
+  <ul class="collapse">
+  <li><a href="#the-emergence-of-order" id="toc-the-emergence-of-order" class="nav-link" data-scroll-target="#the-emergence-of-order">The Emergence of Order</a></li>
+  <li><a href="#the-result-16-steps" id="toc-the-result-16-steps" class="nav-link" data-scroll-target="#the-result-16-steps">The Result: 16 Steps</a></li>
+  <li><a href="#the-result-64-steps" id="toc-the-result-64-steps" class="nav-link" data-scroll-target="#the-result-64-steps">The Result: 64 Steps</a></li>
+  <li><a href="#whats-going-on-here" id="toc-whats-going-on-here" class="nav-link" data-scroll-target="#whats-going-on-here">What’s Going On Here?</a></li>
+  <li><a href="#properties-of-the-normal-distribution" id="toc-properties-of-the-normal-distribution" class="nav-link" data-scroll-target="#properties-of-the-normal-distribution">Properties of the Normal Distribution</a></li>
+  <li><a href="#most-conservative-how" id="toc-most-conservative-how" class="nav-link" data-scroll-target="#most-conservative-how">“Most Conservative” How?</a></li>
+  <li><a href="#the-takeaway" id="toc-the-takeaway" class="nav-link" data-scroll-target="#the-takeaway">The Takeaway</a></li>
+  <li><a href="#recall-discrete-uniform-distribution" id="toc-recall-discrete-uniform-distribution" class="nav-link" data-scroll-target="#recall-discrete-uniform-distribution">[Recall] Discrete Uniform Distribution</a></li>
+  <li><a href="#continuous-uniform-distribution" id="toc-continuous-uniform-distribution" class="nav-link" data-scroll-target="#continuous-uniform-distribution">Continuous Uniform Distribution</a></li>
+  <li><a href="#constructing-the-uniform-cdf" id="toc-constructing-the-uniform-cdf" class="nav-link" data-scroll-target="#constructing-the-uniform-cdf">Constructing the Uniform CDF</a></li>
+  <li><a href="#exponential-distribution" id="toc-exponential-distribution" class="nav-link" data-scroll-target="#exponential-distribution">Exponential Distribution</a></li>
+  <li><a href="#now-in-continuous-form" id="toc-now-in-continuous-form" class="nav-link" data-scroll-target="#now-in-continuous-form">Now In Continuous Form!</a></li>
+  <li><a href="#the-dreaded-cauchy-distribution" id="toc-the-dreaded-cauchy-distribution" class="nav-link" data-scroll-target="#the-dreaded-cauchy-distribution">The Dreaded Cauchy Distribution</a></li>
+  <li><a href="#so-whats-the-issue" id="toc-so-whats-the-issue" class="nav-link" data-scroll-target="#so-whats-the-issue">So What’s the Issue?</a></li>
+  </ul></li>
+  <li><a href="#moments-of-a-distribution-expectation-and-variance" id="toc-moments-of-a-distribution-expectation-and-variance" class="nav-link" data-scroll-target="#moments-of-a-distribution-expectation-and-variance"><em>Moments</em> of a Distribution: Expectation and Variance</a>
+  <ul class="collapse">
+  <li><a href="#expectations-weighted-means" id="toc-expectations-weighted-means" class="nav-link" data-scroll-target="#expectations-weighted-means">Expectations = Weighted Means</a></li>
+  <li><a href="#different-types-of-averages" id="toc-different-types-of-averages" class="nav-link" data-scroll-target="#different-types-of-averages">Different Types of “Averages”</a></li>
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#important-properties" id="toc-important-properties" class="nav-link" data-scroll-target="#important-properties">Important Properties</a></li>
+  <li><a href="#variance-motivation" id="toc-variance-motivation" class="nav-link" data-scroll-target="#variance-motivation">Variance: Motivation</a></li>
+  <li><a href="#first-attempt" id="toc-first-attempt" class="nav-link" data-scroll-target="#first-attempt">First Attempt</a></li>
+  <li><a href="#avoiding-cancellation" id="toc-avoiding-cancellation" class="nav-link" data-scroll-target="#avoiding-cancellation">Avoiding Cancellation</a></li>
+  <li><a href="#weve-arrived-at-variance" id="toc-weve-arrived-at-variance" class="nav-link" data-scroll-target="#weve-arrived-at-variance">We’ve Arrived at Variance!</a></li>
+  <li><a href="#standard-deviation" id="toc-standard-deviation" class="nav-link" data-scroll-target="#standard-deviation">Standard Deviation</a></li>
+  <li><a href="#properties-of-variance" id="toc-properties-of-variance" class="nav-link" data-scroll-target="#properties-of-variance">Properties of Variance</a></li>
+  <li><a href="#what-happened-to-the-b-term" id="toc-what-happened-to-the-b-term" class="nav-link" data-scroll-target="#what-happened-to-the-b-term">What Happened to the <span class="math inline">\(b\)</span> Term?</a></li>
+  <li><a href="#what-happened-to-the-b-term-1" id="toc-what-happened-to-the-b-term-1" class="nav-link" data-scroll-target="#what-happened-to-the-b-term-1">What Happened to the <span class="math inline">\(b\)</span> Term?</a></li>
+  </ul></li>
+  <li><a href="#generalizing-expectationvariance-the-moment-generating-function-mgf" id="toc-generalizing-expectationvariance-the-moment-generating-function-mgf" class="nav-link" data-scroll-target="#generalizing-expectationvariance-the-moment-generating-function-mgf">Generalizing Expectation/Variance: The Moment-Generating Function (MGF)</a>
+  <ul class="collapse">
+  <li><a href="#generalizing-from-expectation-and-variance" id="toc-generalizing-from-expectation-and-variance" class="nav-link" data-scroll-target="#generalizing-from-expectation-and-variance">Generalizing from Expectation and Variance</a></li>
+  <li><a href="#not-a-metaphor" id="toc-not-a-metaphor" class="nav-link" data-scroll-target="#not-a-metaphor">Not a Metaphor!</a></li>
+  <li><a href="#mgf-in-econometrics" id="toc-mgf-in-econometrics" class="nav-link" data-scroll-target="#mgf-in-econometrics">MGF in Econometrics</a></li>
+  <li><a href="#beware" id="toc-beware" class="nav-link" data-scroll-target="#beware">BEWARE ☠️</a></li>
+  </ul></li>
+  <li><a href="#moving-beyond-one-rv" id="toc-moving-beyond-one-rv" class="nav-link" data-scroll-target="#moving-beyond-one-rv">Moving Beyond One RV</a>
+  <ul class="collapse">
+  <li><a href="#multivariate-distributions-w02" id="toc-multivariate-distributions-w02" class="nav-link" data-scroll-target="#multivariate-distributions-w02">Multivariate Distributions (W02)</a></li>
+  <li><a href="#visualizing-3d-distributions-projection" id="toc-visualizing-3d-distributions-projection" class="nav-link" data-scroll-target="#visualizing-3d-distributions-projection">Visualizing 3D Distributions: Projection</a></li>
+  <li><a href="#visualizing-3d-distributions-contours" id="toc-visualizing-3d-distributions-contours" class="nav-link" data-scroll-target="#visualizing-3d-distributions-contours">Visualizing 3D Distributions: Contours</a></li>
+  <li><a href="#visualizing-3d-distributions-contours-1" id="toc-visualizing-3d-distributions-contours-1" class="nav-link" data-scroll-target="#visualizing-3d-distributions-contours-1">Visualizing 3D Distributions: Contours</a></li>
+  <li><a href="#bivariate-distributions" id="toc-bivariate-distributions" class="nav-link" data-scroll-target="#bivariate-distributions">Bivariate Distributions</a></li>
+  </ul></li>
+  <li><a href="#appendix-slides" id="toc-appendix-slides" class="nav-link" data-scroll-target="#appendix-slides">Appendix Slides</a>
+  <ul class="collapse">
+  <li><a href="#sec-hadamard" id="toc-sec-hadamard" class="nav-link" data-scroll-target="#sec-hadamard">Appendix A: The Hadamard Product</a></li>
+  <li><a href="#sec-continuous-support" id="toc-sec-continuous-support" class="nav-link" data-scroll-target="#sec-continuous-support">Appendix B: Continuous RV Support</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w06/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 6: Continuous Distributions</h1>
+<p class="subtitle lead"><em>DSAN 5100: Probabilistic Modeling and Statistical Computing</em><br>Section 03</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Class Sessions</div>
+  </div>
+  </div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jeff Jacobs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Tuesday, October 1, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window →</a>
+</center>
+<section id="common-continuous-distributions" class="level1" data-stack-name="Common Dists">
+<h1 data-stack-name="Common Dists">Common Continuous Distributions</h1>
+<ul>
+<li>Normal: The friend who shows up everywhere</li>
+<li>Uniform: The stable, reliable friend</li>
+<li>Exponential: Good days and bad days</li>
+<li>Cauchy: Toxic af, stay away ☠️</li>
+</ul>
+<div class="hidden">
+<p><span class="math display">\[
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\bigexp}[1]{\exp\mkern-4mu\left[ #1 \right]}
+\newcommand{\bigexpect}[1]{\mathbb{E}\mkern-4mu \left[ #1 \right]}
+\newcommand{\definedas}{\overset{\text{defn}}{=}}
+\newcommand{\definedalign}{\overset{\phantom{\text{defn}}}{=}}
+\newcommand{\eqeventual}{\overset{\text{eventually}}{=}}
+\newcommand{\expect}[1]{\mathbb{E}[#1]}
+\newcommand{\expectsq}[1]{\mathbb{E}^2[#1]}
+\newcommand{\fw}[1]{\texttt{#1}}
+\newcommand{\given}{\mid}
+\newcommand{\green}[1]{\color{green}{#1}}
+\newcommand{\heads}{\outcome{heads}}
+\newcommand{\lik}{\mathcal{L}}
+\newcommand{\mle}{\textsf{ML}}
+\newcommand{\orange}[1]{\color{orange}{#1}}
+\newcommand{\outcome}[1]{\textsf{#1}}
+\newcommand{\param}[1]{{\color{purple} #1}}
+\newcommand{\pgsamplespace}{\{\green{1},\green{2},\green{3},\purp{4},\purp{5},\purp{6}\}}
+\newcommand{\prob}[1]{P\left( #1 \right)}
+\newcommand{\purp}[1]{\color{purple}{#1}}
+\newcommand{\spacecap}{\; \cap \;}
+\newcommand{\spacewedge}{\; \wedge \;}
+\newcommand{\tails}{\outcome{tails}}
+\newcommand{\Var}[1]{\text{Var}[#1]}
+\newcommand{\bigVar}[1]{\text{Var}\mkern-4mu \left[ #1 \right]}
+\]</span></p>
+</div>
+<div class="hidden">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../dsan-globals/_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<section id="the-emergence-of-order" class="level2 crunch-title">
+<h2 class="crunch-title anchored" data-anchor-id="the-emergence-of-order">The Emergence of Order</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li>Who can guess the state of this process after 10 steps, with 1 person?</li>
+<li>10 people? 50? 100? (If they find themselves on the same spot, they stand on each other’s heads)</li>
+<li>100 steps? 1000?</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/random_walk.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:90.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-result-16-steps" class="level2">
+<h2 class="anchored" data-anchor-id="the-result-16-steps">The Result: 16 Steps</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggExtra)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># From McElreath!</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>gen_histo <span class="ot">&lt;-</span> <span class="cf">function</span>(reps, num_steps) {</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  support <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  pos <span class="ot">&lt;-</span><span class="fu">replicate</span>(reps, <span class="fu">sum</span>(<span class="fu">sample</span>(support,num_steps,<span class="at">replace=</span><span class="cn">TRUE</span>,<span class="at">prob=</span><span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>))))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(mean(pos))</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(var(pos))</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  pos_df <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">x=</span>pos)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  clt_distr <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">0</span>, <span class="fu">sqrt</span>(num_steps))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(pos_df, <span class="fu">aes</span>(<span class="at">x=</span>x)) <span class="sc">+</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">binwidth =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(<span class="at">fun =</span> clt_distr) <span class="sc">+</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">title=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">16</span>)) <span class="sc">+</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">title=</span><span class="fu">paste0</span>(reps,<span class="st">" Random Walks, "</span>,num_steps,<span class="st">" Steps"</span>)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(plot)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>gen_walkplot <span class="ot">&lt;-</span> <span class="cf">function</span>(num_people, num_steps, <span class="at">opacity=</span><span class="fl">0.15</span>) {</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  support <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Unique id for each person</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  pid <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>, num_people)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  pid_tib <span class="ot">&lt;-</span> <span class="fu">tibble</span>(pid)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  pos_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  end_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  all_steps <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">replicate</span>(num_people, <span class="fu">sample</span>(support, num_steps, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>))))</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  csums <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">apply</span>(all_steps, <span class="dv">1</span>, cumsum))</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  csums <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">0</span>, csums)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Last col is the ending positions</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  ending_pos <span class="ot">&lt;-</span> csums[, <span class="fu">dim</span>(csums)[<span class="dv">2</span>]]</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  end_tib <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">pid =</span> <span class="fu">seq</span>(<span class="dv">1</span>, num_people), <span class="at">endpos =</span> ending_pos, <span class="at">x =</span> num_steps)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Now convert to tibble</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  ctib <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(csums, <span class="at">name_repair =</span> <span class="st">"none"</span>)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  merged_tib <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(pid_tib, ctib)</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  long_tib <span class="ot">&lt;-</span> merged_tib <span class="sc">%&gt;%</span> <span class="fu">pivot_longer</span>(<span class="sc">!</span>pid)</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert name -&gt; step_num</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  long_tib <span class="ot">&lt;-</span> long_tib <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">step_num =</span> <span class="fu">strtoi</span>(<span class="fu">gsub</span>(<span class="st">"V"</span>, <span class="st">""</span>, name)) <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># print(end_df)</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  grid_color <span class="ot">&lt;-</span> <span class="fu">rgb</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.1</span>)</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># And plot!</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>  walkplot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>      long_tib,</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>      <span class="fu">aes</span>(</span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> step_num,</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>          <span class="at">y =</span> value,</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>          <span class="at">group =</span> pid,</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>          <span class="co"># color=factor(label)</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_line</span>(<span class="at">linewidth =</span> g_linesize, <span class="at">alpha =</span> opacity, <span class="at">color =</span> cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_point</span>(<span class="at">data =</span> end_tib, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> endpos), <span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, num_steps, num_steps <span class="sc">/</span> <span class="dv">4</span>)) <span class="sc">+</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>      <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">20</span>, <span class="dv">20</span>, <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>      <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(</span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>          <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">16</span>)</span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>      <span class="fu">theme</span>(</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>          <span class="at">panel.grid.major.y =</span> <span class="fu">element_line</span>(<span class="at">color =</span> grid_color, <span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">linetype =</span> <span class="dv">1</span>)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">+</span></span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a>          <span class="at">title =</span> <span class="fu">paste0</span>(num_people, <span class="st">" Random Walks, "</span>, num_steps, <span class="st">" Steps"</span>),</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>          <span class="at">x =</span> <span class="st">"Number of Steps"</span>,</span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>          <span class="at">y =</span> <span class="st">"Position"</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>wp1 <span class="ot">&lt;-</span> <span class="fu">gen_walkplot</span>(<span class="dv">500</span>, <span class="dv">16</span>, <span class="fl">0.05</span>)</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a><span class="fu">ggMarginal</span>(wp1, <span class="at">margins =</span> <span class="st">"y"</span>, <span class="at">type =</span> <span class="st">"histogram"</span>, <span class="at">yparams =</span> <span class="fu">list</span>(<span class="at">binwidth =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/random-walk-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-result-64-steps" class="level2">
+<h2 class="anchored" data-anchor-id="the-result-64-steps">The Result: 64 Steps</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggExtra)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>wp2 <span class="ot">&lt;-</span> <span class="fu">gen_walkplot</span>(<span class="dv">5000</span>,<span class="dv">64</span>,<span class="fl">0.008</span>) <span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="sc">-</span><span class="dv">30</span>,<span class="dv">30</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggMarginal</span>(wp2, <span class="at">margins =</span> <span class="st">"y"</span>, <span class="at">type =</span> <span class="st">"histogram"</span>, <span class="at">yparams =</span> <span class="fu">list</span>(<span class="at">binwidth =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/random-walk-64-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="unnumbered hidden">
+<!-- just the histograms -->
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">gen_histo</span>(<span class="dv">1000</span>, <span class="dv">16</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/walk-histo-16-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>p3 <span class="ot">&lt;-</span> <span class="fu">gen_histo</span>(<span class="dv">10000</span>, <span class="dv">32</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>p3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/walk-histo-32-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="whats-going-on-here" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="whats-going-on-here">What’s Going On Here?</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/the_function_msg.jpeg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>(Stay tuned for <strong>Markov processes</strong> <span class="math inline">\(\overset{t \rightarrow \infty}{\leadsto}\)</span> <strong>Stationary distributions</strong>!)</p>
+</section>
+<section id="properties-of-the-normal-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="properties-of-the-normal-distribution">Properties of the Normal Distribution</h2>
+<ul>
+<li>If <span class="math inline">\(X \sim \mathcal{N}(\param{\mu}, \param{\theta})\)</span>, then <span class="math inline">\(X\)</span> has pdf <span class="math inline">\(f_X(v)\)</span> defined by</li>
+</ul>
+<p><span class="math display">\[
+f_X(v) = \frac{1}{\sigma\sqrt{2\pi}}\bigexp{-\frac{1}{2}\left(\frac{v - \mu}{\sigma}\right)^2}
+\]</span></p>
+<ul>
+<li>I hate memorizing as much as you do, I promise 🥴</li>
+<li>The important part (imo): this is the <strong>most conservative</strong> out of <strong>all possible (symmetric) prior distributions</strong> defined on <span class="math inline">\(\mathbb{R}\)</span> (defined from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span>)</li>
+</ul>
+</section>
+<section id="most-conservative-how" class="level2">
+<h2 class="anchored" data-anchor-id="most-conservative-how">“Most Conservative” How?</h2>
+<ul>
+<li>Of all possible distributions with mean <span class="math inline">\(\mu\)</span>, variance <span class="math inline">\(\sigma^2\)</span>, <span class="math inline">\(\mathcal{N}(\mu, \sigma^2)\)</span> is the <strong>entropy-maximizing</strong> distribution</li>
+<li>Roughly: using any other distribution (implicitly/secretly) <strong>imports additional information</strong> beyond the fact that <span class="boxed">mean is <span class="math inline">\(\mu\)</span></span> and <span class="boxed">variance is <span class="math inline">\(\sigma^2\)</span></span></li>
+<li>Example: let <span class="math inline">\(X\)</span> be an RV. If we know mean is <span class="math inline">\(\mu\)</span>, variance is <span class="math inline">\(\sigma^2\)</span>, <strong>but then we learn</strong> that <span class="boxed"><span class="math inline">\(X \neq 3\)</span></span>, or <span class="boxed"><span class="math inline">\(X\)</span> is even</span>, or the <span class="boxed">15th digit of <span class="math inline">\(X\)</span> is 7</span>, can <strong>update</strong> <span class="math inline">\(\mathcal{N}(\mu,\sigma^2)\)</span> to derive a “better” distribution (incorporating this additional info)</li>
+</ul>
+</section>
+<section id="the-takeaway" class="level2 crunch-title crunch-ul inline-90">
+<h2 class="crunch-title crunch-ul inline-90 anchored" data-anchor-id="the-takeaway">The Takeaway</h2>
+<ul>
+<li><strong>Given info we know</strong>, we can find a distribution that “encodes” <strong>only this info</strong></li>
+<li>More straightforward example: if we only know that the value is something in the range <span class="math inline">\([a,b]\)</span>, entropy-maximizing distribution is the <strong>Uniform Distribution</strong></li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>If We Know</th>
+<th>And We Know</th>
+<th>(Max-Entropy) Distribution Is…</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\text{Mean}[X] = \mu\)</span></td>
+<td><span class="math inline">\(\text{Var}[X] = \sigma^2\)</span></td>
+<td><span class="math inline">\(X \sim \mathcal{N}(\mu, \sigma^2)\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\text{Mean}[X] = \lambda\)</span></td>
+<td><span class="math inline">\(X \geq 0\)</span></td>
+<td><span class="math inline">\(X \sim \text{Exp}\left(\frac{1}{\lambda}\right)\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(X \geq a\)</span></td>
+<td><span class="math inline">\(X \leq b\)</span></td>
+<td><span class="math inline">\(X \sim \mathcal{U}[a,b]\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="recall-discrete-uniform-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="recall-discrete-uniform-distribution">[Recall] Discrete Uniform Distribution</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="sc">~</span>x, <span class="sc">~</span>prob,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="dv">1</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="dv">2</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="dv">3</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="dv">4</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="dv">5</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="dv">6</span>, <span class="dv">1</span><span class="sc">/</span><span class="dv">6</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>prob)) <span class="sc">+</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"Discrete Uniform pmf: a = 1, b = 6"</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Probability Mass"</span>,</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">"Value"</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">6</span>)) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/discrete-uniform-pmf-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="continuous-uniform-distribution" class="level2 crunch-title crunch-math math-90">
+<h2 class="crunch-title crunch-math math-90 anchored" data-anchor-id="continuous-uniform-distribution">Continuous Uniform Distribution</h2>
+<ul>
+<li>If <span class="math inline">\(X \sim \mathcal{U}[a,b]\)</span>, then intuitively <span class="math inline">\(X\)</span> is a value randomly selected from within <span class="math inline">\([a,b]\)</span>, with all values equally likely.</li>
+<li><strong>Discrete</strong> case: what we’ve been using all along (e.g., dice): if <span class="math inline">\(X \sim \mathcal{U}\{1,6\}\)</span>, then</li>
+</ul>
+<p><span class="math display">\[
+\Pr(X = 1) = \Pr(X = 2) = \cdots = \Pr(X = 6) = \frac{1}{6}
+\]</span></p>
+<ul>
+<li>For <strong>continuous</strong> case… what do we put in the denominator? <span class="math inline">\(X \sim \mathcal{U}[1,6] \implies \Pr(X = \pi) = \frac{1}{?}\)</span>…
+<ul>
+<li>Answer: <span class="math inline">\(\Pr(X = \pi) = \frac{1}{|[1,6]|} = \frac{1}{\aleph_0} = 0\)</span></li>
+</ul></li>
+</ul>
+</section>
+<section id="constructing-the-uniform-cdf" class="level2 smaller crunch-title crunch-li">
+<h2 class="smaller crunch-title crunch-li anchored" data-anchor-id="constructing-the-uniform-cdf">Constructing the Uniform CDF</h2>
+<ul>
+<li>We were ready for this! We already knew <span class="math inline">\(\Pr(X = v) = 0\)</span> for continuous <span class="math inline">\(X\)</span></li>
+<li>So, we forget about <span class="math inline">\(\Pr(X = v)\)</span>, and focus on <span class="math inline">\(\Pr(X \in [v_0, v_1])\)</span>.</li>
+<li>In 2D (dartboard) we had <span class="math inline">\(\Pr(X \in \circ) = \frac{\text{Area}(\circ)}{\text{Area}(\Omega)}\)</span>, so here we should have</li>
+</ul>
+<p><span class="math display">\[
+P(X \in [v_0,v_1]) = \frac{\text{Length}([v_0,v_1])}{\text{Length}([1,6])}
+\]</span></p>
+<ul>
+<li>And indeed, the CDF of <span class="math inline">\(X\)</span> is <span class="math inline">\(\boxed{F_X(v) = \Pr(X \leq v) = \frac{v-a}{b-a}}\)</span>, so that</li>
+</ul>
+<p><span class="math display">\[
+\Pr(X \in [v_0,v_1]) = F_X(v_1) - F_X(v_0) = \frac{v_1-a}{b-a} - \frac{v_0-a}{b-a} = \frac{v_1 - v_0}{b-a}
+\]</span></p>
+<ul>
+<li>Since <span class="math inline">\(a = 1\)</span>, <span class="math inline">\(b = 6\)</span> in our example, <span class="math inline">\(\Pr(X \in [v_0,v_1]) = \frac{v_1-v_0}{6-1} = \frac{\text{Length}([v_0,v_1])}{\text{Length}([1,6])} \; ✅\)</span></li>
+</ul>
+<!-- ## References -->
+</section>
+<section id="exponential-distribution" class="level2" data-name="Exponential">
+<h2 data-name="Exponential" class="anchored" data-anchor-id="exponential-distribution">Exponential Distribution</h2>
+<ul>
+<li>Recall the (discrete) <strong>Geometric Distribution</strong>:</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>prob <span class="ot">&lt;-</span> <span class="fu">dgeom</span>(k, <span class="fl">0.5</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>bar_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(k, prob)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bar_data, <span class="fu">aes</span>(<span class="at">x =</span> k, <span class="at">y =</span> prob)) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">fill =</span> cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Geometric Distribution pmf: p = 0.5"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"Probability Mass"</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">8</span>)) <span class="sc">+</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dsan_theme</span>(<span class="st">"half"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/geometric-demo-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="now-in-continuous-form" class="level2">
+<h2 class="anchored" data-anchor-id="now-in-continuous-form">Now In Continuous Form!</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>my_dexp <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dexp</span>(x, <span class="at">rate =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>)), <span class="fu">aes</span>(<span class="at">x=</span>x)) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>my_dexp, <span class="at">size=</span>g_linesize, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>my_dexp, <span class="at">geom=</span><span class="st">'area'</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"Exponential Distribution pdf: λ (rate) = 0.5"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"v"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"f_X(v)"</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/exponential-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-dreaded-cauchy-distribution" class="level2 smaller crunch-title inline-90">
+<h2 class="smaller crunch-title inline-90 anchored" data-anchor-id="the-dreaded-cauchy-distribution">The Dreaded Cauchy Distribution</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>)), <span class="fu">aes</span>(<span class="at">x=</span>x)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>dcauchy, <span class="at">size=</span>g_linesize, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>dcauchy, <span class="at">geom=</span><span class="st">'area'</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">alpha=</span><span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"PDF of R"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"r"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"f(r)"</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/cauchy-pdf-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>Paxton is a Houston Rockets fan, while Jeff is a Chicago Bulls fan. Paxton creates a RV <span class="math inline">\(H\)</span> modeling how many games above .500 (wins minus losses) the Rockets will be in a season, while Jeff creates a similar RV <span class="math inline">\(C\)</span> for the Bulls</li>
+<li>They decide to combine their RVs to create a new RV, <span class="math inline">\(R = \frac{H}{C}\)</span>, which now models <strong>how much better</strong> the Nuggets will be in a season (<span class="math inline">\(R\)</span> for “Ratio”)</li>
+<li>For example, if the Rockets are <span class="math inline">\(10\)</span> games above .500, while the Bulls are only <span class="math inline">\(5\)</span> above .500, <span class="math inline">\(R = \frac{10}{5} = 2\)</span>. If they’re both 3 games above .500, <span class="math inline">\(R = \frac{3}{3} = 1\)</span>.</li>
+</ul>
+</section>
+<section id="so-whats-the-issue" class="level2 crunch-title inline-90 crunch-figure crunch-ul">
+<h2 class="crunch-title inline-90 crunch-figure crunch-ul anchored" data-anchor-id="so-whats-the-issue">So What’s the Issue?</h2>
+<ul>
+<li>So far so good. It turns out (though Paxton and Jeff don’t know this) the teams are both mediocre: <span class="math inline">\(H \sim \mathcal{N}(0,10)\)</span>, <span class="math inline">\(B \sim \mathcal{N}(0,10)\)</span>… What is the distribution of <span class="math inline">\(R\)</span>?</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><span class="math display">\[
+\begin{gather*}
+R \sim \text{Cauchy}\left( 0, 1 \right)
+\end{gather*}
+\]</span></p>
+<p><span class="math display">\[
+\begin{align*}
+\expect{R} &amp;= ☠️ \\
+\Var{R} &amp;= ☠️ \\
+M_R(t) &amp;= ☠️
+\end{align*}
+\]</span></p>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/agnesi-crop.jpeg" class="img-fluid figure-img"></p>
+<figcaption>From <span class="citation" data-cites="agnesi_analytical_1801">Agnesi (<a href="#ref-agnesi_analytical_1801" role="doc-biblioref">1801</a>)</span> [<a href="" target="_blank">Internet Archive</a>]</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div id="cauchy-worse" style="font-size: 70%">
+<p>Even worse, this is true regardless of variances: <span class="math inline">\(D \sim \mathcal{N}(0,d)\)</span> and <span class="math inline">\(W \sim \mathcal{N}(0,w)\)</span> <span class="math inline">\(\implies R \sim \text{Cauchy}\left( 0,\frac{d}{w} \right)\)</span>…</p>
+</div>
+</section>
+</section>
+<section id="moments-of-a-distribution-expectation-and-variance" class="level1 page-columns page-full" data-stack-name="Moments">
+<h1 data-stack-name="Moments"><em>Moments</em> of a Distribution: Expectation and Variance</h1>
+<section id="expectations-weighted-means" class="level2 smaller math-90 crunch-title crunch-ul page-columns page-full">
+<h2 class="smaller math-90 crunch-title crunch-ul anchored" data-anchor-id="expectations-weighted-means">Expectations = Weighted Means</h2>
+<ul>
+<li>We already know how to find the (<strong>unweighted</strong>) <strong>mean</strong> of a list of <span style="color: orange;"><strong>numbers</strong></span>:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\begin{array}{|p{1cm}||p{1cm}|p{1cm}|p{1cm}|}\hline X &amp; \orange{4} &amp; \orange{10} &amp; \orange{8} \\\hline\end{array} \implies \overline{X} &amp;= \frac{\orange{4} + \orange{10} + \orange{8}}{\purp{3}} = \purp{\left(\frac{1}{3}\right)} \cdot \orange{4} + \purp{\left( \frac{1}{3} \right)} \cdot \orange{10} + \purp{\left( \frac{1}{3} \right)} \cdot \orange{8} \\
+&amp;= \frac{22}{3} \approx 7.33
+\end{align*}
+\]</span></p>
+<ul>
+<li>Discrete distributions: just lists of <span style="color: orange;"><strong>numbers</strong></span> and their <span style="color: purple"><strong>probability</strong></span> of occurring!</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\begin{array}{|p{1cm}|p{1cm}|p{1cm}|p{1cm}|}\hline X &amp; \orange{4} &amp; \orange{10} &amp; \orange{8} \\\hline \Pr(X) &amp; \purp{0.01} &amp; \purp{0.01} &amp; \purp{0.98}\\\hline\end{array} \implies \overline{X} &amp;= \purp{\left( \frac{1}{100} \right)} \cdot \orange{4} + \purp{\left( \frac{1}{100} \right)} \cdot \orange{10} + \purp{\left( \frac{98}{100} \right)} \cdot \orange{8} \\
+&amp;= \left.\frac{798}{100}\right.^{1} \approx 7.98
+\end{align*}
+\]</span></p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<ol type="1">
+<li>It will be helpful for later/life as a data scientist to notice that this is exactly <span class="math inline">\(\frac{4 + 10 + \overbrace{8 + \cdots + 8}^{98\text{ times}}}{100}\)</span>. That is: weighted mean = normal mean where numbers are repeated proportionally to their probabilities. (See <a href="https://en.wikipedia.org/wiki/Additive_smoothing" target="_blank">Laplace smoothing</a>!).</li>
+</ol>
+</div></div></section>
+<section id="different-types-of-averages" class="level2 smaller page-columns page-full">
+<h2 class="smaller anchored" data-anchor-id="different-types-of-averages">Different Types of “Averages”</h2>
+<ul>
+<li>(This will seem like overkill now, but will help us later!)</li>
+<li>To avoid confusion, we denote the “regular” (<strong>arithmetic</strong>) mean <strong>function</strong> as <span class="math inline">\(M_1(\cdot)\)</span>
+<ul>
+<li>If <span class="math inline">\(V = \{v_1, \ldots, v_n\}\)</span>, <span class="math inline">\(M_1(V) \definedas \frac{v_1+\cdots+v_n}{n}\)</span>.</li>
+</ul></li>
+<li>Then <span class="math inline">\(\overline{V}\)</span> will denote the <strong>number</strong> which results from applying <span class="math inline">\(M_1\)</span> to the set <span class="math inline">\(V\)</span>.</li>
+<li>Other common <strong>functions</strong> which get called “averages” in Machine Learning: <strong>median</strong>, <strong>harmonic</strong> mean (<span class="math inline">\(M_{-1}\)</span>), <strong>geometric</strong> mean (<span class="math inline">\(M_0\)</span>), the <strong>hadamard product</strong> <span class="math inline">\(\odot\)</span>, etc.—pop up surprisingly often in Data Science/Machine Learning!</li>
+<li>The <strong>things</strong> we’re averaging also take on weird forms: bits, logical predicates, vectors, <strong>tensors</strong> (Hence Google’s Machine Learning platform, <a href="https://www.tensorflow.org/" target="_blank">TensorFlow</a>), …</li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>For what these subscripts (<span class="math inline">\(M_{-1}\)</span>, <span class="math inline">\(M_0\)</span>, <span class="math inline">\(M_1\)</span>) mean, and more on the Hadamard product and its importance to Machine Learning, see <a href="#sec-hadamard" class="quarto-xref">Section&nbsp;5.1</a></p>
+</div></div></section>
+<section id="definition" class="level2 smaller page-columns page-full">
+<h2 class="smaller anchored" data-anchor-id="definition">Definition</h2>
+<ul>
+<li>For a <strong>discrete</strong> RV <span class="math inline">\(X\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+\expect{X} = \sum_{x \in \mathcal{R}_X}x P(x)
+\]</span></p>
+<ul>
+<li>For a <strong>continuous</strong> RV <span class="math inline">\(X\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+\expect{X} = \int_{-\infty}^{\infty}xf(x)dx
+\]</span></p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Remember that <span class="math inline">\(\mathcal{R}_X\)</span> is the <strong>support</strong> of the random variable <span class="math inline">\(X\)</span>. If <span class="math inline">\(X\)</span> is discrete, this is just <span class="math inline">\(\mathcal{R}_X = \{x \in \mathbb{R} \given P(X = x) &gt; 0\}\)</span>. If <span class="math inline">\(X\)</span> is continuous, we can almost always* use the similar definition <span class="math inline">\(\mathcal{R}_X = \{x \in \mathbb{R} \given f_X(x) &gt; 0\}\)</span>, <strong>remembering that <span class="math inline">\(f_X(x) \neq P(X = x)\)</span>!!!</strong> See <a href="#sec-continuous-support" class="quarto-xref">Section&nbsp;5.2</a> for the scarier definition that works for <strong>all</strong> continuous RVs.</p>
+</div></div></section>
+<section id="important-properties" class="level2 crunch-title smaller smallishish-math">
+<h2 class="crunch-title smaller smallishish-math anchored" data-anchor-id="important-properties">Important Properties</h2>
+<div id="above">
+<ul>
+<li>For RVs <span class="math inline">\(X\)</span>, <span class="math inline">\(Y\)</span>, and <span class="math inline">\(a, b \in \mathbb{R}\)</span>:</li>
+</ul>
+</div>
+<div class="columns">
+<div class="column" style="width:33%;">
+<div style="border: 1px solid black !important; padding: 4px !important;">
+<center>
+<strong>Linear</strong>
+</center>
+<p><span class="math display">\[
+\expect{aX} = a\expect{X}
+\]</span></p>
+</div>
+</div><div class="column" style="width:33%;">
+<div style="border: 1px solid black !important; padding: 4px !important;">
+<center>
+<strong>Additive</strong>
+</center>
+<p><span class="math display">\[
+\expect{X + Y} = \expect{X} + \expect{Y}
+\]</span></p>
+</div>
+</div><div class="column" style="width:33%;">
+<div style="border: 1px solid black !important; padding: 4px !important;">
+<center>
+<strong>Affine</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>
+</center>
+<p><span class="math display">\[
+\expect{aX + b} = a\expect{X} + b
+\]</span></p>
+</div>
+</div>
+</div>
+<ul>
+<li>LOTUS:</li>
+</ul>
+<p><span class="math display">\[
+\expect{g(X)} = g(x)f(x)dx
+\]</span></p>
+<ul>
+<li><strong>Not</strong> Multiplicative:</li>
+</ul>
+<p><span class="math display">\[
+\expect{X \cdot Y} = \expect{X} \cdot \expect{Y} \iff X \perp Y
+\]</span></p>
+<div class="notes">
+<p>Really these should be called <strong>affine</strong> functions, but this property is usually just known as “linearity”, so for the sake of being able to google it I’m calling it “Linear” here as well, for now</p>
+</div>
+</section>
+<section id="variance-motivation" class="level2 crunch-title crunch-ul inline-90">
+<h2 class="crunch-title crunch-ul inline-90 anchored" data-anchor-id="variance-motivation">Variance: Motivation</h2>
+<ul>
+<li>We’ve now got a “measure of central tendency”, the expectation <span class="math inline">\(\expect{X}\)</span>, with some nice properties. We can use it to produce <strong>point estimates</strong>.</li>
+<li>Now, how do we describe and communicate the <strong>spread</strong> of the data in a dataset? Similarly, how can we describe our <strong>uncertainty</strong> about a point estimate?</li>
+<li>Let’s try to develop a function, <span class="math inline">\(\text{Spread}\)</span>, that takes in a set of values and computes <strong>how spread out</strong> they are</li>
+<li>(<em>Hint</em>: we can use <strong>arithmetic mean</strong>, applied to <strong>differences between points</strong> rather than points themselves)</li>
+</ul>
+</section>
+<section id="first-attempt" class="level2 smaller crunch-title crunch-code crunch-ul math-90 crunch-quarto-figure">
+<h2 class="smaller crunch-title crunch-code crunch-ul math-90 crunch-quarto-figure anchored" data-anchor-id="first-attempt">First Attempt</h2>
+<ul>
+<li>What properties should <span class="math inline">\(\text{Spread}(\cdot)\)</span> have?
+<ul>
+<li>Should be <span class="math inline">\(0\)</span> if every data point is identical, then increase as they spread apart</li>
+</ul></li>
+<li>How about: average <strong>difference</strong> between each point and the overall (arithmetic) mean? <span class="math display">\[
+\text{Spread}(X) = M_1(X - \overline{X}) = \frac{(x_1 - \overline{X}) + (x_2 - \overline{X}) + \cdots + (x_n - \overline{X})}{n}
+\]</span></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:75%;">
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(latex2exp)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">1</span>,N)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(N, <span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>mean_y <span class="ot">&lt;-</span> <span class="fu">mean</span>(y)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>spread <span class="ot">&lt;-</span> y <span class="sc">-</span> mean_y</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">spread=</span>spread)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)) <span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept=</span>mean_y, <span class="at">linetype=</span><span class="st">"dashed"</span>), <span class="at">color=</span><span class="st">"purple"</span>, <span class="at">size=</span>g_linesize) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">xend=</span>x, <span class="at">yend=</span>mean_y, <span class="at">color=</span><span class="fu">ifelse</span>(y<span class="sc">&gt;</span><span class="dv">0</span>,<span class="st">"Positive"</span>,<span class="st">"Negative"</span>)), <span class="at">size=</span>g_linesize) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span>g_pointsize) <span class="sc">+</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_linetype_manual</span>(<span class="fu">element_blank</span>(), <span class="at">values=</span><span class="fu">c</span>(<span class="st">"dashed"</span><span class="ot">=</span><span class="st">"dashed"</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"dashed"</span><span class="ot">=</span><span class="fu">unname</span>(<span class="fu">TeX</span>(<span class="fu">c</span>(<span class="st">"$M_1(X)$"</span>))))) <span class="sc">+</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>) <span class="sc">+</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="st">"Spread"</span>, <span class="at">values=</span><span class="fu">c</span>(<span class="st">"Positive"</span><span class="ot">=</span>cbPalette[<span class="dv">3</span>],<span class="st">"Negative"</span><span class="ot">=</span>cbPalette[<span class="dv">6</span>]), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"Positive"</span><span class="ot">=</span><span class="st">"Positive"</span>,<span class="st">"Negative"</span><span class="ot">=</span><span class="st">"Negative"</span>)) <span class="sc">+</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">2</span>)) <span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="co">#remove_legend_title() +</span></span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.spacing.y=</span><span class="fu">unit</span>(<span class="fl">0.1</span>,<span class="st">"mm"</span>)) <span class="sc">+</span></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="fu">paste0</span>(N, <span class="st">" Randomly-Generated Points, N(0,10)"</span>),</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">x=</span><span class="st">"Index"</span>,</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"Value"</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/spread-first-attempt-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:25%;">
+<p>The result? To ten decimal places:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>spread_fmt <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%0.10f"</span>, <span class="fu">mean</span>(df<span class="sc">$</span>spread))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(spread_fmt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.0000000000</code></pre>
+</div>
+</div>
+<p>😞 What happened?</p>
+</div>
+</div>
+</section>
+<section id="avoiding-cancellation" class="level2 smaller crunch-title crunch-code crunch-ul crunch-quarto-figure">
+<h2 class="smaller crunch-title crunch-code crunch-ul crunch-quarto-figure anchored" data-anchor-id="avoiding-cancellation">Avoiding Cancellation</h2>
+<ul>
+<li>How to avoid <strong>positive</strong> and <strong>negative</strong> deviations cancelling out? Two ideas:
+<ul>
+<li>Absolute value <span class="math inline">\(\left|X - \overline{X}\right|\)</span></li>
+<li>Squared error <span class="math inline">\(\left( X - \overline{X} \right)^2\)</span>…</li>
+</ul></li>
+<li>Ghost of calculus past: which is <strong>differentiable</strong> everywhere?<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+</ul>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Could use facet_grid() here, but it doesn't work too nicely with stat_function() :(</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>)), <span class="fu">aes</span>(<span class="at">x=</span>x)) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span><span class="sc">~</span> .x<span class="sc">^</span><span class="dv">2</span>, <span class="at">linewidth =</span> g_linewidth) <span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"f(x) = x^2"</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"f(x)"</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/x2-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Could use facet_grid() here, but it doesn't work too nicely with stat_function() :(</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>,<span class="dv">4</span>)), <span class="fu">aes</span>(<span class="at">x=</span>x)) <span class="sc">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span><span class="sc">~</span> <span class="fu">abs</span>(.x), <span class="at">linewidth=</span>g_linewidth) <span class="sc">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title=</span><span class="st">"f(x) = |x|"</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y=</span><span class="st">"f(x)"</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/abs-x-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="weve-arrived-at-variance" class="level2 crunch-math crunch-title smallish-math page-columns page-full">
+<h2 class="crunch-math crunch-title smallish-math anchored" data-anchor-id="weve-arrived-at-variance">We’ve Arrived at Variance!</h2>
+<p><span class="math display">\[
+\Var{X} = \bigexpect{ \left(X - \expect{X}\right)^2 }
+\]</span></p>
+<ul>
+<li>And, we can apply what we know about <span class="math inline">\(\expect{X}\)</span> to derive:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Var{X} &amp;= \bigexpect{ \left(X - \expect{X}\right)^2 } = \bigexpect{ X^2 - 2X\expect{X} + \left( \expect{X} \right)^2 } \\
+&amp;= \expect{X^2} - \expect{2 X\expect{X}} + \left( \expect{X} \right)^2 \\
+&amp;= \expect{X^2} - 2\expect{X}\expect{X} + \left(\expect{X}\right)^2 \\
+&amp;= \expect{X^2} - \left( \expect{X} \right)^2 \; \; \green{\small{\text{ (we'll need this in a minute)}}}
+\end{align*}
+\]</span></p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Why does <span class="math inline">\(\expect{2X\expect{X}} = 2\expect{X}\expect{X}\)</span>? Remember: <span class="math inline">\(X\)</span> is an <strong>RV</strong>, but <span class="math inline">\(\expect{X}\)</span> is a <strong>number</strong>!</p>
+</div></div></section>
+<section id="standard-deviation" class="level2 crunch-title crunch-ul small-math">
+<h2 class="crunch-title crunch-ul small-math anchored" data-anchor-id="standard-deviation">Standard Deviation</h2>
+<ul>
+<li>When we squared the deviations, we <strong>lost the units</strong> of our datapoints!</li>
+<li>To see spread, but <strong>in the same units as the original data</strong>, let’s just undo the squaring!</li>
+</ul>
+<p><span class="math display">\[
+\text{SD}[X] = \sqrt{\Var{X}}
+\]</span></p>
+<ul>
+<li>But, computers don’t care about the unit of this measure (just <strong>minimizing it</strong>). No reason to do this additional step <strong>if</strong> humans aren’t looking at the results!</li>
+</ul>
+</section>
+<section id="properties-of-variance" class="level2 crunch-title crunch-ul page-columns page-full">
+<h2 class="crunch-title crunch-ul anchored" data-anchor-id="properties-of-variance">Properties of Variance</h2>
+<ul>
+<li>Recall that Expectation was an <strong>affine</strong> function:</li>
+</ul>
+<p><span class="math display">\[
+\mathbb{E}[aX + b] = a\mathbb{E}[X] + b
+\]</span></p>
+<ul>
+<li>Variance has a similar property, but is called <a href="https://en.wikipedia.org/wiki/Homogeneous_function" target="_blank"><strong>homogeneous</strong></a> <strong>of degree 2</strong>, which means</li>
+</ul>
+<p><span class="math display">\[
+\Var{aX + b} = a^2\Var{X} \; \underbrace{\phantom{+ b}}_{\mathclap{\text{(Something missing?)}}}
+\]</span></p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Note that since the expected value function is <strong>linear</strong>, it is also <strong>homogeneous</strong>, <strong>of degree 1</strong>, even though the <span class="math inline">\(b\)</span> term doesn’t “disappear” like it does in the variance equation!</p>
+</div></div></section>
+<section id="what-happened-to-the-b-term" class="level2">
+<h2 class="anchored" data-anchor-id="what-happened-to-the-b-term">What Happened to the <span class="math inline">\(b\)</span> Term?</h2>
+<p>Mathematically:</p>
+<p><span class="math display">\[
+\begin{align*}
+\Var{aX + b} \definedas \; &amp;\mathbb{E}[(aX + b - \mathbb{E}[aX + b])^2] \\
+\definedalign \; &amp;\expect{(aX \color{orange}{+ b} - a\expect{X} \color{orange}{- b})^2} \\
+\definedalign \; &amp;\expect{a^2X^2 - 2a^2\expectsq{X} + a^2\expectsq{X}} \\
+\definedalign \; &amp;a^2 \expect{X^2 - \expectsq{X}} = a^2(\expect{X^2} - \expectsq{X})b \\
+\definedas \; &amp; a^2\Var{X}
+\end{align*}
+\]</span></p>
+</section>
+<section id="what-happened-to-the-b-term-1" class="level2 smallish-math nostretch crunch-title crunch-code crunch-figures crunch-math crunch-ul">
+<h2 class="smallish-math nostretch crunch-title crunch-code crunch-figures crunch-math crunch-ul anchored" data-anchor-id="what-happened-to-the-b-term-1">What Happened to the <span class="math inline">\(b\)</span> Term?</h2>
+<ul>
+<li>Visually (Assuming <span class="math inline">\(X \sim \mathcal{N}(0,1)\)</span>)</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pdf_alpha <span class="ot">&lt;-</span> <span class="fl">0.333</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>const_variance <span class="ot">&lt;-</span> <span class="fl">0.25</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>dnorm_center <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">0</span>, const_variance)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>dnorm_p1 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="dv">1</span>, const_variance)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>dnorm_m3 <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="sc">-</span><span class="dv">3</span>, const_variance)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="fu">data.frame</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">2</span>)), <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># X - 3</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(<span class="fu">aes</span>(<span class="at">color=</span>cbPalette[<span class="dv">1</span>]), <span class="at">fun =</span> dnorm_m3, <span class="at">size=</span>g_linesize) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_area</span>(<span class="at">stat =</span> <span class="st">"function"</span>, <span class="at">fun =</span> dnorm_m3, <span class="at">fill =</span> cbPalette[<span class="dv">3</span>], <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">2</span>), <span class="at">alpha=</span>pdf_alpha) <span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># X + 1</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(<span class="fu">aes</span>(<span class="at">color=</span>cbPalette[<span class="dv">2</span>]), <span class="at">fun =</span> dnorm_p1, <span class="at">size=</span>g_linesize) <span class="sc">+</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_area</span>(<span class="at">stat =</span> <span class="st">"function"</span>, <span class="at">fun =</span> dnorm_p1, <span class="at">fill =</span> cbPalette[<span class="dv">2</span>], <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">2</span>), <span class="at">alpha=</span>pdf_alpha) <span class="sc">+</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># X</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stat_function</span>(<span class="fu">aes</span>(<span class="at">color=</span>cbPalette[<span class="dv">3</span>]), <span class="at">fun =</span> dnorm_center, <span class="at">size =</span> g_linesize) <span class="sc">+</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_area</span>(<span class="at">stat =</span> <span class="st">"function"</span>, <span class="at">fun =</span> dnorm_center, <span class="at">fill =</span> cbPalette[<span class="dv">1</span>], <span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">4</span>, <span class="dv">2</span>), <span class="at">alpha=</span>pdf_alpha) <span class="sc">+</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Scales</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_color_manual</span>(<span class="st">"RV"</span>, <span class="at">values=</span><span class="fu">c</span>(cbPalette[<span class="dv">1</span>], cbPalette[<span class="dv">2</span>], cbPalette[<span class="dv">3</span>]), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"X"</span>, <span class="st">"X + 1"</span>, <span class="st">"X - 3"</span>)) <span class="sc">+</span></span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">0</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">0</span>, <span class="at">yend=</span><span class="fu">dnorm_center</span>(<span class="dv">0</span>), <span class="at">size =</span> g_linesize, <span class="at">color=</span>cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="dv">1</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="dv">1</span>, <span class="at">yend=</span><span class="fu">dnorm_p1</span>(<span class="dv">1</span>), <span class="at">size =</span> g_linesize, <span class="at">color=</span>cbPalette[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_segment</span>(<span class="at">x=</span><span class="sc">-</span><span class="dv">3</span>, <span class="at">y=</span><span class="dv">0</span>, <span class="at">xend=</span><span class="sc">-</span><span class="dv">3</span>, <span class="at">yend=</span><span class="fu">dnorm_m3</span>(<span class="sc">-</span><span class="dv">3</span>), <span class="at">size =</span> g_linesize, <span class="at">color=</span>cbPalette[<span class="dv">3</span>]) <span class="sc">+</span></span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>      <span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">20</span>)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb15-25"><a href="#cb15-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(</span>
+<span id="cb15-26"><a href="#cb15-26" aria-hidden="true" tabindex="-1"></a>        <span class="at">title =</span> <span class="st">"Normal Distributions with Shifted Means"</span>,</span>
+<span id="cb15-27"><a href="#cb15-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> <span class="st">"f(x)"</span></span>
+<span id="cb15-28"><a href="#cb15-28" aria-hidden="true" tabindex="-1"></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/shifting-variance-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="math display">\[
+\begin{align*}
+\expect{{\color{lightblue}X + 1}} = \expect{{\color{orange}X}} + 1, \; \; \Var{{\color{lightblue}X + 1}} = \Var{{\color{orange}X}} \\
+\expect{{\color{green}X - 3}} = \expect{{\color{orange}X}} - 3, \; \; \Var{{\color{green}X - 3}} = \Var{{\color{orange}X}}
+\end{align*}
+\]</span></p>
+</section>
+</section>
+<section id="generalizing-expectationvariance-the-moment-generating-function-mgf" class="level1" data-stack-name="MGF">
+<h1 data-stack-name="MGF">Generalizing Expectation/Variance: The Moment-Generating Function (MGF)</h1>
+<section id="generalizing-from-expectation-and-variance" class="level2">
+<h2 class="anchored" data-anchor-id="generalizing-from-expectation-and-variance">Generalizing from Expectation and Variance</h2>
+<ul>
+<li>It turns out that, expectation and variance are just two “levels” of a <strong>hierarchy</strong> of <strong>information about a distribution!</strong></li>
+<li>In calculus: knowing <span class="math inline">\(f(x)\)</span> is <strong>sufficient information</strong> for us to subsequently figure out <span class="math inline">\(f'(x)\)</span>, <span class="math inline">\(f''(x)\)</span>, …</li>
+<li>In probability/statistics: knowing <span class="math inline">\(M_X(t)\)</span> is <strong>sufficient information</strong> for us to figure out <span class="math inline">\(\expect{X}\)</span>, <span class="math inline">\(\Var{X}\)</span>, …</li>
+</ul>
+</section>
+<section id="not-a-metaphor" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="not-a-metaphor">Not a Metaphor!</h2>
+<ul>
+<li>This calculus <span class="math inline">\(\leftrightarrow\)</span> statistics connection is not a metaphor: <strong>differentiating <span class="math inline">\(M_X(t)\)</span> literally gives us <span class="math inline">\(\expect{X}\)</span>, <span class="math inline">\(\Var{X}\)</span>, …</strong></li>
+<li>Let’s look at MGF for <span class="math inline">\(X \sim \text{Bern}(\param{p})\)</span>, and try to derive <span class="math inline">\(\expect{X}\)</span><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>.</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+M_X(t) &amp;= (1 - p) + pe^t \\
+M'_X(t) &amp;= pe^t,\text{ and }\expect{X} = M'_X(0) = \green{p} \; ✅
+\end{align*}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\Var{X}\)</span>?</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+M''_{X}(t) &amp;= pe^t,\text{ and }\expect{X^2} = M''_X(0) = p \\
+\Var{X} &amp;\definedas{} \expect{X^2} - (\expect{X})^2 = p - p^2 = \green{p(1-p)} \; ✅
+\end{align*}
+\]</span></p>
+</section>
+<section id="mgf-in-econometrics" class="level2">
+<h2 class="anchored" data-anchor-id="mgf-in-econometrics">MGF in Econometrics</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/gmm_results.png" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<div style="font-size: 75% !important;">
+<ul>
+<li><a href="https://scholar.google.com/scholar?hl=en&amp;as_sdt=0%2C5&amp;q=generalized+method+of+moments&amp;btnG=">Open in new window</a></li>
+</ul>
+</div>
+<div class="notes">
+<p>In case it doesn’t load: <span class="citation" data-cites="hansen_large_1982">(<a href="#ref-hansen_large_1982" role="doc-biblioref">Hansen 1982</a>)</span> has 17,253 citations as of 2023-05-21</p>
+</div>
+</section>
+<section id="beware" class="level2">
+<h2 class="anchored" data-anchor-id="beware">BEWARE ☠️</h2>
+<p>As we saw last week (the Dreaded Cauchy Distribution):</p>
+<ul>
+<li>Not all random variables <strong>have</strong> moment-generating functions.</li>
+<li>Worse yet, not all random variables have well-defined <strong>variances</strong></li>
+<li>Worse yet, not all random variables have well-defined <strong>means</strong></li>
+<li>(This happens in non-contrived cases!)</li>
+</ul>
+</section>
+</section>
+<section id="moving-beyond-one-rv" class="level1" data-stack-name="Multivariate Dists">
+<h1 data-stack-name="Multivariate Dists">Moving Beyond One RV</h1>
+<section id="multivariate-distributions-w02" class="level2 smaller crunch-title">
+<h2 class="smaller crunch-title anchored" data-anchor-id="multivariate-distributions-w02">Multivariate Distributions (W02)</h2>
+<ul>
+<li>The <strong>bivariate normal</strong> distribution represents the distribution of <strong>two</strong> normally-distributed RVs <span class="math inline">\(\mathbf{X} = [\begin{smallmatrix} X_1 &amp; X_2\end{smallmatrix}]\)</span>, which may or may not be correlated:</li>
+</ul>
+<div class="special-math" style="margin-bottom: 42px !important;">
+<p><span class="math display">\[
+\mathbf{X} = \begin{bmatrix}X_1 \\ X_2\end{bmatrix}, \; \boldsymbol{\mu} =
+%\begin{bmatrix}\mu_1 \\ \mu_2\end{bmatrix}
+\begin{bmatrix}\smash{\overbrace{\mu_1}^{\mathbb{E}[X_1]}} \\ \smash{\underbrace{\mu_2}_{\mathbb{E}[X_2]}}\end{bmatrix}
+, \; \mathbf{\Sigma} = \begin{bmatrix}\smash{\overbrace{\sigma_1^2}^{\text{Var}[X_1]}} &amp; \smash{\overbrace{\rho\sigma_1\sigma_2}^{\text{Cov}[X_1,X_2]}} \\ \smash{\underbrace{\rho\sigma_2\sigma_1}_{\text{Cov}[X_2,X_1]}} &amp; \smash{\underbrace{\sigma_2^2}_{\text{Var}[X_2]}}\end{bmatrix}
+% \begin{bmatrix}\sigma_1^2 &amp; \rho\sigma_1\sigma_2 \\ \rho\sigma_2\sigma_1 &amp; \sigma_2^2 \end{bmatrix}
+% = \begin{bmatrix}\text{Var}[X_1] &amp; \text{Cov}[X_1,X_2] \\ \text{Cov}[X_2,X_1] &amp; \text{Var}[X_2] \end{bmatrix}
+\]</span></p>
+</div>
+<ul>
+<li>By squishing all this information intro matrices, we can specify the parameters of <strong>multivariate-normally-distributed</strong> <em>vectors</em> of RVs similarly to how we specify single-dimensional normally-distributed RVs:</li>
+</ul>
+<div class="crunch-math">
+<p><span class="math display">\[
+\begin{align*}
+\overbrace{X}^{\mathclap{\text{scalar}}} &amp;\sim \mathcal{N}\phantom{_k}(\overbrace{\mu}^{\text{scalar}}, \overbrace{\sigma}^{\text{scalar}}) \tag{Univariate} \\
+\underbrace{\mathbf{X}}_{\text{vector}} &amp;\sim \boldsymbol{\mathcal{N}}_k(\smash{\underbrace{\boldsymbol{\mu}}_{\text{vector}}}, \underbrace{\mathbf{\Sigma}}_{\text{matrix}}) \tag{Multivariate}
+\end{align*}
+\]</span></p>
+</div>
+<div class="footnote crunch-math" style="font-size: 1.2rem !important; margin-top: 16px !important;">
+<p><em>Note: In the future I’ll use the notation <span class="math inline">\(\mathbf{X}_{[a \times b]}\)</span> to denote the dimensions of the vectors/matrices, like <span class="math inline">\(\mathbf{X}_{[k \times 1]} \sim \boldsymbol{\mathcal{N}}_k(\boldsymbol{\mu}_{[k \times 1]}, \mathbf{\Sigma}_{[k \times k]})\)</span></em></p>
+</div>
+</section>
+<section id="visualizing-3d-distributions-projection" class="level2 smaller crunch-title title-12">
+<h2 class="smaller crunch-title title-12 anchored" data-anchor-id="visualizing-3d-distributions-projection">Visualizing 3D Distributions: Projection</h2>
+<ul>
+<li>Since most of our intuitions about plots come from <strong>2D</strong> plots, it is <strong>extremely useful</strong> to be able to take a 3D plot like this and imagine “projecting” it down into different 2D plots:</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/bivariate_normal_corrected.svg" class="img-fluid figure-img"></p>
+<figcaption>Adapted (and corrected!) from LaTeX code in <a href="https://tex.stackexchange.com/questions/31708/draw-a-bivariate-normal-distribution-in-tikz" target="_blank">this StackExchange thread</a></figcaption>
+</figure>
+</div>
+</section>
+<section id="visualizing-3d-distributions-contours" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="visualizing-3d-distributions-contours">Visualizing 3D Distributions: Contours</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/contour_nocorr.png" class="img-fluid figure-img"></p>
+<figcaption>From <a href="https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-normal-uncorrelated" target="_blank">Prof.&nbsp;Hickman’s slides</a>!</figcaption>
+</figure>
+</div>
+</section>
+<section id="visualizing-3d-distributions-contours-1" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="visualizing-3d-distributions-contours-1">Visualizing 3D Distributions: Contours</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/contour_corr.png" class="img-fluid figure-img"></p>
+<figcaption>Also from <a href="https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-correlated" target="_blank">Prof.&nbsp;Hickman’s slides</a>!</figcaption>
+</figure>
+</div>
+</section>
+<section id="bivariate-distributions" class="level2">
+<h2 class="anchored" data-anchor-id="bivariate-distributions">Bivariate Distributions</h2>
+<p><span class="citation" data-cites="degroot_probability_2013">DeGroot and Schervish (<a href="#ref-degroot_probability_2013" role="doc-biblioref">2013, 118</a>)</span> | <a href="https://jjacobs.me/dsps/03-random-variables.html#sec-3-4">DSPS Sec. 3.4 <i class="bi bi-box-arrow-up-right ps-1"></i></a></p>
+<ul>
+<li>We generalize the concept of the distribution of a random variable to the <strong>joint distribution</strong> of two random variables.</li>
+<li>In doing so, we introduce the <strong>joint pmf</strong> for two <strong>discrete</strong> random variables, the <strong>joint pdf</strong> for two <strong>continuous</strong> variables, and the <strong>joint CDF</strong> for <strong>any two</strong> random variables.</li>
+</ul>
+<!-- APPENDIX -->
+</section>
+</section>
+<section id="appendix-slides" class="level1 page-columns page-full">
+<h1>Appendix Slides</h1>
+<section id="sec-hadamard" class="level2 smaller smallmath">
+<h2 class="smaller smallmath anchored" data-anchor-id="sec-hadamard">Appendix A: The Hadamard Product</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<ul>
+<li>Used in nearly all neural NLP algorithms, as the basis of <a href="https://jaketae.github.io/study/dissecting-lstm/" target="_blank">LSTM</a> (see LSTM equations on the right)</li>
+<li>The subscripts for the harmonic mean <span class="math inline">\(M_{-1}\)</span>, geometric mean <span class="math inline">\(M_0\)</span>, and arithmetic mean <span class="math inline">\(M_1\)</span> come from the definition of the <strong>generalized mean</strong>:</li>
+</ul>
+<p><span class="math display">\[
+M_p(V) = \left( \frac{1}{n} \sum_{i=1}^n v_i^p \right)^{1/p}
+\]</span></p>
+</div><div class="column" style="width:40%;">
+<p><span class="math display">\[
+\begin{align*}
+f_t &amp;= \sigma(W_f [h_{t - 1}, x_t] + b_f) \\
+i_t &amp;= \sigma(W_i [h_{t - 1}, x_t] + b_i) \\
+\tilde{C}_t &amp;= \tanh(W_C [h_{t - 1}, x_t] + b_C) \\
+C_t &amp;= f_t \odot C_{t - 1} + i_t \odot \tilde{C}_t \\
+o_t &amp;= \sigma(W_o [h_{t - 1}, x_t] + b_o) \\
+h_t &amp;= o_t \odot \tanh(C_t) \\
+\hat{y} &amp;= \text{softmax}(W_y h_t + b_y)
+\end{align*}
+\]</span></p>
+</div>
+</div>
+<ul>
+<li>If you’re a dork like me, you can read about <a href="https://en.wikipedia.org/wiki/Generalized_mean" target="_blank">generalized means</a>, <a href="https://en.wikipedia.org/wiki/Fr%C3%A9chet_mean" target="_blank">Fréchet means</a>, or <a href="https://www.stata-journal.com/article.html?article=st0313" target="_blank">Stata’s <code>trimmean</code> function</a>, all of which bring together seemingly-unrelated functions used throughout Machine Learning!</li>
+</ul>
+</section>
+<section id="sec-continuous-support" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sec-continuous-support">Appendix B: Continuous RV Support</h2>
+<p>In most cases, for continuous RVs, the definition</p>
+<p><span class="math display">\[
+\mathcal{R}_X = \{x \in \mathsf{Domain}(f_X) \given f_X(x) &gt; 0\}
+\]</span></p>
+<p>works fine. But, to fully capture <strong>all</strong> possible continuous RVs, the following formal definition is necessary:</p>
+<p><span class="math display">\[
+\mathcal{R}_X = \left\{x \in \mathbb{R} \given \forall r &gt; 0 \left[ f_X(B(x,r)) &gt; 0 \right] \right\},
+\]</span></p>
+<p>where <span class="math inline">\(B(x,r)\)</span> is a “band”<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> around <span class="math inline">\(x\)</span> with radius <span class="math inline">\(r\)</span>.</p>
+
+
+
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>For a full explanation, see <a href="https://math.stackexchange.com/questions/846011/precise-definition-of-the-support-of-a-random-variable" target="_blank">this StackExchange discussion</a>.</p>
+</div></div></section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-agnesi_analytical_1801" class="csl-entry" role="listitem">
+Agnesi, Maria Gaetana. 1801. <em>Analytical <span>Institutions</span> in <span>Four Books</span>: <span>Originally Written</span> in <span>Italian</span></em>. <span>Taylor and Wilks</span>.
+</div>
+<div id="ref-degroot_probability_2013" class="csl-entry" role="listitem">
+DeGroot, Morris H., and Mark J. Schervish. 2013. <em>Probability and <span>Statistics</span></em>. <span>Pearson Education</span>.
+</div>
+<div id="ref-hansen_large_1982" class="csl-entry" role="listitem">
+Hansen, Lars Peter. 1982. <span>“Large Sample Properties of Generalized Method of Moments Estimators.”</span> <em>Econometrica: Journal of the Econometric Society</em>, 1029–54.
+</div>
+</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Mathematically, it’s important to call <span class="math inline">\(aX + b\)</span> an “affine transformation”, <em>not</em> a linear transformation. In practice, everyone calls this “linear”, so I try to use both (for easy Googling!). The reason it matters will come up when we discuss Variance!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>For why differentiability matters <strong>a lot</strong> for modern Machine Learning, see the <a href="https://en.wikipedia.org/wiki/Backpropagation" target="_blank">Backpropagation algorithm</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Recall that, for a Bernoulli-distributed random variable <span class="math inline">\(X\)</span>, <span class="math inline">\(\expect{X} = p\)</span><a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>In one dimension, this would be an interval; in two dimensions, a circle; in three dimensions, a sphere; etc.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w06/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
