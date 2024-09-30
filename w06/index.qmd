@@ -1,5 +1,5 @@
 ---
-title: "Week 6: Continuous Distributions"
+title: "Week 6: Moments and Covariance"
 subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
 author: "Jeff Jacobs"
 institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
@@ -13,7 +13,7 @@ format:
   revealjs:
     cache: false
     css: "../dsan-globals/jjstyles.css"
-    footer: "DSAN 5100-03 W06: Continuous Distributions"
+    footer: "DSAN 5100-03 W06: Moments and Covariance"
     output-file: slides.html
     df-print: kable
     code-fold: true
