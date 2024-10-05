@@ -1,0 +1,145 @@
+---
+title: "Deriving Conditional Expectation from Conditional Probability + Expectation"
+author: "Jeff Jacobs"
+institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>`jj1088@georgetown.edu`</a>"
+date: last-modified
+format:
+  html:
+    df-print: kable
+    code-fold: show
+    cache: true
+categories:
+  - "Extra Writeups"
+sidebar: mainnav
+---
+
+::: {.hidden}
+
+```{r}
+#| label: source-r-globals
+source("../../dsan-globals/_globals.r")
+```
+
+:::
+
+Problem 2d on your Lab 5 Assignment, which asks you to:
+
+::: {.callout-note title="Lab 5 Problem 2d"}
+
+Find the conditional expectation $\mathbb{E}[Y \mid X]$
+
+:::
+
+is a step up in difficulty relative to parts 2a through 2c, since it requires "fusing together" two pieces of knowledge you have, about two topics that were taught separately -- **conditional probability** on the one hand and **expected value** on the other -- in order to derive a solution. So, I hope this writeup can help steer you in the right direction, by drawing these two separate topics closer together, while also refreshing your memory about important aspects of both!
+
+## Piece 1: Conditional Probability
+
+Long story short, the main lesson I hope I was able to convey when we first encountered conditional probability is that **all probabilities are conditional probabilities**!
+
+It was our first encounter with a new **type** of probability distribution, beyond just a "standard" single-variable distribution, so I drew a diagram on the board that looked something like:
+
+![](images/probability_types.svg){fig-align="center"}
+
+The real point of drawing this diagram (for now!) was just to "collapse" what may seem like two different formulas down into one: Expressions for probability distributions like $\Pr(Y = v_Y)$ are really already expressions for **conditional distributions**, since we can always rewrite a probabilistic statement about a single event $E$ as a conditional statement:
+
+$$
+\Pr(E) = \Pr(E \mid \Omega) = \frac{\Pr(E, \Omega)}{\Pr(\Omega)},
+$$
+
+where $\Omega$ is a special "event" that literally just means "anything at all occurs", so that the denominator of this fraction is exactly $1$ and the numerator is exactly $\Pr(E)$ ("the probability that something occurs and $E$ occurs").
+
+Moving from the case of generic events like $E$ to events involving Random Variables, consider e.g. $X = v_X$, the event that the Random Variable $X$ takes on the particular value $v_X$. Since the "universe" of possible values that $X$ could take on is represented by its support $\mathcal{R}_X$, we can derive a similar kind of conditional statement from any non-conditional statement about $X$:
+
+$$
+\Pr(X = v_X) = \Pr(X = v_X \mid X \in \mathcal{R}_X) = \frac{\Pr(X = v_X, X \in \mathcal{R}_X)}{\Pr(X \in \mathcal{R}_X)},
+$$
+
+where again the denominator of the fraction is exactly $1$ ("the probability that $X$ takes on one of the possible values that $X$ can take on"), and the numerator is exactly $\Pr(X = v_X)$. So, when we are working with probabilities involving Random Variables, we are again always working with **conditional** probabilities. We don't need to carry around separate non-conditional and conditional formulas for RVs in our heads!
+
+In the context of this problem, the takeaway is: if we already know about **expectation** (see: next section), we may be able to think through and derive a **conditional** form for it, therefore deriving precisely the "conditional expectation" that this problem is asking for, even if we haven't encountered the expected value in **conditional** form before.
+
+Before turning to the expected value, though, let's write out one more atomic-conditional "linkage" here, this time for **continuous** distributions, where we therefore have to work with probability **densities** rather than probabilities themselves. As long as we keep in mind the caveat that probability density values are **not** probabilities themselves (but that they can be **integrated** to produce probability values), we can define a **conditional probability density function** for e.g. the random variable $Y \mid X$ as
+
+$$
+f_{Y \mid X}(y \mid x) = \frac{f_{Y,X}(y,x)}{f_X(x)}.
+$$
+
+With this in hand, we can then (repetitively keeping in mind that we need to use **integration** over **regions** to generate probability values from probability density functions) see the connection between this conditional density and non-conditional density via our final identity showing how **all probability density functions are conditional probability density functions**:
+
+$$
+f_{Y}(y) = f_{Y \mid X}(y \mid \mathcal{R}_x) = \int_{-\infty}^{\infty}f_{Y \mid X}(y \mid x)\mathrm{d}x
+$$
+
+Where we only had to abuse notation a little bit here at the very end by letting $\mathcal{R}_X$ stand in for the longer "any value at all in $X$'s support", i.e., "any value from $-\infty$ to $\infty$".
+
+## Piece 2: Expected Value
+
+While the guiding principle behind the previous section was that **all probabilities are conditional probabilities**, here our guiding principle is that **expected values are just weighted averages**. Specifically, $\mathbb{E}[X]$ is a weighted average where:
+
+* The [**things being averaged**]{.cb1} are the [possible values $v_X$]{.cb1} that $X$ can take on, that is, $v_X \in \mathcal{R}_X$, and
+* The [**weight**]{.cb2} for each value $v_X$ is the [probability $\Pr(X = v_X)$]{.cb2} that $X$ in fact takes on that value.
+
+So, in discrete world (the world where the set of possible values for $X$, $\mathcal{R}_X$, is countable), this can be written out symbolically as
+
+$$
+\mathbb{E}[X] = \sum_{v_X \in \mathcal{R}_X}{\color{#e69f00}v_X}{\color{#56b4e9}\Pr(X = v_X)}
+$$
+
+And in continuous world^[Where, remember, we're only able to utilize the probability density function $f_X(x)$ in place of the probability mass function $p_X(x) = \Pr(X)$ because we're **integrating it** over a **range** of values. $f_X(v_X)$ is **not** itself a probability, it is a function we **use** to generate valid probability values between $0$ and $1$ via integration.], it can be written out symbolically as
+
+$$
+\mathbb{E}[X] = \int_{-\infty}^{\infty}{\color{#e69f00}v_X}{\color{#56b4e9}f_X(v_X)}.
+$$
+
+## Snapping the Pieces Together
+
+Now that we've looked at each piece individually, let's think about how we might be able to "fuse" them together into an expression for a **conditional expectation** $\mathbb{E}[Y \mid X]$.
+
+First, since we're firmly within **continuous world** in this Lab, I won't bore you with the discrete analogue first (though I think it's helpful to think through!). Instead, let's look at the definition we have for the **expected value** $\mathbb{E}[Y]$:
+
+$$
+\mathbb{E}[Y] = \int_{-\infty}^{\infty}yf_Y(y)\mathrm{d}y
+$$
+
+Given that $\mathrm{d}y$ is sort of just... notation that we carry over from calculus^[Specifically, notation that we carry over from Riemann sums, which ensures that our integrand represents a product: Looking at $\int_{-\infty}^{\infty}xf(x)\mathrm{d}x$, for example, the integrand represents the product of (a) the "height" of $xf(x)$ and (b) the (infinitesimally-small) "widths" $\mathrm{d}x$. And, as we know, multiplying a width by a height gives us an **area**! Therefore, when we **sum** each of these tiny areas from $-\infty$ to $\infty$, we end up with the **total area under the curve** formed by $xf(x)$.], the two relevant pieces of this expression that we can focus on are $y$ (our variable of integration) and $f_Y(y)$ (the **pdf** of $Y$ evaluated at the point $y$).
+
+So, since we eventually want $\mathbb{E}[Y \mid X]$... let's see what the previous expression could look like if we literally just clunkily "plugged in" $Y \mid X$ everywhere we see $Y$, and $y \mid x$ everywhere we see $y$. We'll call this our "first draft" for a definition of conditional expectation:
+
+$$
+\mathbb{E}[Y \mid X] = \int_{\infty}^{\infty}(y \mid x)f_{Y \mid X}(y \mid x)\mathrm{d}(y \mid x)
+$$
+
+If we stare at this for a bit and try to think through what each piece might mean, my hope is that you can start to get a vague sense of the following two observations:
+
+* The plugging-in was "successful" for $f_{Y \mid X}(y \mid x)$, in the sense that this expression is something we **do** understand and **have** seen before: it's the **conditional probability** that our random variable $Y$ takes on the specific value $y$ within a world where our random variable $X$ has taken on the specific value $x$.
+* The $(y \mid x)$ term, on the other hand, **doesn't** seem very well-defined: $y$ and $x$ are **non-random** values like $3$ or $\pi$, and here they're **not** being plugged into a probability measure like $\Pr(X = x)$ or a density like $f_{Y \mid X}(y \mid x)$.
+
+So, diving into the second observation: What would $(y \mid x)$ even mean? Semantically, we know that the conditional bar $|$ in the middle means "given", so that if we read $(y \mid x)$ out it means something like "The value of $y$ given the value of $x$". But, to drive the point home: knowing the value of $x$ here is **totally irrelevant** to the value of $y$, since there's no randomness or probabilistic uncertainty involved in determining the value of $y$ at all!
+
+It's crucial to distinguish between $Y$ and $y$ here to make sense of this, at least in my brain^[Hopefully, if you've gotten this far, you can start to understand why I hate the $X = x$ notation, and why I always try to use $X = v_X$ and $Y = v_Y$ instead...]. Here $y$ is **not** a probabilistic Random Variable, it's an **algebraic** variable which exists in the expression solely as a "stand-in" for particular values (ranging from $-\infty$ to $\infty$) that we'd have to plug in to evaluate the integral.
+
+I know that way of thinking about it might not click with everyone, but I hope it does click for some! And if it does, then I hope it might have also "clicked" ideas in your head with respect to how we could "handle" the $(y \mid x)$ here:
+
+1. $(y \mid x)$ represents "the value of $y$ given the value of $x$". But...
+2. The value of $y$ is not affected by the value of $x$. So...
+3. $(y \mid x)$ is equivalent to just $y$!
+
+If you've followed all of the above, then we can apply this conclusion to our "first draft" from above, and simplify it to just
+
+$$
+\mathbb{E}[Y \mid X] = \int_{-\infty}^{\infty}yf_{Y \mid X}(y \mid x)\mathrm{d}y
+$$
+
+And indeed, we did it, we've arrived at [**the definition**](https://en.wikipedia.org/wiki/Conditional_expectation){target='_blank'} of conditional expectation, for continuous random variables $X$ and $Y$!
+
+If it helps, we could also rewrite this using our definition of **conditional probability density**,
+
+$$
+f_{Y \mid X}(y \mid x) = \frac{f_{Y,X}(y,x)}{f_X(x)},
+$$
+
+to derive the following alternative forms (which are also given in the above Wikipedia article):
+
+$$
+\mathbb{E}[Y \mid X] = \int_{-\infty}^{\infty}y\frac{f_{Y,X}(y,x)}{f_X(x)}\mathrm{d}y = \frac{1}{f_X(x)}\int_{-\infty}^{\infty}yf_{Y,X}(y,x)\mathrm{d}y.
+$$

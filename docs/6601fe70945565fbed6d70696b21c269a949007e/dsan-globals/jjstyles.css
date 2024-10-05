@@ -6,6 +6,10 @@ a.disabled {
   pointer-events: none;
 }
 
+.aside-80 aside {
+  font-size: 1.3rem !important;
+}
+
 .border-all td {
   border: 1px solid black !important;
 }

@@ -11,16 +11,9 @@
     ]
   },
   {
-    "listing": "/recordings-archive/index.html",
-    "items": []
-  },
-  {
-    "listing": "/recordings/index.html",
-    "items": []
-  },
-  {
     "listing": "/writeups/index.html",
     "items": [
+      "/writeups/conditional-expectation/index.html",
       "/writeups/order-of-integration/index.html",
       "/writeups/sampling-from-df/index.html",
       "/writeups/computing-probabilities/index.html",
@@ -28,6 +21,14 @@
       "/writeups/sample-space-tibbles/index.html",
       "/writeups/marginalization/index.html"
     ]
+  },
+  {
+    "listing": "/recordings/index.html",
+    "items": []
+  },
+  {
+    "listing": "/recordings-archive/index.html",
+    "items": []
   },
   {
     "listing": "/extra-videos/index.html",

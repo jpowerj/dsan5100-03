@@ -6,8 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Jeff Jacobs">
+<meta name="dcterms.date" content="2024-10-05">
 
-<title>DSAN 5100, Section 03 (Tuesdays) – DSAN 5100-03</title>
+<title>Deriving Conditional Expectation from Conditional Probability + Expectation – DSAN 5100-03</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,30 +22,62 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./favicon.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-listing/list.min.js"></script>
-<script src="site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../favicon.png" rel="icon" type="image/png">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -71,36 +105,7 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script>
-
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-listing .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
-
-    const options = {
-      valueNames: ['listing-title','listing-date',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
-      
-      searchColumns: ["listing-date","listing-title","listing-author"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-listing'] = new List('listing-listing', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script><script src="./sidebar.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script><script src="../../sidebar.js"></script>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -132,7 +137,7 @@ window.Quarto = {
 };
 </script>
 
-<link rel="stylesheet" href="dsan-globals/jjstyles.css">
+<link rel="stylesheet" href="../../dsan-globals/jjstyles.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -161,7 +166,7 @@ window.Quarto = {
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">DSAN 5100: Probabilistic Modeling and Statistical Computing</a> 
+      <a href="../../">DSAN 5100: Probabilistic Modeling and Statistical Computing</a> 
         <div class="sidebar-tools-main">
   <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
 </div>
@@ -183,37 +188,37 @@ window.Quarto = {
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./w01/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../w01/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 1: Aug 30</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./w02/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../w02/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 2: Sep 3</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./w03/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../w03/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 3: Sep 10</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./w04/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../w04/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 4: Sep 17</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./w05/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../w05/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 5: Sep 24</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./w06/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../w06/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Week 6: Oct 1</span></a>
   </div>
 </li>
@@ -232,19 +237,19 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./extra-videos/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../extra-videos/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Extra Videos</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./writeups/index.html" class="sidebar-item-text sidebar-link">
+  <a href="../../writeups/index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Extra Writeups</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./cheatsheet-math.html" class="sidebar-item-text sidebar-link">
+  <a href="../../cheatsheet-math.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Math Cheatsheet</span></a>
   </div>
 </li>
@@ -280,22 +285,52 @@ window.Quarto = {
 </div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#piece-1-conditional-probability" id="toc-piece-1-conditional-probability" class="nav-link active" data-scroll-target="#piece-1-conditional-probability">Piece 1: Conditional Probability</a></li>
+  <li><a href="#piece-2-expected-value" id="toc-piece-2-expected-value" class="nav-link" data-scroll-target="#piece-2-expected-value">Piece 2: Expected Value</a></li>
+  <li><a href="#snapping-the-pieces-together" id="toc-snapping-the-pieces-together" class="nav-link" data-scroll-target="#snapping-the-pieces-together">Snapping the Pieces Together</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/writeups/conditional-expectation/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">DSAN 5100, Section 03 (Tuesdays)</h1>
-</div>
+<h1 class="title">Deriving Conditional Expectation from Conditional Probability + Expectation</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">Extra Writeups</div>
+  </div>
+  </div>
 
 
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jeff Jacobs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+      </div>
+  </div>
 
 <div class="quarto-title-meta">
 
-    
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">October 5, 2024</p>
+    </div>
+  </div>
   
     
   </div>
@@ -305,87 +340,126 @@ window.Quarto = {
 </header>
 
 
-<p>This page collects slides and relevant links for students in Prof.&nbsp;Jeff’s <strong>Tuesday section (Section 03)</strong> of <strong>DSAN 5100: Probabilistic Modeling and Statistical Computing</strong>, Fall 2024 at Georgetown University.</p>
-<p>Sections take place in <strong>Car Barn 309</strong> on <strong>Tuesdays</strong> from <strong>6:30pm to 9:00pm</strong>.</p>
-<p>This page is <em>not</em> a replacement for the <strong><a href="https://dsan.georgetown.domains/dsan5100/" target="_blank">Main Course Page</a></strong> or the sections’s <strong><a href="https://georgetown.instructure.com/courses/193275" target="_blank">Canvas Page</a></strong>!</p>
-<p>Use the menu on the left, or the table below, to view resources for a specific week.</p>
-
-
-
-
-<div class="quarto-listing quarto-listing-container-table" id="listing-listing">
-<table class="quarto-listing-table table table-hover">
-<thead>
-<tr>
-<th>
-Title
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody class="list">
-<tr data-index="0" data-categories="Class Sessions" data-listing-date-sort="1724990400000" data-listing-file-modified-sort="1725069600355" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1" data-listing-word-count-sort="38" data-listing-title-sort="Week 1: Welcome to DSAN 5100!" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<a href="./w01/index.html" class="title listing-title">Week 1: Welcome to DSAN 5100!</a>
-</td>
-<td>
-<span class="listing-date">Friday, August 30, 2024</span>
-</td>
-</tr>
-<tr data-index="1" data-categories="Class Sessions" data-listing-date-sort="1725336000000" data-listing-file-modified-sort="1725933834966" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="13" data-listing-word-count-sort="2437" data-listing-title-sort="Week 2: Introduction to Probabilistic Modeling" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<a href="./w02/index.html" class="title listing-title">Week 2: Introduction to Probabilistic Modeling</a>
-</td>
-<td>
-<span class="listing-date">Tuesday, September 3, 2024</span>
-</td>
-</tr>
-<tr data-index="2" data-categories="Class Sessions" data-listing-date-sort="1725940800000" data-listing-file-modified-sort="1726610877379" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="35" data-listing-word-count-sort="6910" data-listing-title-sort="Week 3: Random Variables" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<a href="./w03/index.html" class="title listing-title">Week 3: Random Variables</a>
-</td>
-<td>
-<span class="listing-date">Tuesday, September 10, 2024</span>
-</td>
-</tr>
-<tr data-index="3" data-categories="Class Sessions" data-listing-date-sort="1726545600000" data-listing-file-modified-sort="1726795512322" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="26" data-listing-word-count-sort="5114" data-listing-title-sort="Week 4: Discrete Distributions" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<a href="./w04/index.html" class="title listing-title">Week 4: Discrete Distributions</a>
-</td>
-<td>
-<span class="listing-date">Tuesday, September 17, 2024</span>
-</td>
-</tr>
-<tr data-index="4" data-categories="Class Sessions" data-listing-date-sort="1727150400000" data-listing-file-modified-sort="1727153371758" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="22" data-listing-word-count-sort="4277" data-listing-title-sort="Week 5: Continuous Distributions" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<a href="./w05/index.html" class="title listing-title">Week 5: Continuous Distributions</a>
-</td>
-<td>
-<span class="listing-date">Tuesday, September 24, 2024</span>
-</td>
-</tr>
-<tr data-index="5" data-categories="Class Sessions" data-listing-date-sort="1727755200000" data-listing-file-modified-sort="1727740537374" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="19" data-listing-word-count-sort="3774" data-listing-title-sort="Week 6: Moments and Covariance" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<a href="./w06/index.html" class="title listing-title">Week 6: Moments and Covariance</a>
-</td>
-<td>
-<span class="listing-date">Tuesday, October 1, 2024</span>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="listing-no-matching d-none">
-No matching items
+<div class="hidden">
+<div class="cell">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../../dsan-globals/_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-</div></main> <!-- /main -->
+</div>
+<p>Problem 2d on your Lab 5 Assignment, which asks you to:</p>
+<div class="callout callout-style-default callout-note callout-titled" title="Lab 5 Problem 2d">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Lab 5 Problem 2d
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Find the conditional expectation <span class="math inline">\(\mathbb{E}[Y \mid X]\)</span></p>
+</div>
+</div>
+<p>is a step up in difficulty relative to parts 2a through 2c, since it requires “fusing together” two pieces of knowledge you have, about two topics that were taught separately – <strong>conditional probability</strong> on the one hand and <strong>expected value</strong> on the other – in order to derive a solution. So, I hope this writeup can help steer you in the right direction, by drawing these two separate topics closer together, while also refreshing your memory about important aspects of both!</p>
+<section id="piece-1-conditional-probability" class="level2">
+<h2 class="anchored" data-anchor-id="piece-1-conditional-probability">Piece 1: Conditional Probability</h2>
+<p>Long story short, the main lesson I hope I was able to convey when we first encountered conditional probability is that <strong>all probabilities are conditional probabilities</strong>!</p>
+<p>It was our first encounter with a new <strong>type</strong> of probability distribution, beyond just a “standard” single-variable distribution, so I drew a diagram on the board that looked something like:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/probability_types.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<p>The real point of drawing this diagram (for now!) was just to “collapse” what may seem like two different formulas down into one: Expressions for probability distributions like <span class="math inline">\(\Pr(Y = v_Y)\)</span> are really already expressions for <strong>conditional distributions</strong>, since we can always rewrite a probabilistic statement about a single event <span class="math inline">\(E\)</span> as a conditional statement:</p>
+<p><span class="math display">\[
+\Pr(E) = \Pr(E \mid \Omega) = \frac{\Pr(E, \Omega)}{\Pr(\Omega)},
+\]</span></p>
+<p>where <span class="math inline">\(\Omega\)</span> is a special “event” that literally just means “anything at all occurs”, so that the denominator of this fraction is exactly <span class="math inline">\(1\)</span> and the numerator is exactly <span class="math inline">\(\Pr(E)\)</span> (“the probability that something occurs and <span class="math inline">\(E\)</span> occurs”).</p>
+<p>Moving from the case of generic events like <span class="math inline">\(E\)</span> to events involving Random Variables, consider e.g.&nbsp;<span class="math inline">\(X = v_X\)</span>, the event that the Random Variable <span class="math inline">\(X\)</span> takes on the particular value <span class="math inline">\(v_X\)</span>. Since the “universe” of possible values that <span class="math inline">\(X\)</span> could take on is represented by its support <span class="math inline">\(\mathcal{R}_X\)</span>, we can derive a similar kind of conditional statement from any non-conditional statement about <span class="math inline">\(X\)</span>:</p>
+<p><span class="math display">\[
+\Pr(X = v_X) = \Pr(X = v_X \mid X \in \mathcal{R}_X) = \frac{\Pr(X = v_X, X \in \mathcal{R}_X)}{\Pr(X \in \mathcal{R}_X)},
+\]</span></p>
+<p>where again the denominator of the fraction is exactly <span class="math inline">\(1\)</span> (“the probability that <span class="math inline">\(X\)</span> takes on one of the possible values that <span class="math inline">\(X\)</span> can take on”), and the numerator is exactly <span class="math inline">\(\Pr(X = v_X)\)</span>. So, when we are working with probabilities involving Random Variables, we are again always working with <strong>conditional</strong> probabilities. We don’t need to carry around separate non-conditional and conditional formulas for RVs in our heads!</p>
+<p>In the context of this problem, the takeaway is: if we already know about <strong>expectation</strong> (see: next section), we may be able to think through and derive a <strong>conditional</strong> form for it, therefore deriving precisely the “conditional expectation” that this problem is asking for, even if we haven’t encountered the expected value in <strong>conditional</strong> form before.</p>
+<p>Before turning to the expected value, though, let’s write out one more atomic-conditional “linkage” here, this time for <strong>continuous</strong> distributions, where we therefore have to work with probability <strong>densities</strong> rather than probabilities themselves. As long as we keep in mind the caveat that probability density values are <strong>not</strong> probabilities themselves (but that they can be <strong>integrated</strong> to produce probability values), we can define a <strong>conditional probability density function</strong> for e.g.&nbsp;the random variable <span class="math inline">\(Y \mid X\)</span> as</p>
+<p><span class="math display">\[
+f_{Y \mid X}(y \mid x) = \frac{f_{Y,X}(y,x)}{f_X(x)}.
+\]</span></p>
+<p>With this in hand, we can then (repetitively keeping in mind that we need to use <strong>integration</strong> over <strong>regions</strong> to generate probability values from probability density functions) see the connection between this conditional density and non-conditional density via our final identity showing how <strong>all probability density functions are conditional probability density functions</strong>:</p>
+<p><span class="math display">\[
+f_{Y}(y) = f_{Y \mid X}(y \mid \mathcal{R}_x) = \int_{-\infty}^{\infty}f_{Y \mid X}(y \mid x)\mathrm{d}x
+\]</span></p>
+<p>Where we only had to abuse notation a little bit here at the very end by letting <span class="math inline">\(\mathcal{R}_X\)</span> stand in for the longer “any value at all in <span class="math inline">\(X\)</span>’s support”, i.e., “any value from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span>”.</p>
+</section>
+<section id="piece-2-expected-value" class="level2">
+<h2 class="anchored" data-anchor-id="piece-2-expected-value">Piece 2: Expected Value</h2>
+<p>While the guiding principle behind the previous section was that <strong>all probabilities are conditional probabilities</strong>, here our guiding principle is that <strong>expected values are just weighted averages</strong>. Specifically, <span class="math inline">\(\mathbb{E}[X]\)</span> is a weighted average where:</p>
+<ul>
+<li>The <span class="cb1"><strong>things being averaged</strong></span> are the <span class="cb1">possible values <span class="math inline">\(v_X\)</span></span> that <span class="math inline">\(X\)</span> can take on, that is, <span class="math inline">\(v_X \in \mathcal{R}_X\)</span>, and</li>
+<li>The <span class="cb2"><strong>weight</strong></span> for each value <span class="math inline">\(v_X\)</span> is the <span class="cb2">probability <span class="math inline">\(\Pr(X = v_X)\)</span></span> that <span class="math inline">\(X\)</span> in fact takes on that value.</li>
+</ul>
+<p>So, in discrete world (the world where the set of possible values for <span class="math inline">\(X\)</span>, <span class="math inline">\(\mathcal{R}_X\)</span>, is countable), this can be written out symbolically as</p>
+<p><span class="math display">\[
+\mathbb{E}[X] = \sum_{v_X \in \mathcal{R}_X}{\color{#e69f00}v_X}{\color{#56b4e9}\Pr(X = v_X)}
+\]</span></p>
+<p>And in continuous world<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, it can be written out symbolically as</p>
+<p><span class="math display">\[
+\mathbb{E}[X] = \int_{-\infty}^{\infty}{\color{#e69f00}v_X}{\color{#56b4e9}f_X(v_X)}.
+\]</span></p>
+</section>
+<section id="snapping-the-pieces-together" class="level2">
+<h2 class="anchored" data-anchor-id="snapping-the-pieces-together">Snapping the Pieces Together</h2>
+<p>Now that we’ve looked at each piece individually, let’s think about how we might be able to “fuse” them together into an expression for a <strong>conditional expectation</strong> <span class="math inline">\(\mathbb{E}[Y \mid X]\)</span>.</p>
+<p>First, since we’re firmly within <strong>continuous world</strong> in this Lab, I won’t bore you with the discrete analogue first (though I think it’s helpful to think through!). Instead, let’s look at the definition we have for the <strong>expected value</strong> <span class="math inline">\(\mathbb{E}[Y]\)</span>:</p>
+<p><span class="math display">\[
+\mathbb{E}[Y] = \int_{-\infty}^{\infty}yf_Y(y)\mathrm{d}y
+\]</span></p>
+<p>Given that <span class="math inline">\(\mathrm{d}y\)</span> is sort of just… notation that we carry over from calculus<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, the two relevant pieces of this expression that we can focus on are <span class="math inline">\(y\)</span> (our variable of integration) and <span class="math inline">\(f_Y(y)\)</span> (the <strong>pdf</strong> of <span class="math inline">\(Y\)</span> evaluated at the point <span class="math inline">\(y\)</span>).</p>
+<p>So, since we eventually want <span class="math inline">\(\mathbb{E}[Y \mid X]\)</span>… let’s see what the previous expression could look like if we literally just clunkily “plugged in” <span class="math inline">\(Y \mid X\)</span> everywhere we see <span class="math inline">\(Y\)</span>, and <span class="math inline">\(y \mid x\)</span> everywhere we see <span class="math inline">\(y\)</span>. We’ll call this our “first draft” for a definition of conditional expectation:</p>
+<p><span class="math display">\[
+\mathbb{E}[Y \mid X] = \int_{\infty}^{\infty}(y \mid x)f_{Y \mid X}(y \mid x)\mathrm{d}(y \mid x)
+\]</span></p>
+<p>If we stare at this for a bit and try to think through what each piece might mean, my hope is that you can start to get a vague sense of the following two observations:</p>
+<ul>
+<li>The plugging-in was “successful” for <span class="math inline">\(f_{Y \mid X}(y \mid x)\)</span>, in the sense that this expression is something we <strong>do</strong> understand and <strong>have</strong> seen before: it’s the <strong>conditional probability</strong> that our random variable <span class="math inline">\(Y\)</span> takes on the specific value <span class="math inline">\(y\)</span> within a world where our random variable <span class="math inline">\(X\)</span> has taken on the specific value <span class="math inline">\(x\)</span>.</li>
+<li>The <span class="math inline">\((y \mid x)\)</span> term, on the other hand, <strong>doesn’t</strong> seem very well-defined: <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span> are <strong>non-random</strong> values like <span class="math inline">\(3\)</span> or <span class="math inline">\(\pi\)</span>, and here they’re <strong>not</strong> being plugged into a probability measure like <span class="math inline">\(\Pr(X = x)\)</span> or a density like <span class="math inline">\(f_{Y \mid X}(y \mid x)\)</span>.</li>
+</ul>
+<p>So, diving into the second observation: What would <span class="math inline">\((y \mid x)\)</span> even mean? Semantically, we know that the conditional bar <span class="math inline">\(|\)</span> in the middle means “given”, so that if we read <span class="math inline">\((y \mid x)\)</span> out it means something like “The value of <span class="math inline">\(y\)</span> given the value of <span class="math inline">\(x\)</span>”. But, to drive the point home: knowing the value of <span class="math inline">\(x\)</span> here is <strong>totally irrelevant</strong> to the value of <span class="math inline">\(y\)</span>, since there’s no randomness or probabilistic uncertainty involved in determining the value of <span class="math inline">\(y\)</span> at all!</p>
+<p>It’s crucial to distinguish between <span class="math inline">\(Y\)</span> and <span class="math inline">\(y\)</span> here to make sense of this, at least in my brain<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Here <span class="math inline">\(y\)</span> is <strong>not</strong> a probabilistic Random Variable, it’s an <strong>algebraic</strong> variable which exists in the expression solely as a “stand-in” for particular values (ranging from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span>) that we’d have to plug in to evaluate the integral.</p>
+<p>I know that way of thinking about it might not click with everyone, but I hope it does click for some! And if it does, then I hope it might have also “clicked” ideas in your head with respect to how we could “handle” the <span class="math inline">\((y \mid x)\)</span> here:</p>
+<ol type="1">
+<li><span class="math inline">\((y \mid x)\)</span> represents “the value of <span class="math inline">\(y\)</span> given the value of <span class="math inline">\(x\)</span>”. But…</li>
+<li>The value of <span class="math inline">\(y\)</span> is not affected by the value of <span class="math inline">\(x\)</span>. So…</li>
+<li><span class="math inline">\((y \mid x)\)</span> is equivalent to just <span class="math inline">\(y\)</span>!</li>
+</ol>
+<p>If you’ve followed all of the above, then we can apply this conclusion to our “first draft” from above, and simplify it to just</p>
+<p><span class="math display">\[
+\mathbb{E}[Y \mid X] = \int_{-\infty}^{\infty}yf_{Y \mid X}(y \mid x)\mathrm{d}y
+\]</span></p>
+<p>And indeed, we did it, we’ve arrived at <a href="https://en.wikipedia.org/wiki/Conditional_expectation" target="_blank"><strong>the definition</strong></a> of conditional expectation, for continuous random variables <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>!</p>
+<p>If it helps, we could also rewrite this using our definition of <strong>conditional probability density</strong>,</p>
+<p><span class="math display">\[
+f_{Y \mid X}(y \mid x) = \frac{f_{Y,X}(y,x)}{f_X(x)},
+\]</span></p>
+<p>to derive the following alternative forms (which are also given in the above Wikipedia article):</p>
+<p><span class="math display">\[
+\mathbb{E}[Y \mid X] = \int_{-\infty}^{\infty}y\frac{f_{Y,X}(y,x)}{f_X(x)}\mathrm{d}y = \frac{1}{f_X(x)}\int_{-\infty}^{\infty}yf_{Y,X}(y,x)\mathrm{d}y.
+\]</span></p>
+
+
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Where, remember, we’re only able to utilize the probability density function <span class="math inline">\(f_X(x)\)</span> in place of the probability mass function <span class="math inline">\(p_X(x) = \Pr(X)\)</span> because we’re <strong>integrating it</strong> over a <strong>range</strong> of values. <span class="math inline">\(f_X(v_X)\)</span> is <strong>not</strong> itself a probability, it is a function we <strong>use</strong> to generate valid probability values between <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> via integration.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Specifically, notation that we carry over from Riemann sums, which ensures that our integrand represents a product: Looking at <span class="math inline">\(\int_{-\infty}^{\infty}xf(x)\mathrm{d}x\)</span>, for example, the integrand represents the product of (a) the “height” of <span class="math inline">\(xf(x)\)</span> and (b) the (infinitesimally-small) “widths” <span class="math inline">\(\mathrm{d}x\)</span>. And, as we know, multiplying a width by a height gives us an <strong>area</strong>! Therefore, when we <strong>sum</strong> each of these tiny areas from <span class="math inline">\(-\infty\)</span> to <span class="math inline">\(\infty\)</span>, we end up with the <strong>total area under the curve</strong> formed by <span class="math inline">\(xf(x)\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Hopefully, if you’ve gotten this far, you can start to understand why I hate the <span class="math inline">\(X = x\)</span> notation, and why I always try to use <span class="math inline">\(X = v_X\)</span> and <span class="math inline">\(Y = v_Y\)</span> instead…<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -962,4 +1036,4 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 
 
 
-<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/writeups/conditional-expectation/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
