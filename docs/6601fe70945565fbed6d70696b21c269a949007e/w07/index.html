@@ -1,0 +1,2057 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jeff Jacobs">
+
+<title>Week 7: Joint, Marginal, and Conditional Distributions – DSAN 5100-03</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script><script src="../sidebar.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../dsan-globals/jjstyles.css">
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../w07/index.html">Week 7: Oct 8</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">DSAN 5100: Probabilistic Modeling and Statistical Computing</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://dsan.georgetown.domains/dsan5100/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="bi bi-arrow-left pe-1"></i> Main Course Page</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w01/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 1: Aug 30</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w02/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 2: Sep 3</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w03/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 3: Sep 10</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w04/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 4: Sep 17</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w05/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 5: Sep 24</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w06/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 6: Oct 1</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w07/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Week 7: Oct 8</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.zoom.us/j/92478089466?pwd=cSBmcjACL6EJJW0vHbzIqimH7imkVx.1" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Zoom Link <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=98022271-76d6-457f-83ee-b1dd00143dbc" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Recordings <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../extra-videos/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Videos</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../writeups/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Writeups</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cheatsheet-math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Math Cheatsheet</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.instructure.com/courses/193275" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">S03 Canvas Page <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/meet" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Book Office Hours <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://forms.gle/3CYWo8xHUxMvvowbA" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Suggestion Box <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/dsps" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Textbook <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<p><em>Updated 2024-10-07, 05:31:52 AM</em></p>
+</div></div></nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#frequency-tables-leftrightarrow-probabilities" id="toc-frequency-tables-leftrightarrow-probabilities" class="nav-link active" data-scroll-target="#frequency-tables-leftrightarrow-probabilities">Frequency Tables <span class="math inline">\(\leftrightarrow\)</span> Probabilities</a>
+  <ul class="collapse">
+  <li><a href="#frequency-tables" id="toc-frequency-tables" class="nav-link" data-scroll-target="#frequency-tables">Frequency Tables</a></li>
+  <li><a href="#why-do-we-need-the-total" id="toc-why-do-we-need-the-total" class="nav-link" data-scroll-target="#why-do-we-need-the-total">Why Do We Need The Total?</a></li>
+  <li><a href="#back-to-the-naïve-definition" id="toc-back-to-the-naïve-definition" class="nav-link" data-scroll-target="#back-to-the-naïve-definition">Back to the Naïve Definition</a></li>
+  <li><a href="#frequency-table-rightarrow-probability-table" id="toc-frequency-table-rightarrow-probability-table" class="nav-link" data-scroll-target="#frequency-table-rightarrow-probability-table">Frequency Table <span class="math inline">\(\rightarrow\)</span> Probability Table</a></li>
+  <li><a href="#computing-overall-total-by-column" id="toc-computing-overall-total-by-column" class="nav-link" data-scroll-target="#computing-overall-total-by-column">Computing Overall Total by Column</a></li>
+  <li><a href="#computing-overall-total-by-row" id="toc-computing-overall-total-by-row" class="nav-link" data-scroll-target="#computing-overall-total-by-row">Computing Overall Total by Row</a></li>
+  <li><a href="#bringing-both-methods-together" id="toc-bringing-both-methods-together" class="nav-link" data-scroll-target="#bringing-both-methods-together">Bringing Both Methods Together</a></li>
+  <li><a href="#frequencies-to-probabilities" id="toc-frequencies-to-probabilities" class="nav-link" data-scroll-target="#frequencies-to-probabilities">Frequencies to Probabilities</a></li>
+  </ul></li>
+  <li><a href="#distributions-in-discrete-world" id="toc-distributions-in-discrete-world" class="nav-link" data-scroll-target="#distributions-in-discrete-world">Distributions in Discrete World</a>
+  <ul class="collapse">
+  <li><a href="#one-table-three-distributions" id="toc-one-table-three-distributions" class="nav-link" data-scroll-target="#one-table-three-distributions">One Table, Three Distributions!</a></li>
+  <li><a href="#summary-joint-rightarrow-marginal" id="toc-summary-joint-rightarrow-marginal" class="nav-link" data-scroll-target="#summary-joint-rightarrow-marginal">Summary: Joint <span class="math inline">\(\rightarrow\)</span> Marginal</a></li>
+  <li><a href="#whats-missing-conditional-distributions" id="toc-whats-missing-conditional-distributions" class="nav-link" data-scroll-target="#whats-missing-conditional-distributions">What’s Missing? Conditional Distributions</a></li>
+  <li><a href="#conditional-distributions-from-columns" id="toc-conditional-distributions-from-columns" class="nav-link" data-scroll-target="#conditional-distributions-from-columns">Conditional Distributions from Columns</a></li>
+  <li><a href="#conditional-distributions-from-rows" id="toc-conditional-distributions-from-rows" class="nav-link" data-scroll-target="#conditional-distributions-from-rows">Conditional Distributions from Rows</a></li>
+  <li><a href="#discrete-world-summary" id="toc-discrete-world-summary" class="nav-link" data-scroll-target="#discrete-world-summary">Discrete World Summary</a></li>
+  <li><a href="#working-backwards" id="toc-working-backwards" class="nav-link" data-scroll-target="#working-backwards">Working Backwards</a></li>
+  </ul></li>
+  <li><a href="#continuous-world" id="toc-continuous-world" class="nav-link" data-scroll-target="#continuous-world">Continuous World</a>
+  <ul class="collapse">
+  <li><a href="#moving-to-continuous-world" id="toc-moving-to-continuous-world" class="nav-link" data-scroll-target="#moving-to-continuous-world">Moving to Continuous World</a></li>
+  <li><a href="#smoothing-our-example" id="toc-smoothing-our-example" class="nav-link" data-scroll-target="#smoothing-our-example">“Smoothing” Our Example</a></li>
+  <li><a href="#smoothing-our-tables" id="toc-smoothing-our-tables" class="nav-link" data-scroll-target="#smoothing-our-tables">“Smoothing” Our Tables</a></li>
+  <li><a href="#working-backwards-redux" id="toc-working-backwards-redux" class="nav-link" data-scroll-target="#working-backwards-redux">Working Backwards Redux</a></li>
+  <li><a href="#the-marginal-pdfs-of-g-and-h" id="toc-the-marginal-pdfs-of-g-and-h" class="nav-link" data-scroll-target="#the-marginal-pdfs-of-g-and-h">The Marginal pdfs of <span class="math inline">\(G\)</span> and <span class="math inline">\(H\)</span></a></li>
+  <li><a href="#the-truncated-normal-distribution" id="toc-the-truncated-normal-distribution" class="nav-link" data-scroll-target="#the-truncated-normal-distribution">The Truncated Normal Distribution</a></li>
+  <li><a href="#the-truncated-normal-pdf" id="toc-the-truncated-normal-pdf" class="nav-link" data-scroll-target="#the-truncated-normal-pdf">The Truncated Normal pdf</a></li>
+  <li><a href="#back-to-working-backwards" id="toc-back-to-working-backwards" class="nav-link" data-scroll-target="#back-to-working-backwards">Back to Working Backwards</a></li>
+  <li><a href="#moving-forwards-again" id="toc-moving-forwards-again" class="nav-link" data-scroll-target="#moving-forwards-again">Moving Forwards Again</a></li>
+  <li><a href="#conditional-distributions-in-continuous-world" id="toc-conditional-distributions-in-continuous-world" class="nav-link" data-scroll-target="#conditional-distributions-in-continuous-world">Conditional Distributions in Continuous World</a></li>
+  <li><a href="#you-dont-have-to-stare-helplessly-at-scary-math" id="toc-you-dont-have-to-stare-helplessly-at-scary-math" class="nav-link" data-scroll-target="#you-dont-have-to-stare-helplessly-at-scary-math">You Don’t Have To Stare Helplessly At Scary Math!</a></li>
+  <li><a href="#a-concrete-strategy" id="toc-a-concrete-strategy" class="nav-link" data-scroll-target="#a-concrete-strategy">A Concrete Strategy</a></li>
+  </ul></li>
+  <li><a href="#thinking-through-specific-multivariate-distributions" id="toc-thinking-through-specific-multivariate-distributions" class="nav-link" data-scroll-target="#thinking-through-specific-multivariate-distributions">Thinking Through Specific Multivariate Distributions</a>
+  <ul class="collapse">
+  <li><a href="#the-multinoulli-distribution" id="toc-the-multinoulli-distribution" class="nav-link" data-scroll-target="#the-multinoulli-distribution">The Multinoulli Distribution</a></li>
+  <li><a href="#the-multivariate-normal-distribution" id="toc-the-multivariate-normal-distribution" class="nav-link" data-scroll-target="#the-multivariate-normal-distribution">The Multivariate Normal Distribution</a></li>
+  <li><a href="#quadratic-forms" id="toc-quadratic-forms" class="nav-link" data-scroll-target="#quadratic-forms">Quadratic Forms</a></li>
+  <li><a href="#the-2d-case" id="toc-the-2d-case" class="nav-link" data-scroll-target="#the-2d-case">The 2D Case</a></li>
+  <li><a href="#the-2d-case-in-its-final-form" id="toc-the-2d-case-in-its-final-form" class="nav-link" data-scroll-target="#the-2d-case-in-its-final-form">The 2D Case In Its FINAL FORM</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w07/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 7: Joint, Marginal, and Conditional Distributions</h1>
+<p class="subtitle lead"><em>DSAN 5100: Probabilistic Modeling and Statistical Computing</em><br>Section 03</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Class Sessions</div>
+  </div>
+  </div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jeff Jacobs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Tuesday, October 8, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window →</a>
+</center>
+<section id="frequency-tables-leftrightarrow-probabilities" class="level1" data-stack-name="Frequency vs. Probability">
+<h1 data-stack-name="Frequency vs. Probability">Frequency Tables <span class="math inline">\(\leftrightarrow\)</span> Probabilities</h1>
+<div class="hidden">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../dsan-globals/_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="hidden">
+<p><span class="math display">\[
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\bigexp}[1]{\exp\mkern-4mu\left[ #1 \right]}
+\newcommand{\bigexpect}[1]{\mathbb{E}\mkern-4mu \left[ #1 \right]}
+\newcommand{\convergesAS}{\overset{\text{a.s.}}{\longrightarrow}}
+\newcommand{\definedas}{\overset{\text{def}}{=}}
+\newcommand{\definedalign}{\overset{\phantom{\text{def}}}{=}}
+\newcommand{\eqeventual}{\overset{\mathclap{\text{\small{eventually}}}}{=}}
+\newcommand{\Err}{\text{Err}}
+\newcommand{\expect}[1]{\mathbb{E}[#1]}
+\newcommand{\expectsq}[1]{\mathbb{E}^2[#1]}
+\newcommand{\fw}[1]{\texttt{#1}}
+\newcommand{\given}{\mid}
+\newcommand{\green}[1]{\color{green}{#1}}
+\newcommand{\heads}{\outcome{heads}}
+\newcommand{\iid}{\overset{\text{\small{iid}}}{\sim}}
+\newcommand{\lik}{\mathcal{L}}
+\newcommand{\loglik}{\ell}
+\newcommand{\mle}{\textsf{ML}}
+\newcommand{\nimplies}{\;\not\!\!\!\!\implies}
+\newcommand{\orange}[1]{\color{orange}{#1}}
+\newcommand{\outcome}[1]{\textsf{#1}}
+\newcommand{\param}[1]{{\color{purple} #1}}
+\newcommand{\pgsamplespace}{\{\green{1},\green{2},\green{3},\purp{4},\purp{5},\purp{6}\}}
+\newcommand{\prob}[1]{P\left( #1 \right)}
+\newcommand{\purp}[1]{\color{purple}{#1}}
+\newcommand{\sign}{\text{Sign}}
+\newcommand{\spacecap}{\; \cap \;}
+\newcommand{\spacewedge}{\; \wedge \;}
+\newcommand{\tails}{\outcome{tails}}
+\newcommand{\Var}[1]{\text{Var}[#1]}
+\newcommand{\bigVar}[1]{\text{Var}\mkern-4mu \left[ #1 \right]}
+\]</span></p>
+</div>
+</div>
+<section id="frequency-tables" class="level2 fix-tex-headers">
+<h2 class="fix-tex-headers anchored" data-anchor-id="frequency-tables">Frequency Tables</h2>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div id="freq-table-text" class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<ul>
+<li>What does this tell us <strong>on its own</strong> (before computing proportions in our heads) that is useful for probability?</li>
+<li>Answer: Not very much!</li>
+<li>But, if we can find the <strong>overall total</strong>, then it would tell us <strong>a lot</strong> (everything we need to know)!</li>
+</ul>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-freq" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-freq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: A frequency table of HS students (<span class="math inline">\(G\)</span> = grade, <span class="math inline">\(H\)</span> = honors status)<br><span style="display: inline-flex; border: 1px solid black;"><em>This tells us, e.g., there are 5 honors students in grade 10</em></span>
+</figcaption>
+<div aria-describedby="tbl-freq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table" data-quarto-postprocess="true">
+<caption><span>&nbsp;</span></caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 0\)</span></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 10\)</span></td>
+<td class="cb1a-bg" style="text-align: left;">10</td>
+<td class="cb1a-bg" style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(G = 11\)</span></td>
+<td class="cb1a-bg" style="text-align: left;">6</td>
+<td class="cb1a-bg" style="text-align: left;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 12\)</span></td>
+<td class="cb1a-bg" style="text-align: left;">7</td>
+<td class="cb1a-bg" style="text-align: left;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="notes">
+<p><span class="small-caption">A frequency table where each <strong>row</strong> corresponds to a grade in a certain senior high school, each <strong>column</strong> corresponds to honor-student-status (<span class="math inline">\(H=1\)</span> represents honors, <span class="math inline">\(H=0\)</span> represents non-honors), and each <strong>cell</strong> contains the <strong>number of students</strong> in that grade with that honors-status</span></p>
+</div>
+</section>
+<section id="why-do-we-need-the-total" class="level2">
+<h2 class="anchored" data-anchor-id="why-do-we-need-the-total">Why Do We Need The Total?</h2>
+<ul>
+<li><strong>Q1</strong>: Someone asks the <strong>probability</strong> that a randomly-selected student will be an <strong>honor student</strong> in <strong>11th grade</strong>.</li>
+<li><strong>Q2</strong>: Someone asks what <strong>proportion</strong> of students are honors</li>
+<li><strong>Q3</strong>: Someone asks what <strong>%</strong> of 12th grade are honors</li>
+</ul>
+<p><strong>Q1</strong>, for example, is asking us for <span class="math inline">\(\Pr(G = 11, H = 1)\)</span>, a question we can answer if we know the <strong>joint distribution</strong> <span class="math inline">\(f_{G,H}(v_G, v_H)\)</span>.</p>
+</section>
+<section id="back-to-the-naïve-definition" class="level2">
+<h2 class="anchored" data-anchor-id="back-to-the-naïve-definition">Back to the Naïve Definition</h2>
+<p>Using our <strong>naïve definition of probability</strong>, we can compute this probability using the <strong>frequencies</strong> in the table as</p>
+<p><span class="math display">\[
+\Pr(G = 11, H = 1) = \frac{\#(G = 11, H = 1)}{\#\text{ Students Total}}
+\]</span></p>
+<p>Plugging in the values from <a href="#tbl-freq" class="quarto-xref">Table&nbsp;1</a>, we obtain the answer:</p>
+<p><span class="math display">\[
+\Pr(G = 11, H = 1) = \frac{4}{33} \approx 0.121
+\]</span></p>
+</section>
+<section id="frequency-table-rightarrow-probability-table" class="level2">
+<h2 class="anchored" data-anchor-id="frequency-table-rightarrow-probability-table">Frequency Table <span class="math inline">\(\rightarrow\)</span> Probability Table</h2>
+<ul>
+<li>When we divide by <strong>33</strong>, we are <strong>normalizing</strong> the counts, producing probabilities (normalized counts)</li>
+<li>By normalizing <strong>all cells</strong> in the table, we convert our <strong>frequency table</strong> into a <strong>probability table</strong></li>
+</ul>
+</section>
+<section id="computing-overall-total-by-column" class="level2 fix-tex-headers">
+<h2 class="fix-tex-headers anchored" data-anchor-id="computing-overall-total-by-column">Computing Overall Total by Column</h2>
+<p>We could compute the total by summing <strong>columns</strong>, then summing over our individual column totals to get 33:</p>
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"><span class="math inline">\(H = 0\)</span></th>
+<th data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+<th data-quarto-table-cell-role="th">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(G = 10\)</span></td>
+<td class="cb1a-bg">10</td>
+<td class="cb1a-bg">5</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(G = 11\)</span></td>
+<td class="cb1a-bg">6</td>
+<td class="cb1a-bg">4</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(G = 12\)</span></td>
+<td class="cb1a-bg">7</td>
+<td class="cb1a-bg">1</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td class="cb2a-bg">23</td>
+<td class="cb2a-bg">10</td>
+<td class="cbga-bg">33</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="computing-overall-total-by-row" class="level2 fix-tex-headers">
+<h2 class="fix-tex-headers anchored" data-anchor-id="computing-overall-total-by-row">Computing Overall Total by Row</h2>
+<p><strong>Or</strong>, we could compute the total by summing <strong>rows</strong>, then summing over our individual row totals to get 33:</p>
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"><span class="math inline">\(H = 0\)</span></th>
+<th data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+<th data-quarto-table-cell-role="th">Total</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(G = 10\)</span></td>
+<td class="cb1a-bg">10</td>
+<td class="cb1a-bg">5</td>
+<td class="cb2a-bg">15</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(G = 11\)</span></td>
+<td class="cb1a-bg">6</td>
+<td class="cb1a-bg">4</td>
+<td class="cb2a-bg">10</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(G = 12\)</span></td>
+<td class="cb1a-bg">7</td>
+<td class="cb1a-bg">1</td>
+<td class="cb2a-bg">8</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td></td>
+<td></td>
+<td class="cbga-bg">33</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="bringing-both-methods-together" class="level2 fix-tex-headers">
+<h2 class="fix-tex-headers anchored" data-anchor-id="bringing-both-methods-together">Bringing Both Methods Together</h2>
+<div id="tbl-marginal-freq" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-marginal-freq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: The same frequency table as in <a href="#tbl-freq" class="quarto-xref">Table&nbsp;1</a>, but now with row and column totals representing <strong>marginal frequencies</strong>
+</figcaption>
+<div aria-describedby="tbl-marginal-freq-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table" data-quarto-postprocess="true">
+<caption><span></span></caption>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"><span class="math inline">\(H = 0\)</span></th>
+<th data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+<th data-quarto-table-cell-role="th">Total</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(G = 10\)</span></td>
+<td class="cb1a-bg">10</td>
+<td class="cb1a-bg">5</td>
+<td class="cb2a-bg">15</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(G = 11\)</span></td>
+<td class="cb1a-bg">6</td>
+<td class="cb1a-bg">4</td>
+<td class="cb2a-bg">10</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(G = 12\)</span></td>
+<td class="cb1a-bg">7</td>
+<td class="cb1a-bg">1</td>
+<td class="cb2a-bg">8</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td class="cb2a-bg">23</td>
+<td class="cb2a-bg">10</td>
+<td class="cbga-bg">33</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="frequencies-to-probabilities" class="level2 fix-tex-headers">
+<h2 class="fix-tex-headers anchored" data-anchor-id="frequencies-to-probabilities">Frequencies to Probabilities</h2>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div id="prob-table-text" class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<ul>
+<li>Now (before we think about row/column totals) let’s use <strong>overall total</strong> (33) to convert <strong>counts</strong> into <strong>probabilities</strong>:</li>
+</ul>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div id="tbl-marginal-prob" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-marginal-prob-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Table from prev slide with all values <strong>normalized</strong> (divided by the total number of obs)
+</figcaption>
+<div aria-describedby="tbl-marginal-prob-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table" data-quarto-postprocess="true">
+<caption><span></span></caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 0\)</span></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 10\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{10}{33}\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{5}{33}\)</span></td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\frac{15}{33}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(G = 11\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{6}{33}\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{4}{33}\)</span></td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\frac{10}{33}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 12\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{7}{33}\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{1}{33}\)</span></td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\frac{8}{33}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\frac{23}{33}\)</span></td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\frac{10}{33}\)</span></td>
+<td class="cbga-bg" style="text-align: left;"><span class="math inline">\(\frac{33}{33}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="distributions-in-discrete-world" class="level1" data-stack-name="Discrete World">
+<h1 data-stack-name="Discrete World">Distributions in Discrete World</h1>
+<section id="one-table-three-distributions" class="level2 crunch-title crunch-ul inline-90">
+<h2 class="crunch-title crunch-ul inline-90 anchored" data-anchor-id="one-table-three-distributions">One Table, Three Distributions!</h2>
+<p>Now that we have <strong>normalized counts</strong>, different pieces of this table give different <strong>probability distributions</strong>:</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><span class="cb1a-bg"><strong>Joint Distribution</strong></span> <span class="math inline">\(f_{G,H}(v_G, v_H)\)</span>: Look at value in row <span class="math inline">\(v_G\)</span>, col <span class="math inline">\(v_H\)</span></li>
+<li><span class="cb2a-bg"><strong>Marginal Distributions</strong></span>
+<ul>
+<li><span class="math inline">\(f_G(v_G)\)</span>: Look at <strong>total</strong> for row <span class="math inline">\(v_G\)</span></li>
+<li><span class="math inline">\(f_H(v_H)\)</span>: Look at <strong>total</strong> for column <span class="math inline">\(v_H\)</span></li>
+</ul></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th class="small-tex-th" data-quarto-table-cell-role="th"><span class="math inline">\(H = 0\)</span></th>
+<th class="small-tex-th" data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+<th data-quarto-table-cell-role="th">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="small-tex-td"><span class="math inline">\(G = 10\)</span></td>
+<td class="cb1a-bg"><span class="math inline">\(\frac{10}{33}\)</span></td>
+<td class="cb1a-bg"><span class="math inline">\(\frac{5}{33}\)</span></td>
+<td class="cb2a-bg"><span class="math inline">\(\frac{15}{33}\)</span></td>
+</tr>
+<tr class="even">
+<td class="small-tex-td"><span class="math inline">\(G = 11\)</span></td>
+<td class="cb1a-bg"><span class="math inline">\(\frac{6}{33}\)</span></td>
+<td class="cb1a-bg"><span class="math inline">\(\frac{4}{33}\)</span></td>
+<td class="cb2a-bg"><span class="math inline">\(\frac{10}{33}\)</span></td>
+</tr>
+<tr class="odd">
+<td class="small-tex-td"><span class="math inline">\(G = 12\)</span></td>
+<td class="cb1a-bg"><span class="math inline">\(\frac{7}{33}\)</span></td>
+<td class="cb1a-bg"><span class="math inline">\(\frac{1}{33}\)</span></td>
+<td class="cb2a-bg"><span class="math inline">\(\frac{8}{33}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>Total</strong></td>
+<td class="cb2a-bg"><span class="math inline">\(\frac{23}{33}\)</span></td>
+<td class="cb2a-bg"><span class="math inline">\(\frac{10}{33}\)</span></td>
+<td class="cbga-bg"><span class="math inline">\(\frac{33}{33}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="summary-joint-rightarrow-marginal" class="level2 smaller crunch-title inline-90">
+<h2 class="smaller crunch-title inline-90 anchored" data-anchor-id="summary-joint-rightarrow-marginal">Summary: Joint <span class="math inline">\(\rightarrow\)</span> Marginal</h2>
+<ul>
+<li>Note how <strong><span class="cb2a-bg">marginal distributions</span></strong> were obtained by <strong>summing</strong> the <strong><span class="cb1a-bg">joint distribution</span></strong> over a particular <strong>dimension</strong>:</li>
+<li>Summing each <strong>column</strong> (<span class="math inline">\(H = 0\)</span> and <span class="math inline">\(H = 1\)</span>) produced <strong><span class="cb2a-bg">marginal distribution</span> of <span class="math inline">\(H\)</span></strong>:</li>
+</ul>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<table class="caption-top table" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\Pr(H = 0, G = 10)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">+</td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\Pr(H = 0, G = 11)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">+</td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\Pr(H = 0, G = 12)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">=</td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\Pr(H = 0)\)</span></td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="caption-top table" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\Pr(H = 1, G = 10)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">+</td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\Pr(H = 1, G = 11)\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">+</td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\Pr(H = 1, G = 12)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">=</td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\Pr(H = 1)\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Summing each <strong>row</strong> (<span class="math inline">\(G = 10\)</span>, <span class="math inline">\(G = 11\)</span>, <span class="math inline">\(G = 12\)</span>) produced <strong><span class="cb2a-bg">marginal distribution</span> of <span class="math inline">\(G\)</span></strong>:</li>
+</ul>
+<table class="caption-top table" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td class="cb1a-bg"><span class="math inline">\(\Pr(G = 10, H = 0)\)</span></td>
+<td>+</td>
+<td class="cb1a-bg"><span class="math inline">\(\Pr(G = 10, H = 1)\)</span></td>
+<td>=</td>
+<td class="cb2a-bg"><span class="math inline">\(\Pr(G = 10)\)</span></td>
+</tr>
+<tr class="even">
+<td class="cb1a-bg"><span class="math inline">\(\Pr(G = 11, H = 0)\)</span></td>
+<td>+</td>
+<td class="cb1a-bg"><span class="math inline">\(\Pr(G = 11, H = 1)\)</span></td>
+<td>=</td>
+<td class="cb2a-bg"><span class="math inline">\(\Pr(G = 11)\)</span></td>
+</tr>
+<tr class="odd">
+<td class="cb1a-bg"><span class="math inline">\(\Pr(G = 12, H = 0)\)</span></td>
+<td>+</td>
+<td class="cb1a-bg"><span class="math inline">\(\Pr(G = 12, H = 1)\)</span></td>
+<td>=</td>
+<td class="cb2a-bg"><span class="math inline">\(\Pr(G = 12)\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="whats-missing-conditional-distributions" class="level2 smaller title-12 crunch-title">
+<h2 class="smaller title-12 crunch-title anchored" data-anchor-id="whats-missing-conditional-distributions">What’s Missing? Conditional Distributions</h2>
+<ul>
+<li><span class="cb3a-bg"><strong>Conditional distribution</strong></span> does not represent a <strong>sum</strong> but a <strong>slice</strong>: we consider e.g.&nbsp;<strong>one particular row</strong> or <strong>one particular column</strong> of the table.</li>
+<li><strong>🚨Warning🚨!</strong> unlike in <strong>joint</strong> and <strong>marginal</strong> cases, when computing <strong>conditional</strong> distributions we have to <strong>renormalize</strong>, since we are “entering world” where we only consider <strong>subsets</strong> of the table where condition is met!</li>
+<li>Recall slide about how <strong>all distributions are conditional distributions</strong>:</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:33%;">
+<center>
+<span class="cb1a-bg"><span class="math inline">\(\Pr(G = 10, H = 1)\)</span></span>
+</center>
+<p><span class="math display">\[
+\begin{align*}
+= &amp;\Pr(G = 10, H = 1 \mid \Omega) \\[0.6em]
+= &amp;\frac{\#(G = 10, H = 1, \Omega)}{\#\text{ Total }(\Omega)\text{ ✅}}
+\end{align*}
+\]</span></p>
+</div><div class="column" style="width:33%;">
+<center>
+<span class="cb2a-bg"><span class="math inline">\(\Pr(G = 10)\)</span></span>
+</center>
+<p><span class="math display">\[
+\begin{align*}
+= &amp;\Pr(G = 10 \mid \Omega) \\[0.6em]
+= &amp;\frac{\#(G = 10, \Omega)}{\#\text{ Total }(\Omega)\text{ ✅}}
+\end{align*}
+\]</span></p>
+</div><div class="column" style="width:33%;">
+<center>
+<span class="cb3a-bg"><span class="math inline">\(\Pr(G = 10 \mid H = 1)\)</span></span>
+</center>
+<p><span class="math display">\[
+\begin{align*}
+= &amp;\frac{\Pr(G = 10, H = 1)}{\Pr(H = 1)} \\[0.6em]
+= &amp;\frac{\#(G = 10, H = 1)}{\#(H = 1)\text{ 😳}}
+\end{align*}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="conditional-distributions-from-columns" class="level2 crunch-title fix-tex-headers small-title inline-90">
+<h2 class="crunch-title fix-tex-headers small-title inline-90 anchored" data-anchor-id="conditional-distributions-from-columns">Conditional Distributions from Columns</h2>
+<p>Let’s extract just the <span class="math inline">\(H = 1\)</span> column:</p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[2,1,2]">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 10\)</span></td>
+<td class="cb3a-bg" style="text-align: left;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(G = 11\)</span></td>
+<td class="cb3a-bg" style="text-align: left;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 12\)</span></td>
+<td class="cb3a-bg" style="text-align: left;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td class="cbga-bg" style="text-align: left;">10</td>
+</tr>
+</tbody>
+</table>
+<div id="conditional-arrow-col" class="quarto-layout-cell" style="flex-basis: 20.0%;justify-content: flex-start;">
+<center>
+<i class="bi bi-arrow-right"></i>
+</center>
+</div>
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 10\)</span></td>
+<td class="cb3a-bg" style="text-align: left;"><span class="math inline">\(\frac{5}{10}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(G = 11\)</span></td>
+<td class="cb3a-bg" style="text-align: left;"><span class="math inline">\(\frac{4}{10}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 12\)</span></td>
+<td class="cb3a-bg" style="text-align: left;"><span class="math inline">\(\frac{1}{10}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td class="cbga-bg" style="text-align: left;"><span class="math inline">\(\frac{10}{10}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Before, <span class="cb2a-bg"><strong>10</strong></span> was a particular <strong><span class="cb2a-bg">marginal frequency</span> of interest</strong>; now <span class="cbga-bg"><strong>10</strong></span> is just a <span class="cbga-bg"><strong>total</strong></span> that we use to <strong>renormalize</strong></li>
+</ul>
+</section>
+<section id="conditional-distributions-from-rows" class="level2 fix-tex-headers small-title">
+<h2 class="fix-tex-headers small-title anchored" data-anchor-id="conditional-distributions-from-rows">Conditional Distributions from Rows</h2>
+<p>Let’s extract just the <span class="math inline">\(G = 10\)</span> row:</p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-align="center" data-layout="[[2],[1],[2]]">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 0\)</span></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 10\)</span></td>
+<td class="cb3a-bg" style="text-align: left;">5</td>
+<td class="cb3a-bg" style="text-align: left;">10</td>
+<td class="cbga-bg" style="text-align: left;">15</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div id="arrow-col" class="quarto-layout-cell" style="flex-basis: 100.0%;justify-content: center;">
+<center>
+<i class="bi bi-arrow-down"></i>
+</center>
+</div>
+</div>
+<div class="quarto-layout-row quarto-layout-valign-center">
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 0\)</span></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 10\)</span></td>
+<td class="cb3a-bg" style="text-align: left;"><span class="math inline">\(\frac{5}{15}\)</span></td>
+<td class="cb3a-bg" style="text-align: left;"><span class="math inline">\(\frac{10}{15}\)</span></td>
+<td class="cbga-bg" style="text-align: left;"><span class="math inline">\(\frac{15}{15}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<ul>
+<li>Before, <span class="cb2a-bg"><strong>15</strong></span> was a particular <strong><span class="cb2a-bg">marginal frequency</span> of interest</strong>; now <span class="cbga-bg"><strong>15</strong></span> is just a <span class="cbga-bg"><strong>total</strong></span> that we use to <strong>renormalize</strong></li>
+</ul>
+</section>
+<section id="discrete-world-summary" class="level2 smaller inline-90 crunch-title">
+<h2 class="smaller inline-90 crunch-title anchored" data-anchor-id="discrete-world-summary">Discrete World Summary</h2>
+<p>We now have the <strong>link</strong> between three types of distributions derived from our table:</p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Distribution Type</th>
+<th style="text-align: left;">How Many?</th>
+<th style="text-align: left;">Example Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="cb1a-bg"><strong>Joint Distribution</strong></span></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;"><span class="math inline">\(\Pr(G = 11, H = 1)\)</span><br><span class="math inline">\(= \frac{4}{33}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="cb2a-bg"><strong>Marginal Distributions</strong></span></td>
+<td style="text-align: left;">2</td>
+<td style="text-align: left;"><span class="math inline">\(\Pr(H = 1) = \frac{10}{33}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="cb3a-bg"><strong>Conditional Distributions</strong></span></td>
+<td style="text-align: left;">6</td>
+<td style="text-align: left;"><span class="math inline">\(\Pr(G = 10 \mid H = 1)\)</span><br><span class="math inline">\(= \frac{5}{10}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="discrete-summary-tables" class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th class="small-tex-th" style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 0\)</span></th>
+<th class="small-tex-th" style="text-align: left;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+<th style="text-align: left;" data-quarto-table-cell-role="th">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td class="small-tex-td" style="text-align: left;"><span class="math inline">\(G = 10\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{10}{33}\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{5}{33}\)</span></td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\frac{15}{33}\)</span></td>
+</tr>
+<tr class="even">
+<td class="small-tex-td" style="text-align: left;"><span class="math inline">\(G = 11\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{6}{33}\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{4}{33}\)</span></td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\frac{10}{33}\)</span></td>
+</tr>
+<tr class="odd">
+<td class="small-tex-td" style="text-align: left;"><span class="math inline">\(G = 12\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{7}{33}\)</span></td>
+<td class="cb1a-bg" style="text-align: left;"><span class="math inline">\(\frac{1}{33}\)</span></td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\frac{8}{33}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\frac{23}{33}\)</span></td>
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\frac{10}{33}\)</span></td>
+<td class="cbga-bg" style="text-align: left;"><span class="math inline">\(\frac{33}{33}\)</span></td>
+</tr>
+</tbody>
+</table>
+
+
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th" style="text-align: center; border-right: 2px solid black;"><span class="math inline">\(H = 0\)</span></th>
+<th style="text-align: center;" data-quarto-table-cell-role="th"><span class="math inline">\(H = 1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 10\)</span></td>
+<td class="cb3a-bg" style="text-align: left; border-right: 2px solid black;"><span class="math inline">\(\frac{10}{23}\)</span></td>
+<td class="cb3a-bg" style="text-align: left;"><span class="math inline">\(\frac{5}{10}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><span class="math inline">\(G = 11\)</span></td>
+<td class="cb3a-bg" style="text-align: left; border-right: 2px solid black;"><span class="math inline">\(\frac{6}{23}\)</span></td>
+<td class="cb3a-bg" style="text-align: left;"><span class="math inline">\(\frac{4}{10}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><span class="math inline">\(G = 12\)</span></td>
+<td class="cb3a-bg" style="text-align: left; border-right: 2px solid black;"><span class="math inline">\(\frac{7}{23}\)</span></td>
+<td class="cb3a-bg" style="text-align: left;"><span class="math inline">\(\frac{1}{10}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Total</strong></td>
+<td class="cbga-bg" style="text-align: left; border-right: 2px solid black;"><span class="math inline">\(\frac{23}{23}\)</span></td>
+<td class="cbga-bg" style="text-align: left;"><span class="math inline">\(\frac{10}{10}\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="working-backwards" class="level2 inline-90 math-90 crunch-math quarto-layout-cell-no-margin">
+<h2 class="inline-90 math-90 crunch-math quarto-layout-cell-no-margin anchored" data-anchor-id="working-backwards">Working Backwards</h2>
+<ul>
+<li>Here we <strong>started</strong> from the <span class="cb1a-bg">joint distribution</span> and <strong>derived</strong> <span class="cb2a-bg">marginal</span> and <span class="cb3a-bg">conditional</span> distributions</li>
+<li>Same intuition, plus math, lets us go in <strong>opposite direction</strong>: <strong>given</strong> <span class="cb2a-bg">marginal</span> and <span class="cb3a-bg">conditional</span> distributions, can <strong>derive</strong> <span class="cb1a-bg">joint distribution</span>, since <em>(conditional prob defn)</em>:</li>
+</ul>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[3,1,5]">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<table class="caption-top table" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd" style="border-bottom: 0px solid black;">
+<td rowspan="2" class="cb3a-bg" style="text-align: center; vertical-align: middle; border-bottom: 0px solid black !important; padding-left: 2px; padding-right: 2px;"><span class="math inline">\(\Pr(A \mid B)\)</span></td>
+<td rowspan="2" style="text-align: center; vertical-align: middle; border-bottom: 0px solid black !important; padding-left: 4px; padding-right: 4px;"><span class="math inline">\(=\)</span></td>
+<td class="cb1a-bg" style="text-align: left; border-bottom: 3px solid black;"><span class="math inline">\(\Pr(A, B)\)</span></td>
+</tr>
+<tr class="even">
+<td class="cb2a-bg" style="text-align: left;"><span class="math inline">\(\Pr(B)\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="quarto-layout-cell" style="flex-basis: 11.1%;justify-content: flex-start;">
+<p><span class="math display">\[
+\iff
+\]</span></p>
+</div>
+<table class="caption-top table" data-quarto-postprocess="true">
+<tbody>
+<tr class="odd">
+<td class="cb1a-bg" style="text-align: left; width: 0.1%; white-space: nowrap; padding: 0px !important;"><span class="math inline">\(\Pr(A,B)\)</span></td>
+<td style="text-align: center; width: 0.1% !important; white-space: nowrap !important; padding: 0px !important;"><span class="math inline">\(=\)</span></td>
+<td class="cb3a-bg" style="text-align: left; width: 0.1% !important; white-space: nowrap !important; padding: 0px !important;"><span class="math inline">\(\Pr(A \mid B)\)</span></td>
+<td style="text-align: center; width: 0.1% !important; white-space: nowrap !important; padding: 0px !important;"><span class="math inline">\(\cdot\)</span></td>
+<td class="cb2a-bg" style="text-align: left; width: 0.1% !important; white-space: nowrap !important; padding: 0px !important;"><span class="math inline">\(\Pr(B)\)</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="notes">
+<p>from which we can see that if we know the <strong>conditional distribution</strong> <span class="math inline">\(\Pr(B \mid A)\)</span> and the <strong>marginal distribution</strong> <span class="math inline">\(\Pr(A)\)</span>, we can combine these (via multiplication) to obtain the <strong>joint distribution</strong> <span class="math inline">\(\Pr(B,A)\)</span>.</p>
+</div>
+</section>
+</section>
+<section id="continuous-world" class="level1 page-columns page-full" data-stack-name="Continuous World">
+<h1 data-stack-name="Continuous World">Continuous World</h1>
+<section id="moving-to-continuous-world" class="level2">
+<h2 class="anchored" data-anchor-id="moving-to-continuous-world">Moving to Continuous World</h2>
+<ul>
+<li>Intuitions from discrete world <em>do</em> translate into good intuitions for continuous world, in this case!</li>
+<li>Can “move” discrete table into continuous space like Riemann sums “move” discrete sums into integrals:</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/riemann.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="smoothing-our-example" class="level2">
+<h2 class="anchored" data-anchor-id="smoothing-our-example">“Smoothing” Our Example</h2>
+<ul>
+<li>Instead of discrete <span class="math inline">\(G\)</span> with <span class="math inline">\(\mathcal{R}_G = \{10, 11, 12\}\)</span>, we have a <strong>continuous</strong> <span class="math inline">\(G\)</span> with <span class="math inline">\(\mathcal{R}_G = [10,12] \subset \mathbb{R}\)</span> (“progress” through senior HS)</li>
+<li>Instead of discrete <span class="math inline">\(H\)</span> with <span class="math inline">\(\mathcal{R}_H = \{0, 1\}\)</span>, now we keep track of <strong>continuous</strong> “honors spectrum” <span class="math inline">\(H\)</span> with <span class="math inline">\(\mathcal{R}_H = [0, 1] \subset \mathbb{R}\)</span></li>
+<li>A student near the beginning of 10th grade who is towards the “high end” of the “honors spectrum”: (<span class="math inline">\(G = 10.03\)</span> and <span class="math inline">\(H = 0.95\)</span>)</li>
+</ul>
+</section>
+<section id="smoothing-our-tables" class="level2">
+<h2 class="anchored" data-anchor-id="smoothing-our-tables">“Smoothing” Our Tables</h2>
+<ul>
+<li><strong>Sums</strong> become <strong>integrals</strong></li>
+<li><strong>Re-normalization</strong> (ensuring that <strong>probability mass</strong> values <strong>sum to 1</strong>) becomes ensuring that <strong>probability density</strong> values <strong>integrate to 1</strong>.</li>
+<li>What comes in place of <strong>frequency table</strong>?</li>
+<li>Answer in theory: <strong>Joint pdf</strong></li>
+<li>Answer in practice: Depends on the context 😬</li>
+</ul>
+</section>
+<section id="working-backwards-redux" class="level2">
+<h2 class="anchored" data-anchor-id="working-backwards-redux">Working Backwards Redux</h2>
+<ul>
+<li>While in <strong>discrete world</strong> we could easily provide a table, in <strong>continuous world</strong> we often/usually have to work backwards; we may just be given:</li>
+<li><span class="math inline">\(G \sim \mathcal{U}(10, 12)\)</span></li>
+<li><span class="math inline">\(H \sim \ddot{\mathcal{N}}(\mu = 0.5, \sigma = 0.1, a = 0, b = 1)\)</span>, and</li>
+<li><span class="math inline">\(G \perp H\)</span> (so <span class="math inline">\(\Pr(G \mid H) = \Pr(G), \Pr(H \mid G) = \Pr(H)\)</span>)</li>
+<li>(i.e., marginal distributions = conditional distributions).</li>
+</ul>
+</section>
+<section id="the-marginal-pdfs-of-g-and-h" class="level2 crunch-title crunch-ul">
+<h2 class="crunch-title crunch-ul anchored" data-anchor-id="the-marginal-pdfs-of-g-and-h">The Marginal pdfs of <span class="math inline">\(G\)</span> and <span class="math inline">\(H\)</span></h2>
+<ul>
+<li>Since we know <span class="math inline">\(G \sim \mathcal{U}(10,12)\)</span>, we know (or we could look up) that <span class="math inline">\(G\)</span> has pdf</li>
+</ul>
+<p><span class="math display">\[
+f_G(v_G) = \frac{1}{12 - 10} = \frac{1}{2}.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(H\)</span> has a slightly fancier distribution, the <strong>truncated normal distribution</strong>, but nonetheless a pdf we can derive from (a) knowing the pdf of the <strong>normal</strong> distribution and (b) knowing what we’ve just talked about regarding <strong>conditional</strong> distributions</li>
+</ul>
+</section>
+<section id="the-truncated-normal-distribution" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="the-truncated-normal-distribution">The Truncated Normal Distribution</h2>
+<ul>
+<li><span class="math inline">\(\ddot{\mathcal{N}}\)</span> may look scary, but <span class="math inline">\(X \sim \ddot{\mathcal{N}}(\mu, \sigma, a, b)\)</span> just means that <span class="math inline">\(X\)</span> can be “constructed from scratch” (similar to Problem 1 on the Lab 5 Assignment) as</li>
+</ul>
+<p><span class="math display">\[
+X \sim \mathcal{N}(\mu, \sigma) \implies [X \mid a &lt; X &lt; b] \sim \ddot{\mathcal{N}}(\mu, \sigma, a, b)
+\]</span></p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>rnormt <span class="ot">&lt;-</span> <span class="cf">function</span>(n, range, mu, <span class="at">s =</span> <span class="dv">1</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># range is a vector of two values</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  F.a <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="fu">min</span>(range), <span class="at">mean =</span> mu, <span class="at">sd =</span> s)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  F.b <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="fu">max</span>(range), <span class="at">mean =</span> mu, <span class="at">sd =</span> s)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  u <span class="ot">&lt;-</span> <span class="fu">runif</span>(n, <span class="at">min =</span> F.a, <span class="at">max =</span> F.b)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">qnorm</span>(u, <span class="at">mean =</span> mu, <span class="at">sd =</span> s)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(simstudy)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(paletteer)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>defC <span class="ot">&lt;-</span> <span class="fu">defCondition</span>(<span class="at">condition=</span> <span class="st">"tt == 1"</span>, </span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>                     <span class="at">formula =</span> <span class="st">"rnormt(10000, c(-Inf, Inf), mu = 0, s = 3)"</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>defC <span class="ot">&lt;-</span> <span class="fu">defCondition</span>(defC, <span class="st">"tt == 2"</span>, </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>                     <span class="at">formula =</span> <span class="st">"rnormt(10000, c(0, Inf), mu = 0, s = 3)"</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>defC <span class="ot">&lt;-</span> <span class="fu">defCondition</span>(defC, <span class="st">"tt == 3"</span>, </span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>                     <span class="at">formula =</span> <span class="st">"rnormt(10000, c(-3, 3.5), mu = 0, s = 3)"</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> <span class="fu">genData</span>(<span class="dv">30000</span>)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> <span class="fu">trtAssign</span>(dd, <span class="at">nTrt =</span> <span class="dv">3</span>, <span class="at">grpName =</span> <span class="st">"tt"</span>)</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> <span class="fu">addCondition</span>(defC, dd, <span class="st">"x"</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>dd[, tt <span class="sc">:</span><span class="er">=</span> <span class="fu">factor</span>(tt, </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>     <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No truncation"</span>, <span class="st">"Left truncation at 0"</span>, <span class="st">"Left and right truncation"</span>))]</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> dd, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">group =</span> tt)) <span class="sc">+</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">fill =</span> tt), <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">binwidth =</span> .<span class="dv">2</span>, <span class="at">boundary =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span>tt) <span class="sc">+</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/truncated-plots-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Adapted from <a href="https://www.rdatagen.net/post/generating-data-from-a-truncated-distribution/" target="_blank"><code>simstudy</code> package documentation</a></figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-truncated-normal-pdf" class="level2 crunch-title crunch-math crunch-ul page-columns page-full">
+<h2 class="crunch-title crunch-math crunch-ul anchored" data-anchor-id="the-truncated-normal-pdf">The Truncated Normal pdf</h2>
+<ul>
+<li>Since we see a <strong>conditioning bar</strong> on the previous slide, we can infer what the <strong>pdf</strong> of this <strong>conditional distribution</strong> would look like. If <span class="math inline">\(X \sim \ddot{\mathcal{N}}(\mu, \sigma, a, b)\)</span>, then <span class="math inline">\(X\)</span> has pdf</li>
+</ul>
+<p><span class="math display">\[
+f_X(v) = \frac{\frac{1}{\sigma}\varphi\left(\frac{v_H-\mu}{\sigma}\right)}{\Phi\left(\frac{b-\mu}{\sigma}\right) - \Phi\left(\frac{a - \mu}{\sigma}\right)} \approx \frac{\Pr(X = v, a &lt; X &lt; b)}{\Pr(a &lt; X &lt; b)}
+\]</span></p>
+<ul>
+<li><span class="math inline">\(\varphi\)</span> is the pdf of <span class="math inline">\(\mathcal{N}(0,1)\)</span></li>
+<li><span class="math inline">\(\Phi\)</span> is the CDF of <span class="math inline">\(\mathcal{N}(0,1)\)</span></li>
+</ul>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>(note the consistent usage of lowercase letters to describe pdfs and capital letters to describe CDFs, even in Greek!)</p>
+</div></div></section>
+<section id="back-to-working-backwards" class="level2">
+<h2 class="anchored" data-anchor-id="back-to-working-backwards">Back to Working Backwards</h2>
+<ul>
+<li>By the <em>definition of independence</em>, we can obtain <strong>joint pdf</strong> <span class="math inline">\(f_{G,H}(v_G, v_H)\)</span> by <strong>multiplying</strong> the marginal pdf <span class="math inline">\(f_G(v_G)\)</span> and marginal pdf <span class="math inline">\(f_H(v_H)\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+f_{G,H}(v_G, v_H) &amp;= f_G(v_G) \cdot f_H(v_H) \\
+&amp;= \frac{\frac{1}{2\sigma}\varphi\left(\frac{v_H-\mu}{\sigma}\right)}{\Phi\left(\frac{b-\mu}{\sigma}\right) - \Phi\left(\frac{a - \mu}{\sigma}\right)}
+\end{align*}
+\]</span></p>
+</section>
+<section id="moving-forwards-again" class="level2 crunch-title math-90">
+<h2 class="crunch-title math-90 anchored" data-anchor-id="moving-forwards-again">Moving Forwards Again</h2>
+<ul>
+<li>We’ve arrived at the case we had in discrete world, where we know the <strong>joint distribution</strong>!</li>
+<li>We can <strong>integrate</strong> wherever we took <strong>sums</strong> in the discrete case to obtain <strong>marginal</strong> pdfs:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+f_G(v_G) &amp;= \int_{0}^{1}f_{G,H}(v_G,v_H)\mathrm{d}v_H = \frac{1}{2}, \\
+f_H(v_H) &amp;= \int_{10}^{12}f_{G,H}(v_G, v_H)\mathrm{d}v_G = \frac{\frac{1}{\sigma}\varphi\left(\frac{v_H-\mu}{\sigma}\right)}{\Phi\left(\frac{b-\mu}{\sigma}\right) - \Phi\left(\frac{a - \mu}{\sigma}\right)}
+\end{align*}
+\]</span></p>
+</section>
+<section id="conditional-distributions-in-continuous-world" class="level2">
+<h2 class="anchored" data-anchor-id="conditional-distributions-in-continuous-world">Conditional Distributions in Continuous World</h2>
+<p>And we can compute <strong>conditional</strong> pdfs by <strong>renormalizing</strong> so that the denominator is no longer the integral of the distribution over all its possible values (hence just the number <span class="math inline">\(1\)</span>) but a <strong>ratio</strong> of <strong>joint distribution</strong> to <strong>marginal distribution</strong> values like the following:</p>
+<p><span class="math display">\[
+f_{H \mid G}(v_H | v_G) = \frac{f_{G,H}(v_G, v_H)}{f_G(v_G)}.
+\]</span></p>
+</section>
+<section id="you-dont-have-to-stare-helplessly-at-scary-math" class="level2">
+<h2 class="anchored" data-anchor-id="you-dont-have-to-stare-helplessly-at-scary-math">You Don’t Have To Stare Helplessly At Scary Math!</h2>
+<ul>
+<li>Try to <strong>link the continuous equations back to their simpler discrete forms</strong></li>
+<li>Work with the discrete forms to develop intuition, then</li>
+<li>Convert sums back into integrals once you’re ready</li>
+</ul>
+</section>
+<section id="a-concrete-strategy" class="level2 crunch-title crunch-ul crunch-figures crunch-img inline-90 crunch-quarto-figure">
+<h2 class="crunch-title crunch-ul crunch-figures crunch-img inline-90 crunch-quarto-figure anchored" data-anchor-id="a-concrete-strategy">A Concrete Strategy</h2>
+<ul>
+<li>Start by <strong>discretizing</strong> (“binning”) the possible values of a <strong>continuous</strong> RV to obtain a <strong>discrete</strong> RV:
+<ul>
+<li>Split <span class="math inline">\([10,12]\)</span> into three equal-length bins, <span class="math inline">\([0,1]\)</span> into two equal-length bins</li>
+<li><strong>Simulate</strong> <span class="math inline">\((G, H)\)</span> pairs, sort into bins, plot joint / marginal / conditional distributions of <strong>binned data</strong></li>
+</ul></li>
+<li>As you make bins thinner and thinner…</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/riemann.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section>
+</section>
+<section id="thinking-through-specific-multivariate-distributions" class="level1" data-stack-name="N > 2">
+<h1 data-stack-name="N > 2">Thinking Through Specific Multivariate Distributions</h1>
+<ul>
+<li>From <span class="math inline">\(2\)</span> to <span class="math inline">\(N\)</span> variables!</li>
+</ul>
+<section id="the-multinoulli-distribution" class="level2 smaller crunch-title crunch-ul crunch-math inline-90">
+<h2 class="smaller crunch-title crunch-ul crunch-math inline-90 anchored" data-anchor-id="the-multinoulli-distribution">The Multinoulli Distribution</h2>
+<ul>
+<li><p>This may seem like a weird/contrived distribution, but it’s perfect for building intuition, as your first <span class="math inline">\(N\)</span>-dimensional distribution (<span class="math inline">\(N &gt; 2\)</span>)</p></li>
+<li><p><span class="math inline">\(\mathbf{X}\)</span> is a six-dimensional <strong>Vector-Valued</strong> RV, so that</p>
+<p><span class="math display">\[
+  \mathbf{X} = (X_1, X_2, X_3, X_4, X_5, X_6),
+  \]</span></p>
+<p>where <span class="math inline">\(\mathcal{R}_{X_1} = \{0, 1\}, \mathcal{R}_{X_2} = \{0, 1\}, \ldots, \mathcal{R}_{X_6} = \{0, 1\}\)</span></p></li>
+<li><p>But, <span class="math inline">\(X_1, X_2, \ldots, X_6\)</span> are <strong>not independent!</strong> In fact, they are so <strong>dependent</strong> that if one has the value <span class="math inline">\(1\)</span>, the rest must have value <span class="math inline">\(0\)</span>, so that we can infer the support of <span class="math inline">\(\mathbf{X}\)</span>:</p>
+<p><span class="math display">\[
+  \begin{align*}
+  \mathcal{R}_{\mathbf{X}} = \{ &amp;(1,0,0,0,0,0),(0,1,0,0,0,0),(0,0,1,0,0,0), \\
+  &amp;(0,0,0,1,0,0),(0,0,0,0,1,0),(0,0,0,0,0,1)\}
+  \end{align*}
+  \]</span></p></li>
+<li><p>Lastly, need to define the <strong>probability</strong> that <span class="math inline">\(\mathbf{X}\)</span> takes on any of these values. Let’s say <span class="math inline">\(\Pr(\mathbf{X} = \mathbf{v}) = \frac{1}{6}\)</span> for all <span class="math inline">\(\mathbf{v} \in \mathcal{R}_{\mathbf{X}}\)</span>. Do we see the structure behind this contrived case?</p></li>
+<li><p>(For math major friends, there is an isomorphism afoot… For the rest, it’s an extremely inefficient way to model outcomes from <strong>rolling a fair die</strong>)</p></li>
+</ul>
+</section>
+<section id="the-multivariate-normal-distribution" class="level2 smaller crunch-title crunch-ul math-90 crunch-math">
+<h2 class="smaller crunch-title crunch-ul math-90 crunch-math anchored" data-anchor-id="the-multivariate-normal-distribution">The Multivariate Normal Distribution</h2>
+<ul>
+<li>We’ve already seen the matrix notation for writing the <strong>parameters</strong> of this distribution: <span class="math inline">\(\mathbf{X}_{[k \times 1]} \sim \mathcal{N}_k(\boldsymbol\mu_{[k \times 1]}, \Sigma_{[k \times k]})\)</span></li>
+<li>Now we get to crack open the matrix notation for writing its <strong>pdf</strong>:</li>
+</ul>
+<p><span class="math display">\[
+f_\mathbf{X}(\mathbf{v}_{[k \times 1]}) = \underbrace{\left(\frac{1}{\sqrt{2\pi}}\right)^k \frac{1}{\sqrt{\det(\Sigma)}}}_{\text{Normalizing constants}} \exp\left(-\frac{1}{2}\underbrace{(\mathbf{v} - \boldsymbol\mu)^\top \Sigma^{-1} (\mathbf{v} - \boldsymbol\mu)}_{\text{Quadratic form}}\right)
+\]</span></p>
+<ul>
+<li>Try to squint your eyes while looking at the above, and compare with the pdf we’ve seen for 1D <span class="math inline">\(\mathcal{N}(\mu,\sigma)\)</span> (W05) and the structure you’ve seen for 2D <span class="math inline">\(\Sigma\)</span> (W06):</li>
+</ul>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[1,1]">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<p><span class="math display">\[
+f_X(v) = \frac{1}{\sigma\sqrt{2\pi}}\bigexp{-\frac{1}{2}\left(\frac{v - \mu}{\sigma}\right)^2}
+\]</span></p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<p><span class="math display">\[
+\begin{align*}
+\mathbf{\Sigma} &amp;= \begin{bmatrix}\sigma_1^2 &amp; \rho\sigma_1\sigma_2 \\ \rho\sigma_2\sigma_1 &amp; \sigma_2^2\end{bmatrix} \\[0.1em]
+\implies \det(\Sigma) &amp;= \sigma_1^2\sigma_2^2 - \rho^2\sigma_1^2\sigma_2^2 \\
+&amp;= \sigma_1^2\sigma_2^2(1-\rho^2)
+\end{align*}
+\]</span></p>
+</div>
+</div>
+</div>
+</section>
+<section id="quadratic-forms" class="level2 smaller smaller-math">
+<h2 class="smaller smaller-math anchored" data-anchor-id="quadratic-forms">Quadratic Forms</h2>
+<ul>
+<li>Quadratic forms will seem scary until someone forces you to write out the matrix multiplication!</li>
+<li>Start with the 1D case: <span class="math inline">\(\mathbf{v} = [v_1]\)</span>, <span class="math inline">\(\boldsymbol\mu = [\mu_1]\)</span>, <span class="math inline">\(\Sigma = [\sigma^2]\)</span>. Then</li>
+</ul>
+<p><span class="math display">\[
+(\mathbf{v} - \boldsymbol\mu)^\top \Sigma^{-1} (\mathbf{v - \boldsymbol\mu}) = (v_1 - \mu_1)\frac{1}{\sigma^2}(v_1 - \mu_1) = \left(\frac{v_1-\mu_1}{\sigma}\right)^2.
+\]</span></p>
+</section>
+<section id="the-2d-case" class="level2 smaller math-80 crunch-title crunch-ul crunch-lists crunch-math">
+<h2 class="smaller math-80 crunch-title crunch-ul crunch-lists crunch-math anchored" data-anchor-id="the-2d-case">The 2D Case</h2>
+<ul>
+<li>Let <span class="math inline">\(\mathbf{v} = \left[\begin{smallmatrix}v_1 \\ v_2\end{smallmatrix}\right]\)</span>, <span class="math inline">\(\boldsymbol\mu = \left[ \begin{smallmatrix}\mu_1 \\ \mu_2 \end{smallmatrix}\right]\)</span>, <span class="math inline">\(\Sigma\)</span> as in previous slide. Then <span class="math inline">\(\mathbf{v} - \boldsymbol\mu = \left[ \begin{smallmatrix} v_1 - \mu_1 \\ v_2 - \mu_2 \end{smallmatrix} \right]\)</span>.</li>
+<li>Using what we know about <span class="math inline">\(2 \times 2\)</span> matrix inversion,</li>
+</ul>
+<p><span class="math display">\[
+\Sigma^{-1} = \frac{1}{\det(\Sigma)}\left[ \begin{smallmatrix} \sigma_2^2 &amp; -\rho \sigma_2\sigma_1 \\ -\rho \sigma_1\sigma_2 &amp; \sigma_1^2\end{smallmatrix} \right] = \frac{1}{\sigma_1^2\sigma_2^2(1-\rho^2)}\left[ \begin{smallmatrix} \sigma_2^2 &amp; -\rho \sigma_2\sigma_1 \\ -\rho \sigma_1\sigma_2 &amp; \sigma_1^2\end{smallmatrix} \right]
+\]</span></p>
+<ul>
+<li>So we can write everything as just a bunch of matrix multiplications:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+&amp;(\mathbf{v} - \boldsymbol\mu)^\top \Sigma^{-1} (\mathbf{v - \boldsymbol\mu}) = \frac{1}{\sigma_1^2\sigma_2^2(1-\rho^2)}\begin{bmatrix}v_1 - \mu_1 &amp; v_2 - \mu_2\end{bmatrix} \cdot \begin{bmatrix} \sigma_2^2 &amp; -\rho \sigma_2\sigma_1 \\ -\rho \sigma_1\sigma_2 &amp; \sigma_1^2\end{bmatrix} \cdot \begin{bmatrix}v_1 - \mu_1 \\ v_2 - \mu_2\end{bmatrix} \\
+&amp;= \frac{1}{\sigma_1^2\sigma_2^2(1-\rho^2)}\begin{bmatrix}(v_1-\mu_1)\sigma_2^2 - (v_2-\mu_2)\rho\sigma_1\sigma_2 &amp; (v_2-\mu_2)\sigma_1^2 - (v_1-\mu_1)\rho\sigma_2\sigma_1 \end{bmatrix}\cdot \begin{bmatrix}v_1 - \mu_1 \\ v_2 - \mu_2\end{bmatrix} \\
+&amp;= \frac{1}{\sigma_1^2\sigma_2^2(1-\rho^2)}\left( (v_1-\mu_1)^2\sigma_2^2 - (v_1-\mu_1)(v_1-\mu_2)\sigma_1\sigma_2 + (v_2-\mu_2)^2\sigma_1^2 - (v_1-\mu_1)(v_2-\mu_2)\sigma_2\sigma_1 \right) \\
+&amp;= \boxed{\frac{1}{1-\rho^2}\left( \left(\frac{v_1-\mu_1}{\sigma_1}\right)^2 + \left(\frac{v_2-\mu_2}{\sigma_2}\right)^2 - 2\rho\frac{(v_1-\mu_1)(v_2-\mu_2)}{\sigma_1\sigma_2} \right)}
+\end{align*}
+\]</span></p>
+</section>
+<section id="the-2d-case-in-its-final-form" class="level2 smaller math-80">
+<h2 class="smaller math-80 anchored" data-anchor-id="the-2d-case-in-its-final-form">The 2D Case In Its FINAL FORM</h2>
+<p><span class="math display">\[
+f_{\mathbf{X}}(\mathbf{v}) = C\bigexp{-\frac{1}{2}\frac{1}{1-\rho^2}\left( \left(\frac{v_1-\mu_1}{\sigma_1}\right)^2 + \left(\frac{v_2-\mu_2}{\sigma_2}\right)^2 - 2\rho\frac{(v_1-\mu_1)(v_2-\mu_2)}{\sigma_1\sigma_2} \right)}
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+C = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}.
+\]</span></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w07/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

@@ -1,0 +1,1060 @@
+---
+title: "Week 7: Joint, Marginal, and Conditional Distributions"
+subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
+author: "Jeff Jacobs"
+institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
+date: 2024-10-08
+date-format: full
+lecnum: 7
+bibliography: "../_DSAN5100.bib"
+categories:
+  - "Class Sessions"
+format:
+  revealjs:
+    cache: false
+    css: "../dsan-globals/jjstyles.css"
+    footer: "DSAN 5100-03 W07: Joint, Marginal, Conditional Distributions"
+    output-file: slides.html
+    df-print: kable
+    code-fold: true
+    html-math-method: mathjax
+    scrollable: true
+    slide-number: true
+    number-sections: false
+    link-external-icon: true
+    link-external-newwindow: true
+    theme: [default]
+    revealjs-plugins:
+      - simplemenu
+    simplemenu:
+      flat: true
+      barhtml:
+        header: "<div class='menubar'><span style='position: absolute; left: 8; padding-left: 8px;'><a href='./index.html'>&larr; Return to Notes</a></span><ul class='menu'></ul></div>"
+      scale: 0.5
+    include-in-header:
+      text: "<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous'><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>"
+  html:
+    cache: false
+    output-file: index.html
+    df-print: kable
+    warning: false
+    link-external-icon: true
+    link-external-newwindow: true
+---
+
+::: {.content-visible unless-format="revealjs"}
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window &rarr;</a>
+</center>
+
+:::
+
+# Frequency Tables $\leftrightarrow$ Probabilities {data-stack-name="Frequency vs. Probability"}
+
+::: {.hidden}
+
+```{r}
+#| label: r-source-globals
+source("../dsan-globals/_globals.r")
+```
+
+{{< include ../_globals-tex.qmd >}}
+
+:::
+
+## Frequency Tables {.fix-tex-headers}
+
+::: {layout-ncol=2}
+
+::: {#freq-table-text}
+
+* What does this tell us **on its own** (before computing proportions in our heads) that is useful for probability?
+* Answer: Not very much!
+* But, if we can find the **overall total**, then it would tell us **a lot** (everything we need to know)!
+
+:::
+
+::: {#tbl-freq}
+
+```{=html}
+<table>
+<caption>
+    <span>&nbsp;</span>
+</caption>
+<thead>
+  <tr>
+    <th></th>
+    <th><span data-qmd="$H = 0$"></span></th>
+    <th><span data-qmd="$H = 1$"></span></th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><span data-qmd="$G = 10$"></span></td>
+    <td class='cb1a-bg'>10</td>
+    <td class='cb1a-bg'>5</td>
+  </tr>
+  <tr>
+    <td><span data-qmd="$G = 11$"></span></td>
+    <td class='cb1a-bg'>6</td>
+    <td class='cb1a-bg'>4</td>
+  </tr>
+  <tr>
+    <td><span data-qmd="$G = 12$"></span>
+    <td class='cb1a-bg'>7</td>
+    <td class='cb1a-bg'>1</td>
+  </tr>
+</table>
+```
+
+A frequency table of HS students ($G$ = grade, $H$ = honors status)<br><span style='display: inline-flex; border: 1px solid black;'>*This tells us, e.g., there are 5 honors students in grade 10*</span>
+:::
+
+:::
+
+::: {.notes}
+
+[A frequency table where each **row** corresponds to a grade in a certain senior high school, each **column** corresponds to honor-student-status ($H=1$ represents honors, $H=0$ represents non-honors), and each **cell** contains the **number of students** in that grade with that honors-status]{.small-caption}
+
+:::
+
+## Why Do We Need The Total?
+
+* **Q1**: Someone asks the **probability** that a randomly-selected student will be an **honor student** in **11th grade**.
+* **Q2**: Someone asks what **proportion** of students are honors
+* **Q3**: Someone asks what **%** of 12th grade are honors
+
+**Q1**, for example, is asking us for $\Pr(G = 11, H = 1)$, a question we can answer if we know the **joint distribution** $f_{G,H}(v_G, v_H)$.
+
+## Back to the Naïve Definition
+
+Using our **naïve definition of probability**, we can compute this probability using the **frequencies** in the table as
+
+$$
+\Pr(G = 11, H = 1) = \frac{\#(G = 11, H = 1)}{\#\text{ Students Total}}
+$$
+
+Plugging in the values from @tbl-freq, we obtain the answer:
+
+$$
+\Pr(G = 11, H = 1) = \frac{4}{33} \approx 0.121
+$$
+
+## Frequency Table $\rightarrow$ Probability Table
+
+* When we divide by **33**, we are **normalizing** the counts, producing probabilities (normalized counts)
+* By normalizing **all cells** in the table, we convert our **frequency table** into a **probability table**
+
+## Computing Overall Total by Column {.fix-tex-headers}
+
+We could compute the total by summing **columns**, then summing over our individual column totals to get 33:
+
+```{=html}
+<table>
+<thead>
+  <tr>
+    <th></th>
+    <th><span data-qmd="$H = 0$"></span></th>
+    <th><span data-qmd="$H = 1$"></span></th>
+    <th>Total</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><span data-qmd="$G = 10$"></span></td>
+    <td class='cb1a-bg'>10</td>
+    <td class='cb1a-bg'>5</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="$G = 11$"></span></td>
+    <td class='cb1a-bg'>6</td>
+    <td class='cb1a-bg'>4</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="$G = 12$"></span>
+    <td class='cb1a-bg'>7</td>
+    <td class='cb1a-bg'>1</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="**Total**"></span></td>
+    <td class='cb2a-bg'>23</td>
+    <td class='cb2a-bg'>10</td>
+    <td class='cbga-bg'>33</td>
+  </tr>
+</table>
+```
+
+## Computing Overall Total by Row {.fix-tex-headers}
+
+**Or**, we could compute the total by summing **rows**, then summing over our individual row totals to get 33:
+
+```{=html}
+<table>
+<thead>
+  <tr>
+    <th></th>
+    <th><span data-qmd="$H = 0$"></span></th>
+    <th><span data-qmd="$H = 1$"></span></th>
+    <th>Total</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><span data-qmd="$G = 10$"></span></td>
+    <td class='cb1a-bg'>10</td>
+    <td class='cb1a-bg'>5</td>
+    <td class='cb2a-bg'>15</td>
+  </tr>
+  <tr>
+    <td><span data-qmd="$G = 11$"></span></td>
+    <td class='cb1a-bg'>6</td>
+    <td class='cb1a-bg'>4</td>
+    <td class='cb2a-bg'>10</td>
+  </tr>
+  <tr>
+    <td><span data-qmd="$G = 12$"></span>
+    <td class='cb1a-bg'>7</td>
+    <td class='cb1a-bg'>1</td>
+    <td class='cb2a-bg'>8</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="**Total**"></span></td>
+    <td></td>
+    <td></td>
+    <td class='cbga-bg'>33</td>
+  </tr>
+</table>
+```
+
+## Bringing Both Methods Together {.fix-tex-headers}
+
+::: {#tbl-marginal-freq}
+
+```{=html}
+<table>
+<caption><span></span></caption>
+<thead>
+  <tr>
+    <th></th>
+    <th><span data-qmd="$H = 0$"></span></th>
+    <th><span data-qmd="$H = 1$"></span></th>
+    <th>Total</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><span data-qmd="$G = 10$"></span></td>
+    <td class='cb1a-bg'>10</td>
+    <td class='cb1a-bg'>5</td>
+    <td class='cb2a-bg'>15</td>
+  </tr>
+  <tr>
+    <td><span data-qmd="$G = 11$"></span></td>
+    <td class='cb1a-bg'>6</td>
+    <td class='cb1a-bg'>4</td>
+    <td class='cb2a-bg'>10</td>
+  </tr>
+  <tr>
+    <td><span data-qmd="$G = 12$"></span>
+    <td class='cb1a-bg'>7</td>
+    <td class='cb1a-bg'>1</td>
+    <td class='cb2a-bg'>8</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="**Total**"></span></td>
+    <td class='cb2a-bg'>23</td>
+    <td class='cb2a-bg'>10</td>
+    <td class='cbga-bg'>33</td>
+  </tr>
+</table>
+```
+
+The same frequency table as in @tbl-freq, but now with row and column totals representing **marginal frequencies**
+:::
+
+## Frequencies to Probabilities {.fix-tex-headers}
+
+::: {layout-ncol=2}
+
+::: {#prob-table-text}
+
+* Now (before we think about row/column totals) let's use **overall total** (33) to convert **counts** into **probabilities**:
+
+:::
+
+::: {#tbl-marginal-prob}
+
+```{=html}
+<table>
+  <caption><span></span></caption>
+  <thead>
+    <tr>
+      <th></th>
+      <th><span data-qmd="$H = 0$"></span></th>
+      <th><span data-qmd="$H = 1$"></span></th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td><span data-qmd="$G = 10$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{10}{33}$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{5}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{15}{33}$"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="$G = 11$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{6}{33}$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{4}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{10}{33}$"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="$G = 12$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{7}{33}$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{1}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{8}{33}$"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="**Total**"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{23}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{10}{33}$"></span></td>
+    <td class='cbga-bg'><span data-qmd="$\frac{33}{33}$"></span></td>
+  </tr>
+  </tbody>
+</table>
+```
+
+Table from prev slide with all values **normalized** (divided by the total number of obs)
+:::
+
+:::
+
+# Distributions in Discrete World {data-stack-name="Discrete World"}
+
+## One Table, Three Distributions! {.crunch-title .crunch-ul .inline-90 .crunch-ul}
+
+Now that we have **normalized counts**, different pieces of this table give different **probability distributions**:
+
+:::: {.columns}
+::: {.column width="50%"}
+
+* [**Joint Distribution**]{.cb1a-bg} $f_{G,H}(v_G, v_H)$: Look at value in row $v_G$, col $v_H$
+* [**Marginal Distributions**]{.cb2a-bg}
+  * $f_G(v_G)$: Look at **total** for row $v_G$
+  * $f_H(v_H)$: Look at **total** for column $v_H$
+
+:::
+::: {.column width="50%"}
+
+```{=html}
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th class='small-tex-th'><span data-qmd="$H = 0$"></span></th>
+      <th class='small-tex-th'><span data-qmd="$H = 1$"></span></th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td class='small-tex-td'><span data-qmd="$G = 10$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{10}{33}$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{5}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{15}{33}$"></span></td>
+  </tr>
+  <tr>
+    <td class='small-tex-td'><span data-qmd="$G = 11$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{6}{33}$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{4}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{10}{33}$"></span></td>
+  </tr>
+  <tr>
+    <td class='small-tex-td'><span data-qmd="$G = 12$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{7}{33}$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{1}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{8}{33}$"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="**Total**"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{23}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{10}{33}$"></span></td>
+    <td class='cbga-bg'><span data-qmd="$\frac{33}{33}$"></span></td>
+  </tr>
+  </tbody>
+</table>
+```
+
+:::
+::::
+
+## Summary: Joint $\rightarrow$ Marginal {.smaller .crunch-title .inline-90}
+
+* Note how **[marginal distributions]{.cb2a-bg}** were obtained by **summing** the **[joint distribution]{.cb1a-bg}** over a particular **dimension**:
+* Summing each **column** ($H = 0$ and $H = 1$) produced **[marginal distribution]{.cb2a-bg} of $H$**:
+
+::: {layout-ncol=2}
+
+```{=html}
+<table>
+<thead></thead>
+<tbody>
+  <tr>
+    <td></td>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(H = 0, G = 10)$"></span></td>
+  </tr>
+  <tr>
+    <td>+</td>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(H = 0, G = 11)$"></span></td>
+  </tr>
+  <tr>
+    <td>+</td>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(H = 0, G = 12)$"></span></td>
+  </tr>
+  <tr>
+    <td>=</td>
+    <td class='cb2a-bg'><span data-qmd="$\Pr(H = 0)$"></span></td>
+  </tr>
+</tbody>
+</table>
+```
+
+```{=html}
+<table>
+<thead></thead>
+<tbody>
+  <tr>
+    <td></td>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(H = 1, G = 10)$"></span></td>
+  </tr>
+  <tr>
+    <td>+</td>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(H = 1, G = 11)$"></span></td>
+  </tr>
+  <tr>
+    <td>+</td>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(H = 1, G = 12)$"></span></td>
+  </tr>
+  <tr>
+    <td>=</td>
+    <td class='cb2a-bg'><span data-qmd="$\Pr(H = 1)$"></span></td>
+  </tr>
+</tbody>
+</table>
+```
+:::
+
+* Summing each **row** ($G = 10$, $G = 11$, $G = 12$) produced **[marginal distribution]{.cb2a-bg} of $G$**:
+
+```{=html}
+<table>
+<thead></thead>
+<tbody>
+  <tr>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(G = 10, H = 0)$"></span></td>
+    <td>+</td>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(G = 10, H = 1)$"></span></td>
+    <td>=</td>
+    <td class='cb2a-bg'><span data-qmd="$\Pr(G = 10)$"></span></td>
+  </tr>
+  <tr>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(G = 11, H = 0)$"></span></td>
+    <td>+</td>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(G = 11, H = 1)$"></span></td>
+    <td>=</td>
+    <td class='cb2a-bg'><span data-qmd="$\Pr(G = 11)$"></span></td>
+  </tr>
+  <tr>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(G = 12, H = 0)$"></span></td>
+    <td>+</td>
+    <td class='cb1a-bg'><span data-qmd="$\Pr(G = 12, H = 1)$"></span></td>
+    <td>=</td>
+    <td class='cb2a-bg'><span data-qmd="$\Pr(G = 12)$"></span></td>
+  </tr>
+</tbody>
+</table>
+```
+
+## What's Missing? Conditional Distributions {.smaller .title-12 .crunch-title}
+
+* [**Conditional distribution**]{.cb3a-bg} does not represent a **sum** but a **slice**: we consider e.g. **one particular row** or **one particular column** of the table.
+* **🚨Warning🚨!** unlike in **joint** and **marginal** cases, when computing **conditional** distributions we have to **renormalize**, since we are "entering world" where we only consider **subsets** of the table where condition is met!
+* Recall slide about how **all distributions are conditional distributions**:
+
+::: columns
+::: {.column width="33%"}
+
+<center>
+[$\Pr(G = 10, H = 1)$]{.cb1a-bg}
+</center>
+
+$$
+\begin{align*}
+= &\Pr(G = 10, H = 1 \mid \Omega) \\[0.6em]
+= &\frac{\#(G = 10, H = 1, \Omega)}{\#\text{ Total }(\Omega)\text{ ✅}}
+\end{align*}
+$$
+
+:::
+::: {.column width="33%"}
+
+<center>
+[$\Pr(G = 10)$]{.cb2a-bg}
+</center>
+
+$$
+\begin{align*}
+= &\Pr(G = 10 \mid \Omega) \\[0.6em]
+= &\frac{\#(G = 10, \Omega)}{\#\text{ Total }(\Omega)\text{ ✅}}
+\end{align*}
+$$
+
+:::
+::: {.column width="33%"}
+
+<center>
+[$\Pr(G = 10 \mid H = 1)$]{.cb3a-bg}
+</center>
+
+$$
+\begin{align*}
+= &\frac{\Pr(G = 10, H = 1)}{\Pr(H = 1)} \\[0.6em]
+= &\frac{\#(G = 10, H = 1)}{\#(H = 1)\text{ 😳}}
+\end{align*}
+$$
+
+:::
+
+:::
+
+
+## Conditional Distributions from Columns {.crunch-title .fix-tex-headers .small-title .inline-90}
+
+Let's extract just the $H = 1$ column:
+
+:::: {layout="[2,1,2]" layout-valign="center"}
+
+```{=html}
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th><span data-qmd="$H = 1$"></span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span data-qmd="$G = 10$"></span></td>
+      <td class='cb3a-bg'>5</td>
+    </tr>
+    <tr>
+      <td><span data-qmd="$G = 11$"></span></td>
+      <td class='cb3a-bg'>4</td>
+    </tr>
+    <tr>
+      <td><span data-qmd="$G = 12$"></span></td>
+      <td class='cb3a-bg'>1</td>
+    </tr>
+    <tr>
+      <td><span data-qmd="**Total**"></span></td>
+      <td class='cbga-bg'>10</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+::: {#conditional-arrow-col}
+
+<center>
+<i class='bi bi-arrow-right'></i>
+</center>
+
+:::
+
+```{=html}
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th><span data-qmd="$H = 1$"></span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span data-qmd="$G = 10$"></span></td>
+      <td class='cb3a-bg'><span data-qmd="$\frac{5}{10}$"></span></td>
+    </tr>
+    <tr>
+      <td><span data-qmd="$G = 11$"></span></td>
+      <td class='cb3a-bg'><span data-qmd="$\frac{4}{10}$"></span></td>
+    </tr>
+    <tr>
+      <td><span data-qmd="$G = 12$"></span></td>
+      <td class='cb3a-bg'><span data-qmd="$\frac{1}{10}$"></span></td>
+    </tr>
+    <tr>
+      <td><span data-qmd="**Total**"></span></td>
+      <td class='cbga-bg'><span data-qmd="$\frac{10}{10}$"></span></td>
+    </tr>
+  </tbody>
+</table>
+```
+
+:::
+
+
+* Before, [**10**]{.cb2a-bg} was a particular **[marginal frequency]{.cb2a-bg} of interest**; now [**10**]{.cbga-bg} is just a [**total**]{.cbga-bg} that we use to **renormalize**
+
+## Conditional Distributions from Rows {.fix-tex-headers .small-title}
+
+Let's extract just the $G = 10$ row:
+
+::: {layout="[[2],[1],[2]]" layout-valign="center" layout-align="center"}
+
+```{=html}
+<table style="width: 100% !important;">
+  <thead>
+    <tr>
+      <th></th>
+      <th><span data-qmd="$H = 0$"></span></th>
+      <th><span data-qmd="$H = 1$"></span></th>
+      <th>Total</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span data-qmd="$G = 10$"></span></td>
+      <td class='cb3a-bg'>5</td>
+      <td class='cb3a-bg'>10</td>
+      <td class='cbga-bg'>15</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+::: {#arrow-col}
+
+<center>
+<i class='bi bi-arrow-down'></i>
+</center>
+
+:::
+```{=html}
+<table style="width: 100% !important;">
+  <thead>
+    <tr>
+      <th></th>
+      <th><span data-qmd="$H = 0$"></span></th>
+      <th><span data-qmd="$H = 1$"></span></th>
+      <th>Total</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span data-qmd="$G = 10$"></span></td>
+      <td class='cb3a-bg'><span data-qmd="$\frac{5}{15}$"></span></td>
+      <td class='cb3a-bg'><span data-qmd="$\frac{10}{15}$"></span></td>
+      <td class='cbga-bg'><span data-qmd="$\frac{15}{15}$"></span></td>
+    </tr>
+  </tbody>
+</table>
+```
+
+:::
+
+
+* Before, [**15**]{.cb2a-bg} was a particular **[marginal frequency]{.cb2a-bg} of interest**; now [**15**]{.cbga-bg} is just a [**total**]{.cbga-bg} that we use to **renormalize**
+
+
+## Discrete World Summary {.smaller .inline-90 .crunch-title}
+
+We now have the **link** between three types of distributions derived from our table:
+
+::: {layout-ncol=2}
+
+| Distribution Type | How Many? | Example Value |
+| - | - | - |
+| [**Joint Distribution**]{.cb1a-bg} | 1 | $\Pr(G = 11, H = 1)$<br>$= \frac{4}{33}$ |
+| [**Marginal Distributions**]{.cb2a-bg} | 2 | $\Pr(H = 1) = \frac{10}{33}$ |
+| [**Conditional Distributions**]{.cb3a-bg} | 6 | $\Pr(G = 10 \mid H = 1)$<br>$= \frac{5}{10}$ |
+
+::: {#discrete-summary-tables}
+
+```{=html}
+<table style="margin-bottom: 8px !important;">
+  <thead>
+    <tr>
+      <th></th>
+      <th class='small-tex-th'><span data-qmd="$H = 0$"></span></th>
+      <th class='small-tex-th'><span data-qmd="$H = 1$"></span></th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td class='small-tex-td'><span data-qmd="$G = 10$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{10}{33}$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{5}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{15}{33}$"></span></td>
+  </tr>
+  <tr>
+    <td class='small-tex-td'><span data-qmd="$G = 11$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{6}{33}$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{4}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{10}{33}$"></span></td>
+  </tr>
+  <tr>
+    <td class='small-tex-td'><span data-qmd="$G = 12$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{7}{33}$"></span></td>
+    <td class='cb1a-bg'><span data-qmd="$\frac{1}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{8}{33}$"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="**Total**"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{23}{33}$"></span></td>
+    <td class='cb2a-bg'><span data-qmd="$\frac{10}{33}$"></span></td>
+    <td class='cbga-bg'><span data-qmd="$\frac{33}{33}$"></span></td>
+  </tr>
+  </tbody>
+</table>
+```
+
+```{=html}
+<table style="width: 100% !important;">
+  <thead>
+    <tr>
+      <th></th>
+      <th style="text-align: center; border-right: 2px solid black;"><span data-qmd="$H = 0$"></span></th>
+      <th style="text-align: center;"><span data-qmd="$H = 1$"></span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><span data-qmd="$G = 10$"></span></td>
+      <td class='cb3a-bg' style="border-right: 2px solid black;"><span data-qmd="$\frac{10}{23}$"></span></td>
+      <td class='cb3a-bg'><span data-qmd="$\frac{5}{10}$"></span></td>
+    </tr>
+    <tr>
+      <td><span data-qmd="$G = 11$"></span></td>
+      <td class='cb3a-bg' style="border-right: 2px solid black;"><span data-qmd="$\frac{6}{23}$"></span></td>
+      <td class='cb3a-bg'><span data-qmd="$\frac{4}{10}$"></span></td>
+    </tr>
+    <tr>
+      <td><span data-qmd="$G = 12$"></span></td>
+      <td class='cb3a-bg' style="border-right: 2px solid black;"><span data-qmd="$\frac{7}{23}$"></span></td>
+      <td class='cb3a-bg'><span data-qmd="$\frac{1}{10}$"></span></td>
+    </tr>
+    <tr>
+      <td><span data-qmd="**Total**"></span></td>
+      <td class='cbga-bg' style="border-right: 2px solid black;"><span data-qmd="$\frac{23}{23}$"></span></td>
+      <td class='cbga-bg'><span data-qmd="$\frac{10}{10}$"></span></td>
+    </tr>
+  </tbody>
+</table>
+```
+
+:::
+
+:::
+
+## Working Backwards {.inline-90 .math-90 .crunch-math .quarto-layout-cell-no-margin}
+
+* Here we **started** from the [joint distribution]{.cb1a-bg} and **derived** [marginal]{.cb2a-bg} and [conditional]{.cb3a-bg} distributions
+* Same intuition, plus math, lets us go in **opposite direction**: **given** [marginal]{.cb2a-bg} and [conditional]{.cb3a-bg} distributions, can **derive** [joint distribution]{.cb1a-bg}, since *(conditional prob defn)*:
+
+::: {layout="[3,1,5]" layout-valign="center"}
+
+```{=html}
+<table style="border-bottom: 0px solid black !important; border-spacing: 2px !important;">
+<tbody>
+  <tr style="border-bottom: 0px solid black;">
+    <td rowspan="2" style="vertical-align: middle; text-align: center; border-bottom: 0px solid black !important; padding-left: 2px; padding-right: 2px;" class='cb3a-bg'><span data-qmd="$\Pr(A \mid B)$"></span></td>
+    <td rowspan="2" style="vertical-align: middle; text-align: center; border-bottom: 0px solid black !important; padding-left: 4px; padding-right: 4px;"><span data-qmd="$=$"></span></td>
+    <td class='cb1a-bg' style="border-bottom: 3px solid black;"><span data-qmd="$\Pr(A, B)$"></span></td>
+  </tr>
+  <tr>
+    <td class='cb2a-bg'><span data-qmd="$\Pr(B)$"></span></td>
+  </tr>
+</tbody>
+</table>
+```
+
+$$
+\iff
+$$
+
+```{=html}
+<table>
+<tbody>
+  <tr>
+    <td style="width: 0.1%; white-space: nowrap; padding: 0px !important; text-align: center !important;" class='cb1a-bg'><span data-qmd="$\Pr(A,B)$"></span></td>
+    <td align="center" style="text-align: center !important; width: 0.1% !important; white-space: nowrap !important; padding: 0px !important;"><span data-qmd="$=$"></span></td>
+    <td style="width: 0.1% !important; white-space: nowrap !important; padding: 0px !important;" class='cb3a-bg'><span data-qmd="$\Pr(A \mid B)$"></span></td>
+    <td align="center" style="width: 0.1% !important; white-space: nowrap !important; padding: 0px !important; text-align: center !important;"><span data-qmd="$\cdot$"></span></td>
+    <td style="width: 0.1% !important; white-space: nowrap !important; padding: 0px !important;" class='cb2a-bg'><span data-qmd="$\Pr(B)$"></span></td>
+  </tr>
+</tbody>
+</table>
+```
+
+:::
+
+::: {.notes}
+
+from which we can see that if we know the **conditional distribution** $\Pr(B \mid A)$ and the **marginal distribution** $\Pr(A)$, we can combine these (via multiplication) to obtain the **joint distribution** $\Pr(B,A)$.
+
+:::
+
+# Continuous World {data-stack-name="Continuous World"}
+
+## Moving to Continuous World
+
+* Intuitions from discrete world *do* translate into good intuitions for continuous world, in this case!
+* Can "move" discrete table into continuous space like Riemann sums "move" discrete sums into integrals:
+
+![](images/riemann.svg){fig-align="center"}
+
+## "Smoothing" Our Example
+
+* Instead of discrete $G$ with $\mathcal{R}_G = \{10, 11, 12\}$, we have a **continuous** $G$ with $\mathcal{R}_G = [10,12] \subset \mathbb{R}$ ("progress" through senior HS)
+* Instead of discrete $H$ with $\mathcal{R}_H = \{0, 1\}$, now we keep track of **continuous** "honors spectrum" $H$ with $\mathcal{R}_H = [0, 1] \subset \mathbb{R}$
+* A student near the beginning of 10th grade who is towards the "high end" of the "honors spectrum": ($G = 10.03$ and $H = 0.95$)
+
+## "Smoothing" Our Tables
+
+* **Sums** become **integrals**
+* **Re-normalization** (ensuring that **probability mass** values **sum to 1**) becomes ensuring that **probability density** values **integrate to 1**.
+* What comes in place of **frequency table**?
+* Answer in theory: **Joint pdf**
+* Answer in practice: Depends on the context 😬
+
+## Working Backwards Redux
+
+* While in **discrete world** we could easily provide a table, in **continuous world** we often/usually have to work backwards; we may just be given:
+* $G \sim \mathcal{U}(10, 12)$
+* $H \sim \ddot{\mathcal{N}}(\mu = 0.5, \sigma = 0.1, a = 0, b = 1)$, and
+* $G \perp H$ (so $\Pr(G \mid H) = \Pr(G), \Pr(H \mid G) = \Pr(H)$)
+* (i.e., marginal distributions = conditional distributions).
+
+## The Marginal pdfs of $G$ and $H$ {.crunch-title .crunch-ul}
+
+* Since we know $G \sim \mathcal{U}(10,12)$, we know (or we could look up) that $G$ has pdf
+
+$$
+f_G(v_G) = \frac{1}{12 - 10} = \frac{1}{2}.
+$$
+
+* $H$ has a slightly fancier distribution, the **truncated normal distribution**, but nonetheless a pdf we can derive from (a) knowing the pdf of the **normal** distribution and (b) knowing what we've just talked about regarding **conditional** distributions
+
+## The Truncated Normal Distribution {.smaller}
+
+* $\ddot{\mathcal{N}}$ may look scary, but $X \sim \ddot{\mathcal{N}}(\mu, \sigma, a, b)$ just means that $X$ can be "constructed from scratch" (similar to Problem 1 on the Lab 5 Assignment) as 
+
+$$
+X \sim \mathcal{N}(\mu, \sigma) \implies [X \mid a < X < b] \sim \ddot{\mathcal{N}}(\mu, \sigma, a, b)
+$$
+
+```{r}
+#| label: truncated-plots
+#| fig-cap: Adapted from [`simstudy` package documentation](https://www.rdatagen.net/post/generating-data-from-a-truncated-distribution/){target='_blank'}
+rnormt <- function(n, range, mu, s = 1) {
+  
+  # range is a vector of two values
+  
+  F.a <- pnorm(min(range), mean = mu, sd = s)
+  F.b <- pnorm(max(range), mean = mu, sd = s)
+  
+  u <- runif(n, min = F.a, max = F.b)
+  
+  qnorm(u, mean = mu, sd = s)
+  
+}
+library(data.table)
+library(simstudy)
+library(paletteer)
+
+defC <- defCondition(condition= "tt == 1", 
+                     formula = "rnormt(10000, c(-Inf, Inf), mu = 0, s = 3)")
+defC <- defCondition(defC, "tt == 2", 
+                     formula = "rnormt(10000, c(0, Inf), mu = 0, s = 3)")
+defC <- defCondition(defC, "tt == 3", 
+                     formula = "rnormt(10000, c(-3, 3.5), mu = 0, s = 3)")
+
+dd <- genData(30000)
+dd <- trtAssign(dd, nTrt = 3, grpName = "tt")
+dd <- addCondition(defC, dd, "x")
+
+dd[, tt := factor(tt, 
+     labels = c("No truncation", "Left truncation at 0", "Left and right truncation"))]
+
+ggplot(data = dd, aes(x = x, group = tt)) +
+  geom_histogram(aes(fill = tt), alpha = 1, binwidth = .2, boundary = 0) +
+  facet_grid(~tt) +
+  theme(panel.grid = element_blank(),
+        axis.title = element_blank(),
+        legend.position = "none") +
+  dsan_theme()
+```
+
+## The Truncated Normal pdf {.crunch-title .crunch-math .crunch-ul}
+
+* Since we see a **conditioning bar** on the previous slide, we can infer what the **pdf** of this **conditional distribution** would look like. If $X \sim \ddot{\mathcal{N}}(\mu, \sigma, a, b)$, then $X$ has pdf
+
+$$
+f_X(v) = \frac{\frac{1}{\sigma}\varphi\left(\frac{v_H-\mu}{\sigma}\right)}{\Phi\left(\frac{b-\mu}{\sigma}\right) - \Phi\left(\frac{a - \mu}{\sigma}\right)} \approx \frac{\Pr(X = v, a < X < b)}{\Pr(a < X < b)}
+$$
+
+* $\varphi$ is the pdf of $\mathcal{N}(0,1)$
+* $\Phi$ is the CDF of $\mathcal{N}(0,1)$
+
+::: {.aside}
+
+(note the consistent usage of lowercase letters to describe pdfs and capital letters to describe CDFs, even in Greek!)
+
+:::
+
+## Back to Working Backwards
+
+* By the *definition of independence*, we can obtain **joint pdf** $f_{G,H}(v_G, v_H)$ by **multiplying** the marginal pdf $f_G(v_G)$ and marginal pdf $f_H(v_H)$:
+
+$$
+\begin{align*}
+f_{G,H}(v_G, v_H) &= f_G(v_G) \cdot f_H(v_H) \\
+&= \frac{\frac{1}{2\sigma}\varphi\left(\frac{v_H-\mu}{\sigma}\right)}{\Phi\left(\frac{b-\mu}{\sigma}\right) - \Phi\left(\frac{a - \mu}{\sigma}\right)}
+\end{align*}
+$$
+
+## Moving Forwards Again {.crunch-title .math-90}
+
+* We've arrived at the case we had in discrete world, where we know the **joint distribution**!
+* We can **integrate** wherever we took **sums** in the discrete case to obtain **marginal** pdfs:
+
+$$
+\begin{align*}
+f_G(v_G) &= \int_{0}^{1}f_{G,H}(v_G,v_H)\mathrm{d}v_H = \frac{1}{2}, \\
+f_H(v_H) &= \int_{10}^{12}f_{G,H}(v_G, v_H)\mathrm{d}v_G = \frac{\frac{1}{\sigma}\varphi\left(\frac{v_H-\mu}{\sigma}\right)}{\Phi\left(\frac{b-\mu}{\sigma}\right) - \Phi\left(\frac{a - \mu}{\sigma}\right)}
+\end{align*}
+$$
+
+## Conditional Distributions in Continuous World
+
+And we can compute **conditional** pdfs by **renormalizing** so that the denominator is no longer the integral of the distribution over all its possible values (hence just the number $1$) but a **ratio** of **joint distribution** to **marginal distribution** values like the following:
+
+$$
+f_{H \mid G}(v_H | v_G) = \frac{f_{G,H}(v_G, v_H)}{f_G(v_G)}.
+$$
+
+## You Don't Have To Stare Helplessly At Scary Math!
+
+* Try to **link the continuous equations back to their simpler discrete forms**
+* Work with the discrete forms to develop intuition, then
+* Convert sums back into integrals once you're ready
+
+## A Concrete Strategy {.crunch-title .crunch-ul .crunch-figures .crunch-img .inline-90 .crunch-quarto-figure}
+
+* Start by **discretizing** ("binning") the possible values of a **continuous** RV to obtain a **discrete** RV:
+  * Split $[10,12]$ into three equal-length bins, $[0,1]$ into two equal-length bins
+  * **Simulate** $(G, H)$ pairs, sort into bins, plot joint / marginal / conditional distributions of **binned data**
+* As you make bins thinner and thinner...
+
+![](images/riemann.svg){fig-align="center"}
+
+# Thinking Through Specific Multivariate Distributions {data-stack-name="N > 2"}
+
+* From $2$ to $N$ variables!
+
+## The Multinoulli Distribution {.smaller .crunch-title .crunch-ul .crunch-math .inline-90}
+
+* This may seem like a weird/contrived distribution, but it's perfect for building intuition, as your first $N$-dimensional distribution ($N > 2$)
+* $\mathbf{X}$ is a six-dimensional **Vector-Valued** RV, so that
+    
+    $$
+    \mathbf{X} = (X_1, X_2, X_3, X_4, X_5, X_6),
+    $$
+    
+    where $\mathcal{R}_{X_1} = \{0, 1\}, \mathcal{R}_{X_2} = \{0, 1\}, \ldots, \mathcal{R}_{X_6} = \{0, 1\}$
+* But, $X_1, X_2, \ldots, X_6$ are **not independent!** In fact, they are so **dependent** that if one has the value $1$, the rest must have value $0$, so that we can infer the support of $\mathbf{X}$:
+    
+    $$
+    \begin{align*}
+    \mathcal{R}_{\mathbf{X}} = \{ &(1,0,0,0,0,0),(0,1,0,0,0,0),(0,0,1,0,0,0), \\
+    &(0,0,0,1,0,0),(0,0,0,0,1,0),(0,0,0,0,0,1)\}
+    \end{align*}
+    $$
+
+* Lastly, need to define the **probability** that $\mathbf{X}$ takes on any of these values. Let's say $\Pr(\mathbf{X} = \mathbf{v}) = \frac{1}{6}$ for all $\mathbf{v} \in \mathcal{R}_{\mathbf{X}}$. Do we see the structure behind this contrived case?
+* (For math major friends, there is an isomorphism afoot... For the rest, it's an extremely inefficient way to model outcomes from **rolling a fair die**)
+
+## The Multivariate Normal Distribution {.smaller .crunch-title .crunch-ul .crunch-ul .math-90 .crunch-math}
+
+* We've already seen the matrix notation for writing the **parameters** of this distribution: $\mathbf{X}_{[k \times 1]} \sim \mathcal{N}_k(\boldsymbol\mu_{[k \times 1]}, \Sigma_{[k \times k]})$
+* Now we get to crack open the matrix notation for writing its **pdf**:
+
+$$
+f_\mathbf{X}(\mathbf{v}_{[k \times 1]}) = \underbrace{\left(\frac{1}{\sqrt{2\pi}}\right)^k \frac{1}{\sqrt{\det(\Sigma)}}}_{\text{Normalizing constants}} \exp\left(-\frac{1}{2}\underbrace{(\mathbf{v} - \boldsymbol\mu)^\top \Sigma^{-1} (\mathbf{v} - \boldsymbol\mu)}_{\text{Quadratic form}}\right)
+$$
+
+* Try to squint your eyes while looking at the above, and compare with the pdf we've seen for 1D $\mathcal{N}(\mu,\sigma)$ (W05) and the structure you've seen for 2D $\Sigma$ (W06):
+
+::: {layout="[1,1]"}
+
+$$
+f_X(v) = \frac{1}{\sigma\sqrt{2\pi}}\bigexp{-\frac{1}{2}\left(\frac{v - \mu}{\sigma}\right)^2}
+$$
+
+$$
+\begin{align*}
+\mathbf{\Sigma} &= \begin{bmatrix}\sigma_1^2 & \rho\sigma_1\sigma_2 \\ \rho\sigma_2\sigma_1 & \sigma_2^2\end{bmatrix} \\[0.1em]
+\implies \det(\Sigma) &= \sigma_1^2\sigma_2^2 - \rho^2\sigma_1^2\sigma_2^2 \\
+&= \sigma_1^2\sigma_2^2(1-\rho^2)
+\end{align*}
+$$
+
+:::
+
+## Quadratic Forms {.smaller .smaller-math}
+
+* Quadratic forms will seem scary until someone forces you to write out the matrix multiplication!
+* Start with the 1D case: $\mathbf{v} = [v_1]$, $\boldsymbol\mu = [\mu_1]$, $\Sigma = [\sigma^2]$. Then
+
+$$
+(\mathbf{v} - \boldsymbol\mu)^\top \Sigma^{-1} (\mathbf{v - \boldsymbol\mu}) = (v_1 - \mu_1)\frac{1}{\sigma^2}(v_1 - \mu_1) = \left(\frac{v_1-\mu_1}{\sigma}\right)^2.
+$$
+
+## The 2D Case {.smaller .math-80 .crunch-title .crunch-ul .crunch-lists .crunch-math}
+
+* Let $\mathbf{v} = \left[\begin{smallmatrix}v_1 \\ v_2\end{smallmatrix}\right]$, $\boldsymbol\mu = \left[ \begin{smallmatrix}\mu_1 \\ \mu_2 \end{smallmatrix}\right]$, $\Sigma$ as in previous slide. Then $\mathbf{v} - \boldsymbol\mu = \left[ \begin{smallmatrix} v_1 - \mu_1 \\ v_2 - \mu_2 \end{smallmatrix} \right]$.
+* Using what we know about $2 \times 2$ matrix inversion,
+
+$$
+\Sigma^{-1} = \frac{1}{\det(\Sigma)}\left[ \begin{smallmatrix} \sigma_2^2 & -\rho \sigma_2\sigma_1 \\ -\rho \sigma_1\sigma_2 & \sigma_1^2\end{smallmatrix} \right] = \frac{1}{\sigma_1^2\sigma_2^2(1-\rho^2)}\left[ \begin{smallmatrix} \sigma_2^2 & -\rho \sigma_2\sigma_1 \\ -\rho \sigma_1\sigma_2 & \sigma_1^2\end{smallmatrix} \right]
+$$
+
+* So we can write everything as just a bunch of matrix multiplications:
+
+$$
+\begin{align*}
+&(\mathbf{v} - \boldsymbol\mu)^\top \Sigma^{-1} (\mathbf{v - \boldsymbol\mu}) = \frac{1}{\sigma_1^2\sigma_2^2(1-\rho^2)}\begin{bmatrix}v_1 - \mu_1 & v_2 - \mu_2\end{bmatrix} \cdot \begin{bmatrix} \sigma_2^2 & -\rho \sigma_2\sigma_1 \\ -\rho \sigma_1\sigma_2 & \sigma_1^2\end{bmatrix} \cdot \begin{bmatrix}v_1 - \mu_1 \\ v_2 - \mu_2\end{bmatrix} \\
+&= \frac{1}{\sigma_1^2\sigma_2^2(1-\rho^2)}\begin{bmatrix}(v_1-\mu_1)\sigma_2^2 - (v_2-\mu_2)\rho\sigma_1\sigma_2 & (v_2-\mu_2)\sigma_1^2 - (v_1-\mu_1)\rho\sigma_2\sigma_1 \end{bmatrix}\cdot \begin{bmatrix}v_1 - \mu_1 \\ v_2 - \mu_2\end{bmatrix} \\
+&= \frac{1}{\sigma_1^2\sigma_2^2(1-\rho^2)}\left( (v_1-\mu_1)^2\sigma_2^2 - (v_1-\mu_1)(v_1-\mu_2)\sigma_1\sigma_2 + (v_2-\mu_2)^2\sigma_1^2 - (v_1-\mu_1)(v_2-\mu_2)\sigma_2\sigma_1 \right) \\
+&= \boxed{\frac{1}{1-\rho^2}\left( \left(\frac{v_1-\mu_1}{\sigma_1}\right)^2 + \left(\frac{v_2-\mu_2}{\sigma_2}\right)^2 - 2\rho\frac{(v_1-\mu_1)(v_2-\mu_2)}{\sigma_1\sigma_2} \right)}
+\end{align*}
+$$
+
+## The 2D Case In Its FINAL FORM {.smaller .math-80}
+
+$$
+f_{\mathbf{X}}(\mathbf{v}) = C\bigexp{-\frac{1}{2}\frac{1}{1-\rho^2}\left( \left(\frac{v_1-\mu_1}{\sigma_1}\right)^2 + \left(\frac{v_2-\mu_2}{\sigma_2}\right)^2 - 2\rho\frac{(v_1-\mu_1)(v_2-\mu_2)}{\sigma_1\sigma_2} \right)}
+$$
+
+where
+
+$$
+C = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}.
+$$
