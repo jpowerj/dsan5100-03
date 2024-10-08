@@ -55,7 +55,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -284,7 +304,7 @@ window.Quarto = {
     </ul>
     </div>
 <div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
-<p><em>Updated 2024-10-07, 05:31:52 AM</em></p>
+<p><em>Updated 2024-10-08, 06:32:41 PM</em></p>
 </div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -319,6 +339,8 @@ window.Quarto = {
   <li><a href="#moving-to-continuous-world" id="toc-moving-to-continuous-world" class="nav-link" data-scroll-target="#moving-to-continuous-world">Moving to Continuous World</a></li>
   <li><a href="#smoothing-our-example" id="toc-smoothing-our-example" class="nav-link" data-scroll-target="#smoothing-our-example">“Smoothing” Our Example</a></li>
   <li><a href="#smoothing-our-tables" id="toc-smoothing-our-tables" class="nav-link" data-scroll-target="#smoothing-our-tables">“Smoothing” Our Tables</a></li>
+  <li><a href="#continuous-joint-pdfs" id="toc-continuous-joint-pdfs" class="nav-link" data-scroll-target="#continuous-joint-pdfs">Continuous Joint pdfs</a></li>
+  <li><a href="#conditional-pdfs" id="toc-conditional-pdfs" class="nav-link" data-scroll-target="#conditional-pdfs">Conditional pdfs</a></li>
   <li><a href="#working-backwards-redux" id="toc-working-backwards-redux" class="nav-link" data-scroll-target="#working-backwards-redux">Working Backwards Redux</a></li>
   <li><a href="#the-marginal-pdfs-of-g-and-h" id="toc-the-marginal-pdfs-of-g-and-h" class="nav-link" data-scroll-target="#the-marginal-pdfs-of-g-and-h">The Marginal pdfs of <span class="math inline">\(G\)</span> and <span class="math inline">\(H\)</span></a></li>
   <li><a href="#the-truncated-normal-distribution" id="toc-the-truncated-normal-distribution" class="nav-link" data-scroll-target="#the-truncated-normal-distribution">The Truncated Normal Distribution</a></li>
@@ -1222,6 +1244,37 @@ Table&nbsp;3: Table from prev slide with all values <strong>normalized</strong> 
 <li>Answer in practice: Depends on the context 😬</li>
 </ul>
 </section>
+<section id="continuous-joint-pdfs" class="level2 smaller crunch-title">
+<h2 class="smaller crunch-title anchored" data-anchor-id="continuous-joint-pdfs">Continuous Joint pdfs</h2>
+<ul>
+<li>The <strong>volume</strong> of this <strong>Hershey Kiss</strong> is exactly <span class="math inline">\(1\)</span></li>
+<li>Integrating over a region <span class="math inline">\(C\)</span> gives us</li>
+</ul>
+<p><span class="math display">\[
+\frac{\text{Volume}(\{(X,Y) \mid (X,Y) \in C\})}{\text{Volume}(\text{Hershey Kiss})} = \Pr((X,Y) \in C)
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/fig-3-11.svg" class="img-fluid figure-img"></p>
+<figcaption>Figure 3.11 from <span class="citation" data-cites="degroot_probability_2013">DeGroot and Schervish (<a href="#ref-degroot_probability_2013" role="doc-biblioref">2013</a>)</span></figcaption>
+</figure>
+</div>
+</section>
+<section id="conditional-pdfs" class="level2 smaller crunch-title crunch-li">
+<h2 class="smaller crunch-title crunch-li anchored" data-anchor-id="conditional-pdfs">Conditional pdfs</h2>
+<ul>
+<li>Now, if we <strong>learn that <span class="math inline">\(Y = y_0\)</span></strong>, can take “slice” at <span class="math inline">\(y = y_0\)</span></li>
+<li><strong>Total area</strong> of this slice is <strong>not</strong> <span class="math inline">\(1\)</span>, so <span class="math inline">\(f_{X,Y}(x, y_0)\)</span> is <strong>not</strong> a valid pdf</li>
+<li><strong>Dividing by total area of slice</strong> would generate a valid pdf. What is this area? <span class="math inline">\(f_X(y_0)\)</span></li>
+<li><span class="math inline">\(\implies\)</span> <span class="math inline">\(f_{X \mid Y = y_0}(x \mid y_0) = \frac{f_{X,Y}(x, y_0)}{f_X(y_0)}\)</span> <strong>is</strong> valid (conditional) pdf</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/fig-3-20.svg" class="img-fluid figure-img"></p>
+<figcaption>Figure 3.20 from <span class="citation" data-cites="degroot_probability_2013">DeGroot and Schervish (<a href="#ref-degroot_probability_2013" role="doc-biblioref">2013</a>)</span></figcaption>
+</figure>
+</div>
+</section>
 <section id="working-backwards-redux" class="level2">
 <h2 class="anchored" data-anchor-id="working-backwards-redux">Working Backwards Redux</h2>
 <ul>
@@ -1474,10 +1527,15 @@ C = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}.
 \]</span></p>
 
 
+
 </section>
 </section>
 
-</main> <!-- /main -->
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-degroot_probability_2013" class="csl-entry" role="listitem">
+DeGroot, Morris H., and Mark J. Schervish. 2013. <em>Probability and <span>Statistics</span></em>. <span>Pearson Education</span>.
+</div>
+</div></section></div></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {

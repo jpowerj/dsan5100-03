@@ -834,6 +834,26 @@ from which we can see that if we know the **conditional distribution** $\Pr(B \m
 * Answer in theory: **Joint pdf**
 * Answer in practice: Depends on the context 😬
 
+## Continuous Joint pdfs {.smaller .crunch-title}
+
+* The **volume** of this **Hershey Kiss** is exactly $1$
+* Integrating over a region $C$ gives us
+
+$$
+\frac{\text{Volume}(\{(X,Y) \mid (X,Y) \in C\})}{\text{Volume}(\text{Hershey Kiss})} = \Pr((X,Y) \in C)
+$$
+
+![Figure 3.11 from @degroot_probability_2013](images/fig-3-11.svg){fig-align="center"}
+
+## Conditional pdfs {.smaller .crunch-title .crunch-li}
+
+* Now, if we **learn that $Y = y_0$**, can take "slice" at $y = y_0$
+* **Total area** of this slice is **not** $1$, so $f_{X,Y}(x, y_0)$ is **not** a valid pdf
+* **Dividing by total area of slice** would generate a valid pdf. What is this area? $f_X(y_0)$
+* $\implies$ $f_{X \mid Y = y_0}(x \mid y_0) = \frac{f_{X,Y}(x, y_0)}{f_X(y_0)}$ **is** valid (conditional) pdf
+
+![Figure 3.20 from @degroot_probability_2013](images/fig-3-20.svg){fig-align="center"}
+
 ## Working Backwards Redux
 
 * While in **discrete world** we could easily provide a table, in **continuous world** we often/usually have to work backwards; we may just be given:

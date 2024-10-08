@@ -30,7 +30,27 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
-  </style>
+    /* CSS for citations */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+      margin-bottom: 0em;
+    }
+    .hanging-indent div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
   <link rel="stylesheet" href="../dsan-globals/jjstyles.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -1198,6 +1218,27 @@ Table&nbsp;3: Table from prev slide with all values <strong>normalized</strong> 
 <li>Answer in practice: Depends on the context 😬</li>
 </ul>
 </section>
+<section id="continuous-joint-pdfs" class="slide level2 smaller crunch-title">
+<h2>Continuous Joint pdfs</h2>
+<ul>
+<li>The <strong>volume</strong> of this <strong>Hershey Kiss</strong> is exactly <span class="math inline">\(1\)</span></li>
+<li>Integrating over a region <span class="math inline">\(C\)</span> gives us</li>
+</ul>
+<p><span class="math display">\[
+\frac{\text{Volume}(\{(X,Y) \mid (X,Y) \in C\})}{\text{Volume}(\text{Hershey Kiss})} = \Pr((X,Y) \in C)
+\]</span></p>
+
+<img data-src="images/fig-3-11.svg" class="r-stretch quarto-figure-center"><p class="caption">Figure 3.11 from <span class="citation" data-cites="degroot_probability_2013">DeGroot and Schervish (<a href="#/the-2d-case-in-its-final-form" role="doc-biblioref" onclick="">2013</a>)</span></p></section>
+<section id="conditional-pdfs" class="slide level2 smaller crunch-title crunch-li">
+<h2>Conditional pdfs</h2>
+<ul>
+<li>Now, if we <strong>learn that <span class="math inline">\(Y = y_0\)</span></strong>, can take “slice” at <span class="math inline">\(y = y_0\)</span></li>
+<li><strong>Total area</strong> of this slice is <strong>not</strong> <span class="math inline">\(1\)</span>, so <span class="math inline">\(f_{X,Y}(x, y_0)\)</span> is <strong>not</strong> a valid pdf</li>
+<li><strong>Dividing by total area of slice</strong> would generate a valid pdf. What is this area? <span class="math inline">\(f_X(y_0)\)</span></li>
+<li><span class="math inline">\(\implies\)</span> <span class="math inline">\(f_{X \mid Y = y_0}(x \mid y_0) = \frac{f_{X,Y}(x, y_0)}{f_X(y_0)}\)</span> <strong>is</strong> valid (conditional) pdf</li>
+</ul>
+
+<img data-src="images/fig-3-20.svg" class="r-stretch quarto-figure-center"><p class="caption">Figure 3.20 from <span class="citation" data-cites="degroot_probability_2013">DeGroot and Schervish (<a href="#/the-2d-case-in-its-final-form" role="doc-biblioref" onclick="">2013</a>)</span></p></section>
 <section id="working-backwards-redux" class="slide level2">
 <h2>Working Backwards Redux</h2>
 <ul>
@@ -1390,7 +1431,7 @@ f_X(v) = \frac{1}{\sigma\sqrt{2\pi}}\bigexp{-\frac{1}{2}\left(\frac{v - \mu}{\si
 \end{align*}
 \]</span></p>
 </section>
-<section id="the-2d-case-in-its-final-form" class="slide level2 smaller math-80">
+<section id="the-2d-case-in-its-final-form" class="slide level2 smaller math-80 scrollable">
 <h2>The 2D Case In Its FINAL FORM</h2>
 <p><span class="math display">\[
 f_{\mathbf{X}}(\mathbf{v}) = C\bigexp{-\frac{1}{2}\frac{1}{1-\rho^2}\left( \left(\frac{v_1-\mu_1}{\sigma_1}\right)^2 + \left(\frac{v_2-\mu_2}{\sigma_2}\right)^2 - 2\rho\frac{(v_1-\mu_1)(v_2-\mu_2)}{\sigma_1\sigma_2} \right)}
@@ -1403,6 +1444,11 @@ C = \frac{1}{2\pi\sigma_1\sigma_2\sqrt{1-\rho^2}}.
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>DSAN 5100-03 W07: Joint, Marginal, Conditional Distributions</p>
+</div>
+</div>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-degroot_probability_2013" class="csl-entry" role="listitem">
+DeGroot, Morris H., and Mark J. Schervish. 2013. <em>Probability and <span>Statistics</span></em>. <span>Pearson Education</span>.
 </div>
 </div>
 </section></section>
