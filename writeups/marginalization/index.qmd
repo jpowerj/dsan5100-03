@@ -2,7 +2,8 @@
 title: "Marginal Distributions and \"Marginalizing Out\" A Variable"
 author: "Jeff Jacobs"
 institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>jj1088@georgetown.edu</a>"
-date: last-modified
+weeknum: 6
+assignment: "Lab 5"
 categories:
   - "Extra Writeups"
 sidebar: mainnav
@@ -12,7 +13,7 @@ format:
     cache: false
 ---
 
-My <a href='https://jjacobs.me/dsan5100-03/463a01339cf0f456ba54a1849df50d1a22c247e3/writeups/deriving-pdf/' target='_blank'>last writeup</a> was focused on **how to get started** on Problem 1 of the <a href='https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-5/lab-5-assignment.html' target='_blank'>Lab 5 Assignment</a>, so in this one we will focus on how to do the parts towards the end of this problem: namely, figuring out what **marginal distributions** are, and what it means to **"marginalize out"** a variable, to go from some joint pdf $f_{X,Y}(x,y)$ to a **marginal pdf** $f_X(x)$ (by "marginalizing out" the variable $Y$) or $f_Y(y)$ (by "marginalizing out" the variable $X$).
+My <a href='https://jjacobs.me/dsan5100-03/463a01339cf0f456ba54a1849df50d1a22c247e3/writeups/deriving-pdf/' target='_blank'>last writeup</a> was focused on **how to get started** on Problem 1 of your Lab 5 Assignment, so in this one we will focus on how to do the parts towards the end of this problem: namely, figuring out what **marginal distributions** are, and what it means to **"marginalize out"** a variable, to go from some joint pdf $f_{X,Y}(x,y)$ to a **marginal pdf** $f_X(x)$ (by "marginalizing out" the variable $Y$) or $f_Y(y)$ (by "marginalizing out" the variable $X$).
 
 ## Marginalization In Discrete World
 

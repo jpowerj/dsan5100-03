@@ -81,9 +81,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-title','listing-date','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
+      valueNames: ['listing-title','listing-weeknum','listing-assignment',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-title-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author"],
+      searchColumns: ["listing-title","listing-author"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -221,6 +221,12 @@ window.Quarto = {
  <span class="menu-text">Week 7: Oct 8</span></a>
   </div>
 </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w08/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 8: Oct 15</span></a>
+  </div>
+</li>
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
@@ -280,13 +286,13 @@ window.Quarto = {
     </ul>
     </div>
 <div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
-<p><em>Updated 2024-10-08, 06:32:41 PM</em></p>
+<p><em>Updated 2024-10-12, 08:22:02 PM</em></p>
 </div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(7)</span></div><div class="category" data-category="Extra Writeups">Extra Writeups <span class="quarto-category-count">(7)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(8)</span></div><div class="category" data-category="Clarifications">Clarifications <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Extra Writeups">Extra Writeups <span class="quarto-category-count">(7)</span></div></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
@@ -320,12 +326,6 @@ window.Quarto = {
      <select id="listing-listing-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-listing'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
        <option value="" disabled="" selected="" hidden="">Order By</option>
        <option value="index" data-direction="asc">Default</option>
-         <option value="listing-date-sort" data-direction="asc">
-          Last Updated - Oldest
-        </option>
-         <option value="listing-date-sort" data-direction="desc">
-          Last Updated - Newest
-        </option>
          <option value="listing-title-sort" data-direction="asc">
           Title
         </option>
@@ -343,96 +343,108 @@ window.Quarto = {
 <a class="sort" data-sort="listing-title-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Title</a>
 </th>
 <th>
-<a class="sort" data-sort="listing-date-sort" onclick="if (this.classList.contains('sort-asc')) { this.classList.add('sort-desc'); this.classList.remove('sort-asc') } else { this.classList.add('sort-asc'); this.classList.remove('sort-desc')} return false;">Last Updated</a>
+Week
 </th>
 <th>
-Category
+Assignment
 </th>
 </tr>
 </thead>
 <tbody class="list">
-<tr data-index="0" data-categories="Extra Writeups" data-listing-date-sort="1728122822000" data-listing-file-modified-sort="1728122822847" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1550" data-listing-title-sort="Deriving Conditional Expectation from Conditional Probability + Expectation" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="0" data-categories="Clarifications" data-listing-file-modified-sort="1728778902380" data-listing-reading-time-sort="3" data-listing-word-count-sort="437" data-listing-title-sort="Lab 6 Clarifications" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
-<a href="../writeups/conditional-expectation/index.html" class="title listing-title">Deriving Conditional Expectation from Conditional Probability + Expectation</a>
+<a href="../writeups/lab-6-clarifications/index.html" class="title listing-title">Lab 6 Clarifications</a>
 </td>
 <td>
-<span class="listing-date">Saturday, October 5, 2024</span>
+<span class="listing-weeknum">7</span>
 </td>
 <td>
-<span class="listing-categories">Extra Writeups</span>
+<span class="listing-assignment">Lab 6</span>
 </td>
 </tr>
-<tr data-index="1" data-categories="Extra Writeups" data-listing-date-sort="1726795410000" data-listing-file-modified-sort="1726795410776" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="16" data-listing-word-count-sort="3037" data-listing-title-sort="Continuous Probability and the Order of Integration" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<a href="../writeups/order-of-integration/index.html" class="title listing-title">Continuous Probability and the Order of Integration</a>
-</td>
-<td>
-<span class="listing-date">Thursday, September 19, 2024</span>
-</td>
-<td>
-<span class="listing-categories">Extra Writeups</span>
-</td>
-</tr>
-<tr data-index="2" data-categories="Extra Writeups" data-listing-date-sort="1726795311000" data-listing-file-modified-sort="1726795311230" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="703" data-listing-title-sort="Two Ways of Sampling from a Data Frame" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<a href="../writeups/sampling-from-df/index.html" class="title listing-title">Two Ways of Sampling from a Data Frame</a>
-</td>
-<td>
-<span class="listing-date">Thursday, September 19, 2024</span>
-</td>
-<td>
-<span class="listing-categories">Extra Writeups</span>
-</td>
-</tr>
-<tr data-index="3" data-categories="Extra Writeups" data-listing-date-sort="1725325702000" data-listing-file-modified-sort="1725325702791" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1579" data-listing-title-sort="Two Ways to Compute Probabilities in R/Python" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<a href="../writeups/computing-probabilities/index.html" class="title listing-title">Two Ways to Compute Probabilities in R/Python</a>
-</td>
-<td>
-<span class="listing-date">Monday, September 2, 2024</span>
-</td>
-<td>
-<span class="listing-categories">Extra Writeups</span>
-</td>
-</tr>
-<tr data-index="4" data-categories="Extra Writeups" data-listing-date-sort="1725325618000" data-listing-file-modified-sort="1725325618277" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="9" data-listing-word-count-sort="1668" data-listing-title-sort="Deriving a pdf from Scratch" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="1" data-categories="Extra Writeups" data-listing-file-modified-sort="1728776031000" data-listing-reading-time-sort="9" data-listing-word-count-sort="1668" data-listing-title-sort="Deriving a pdf from Scratch" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <a href="../writeups/deriving-pdf/index.html" class="title listing-title">Deriving a pdf from Scratch</a>
 </td>
 <td>
-<span class="listing-date">Monday, September 2, 2024</span>
+<span class="listing-weeknum">6</span>
 </td>
 <td>
-<span class="listing-categories">Extra Writeups</span>
+<span class="listing-assignment">Lab 5</span>
 </td>
 </tr>
-<tr data-index="5" data-categories="Extra Writeups" data-listing-date-sort="1725067164000" data-listing-file-modified-sort="1725067164148" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="15" data-listing-word-count-sort="2868" data-listing-title-sort="Simulating Sample Spaces With Tibbles" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
- if (href) { window.location=href ; return false; }">
-<td>
-<a href="../writeups/sample-space-tibbles/index.html" class="title listing-title">Simulating Sample Spaces With Tibbles</a>
-</td>
-<td>
-<span class="listing-date">Friday, August 30, 2024</span>
-</td>
-<td>
-<span class="listing-categories">Extra Writeups</span>
-</td>
-</tr>
-<tr data-index="6" data-categories="Extra Writeups" data-listing-date-sort="1725067148000" data-listing-file-modified-sort="1725067148855" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="17" data-listing-word-count-sort="3305" data-listing-title-sort="Marginal Distributions and &quot;Marginalizing Out&quot; A Variable" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
+<tr data-index="2" data-categories="Extra Writeups" data-listing-file-modified-sort="1728776081372" data-listing-reading-time-sort="17" data-listing-word-count-sort="3303" data-listing-title-sort="Marginal Distributions and &quot;Marginalizing Out&quot; A Variable" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
  if (href) { window.location=href ; return false; }">
 <td>
 <a href="../writeups/marginalization/index.html" class="title listing-title">Marginal Distributions and “Marginalizing Out” A Variable</a>
 </td>
 <td>
-<span class="listing-date">Friday, August 30, 2024</span>
+<span class="listing-weeknum">6</span>
 </td>
 <td>
-<span class="listing-categories">Extra Writeups</span>
+<span class="listing-assignment">Lab 5</span>
+</td>
+</tr>
+<tr data-index="3" data-categories="Extra Writeups" data-listing-file-modified-sort="1728775989153" data-listing-reading-time-sort="16" data-listing-word-count-sort="3037" data-listing-title-sort="Continuous Probability and the Order of Integration" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
+ if (href) { window.location=href ; return false; }">
+<td>
+<a href="../writeups/order-of-integration/index.html" class="title listing-title">Continuous Probability and the Order of Integration</a>
+</td>
+<td>
+<span class="listing-weeknum">6</span>
+</td>
+<td>
+<span class="listing-assignment">Lab 5</span>
+</td>
+</tr>
+<tr data-index="4" data-categories="Extra Writeups" data-listing-file-modified-sort="1728776151579" data-listing-reading-time-sort="8" data-listing-word-count-sort="1550" data-listing-title-sort="Deriving Conditional Expectation from Conditional Probability + Expectation" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
+ if (href) { window.location=href ; return false; }">
+<td>
+<a href="../writeups/conditional-expectation/index.html" class="title listing-title">Deriving Conditional Expectation from Conditional Probability + Expectation</a>
+</td>
+<td>
+<span class="listing-weeknum">6</span>
+</td>
+<td>
+<span class="listing-assignment">Lab 5</span>
+</td>
+</tr>
+<tr data-index="5" data-categories="Extra Writeups" data-listing-file-modified-sort="1728776233839" data-listing-reading-time-sort="15" data-listing-word-count-sort="2865" data-listing-title-sort="Simulating Sample Spaces With Tibbles" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
+ if (href) { window.location=href ; return false; }">
+<td>
+<a href="../writeups/sample-space-tibbles/index.html" class="title listing-title">Simulating Sample Spaces With Tibbles</a>
+</td>
+<td>
+<span class="listing-weeknum">5</span>
+</td>
+<td>
+<span class="listing-assignment">Quiz 1</span>
+</td>
+</tr>
+<tr data-index="6" data-categories="Extra Writeups" data-listing-file-modified-sort="1728776123778" data-listing-reading-time-sort="8" data-listing-word-count-sort="1579" data-listing-title-sort="Two Ways to Compute Probabilities in R/Python" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
+ if (href) { window.location=href ; return false; }">
+<td>
+<a href="../writeups/computing-probabilities/index.html" class="title listing-title">Two Ways to Compute Probabilities in R/Python</a>
+</td>
+<td>
+<span class="listing-weeknum">3</span>
+</td>
+<td>
+<span class="listing-assignment">Labs 1-3</span>
+</td>
+</tr>
+<tr data-index="7" data-categories="Extra Writeups" data-listing-file-modified-sort="1728776212996" data-listing-reading-time-sort="4" data-listing-word-count-sort="703" data-listing-title-sort="Two Ways of Sampling from a Data Frame" data-listing-filename-sort="index.qmd" onclick="href = this.querySelector('a').getAttribute('href');
+ if (href) { window.location=href ; return false; }">
+<td>
+<a href="../writeups/sampling-from-df/index.html" class="title listing-title">Two Ways of Sampling from a Data Frame</a>
+</td>
+<td>
+<span class="listing-weeknum">3</span>
+</td>
+<td>
+<span class="listing-assignment">Labs 1-3</span>
 </td>
 </tr>
 </tbody>

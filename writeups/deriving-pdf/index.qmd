@@ -2,7 +2,8 @@
 title: "Deriving a pdf from Scratch"
 author: "Jeff Jacobs"
 institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>jj1088@georgetown.edu</a>"
-date: last-modified
+weeknum: 6
+assignment: "Lab 5"
 categories:
   - "Extra Writeups"
 sidebar: mainnav

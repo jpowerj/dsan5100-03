@@ -1,0 +1,484 @@
+---
+title: "Week 8: Markov Models"
+subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
+author: "Jeff Jacobs"
+institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
+date: 2024-10-15
+date-format: full
+lecnum: 8
+bibliography: "../_DSAN5100.bib"
+categories:
+  - "Class Sessions"
+format:
+  revealjs:
+    cache: false
+    css: "../dsan-globals/jjstyles.css"
+    footer: "DSAN 5100-03 W08: Markov Models"
+    output-file: slides.html
+    df-print: kable
+    code-fold: true
+    html-math-method: mathjax
+    scrollable: true
+    slide-number: true
+    number-sections: false
+    link-external-icon: true
+    link-external-newwindow: true
+    theme: [default]
+    revealjs-plugins:
+      - simplemenu
+    simplemenu:
+      flat: true
+      barhtml:
+        header: "<div class='menubar'><span style='position: absolute; left: 8; padding-left: 8px;'><a href='./index.html'>&larr; Return to Notes</a></span><ul class='menu'></ul></div>"
+      scale: 0.5
+    include-in-header:
+      text: "<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous'><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>"
+  html:
+    cache: false
+    output-file: index.html
+    df-print: kable
+    warning: false
+    link-external-icon: true
+    link-external-newwindow: true
+---
+
+::: {.content-visible unless-format="revealjs"}
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window &rarr;</a>
+</center>
+
+:::
+
+# Motivation {data-stack-name="Motivation"}
+
+
+
+::: {.hidden}
+
+```{r}
+#| label: r-source-globals
+source("../dsan-globals/_globals.r")
+```
+
+{{< include ../_globals-tex.qmd >}}
+
+:::
+
+## The Course So Far {.crunch-center .crunch-lists .crunch-title .crunch-ul}
+
+* **Logic**: Reasoning about *T/F statements* using **and** and **or**
+* $\rightarrow$ **Set Theory**: Reasoning about *collections of objects* and their **union** and **intersection**
+
+<center class='smaller-text'><i class='bi bi-arrow-up pe-1'></i>Deterministic<i class='bi bi-arrow-up ps-1'></i></center>
+<hr style='margin-bottom: 1px !important; margin-top: 1px !important;'>
+<center class='smaller-text'><i class='bi bi-arrow-down pe-2'></i>Probabilistic<i class='bi bi-arrow-down ps-2'></i></center>
+
+* $\rightarrow$ **Probability**: Assigning "likelihood values" in $[0,1]$ to logical/set-theoretic statements about **outcomes**
+* $\rightarrow$ **Random Variables**: Doing **math** (beyond **and** and **or**) with the probabilities of these uncertain outcomes
+* All have been **reasoning about uncertainty** in more and more complex ways!
+
+## The New Dimension: Evolution Through *Time*
+
+* **Markov models** are a stepping-stone towards full-on **time series analysis**: reasoning about uncertainty **over time**
+* So why are **time series** the topic of an entire course, while **Markov models** only the topic of one week in DSAN5000?
+
+## Recall: Definition of Conditional Probability
+
+$$
+\Pr(A \mid B) \definedas \frac{\Pr(A, B)}{\Pr(B)} \genfrac{}{}{0pt}{}{\leftarrow A\text{ and }B\text{ happen}}{\leftarrow \text{In world where }\Omega = B}
+$$
+
+## The Markov Property
+
+$$
+P(\text{future} \mid \text{present}, {\color{orange}\text{past}}) = P(\text{future} \mid \text{present})
+$$
+
+![](images/markov_property.svg){fig-align="center"}
+
+## The Markov Assumption
+
+Often stated in many different (confusing) ways, but think of **anterograde amnesia**:
+
+<video width="100%" height="60%" controls>
+  <source src="https://jpj.georgetown.domains/dsan5100-scratch/memento_chase.mp4" type="video/mp4">
+</video>
+
+## Keeping Track of States
+
+* Since Markov models come more from engineering than "pure" math/probability, we have "fancier" objects we're keeping track of, rather than just Random Variables
+* We now keep track of the **state** of a **system** over time: this could be a single RV, but could be a **collection** of multiple (potentially *dependent*) RVs
+
+## What Information Should We Keep Track Of? {.smaller .title-12 .crunch-title}
+
+* Sometimes answer seems "obvious", lulls us into false sense of confidence (that we don't have to think too hard about it)[^complexity]
+
+| System | State Space |
+| - | - |
+| Chess | Position of each piece, whose turn it is |
+| Indoor Robot | Model of room + objects inside it |
+| Predator-Prey Ecosystem | Relative species populations |
+| Move Left/Move Right Game | ? |
+| Weather Prediction | ? |
+| Music | ? |
+
+* Tension between **too little** information (cannot model phenomena of interest) vs. **too much** information (solving model becomes intractable)
+
+[^complexity]: To snap out of this lull, keep in mind that engineering/nonlinear dynamical systems programs have <a href='https://www.youtube.com/watch?v=rXnZ-HFoOz8&list=PLF0b3ThojznTzAA7bfLWh4RKzRrwNF4L0' target='_blank'>entire courses</a> **just** on state space representations
+
+## Modeling Music: Where is the Downbeat? {.smaller .title-12 .crunch-figures .crunch-images .crunch-quarto-layout-panel .nostretch}
+
+::: {layout-ncol=2}
+
+{{< video https://www.youtube.com/watch?v=xe_iCkFsQKE width="100%" height="300" >}}
+
+{{< video https://www.youtube.com/watch?v=XbU9UUwxBxA width="100%" height="300" >}}
+
+:::
+
+::: {.music-automata}
+::: {layout-ncol=3}
+
+![](images/automata_34.svg){fig-align="center" width="300"}
+
+![](images/automata_44.svg){fig-align="center" width="350"}
+
+![](images/automata_54.svg){fig-align="center" width="350"}
+
+:::
+:::
+
+## State Space Choice $\rightarrow$ Information Loss {.smaller .nostretch .title-12}
+
+* Recall the Move Left/Move Right Game (especially from <a href='https://jjacobs.me/dsan5100-03/463a01339cf0f456ba54a1849df50d1a22c247e3/writeups/lab-4-prep/DSAN5100_Lab_4_Prep.html' target='_blank'>Lab 4 Prep</a>)
+
+::: columns
+::: {.column width="45%"}
+
+![](images/random_walk_wide.svg){fig-align="center"}
+
+:::
+::: {.column width="55%"}
+
+<center>
+Possible State Spaces:
+</center>
+
+| History vector | Position | Steps | #L | #R |
+| - | -:|:-:|:-:|:-:|
+| $()$ | $x = 0$ | 0 | 0 | 0 |
+| $(L,R)$ | $x = 0$ | 2 | 1 | 1 |
+| $(R,L)$ | $x = 0$ | 2 | 1 | 1 |
+| $(R,L,R,$<br>$~L,R,L)$ | $x = 0$ | 6 | 3 | 3 |
+| $(L)$ | $x = -1$ | 1 | 1 | 0 |
+| $(L,L,R)$ | $x = -1$ | 3 | 2 | 1 |
+
+:::
+:::
+
+# Markov Models {data-stack-name="Markov Models"}
+
+<!-- ## Four Types {.smaller}
+
+| | Fully Observable | Partially Observable |
+| - | - | - |
+| **Autonomous** | Markov Chain<br> | Hidden Markov Model |
+| **Controlled** | Markov Decision Process | Partially-Observable MDP | -->
+
+## Finite-State Automata {.nostretch .crunch-title}
+
+(Deterministic!) Only "accepts" strings with even number of `1`s:
+
+::: columns
+::: {.column width="44%"}
+
+![](images/automata.svg){fig-align="center" width="80%"}
+
+:::
+::: {.column width="56%"}
+
+```{=html}
+<table>
+<thead>
+  <tr>
+  <th>Input String</th>
+  <th class='split-table'>Result</th>
+  <th>Input String</th>
+  <th>Result</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><span data-qmd="$\varepsilon$"></span></td>
+    <td class='split-table'>✅</td>
+    <td><span data-qmd="`01`"></span></td>
+    <td><span data-qmd="<i class='bi bi-x-lg' style='color: red;'></i>"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="`0`"></span></td>
+    <td class='split-table'>✅</td>
+    <td><span data-qmd="`10`"></span></td>
+    <td><span data-qmd="<i class='bi bi-x-lg' style='color: red;'></i>"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="`1`"></span></td>
+    <td class='split-table'><span data-qmd="<i class='bi bi-x-lg' style='color: red;'></i>"></span></td>
+    <td><span data-qmd="`1000000`"></span></td>
+    <td><span data-qmd="<i class='bi bi-x-lg' style='color: red;'></i>"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="`00`"></span></td>
+    <td class='split-table'>✅</td>
+    <td><span data-qmd="`10000001`"></span></td>
+    <td>✅</td>
+  </tr>
+</tbody>
+</table>
+```
+
+<!-- | Input String | Result | Input String | Result |
+| - | - | - | - |
+| $\varepsilon$ | ✅ | `01` | <i class='bi bi-x-lg' style='color: red;'></i> |
+| `0` | ✅ | `10` | <i class='bi bi-x-lg' style='color: red;'></i> |
+| `1` | <i class='bi bi-x-lg' style='color: red;'></i> | `1000000` | <i class='bi bi-x-lg' style='color: red;'></i> |
+| `00` | ✅ | `10000001` | ✅ | -->
+
+:::
+:::
+
+* ...But we're trying to model **probabilistic** evolution!
+
+## Enter Markov Chains
+
+::: columns
+::: {.column width="50%"}
+
+<center>
+Graphically
+</center>
+
+![](images/basic_no_self_loops.svg){fig-align="center" width="60%"}
+
+![](images/basic_self_loops.svg){fig-align="center" width="60%"}
+
+:::
+::: {.column width="50%"}
+
+<center>
+Mathematically
+</center>
+
+$$
+\begin{array}{c c} 
+& \begin{array}{c c c} 1 & 2 & 3 \\ \end{array} \\
+\begin{array}{c c c}1 \\ 2 \\ 3 \end{array} &
+\left[
+\begin{array}{c c c}
+0 & 1/2 & 1/2 \\
+1/3 & 0 & 2/3 \\
+1/3 & 2/3 & 0
+\end{array}
+\right]
+\end{array}
+$$
+
+
+$$
+\begin{array}{c c} 
+& \begin{array}{c c c} 1 & 2 & 3 \\ \end{array} \\
+\begin{array}{c c c}1 \\ 2 \\ 3 \end{array} &
+\left[
+\begin{array}{c c c}
+1/2 & 1/3 & 1/6 \\
+1/10 & 1/2 & 2/5 \\
+1/8 & 3/8 & 1/2
+\end{array}
+\right]
+\end{array}
+$$
+
+:::
+:::
+
+## Hidden Markov Models {data-name="HMMs"}
+
+* Use **observed** data to infer **unobserved** variables
+
+![](images/hmm.svg){fig-align="center"}
+
+* (What our brains are doing, most of the time!)
+
+# PageRank {data-stack-name="PageRank"}
+
+## PageRank (Matrix Magic)
+
+* What is the relevance of this abstract topic? ...🤑
+
+```{r}
+#| label: google-graph
+#| echo: true
+library(readr)
+library(ggplot2)
+goog_df <- read_csv("assets/google_yearly_revenue.csv")
+ggplot(goog_df, aes(x=year, y=revenue_billions)) +
+  geom_bar(stat="identity", fill=cbPalette[1]) +
+  labs(
+    title = "Google Yearly Revenue, 2002-2022",
+    x = "Year",
+    y = "Revenue (Billion USD)"
+  ) +
+  dsan_theme("full")
+```
+
+* PageRank = The "spark" that ignited the Google flame
+
+## PageRank Visualized {.smaller}
+
+* Nodes = Webpages, Edges = Links
+
+![](images/pagerank.svg){fig-align="center"}
+
+* Goal: Rank the relative "importance" of a site $S_i$, **taking into account** the importance of other sites that **link to** $S_i$
+  * "Important" sites are linked to often, and linked to often **by other important sites**
+
+## Chickens and Eggs {.smaller}
+
+* Paradoxical at first: how are we supposed to figure out the **importance of a site** $S_i$, when that's determined by
+  * the **importance of sites $S_j$ that link to $S_i$**, which is determined by
+    * the **importance of sites $S_k$ that link to sites $S_j$**, which is determined by
+      * the **importance of the sites $S_\ell$ that link to those sites $S_k$**, which is determined by...
+
+$$
+\begin{align*}
+\mathsf{Importance}(S_i) &= f(\mathsf{Importance}(S_{j \rightarrow i})) = f(f(\mathsf{Importance}(S_{k \rightarrow j \rightarrow i}))) \\
+&= f(f(f(\mathsf{Importance}(S_{\ell \rightarrow k \rightarrow j \rightarrow i})))) = \cdots
+\end{align*}
+$$
+
+::: {.aside}
+Sanity hint: Remember infinite sums from calculus! They can converge, despite having infinitely-many terms... This is something like that, but for **recursion** (the mathematical term for an object whose definition refers to itself)
+:::
+
+## Resolving Recursive Definitions {.smaller}
+
+* We **can** compute this importance ranking, despite its recursive definition!
+* Recall, for example, the Fibonacci sequence: $1, 1, 2, 3, 5, 8, 13, 21, \ldots$
+* Defined recursively!
+
+$$
+f(n) = \begin{cases}
+1 & n = 1\text{ or }n = 2 \\
+f(n-2) + f(n-1) & n > 2
+\end{cases}
+$$
+
+* And yet, a guy named <a href="https://en.wikipedia.org/wiki/Daniel_Bernoulli" target="_blank">Bernoulli</a> figured out
+
+$$
+f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sqrt{5}},
+$$
+
+where $\varphi$ is the "Golden Ratio" $\frac{1 + \sqrt{5}}{2}$ and $\psi$ its conjugate $\frac{1 - \sqrt{5}}{2}$.
+
+## The PageRank Process {.smaller .crunch-title .crunch-ul}
+
+* Every site starts with **equal** PageRank score: $r^{(0)}_1 = r^{(0)}_2 = r^{(0)}_3 = \frac{1}{3}$.
+* Each link $S_i \rightarrow S_j$ is a **vote of confidence** that $S_i$ is giving to $S_j$
+* At each time $t$, a site $S_i$ **"spends"** whatever voting power it currently has ($r^{(t)}_i$) on the sites it links to.
+  * $S_1$ casts one vote for itself and one vote for $S_2$, thus spending $\frac{1}{2}$ of its total PageRank on itself and $\frac{1}{2}$ of its total PageRank on $S_2$.
+* **State** of the process at time $t$: $\mathbf{r}^{(t)} = \begin{bmatrix}r^{(t)}_1 & r^{(t)}_2 & r^{(t)}_3\end{bmatrix}^\top$
+* Can form a **matrix** specifying how this state **evolves** from time $t$ to time $t+1$!
+
+$$
+\mathbf{E} = \begin{bmatrix}
+\frac{1}{2} & \frac{1}{2} & 0 \\
+\frac{1}{2} & 0 & 1 \\
+0 & \frac{1}{2} & 0
+\end{bmatrix} \; \leadsto \; \mathbf{r}^{(t+1)} = \mathbf{E}\mathbf{r}^{(t)}
+$$
+
+::: {.notes}
+* Given the "$S_1$ casts one vote for itself..." part, can you say exactly what $S_1$ will "spend" on itself and on $S_2$ at time $t = 0$ (in the first round)?
+:::
+
+## {.smaller}
+
+* We can use $\mathbf{E}$ to figure out the state at each step, starting from $t = 0$!
+
+$$
+\begin{array}{c@{}c@{}c@{}c@{}c@{}c@{}c}
+\mathbf{r}^{(1)} & = & \mathbf{E}\mathbf{r}^{(0)} & = & \begin{bmatrix}
+\frac{1}{2} & \frac{1}{2} & 0 \\
+\frac{1}{2} & 0 & 1 \\
+0 & \frac{1}{2} & 0
+\end{bmatrix}\begin{bmatrix}
+\frac{1}{3} \\
+\frac{1}{3} \\
+\frac{1}{3}\end{bmatrix} & = & \begin{bmatrix}
+\frac{1}{3} \\
+\frac{1}{2} \\
+\frac{1}{6}
+\end{bmatrix} \\
+~ & ~ & ~ & ~ & ~ & \swarrow & ~ \\
+\mathbf{r}^{(2)} & = & \mathbf{E}\mathbf{r}^{(1)} & = & \begin{bmatrix}
+\frac{1}{2} & \frac{1}{2} & 0 \\
+\frac{1}{2} & 0 & 1 \\
+0 & \frac{1}{2} & 0
+\end{bmatrix}\begin{bmatrix}\frac{1}{3} \\ \frac{1}{2} \\ \frac{1}{6}\end{bmatrix} & = & \begin{bmatrix}\frac{5}{12} \\ \frac{1}{3} \\ \frac{1}{4}\end{bmatrix} \\
+~ & ~ & ~ & ~ & ~ & \swarrow & ~ \\
+\mathbf{r}^{(3)} & = & \mathbf{E}\mathbf{r}^{(2)} & = & \cdots & ~ & ~
+\end{array}
+$$
+
+## Matrix Magic {.smaller}
+
+* \(1\) Won't we just have to run this forever? (2) How do we know it'll converge to something?
+* Answers: (1) No! (2) because **Markov matrix magic**!
+* "Steady state" = state where $\mathbf{r}^{(t)} = \mathbf{r}^{(t+1)} = \mathbf{r}^{(t+2)} = \cdots \definedas \mathbf{r}^*$. But this means
+
+$$
+\mathbf{r}^{(t+1)} = \mathbf{r}^{(t)} \iff \mathbf{E}\mathbf{r}^{(t)} = \mathbf{r}^{(t)} \iff \mathbf{E}\mathbf{r}^* = \mathbf{r}^*
+$$
+
+* This $\mathbf{r}^*$ is (by definition!) an **Eigenvector** of $\mathbf{E}$ with **Eigenvalue** $\lambda = 1$![^lambda]
+
+[^lambda]: This is because an **Eigenvalue-Eigenvector pair** for a matrix $\mathbf{M}$ is a vector $\mathbf{v}$ and scalar value $\lambda$ which satisfy $\mathbf{M}\mathbf{v} = \lambda \mathbf{v}$. In words: the result of (left) **matrix-multiplying** $\mathbf{v}$ by $\mathbf{M}$ is the same as **scalar-multiplying** $\mathbf{v}$ by a factor of $\lambda$. In our case the **Eigenvector** is $\mathbf{r}^*$ and the **Eigenvalue** is $\lambda = 1$, since $\mathbf{E}\mathbf{r}^* = 1 \cdot \mathbf{r}^*$.<br>For the math-curious, there are lots of fun results from matrix theory which assure us that $\mathbf{E}$ is **guaranteed** to have principal eigenvalue $\lambda = 1$ 💆
+
+::: {.notes}
+* In my opinion, along with e.g. insolubility of the quintic, this is maybe the most mind-blowing case of math magic :3
+:::
+
+## Solving the Matrix Magic {.smaller .crunch-title}
+
+* Since we already know the **Eigenvalue** of interest, $\lambda = 1$, all that's left is solving for its corresponding **Eigenvector**:
+
+    $$
+    \mathbf{E}\mathbf{r}^* = \mathbf{r}^* \iff \mathbf{E}\mathbf{r}^* - \mathbf{r}^* = \mathbf{0} \iff (\mathbf{E} - \mathbf{I})\mathbf{r}^* = \mathbf{0}
+    $$
+
+* Written out, we see that this gives us a system of linear equations:
+
+    $$
+    \begin{bmatrix}
+    \frac{1}{2} & \frac{1}{2} & 0 \\
+    \frac{1}{2} & 0 & 1 \\
+    0 & \frac{1}{2} & 0
+    \end{bmatrix}\begin{bmatrix}r^*_1 \\ r^*_2 \\ r^*_3\end{bmatrix} = \begin{bmatrix}0 \\ 0 \\ 0\end{bmatrix} \iff \begin{array}{ccccccc}\frac{1}{2}r^*_1 & + & \frac{1}{2}r^*_2 & ~ & ~ & = & 0 \\ \frac{1}{2}r^*_1 & ~ & ~ & + & r^*_3 & = & 0 \\ ~ & ~ & \frac{1}{2}r^*_2 & ~ & ~ & = & 0\end{array}
+    $$
+
+    which we can solve however we want!
+
+* To handle the fact that this system is **underspecified**, impose additional restriction that $r^*_1 + r^*_2 + r^*_3 = 1$, so that the ranks form a **probability distribution**
+
+## The Point of All This {.crunch-title}
+
+* The final restriction $r^*_1 + r^*_2 + r^*_3 = 1$ ensures that the resulting PageRank values form a **probability distribution**
+* This is called the **Stationary Distribution** of the **Markov chain**: represents the probability that a **random walker** through the chain will be at page $S_i$ at a given time!
+  * Equivalently: **expected proportion of total walking time** a random-walker will spend at each node
+* **Every Markov chain has a Stationary Distribution**! This fact has cool implications even above and beyond the Google $$$ implications 😜
+
+## References
+
+::: {#refs}
+:::

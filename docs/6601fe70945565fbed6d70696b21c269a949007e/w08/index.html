@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jeff Jacobs">
+
+<title>Week 8: Markov Models – DSAN 5100-03</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script><script src="../sidebar.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../dsan-globals/jjstyles.css">
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../w08/index.html">Week 8: Oct 15</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">DSAN 5100: Probabilistic Modeling and Statistical Computing</a> 
+        <div class="sidebar-tools-main">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://dsan.georgetown.domains/dsan5100/" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><i class="bi bi-arrow-left pe-1"></i> Main Course Page</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w01/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 1: Aug 30</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w02/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 2: Sep 3</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w03/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 3: Sep 10</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w04/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 4: Sep 17</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w05/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 5: Sep 24</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w06/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 6: Oct 1</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w07/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Week 7: Oct 8</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../w08/index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Week 8: Oct 15</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.zoom.us/j/92478089466?pwd=cSBmcjACL6EJJW0vHbzIqimH7imkVx.1" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Zoom Link <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.hosted.panopto.com/Panopto/Pages/Sessions/List.aspx?folderID=98022271-76d6-457f-83ee-b1dd00143dbc" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Recordings <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../extra-videos/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Videos</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../writeups/index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Extra Writeups</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../cheatsheet-math.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Math Cheatsheet</span></a>
+  </div>
+</li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://georgetown.instructure.com/courses/193275" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">S03 Canvas Page <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/meet" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Book Office Hours <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://forms.gle/3CYWo8xHUxMvvowbA" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Suggestion Box <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="https://jjacobs.me/dsps" class="sidebar-item-text sidebar-link" target="_blank">
+ <span class="menu-text">Textbook <i class="bi bi-box-arrow-up-right ps-1" style="font-size: 85%;"></i></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+<div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
+<p><em>Updated 2024-10-12, 08:22:02 PM</em></p>
+</div></div></nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#motivation" id="toc-motivation" class="nav-link active" data-scroll-target="#motivation">Motivation</a>
+  <ul class="collapse">
+  <li><a href="#the-course-so-far" id="toc-the-course-so-far" class="nav-link" data-scroll-target="#the-course-so-far">The Course So Far</a></li>
+  <li><a href="#the-new-dimension-evolution-through-time" id="toc-the-new-dimension-evolution-through-time" class="nav-link" data-scroll-target="#the-new-dimension-evolution-through-time">The New Dimension: Evolution Through <em>Time</em></a></li>
+  <li><a href="#recall-definition-of-conditional-probability" id="toc-recall-definition-of-conditional-probability" class="nav-link" data-scroll-target="#recall-definition-of-conditional-probability">Recall: Definition of Conditional Probability</a></li>
+  <li><a href="#the-markov-property" id="toc-the-markov-property" class="nav-link" data-scroll-target="#the-markov-property">The Markov Property</a></li>
+  <li><a href="#the-markov-assumption" id="toc-the-markov-assumption" class="nav-link" data-scroll-target="#the-markov-assumption">The Markov Assumption</a></li>
+  <li><a href="#keeping-track-of-states" id="toc-keeping-track-of-states" class="nav-link" data-scroll-target="#keeping-track-of-states">Keeping Track of States</a></li>
+  <li><a href="#what-information-should-we-keep-track-of" id="toc-what-information-should-we-keep-track-of" class="nav-link" data-scroll-target="#what-information-should-we-keep-track-of">What Information Should We Keep Track Of?</a></li>
+  <li><a href="#modeling-music-where-is-the-downbeat" id="toc-modeling-music-where-is-the-downbeat" class="nav-link" data-scroll-target="#modeling-music-where-is-the-downbeat">Modeling Music: Where is the Downbeat?</a></li>
+  <li><a href="#state-space-choice-rightarrow-information-loss" id="toc-state-space-choice-rightarrow-information-loss" class="nav-link" data-scroll-target="#state-space-choice-rightarrow-information-loss">State Space Choice <span class="math inline">\(\rightarrow\)</span> Information Loss</a></li>
+  </ul></li>
+  <li><a href="#markov-models" id="toc-markov-models" class="nav-link" data-scroll-target="#markov-models">Markov Models</a>
+  <ul class="collapse">
+  <li><a href="#finite-state-automata" id="toc-finite-state-automata" class="nav-link" data-scroll-target="#finite-state-automata">Finite-State Automata</a></li>
+  <li><a href="#enter-markov-chains" id="toc-enter-markov-chains" class="nav-link" data-scroll-target="#enter-markov-chains">Enter Markov Chains</a></li>
+  <li><a href="#hidden-markov-models" id="toc-hidden-markov-models" class="nav-link" data-scroll-target="#hidden-markov-models">Hidden Markov Models</a></li>
+  </ul></li>
+  <li><a href="#pagerank" id="toc-pagerank" class="nav-link" data-scroll-target="#pagerank">PageRank</a>
+  <ul class="collapse">
+  <li><a href="#pagerank-matrix-magic" id="toc-pagerank-matrix-magic" class="nav-link" data-scroll-target="#pagerank-matrix-magic">PageRank (Matrix Magic)</a></li>
+  <li><a href="#pagerank-visualized" id="toc-pagerank-visualized" class="nav-link" data-scroll-target="#pagerank-visualized">PageRank Visualized</a></li>
+  <li><a href="#chickens-and-eggs" id="toc-chickens-and-eggs" class="nav-link" data-scroll-target="#chickens-and-eggs">Chickens and Eggs</a></li>
+  <li><a href="#resolving-recursive-definitions" id="toc-resolving-recursive-definitions" class="nav-link" data-scroll-target="#resolving-recursive-definitions">Resolving Recursive Definitions</a></li>
+  <li><a href="#the-pagerank-process" id="toc-the-pagerank-process" class="nav-link" data-scroll-target="#the-pagerank-process">The PageRank Process</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  <li><a href="#matrix-magic" id="toc-matrix-magic" class="nav-link" data-scroll-target="#matrix-magic">Matrix Magic</a></li>
+  <li><a href="#solving-the-matrix-magic" id="toc-solving-the-matrix-magic" class="nav-link" data-scroll-target="#solving-the-matrix-magic">Solving the Matrix Magic</a></li>
+  <li><a href="#the-point-of-all-this" id="toc-the-point-of-all-this" class="nav-link" data-scroll-target="#the-point-of-all-this">The Point of All This</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w08/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 8: Markov Models</h1>
+<p class="subtitle lead"><em>DSAN 5100: Probabilistic Modeling and Statistical Computing</em><br>Section 03</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Class Sessions</div>
+  </div>
+  </div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jeff Jacobs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Tuesday, October 15, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window →</a>
+</center>
+<section id="motivation" class="level1" data-stack-name="Motivation">
+<h1 data-stack-name="Motivation">Motivation</h1>
+<div class="hidden">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../dsan-globals/_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="hidden">
+<p><span class="math display">\[
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\bigexp}[1]{\exp\mkern-4mu\left[ #1 \right]}
+\newcommand{\bigexpect}[1]{\mathbb{E}\mkern-4mu \left[ #1 \right]}
+\newcommand{\convergesAS}{\overset{\text{a.s.}}{\longrightarrow}}
+\newcommand{\definedas}{\overset{\text{def}}{=}}
+\newcommand{\definedalign}{\overset{\phantom{\text{def}}}{=}}
+\newcommand{\eqeventual}{\overset{\mathclap{\text{\small{eventually}}}}{=}}
+\newcommand{\Err}{\text{Err}}
+\newcommand{\expect}[1]{\mathbb{E}[#1]}
+\newcommand{\expectsq}[1]{\mathbb{E}^2[#1]}
+\newcommand{\fw}[1]{\texttt{#1}}
+\newcommand{\given}{\mid}
+\newcommand{\green}[1]{\color{green}{#1}}
+\newcommand{\heads}{\outcome{heads}}
+\newcommand{\iid}{\overset{\text{\small{iid}}}{\sim}}
+\newcommand{\lik}{\mathcal{L}}
+\newcommand{\loglik}{\ell}
+\newcommand{\mle}{\textsf{ML}}
+\newcommand{\nimplies}{\;\not\!\!\!\!\implies}
+\newcommand{\orange}[1]{\color{orange}{#1}}
+\newcommand{\outcome}[1]{\textsf{#1}}
+\newcommand{\param}[1]{{\color{purple} #1}}
+\newcommand{\pgsamplespace}{\{\green{1},\green{2},\green{3},\purp{4},\purp{5},\purp{6}\}}
+\newcommand{\prob}[1]{P\left( #1 \right)}
+\newcommand{\purp}[1]{\color{purple}{#1}}
+\newcommand{\sign}{\text{Sign}}
+\newcommand{\spacecap}{\; \cap \;}
+\newcommand{\spacewedge}{\; \wedge \;}
+\newcommand{\tails}{\outcome{tails}}
+\newcommand{\Var}[1]{\text{Var}[#1]}
+\newcommand{\bigVar}[1]{\text{Var}\mkern-4mu \left[ #1 \right]}
+\]</span></p>
+</div>
+</div>
+<section id="the-course-so-far" class="level2 crunch-center crunch-lists crunch-title crunch-ul">
+<h2 class="crunch-center crunch-lists crunch-title crunch-ul anchored" data-anchor-id="the-course-so-far">The Course So Far</h2>
+<ul>
+<li><strong>Logic</strong>: Reasoning about <em>T/F statements</em> using <strong>and</strong> and <strong>or</strong></li>
+<li><span class="math inline">\(\rightarrow\)</span> <strong>Set Theory</strong>: Reasoning about <em>collections of objects</em> and their <strong>union</strong> and <strong>intersection</strong></li>
+</ul>
+<center class="smaller-text">
+<i class="bi bi-arrow-up pe-1"></i>Deterministic<i class="bi bi-arrow-up ps-1"></i>
+</center>
+<hr style="margin-bottom: 1px !important; margin-top: 1px !important;">
+<center class="smaller-text">
+<i class="bi bi-arrow-down pe-2"></i>Probabilistic<i class="bi bi-arrow-down ps-2"></i>
+</center>
+<ul>
+<li><span class="math inline">\(\rightarrow\)</span> <strong>Probability</strong>: Assigning “likelihood values” in <span class="math inline">\([0,1]\)</span> to logical/set-theoretic statements about <strong>outcomes</strong></li>
+<li><span class="math inline">\(\rightarrow\)</span> <strong>Random Variables</strong>: Doing <strong>math</strong> (beyond <strong>and</strong> and <strong>or</strong>) with the probabilities of these uncertain outcomes</li>
+<li>All have been <strong>reasoning about uncertainty</strong> in more and more complex ways!</li>
+</ul>
+</section>
+<section id="the-new-dimension-evolution-through-time" class="level2">
+<h2 class="anchored" data-anchor-id="the-new-dimension-evolution-through-time">The New Dimension: Evolution Through <em>Time</em></h2>
+<ul>
+<li><strong>Markov models</strong> are a stepping-stone towards full-on <strong>time series analysis</strong>: reasoning about uncertainty <strong>over time</strong></li>
+<li>So why are <strong>time series</strong> the topic of an entire course, while <strong>Markov models</strong> only the topic of one week in DSAN5000?</li>
+</ul>
+</section>
+<section id="recall-definition-of-conditional-probability" class="level2">
+<h2 class="anchored" data-anchor-id="recall-definition-of-conditional-probability">Recall: Definition of Conditional Probability</h2>
+<p><span class="math display">\[
+\Pr(A \mid B) \definedas \frac{\Pr(A, B)}{\Pr(B)} \genfrac{}{}{0pt}{}{\leftarrow A\text{ and }B\text{ happen}}{\leftarrow \text{In world where }\Omega = B}
+\]</span></p>
+</section>
+<section id="the-markov-property" class="level2">
+<h2 class="anchored" data-anchor-id="the-markov-property">The Markov Property</h2>
+<p><span class="math display">\[
+P(\text{future} \mid \text{present}, {\color{orange}\text{past}}) = P(\text{future} \mid \text{present})
+\]</span></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/markov_property.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</section>
+<section id="the-markov-assumption" class="level2">
+<h2 class="anchored" data-anchor-id="the-markov-assumption">The Markov Assumption</h2>
+<p>Often stated in many different (confusing) ways, but think of <strong>anterograde amnesia</strong>:</p>
+<video width="100%" height="60%" controls="">
+<source src="https://jpj.georgetown.domains/dsan5100-scratch/memento_chase.mp4" type="video/mp4">
+</video>
+</section>
+<section id="keeping-track-of-states" class="level2">
+<h2 class="anchored" data-anchor-id="keeping-track-of-states">Keeping Track of States</h2>
+<ul>
+<li>Since Markov models come more from engineering than “pure” math/probability, we have “fancier” objects we’re keeping track of, rather than just Random Variables</li>
+<li>We now keep track of the <strong>state</strong> of a <strong>system</strong> over time: this could be a single RV, but could be a <strong>collection</strong> of multiple (potentially <em>dependent</em>) RVs</li>
+</ul>
+</section>
+<section id="what-information-should-we-keep-track-of" class="level2 smaller title-12 crunch-title">
+<h2 class="smaller title-12 crunch-title anchored" data-anchor-id="what-information-should-we-keep-track-of">What Information Should We Keep Track Of?</h2>
+<ul>
+<li>Sometimes answer seems “obvious”, lulls us into false sense of confidence (that we don’t have to think too hard about it)<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
+</ul>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>System</th>
+<th>State Space</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Chess</td>
+<td>Position of each piece, whose turn it is</td>
+</tr>
+<tr class="even">
+<td>Indoor Robot</td>
+<td>Model of room + objects inside it</td>
+</tr>
+<tr class="odd">
+<td>Predator-Prey Ecosystem</td>
+<td>Relative species populations</td>
+</tr>
+<tr class="even">
+<td>Move Left/Move Right Game</td>
+<td>?</td>
+</tr>
+<tr class="odd">
+<td>Weather Prediction</td>
+<td>?</td>
+</tr>
+<tr class="even">
+<td>Music</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Tension between <strong>too little</strong> information (cannot model phenomena of interest) vs.&nbsp;<strong>too much</strong> information (solving model becomes intractable)</li>
+</ul>
+</section>
+<section id="modeling-music-where-is-the-downbeat" class="level2 smaller title-12 crunch-figures crunch-images crunch-quarto-layout-panel nostretch">
+<h2 class="smaller title-12 crunch-figures crunch-images crunch-quarto-layout-panel nostretch anchored" data-anchor-id="modeling-music-where-is-the-downbeat">Modeling Music: Where is the Downbeat?</h2>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-video"><iframe data-external="1" src="https://www.youtube.com/embed/xe_iCkFsQKE" width="100%" height="300" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-video"><iframe data-external="1" src="https://www.youtube.com/embed/XbU9UUwxBxA" width="100%" height="300" title="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div>
+</div>
+</div>
+</div>
+<div class="music-automata">
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="3">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 30.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/automata_34.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="300"></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 35.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/automata_44.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="350"></p>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 35.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/automata_54.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="350"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="state-space-choice-rightarrow-information-loss" class="level2 smaller nostretch title-12">
+<h2 class="smaller nostretch title-12 anchored" data-anchor-id="state-space-choice-rightarrow-information-loss">State Space Choice <span class="math inline">\(\rightarrow\)</span> Information Loss</h2>
+<ul>
+<li>Recall the Move Left/Move Right Game (especially from <a href="https://jjacobs.me/dsan5100-03/463a01339cf0f456ba54a1849df50d1a22c247e3/writeups/lab-4-prep/DSAN5100_Lab_4_Prep.html" target="_blank">Lab 4 Prep</a>)</li>
+</ul>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/random_walk_wide.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+</div><div class="column" style="width:55%;">
+<center>
+Possible State Spaces:
+</center>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>History vector</th>
+<th style="text-align: right;">Position</th>
+<th style="text-align: center;">Steps</th>
+<th style="text-align: center;">#L</th>
+<th style="text-align: center;">#R</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(()\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(x = 0\)</span></td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\((L,R)\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(x = 0\)</span></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\((R,L)\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(x = 0\)</span></td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\((R,L,R,\)</span><br><span class="math inline">\(~L,R,L)\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(x = 0\)</span></td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\((L)\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(x = -1\)</span></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\((L,L,R)\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(x = -1\)</span></td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</section>
+<section id="markov-models" class="level1" data-stack-name="Markov Models">
+<h1 data-stack-name="Markov Models">Markov Models</h1>
+<!-- ## Four Types {.smaller}
+
+| | Fully Observable | Partially Observable |
+| - | - | - |
+| **Autonomous** | Markov Chain<br> | Hidden Markov Model |
+| **Controlled** | Markov Decision Process | Partially-Observable MDP | -->
+<section id="finite-state-automata" class="level2 nostretch crunch-title">
+<h2 class="nostretch crunch-title anchored" data-anchor-id="finite-state-automata">Finite-State Automata</h2>
+<p>(Deterministic!) Only “accepts” strings with even number of <code>1</code>s:</p>
+<div class="columns">
+<div class="column" style="width:44%;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/automata.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:56%;">
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">Input String</th>
+<th class="split-table" data-quarto-table-cell-role="th">Result</th>
+<th data-quarto-table-cell-role="th">Input String</th>
+<th data-quarto-table-cell-role="th">Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\varepsilon\)</span></td>
+<td class="split-table">✅</td>
+<td><code>01</code></td>
+<td><i class="bi bi-x-lg" style="color: red;"></i></td>
+</tr>
+<tr class="even">
+<td><code>0</code></td>
+<td class="split-table">✅</td>
+<td><code>10</code></td>
+<td><i class="bi bi-x-lg" style="color: red;"></i></td>
+</tr>
+<tr class="odd">
+<td><code>1</code></td>
+<td class="split-table"><i class="bi bi-x-lg" style="color: red;"></i></td>
+<td><code>1000000</code></td>
+<td><i class="bi bi-x-lg" style="color: red;"></i></td>
+</tr>
+<tr class="even">
+<td><code>00</code></td>
+<td class="split-table">✅</td>
+<td><code>10000001</code></td>
+<td>✅</td>
+</tr>
+</tbody>
+</table>
+<!-- | Input String | Result | Input String | Result |
+| - | - | - | - |
+| $\varepsilon$ | ✅ | `01` | <i class='bi bi-x-lg' style='color: red;'></i> |
+| `0` | ✅ | `10` | <i class='bi bi-x-lg' style='color: red;'></i> |
+| `1` | <i class='bi bi-x-lg' style='color: red;'></i> | `1000000` | <i class='bi bi-x-lg' style='color: red;'></i> |
+| `00` | ✅ | `10000001` | ✅ | -->
+</div>
+</div>
+<ul>
+<li>…But we’re trying to model <strong>probabilistic</strong> evolution!</li>
+</ul>
+</section>
+<section id="enter-markov-chains" class="level2">
+<h2 class="anchored" data-anchor-id="enter-markov-chains">Enter Markov Chains</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<center>
+Graphically
+</center>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/basic_no_self_loops.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/basic_self_loops.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:60.0%"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<center>
+Mathematically
+</center>
+<p><span class="math display">\[
+\begin{array}{c c}
+&amp; \begin{array}{c c c} 1 &amp; 2 &amp; 3 \\ \end{array} \\
+\begin{array}{c c c}1 \\ 2 \\ 3 \end{array} &amp;
+\left[
+\begin{array}{c c c}
+0 &amp; 1/2 &amp; 1/2 \\
+1/3 &amp; 0 &amp; 2/3 \\
+1/3 &amp; 2/3 &amp; 0
+\end{array}
+\right]
+\end{array}
+\]</span></p>
+<p><span class="math display">\[
+\begin{array}{c c}
+&amp; \begin{array}{c c c} 1 &amp; 2 &amp; 3 \\ \end{array} \\
+\begin{array}{c c c}1 \\ 2 \\ 3 \end{array} &amp;
+\left[
+\begin{array}{c c c}
+1/2 &amp; 1/3 &amp; 1/6 \\
+1/10 &amp; 1/2 &amp; 2/5 \\
+1/8 &amp; 3/8 &amp; 1/2
+\end{array}
+\right]
+\end{array}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="hidden-markov-models" class="level2" data-name="HMMs">
+<h2 data-name="HMMs" class="anchored" data-anchor-id="hidden-markov-models">Hidden Markov Models</h2>
+<ul>
+<li>Use <strong>observed</strong> data to infer <strong>unobserved</strong> variables</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/hmm.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<ul>
+<li>(What our brains are doing, most of the time!)</li>
+</ul>
+</section>
+</section>
+<section id="pagerank" class="level1 page-columns page-full" data-stack-name="PageRank">
+<h1 data-stack-name="PageRank">PageRank</h1>
+<section id="pagerank-matrix-magic" class="level2">
+<h2 class="anchored" data-anchor-id="pagerank-matrix-magic">PageRank (Matrix Magic)</h2>
+<ul>
+<li>What is the relevance of this abstract topic? …🤑</li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>goog_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"assets/google_yearly_revenue.csv"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(goog_df, <span class="fu">aes</span>(<span class="at">x=</span>year, <span class="at">y=</span>revenue_billions)) <span class="sc">+</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">"identity"</span>, <span class="at">fill=</span>cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Google Yearly Revenue, 2002-2022"</span>,</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Year"</span>,</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Revenue (Billion USD)"</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"full"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/google-graph-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>PageRank = The “spark” that ignited the Google flame</li>
+</ul>
+</section>
+<section id="pagerank-visualized" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="pagerank-visualized">PageRank Visualized</h2>
+<ul>
+<li>Nodes = Webpages, Edges = Links</li>
+</ul>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/pagerank.svg" class="img-fluid quarto-figure quarto-figure-center figure-img"></p>
+</figure>
+</div>
+<ul>
+<li>Goal: Rank the relative “importance” of a site <span class="math inline">\(S_i\)</span>, <strong>taking into account</strong> the importance of other sites that <strong>link to</strong> <span class="math inline">\(S_i\)</span>
+<ul>
+<li>“Important” sites are linked to often, and linked to often <strong>by other important sites</strong></li>
+</ul></li>
+</ul>
+</section>
+<section id="chickens-and-eggs" class="level2 smaller page-columns page-full">
+<h2 class="smaller anchored" data-anchor-id="chickens-and-eggs">Chickens and Eggs</h2>
+<ul>
+<li>Paradoxical at first: how are we supposed to figure out the <strong>importance of a site</strong> <span class="math inline">\(S_i\)</span>, when that’s determined by
+<ul>
+<li>the <strong>importance of sites <span class="math inline">\(S_j\)</span> that link to <span class="math inline">\(S_i\)</span></strong>, which is determined by
+<ul>
+<li>the <strong>importance of sites <span class="math inline">\(S_k\)</span> that link to sites <span class="math inline">\(S_j\)</span></strong>, which is determined by
+<ul>
+<li>the <strong>importance of the sites <span class="math inline">\(S_\ell\)</span> that link to those sites <span class="math inline">\(S_k\)</span></strong>, which is determined by…</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\mathsf{Importance}(S_i) &amp;= f(\mathsf{Importance}(S_{j \rightarrow i})) = f(f(\mathsf{Importance}(S_{k \rightarrow j \rightarrow i}))) \\
+&amp;= f(f(f(\mathsf{Importance}(S_{\ell \rightarrow k \rightarrow j \rightarrow i})))) = \cdots
+\end{align*}
+\]</span></p>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Sanity hint: Remember infinite sums from calculus! They can converge, despite having infinitely-many terms… This is something like that, but for <strong>recursion</strong> (the mathematical term for an object whose definition refers to itself)</p>
+</div></div></section>
+<section id="resolving-recursive-definitions" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="resolving-recursive-definitions">Resolving Recursive Definitions</h2>
+<ul>
+<li>We <strong>can</strong> compute this importance ranking, despite its recursive definition!</li>
+<li>Recall, for example, the Fibonacci sequence: <span class="math inline">\(1, 1, 2, 3, 5, 8, 13, 21, \ldots\)</span></li>
+<li>Defined recursively!</li>
+</ul>
+<p><span class="math display">\[
+f(n) = \begin{cases}
+1 &amp; n = 1\text{ or }n = 2 \\
+f(n-2) + f(n-1) &amp; n &gt; 2
+\end{cases}
+\]</span></p>
+<ul>
+<li>And yet, a guy named <a href="https://en.wikipedia.org/wiki/Daniel_Bernoulli" target="_blank">Bernoulli</a> figured out</li>
+</ul>
+<p><span class="math display">\[
+f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sqrt{5}},
+\]</span></p>
+<p>where <span class="math inline">\(\varphi\)</span> is the “Golden Ratio” <span class="math inline">\(\frac{1 + \sqrt{5}}{2}\)</span> and <span class="math inline">\(\psi\)</span> its conjugate <span class="math inline">\(\frac{1 - \sqrt{5}}{2}\)</span>.</p>
+</section>
+<section id="the-pagerank-process" class="level2 smaller crunch-title crunch-ul">
+<h2 class="smaller crunch-title crunch-ul anchored" data-anchor-id="the-pagerank-process">The PageRank Process</h2>
+<ul>
+<li>Every site starts with <strong>equal</strong> PageRank score: <span class="math inline">\(r^{(0)}_1 = r^{(0)}_2 = r^{(0)}_3 = \frac{1}{3}\)</span>.</li>
+<li>Each link <span class="math inline">\(S_i \rightarrow S_j\)</span> is a <strong>vote of confidence</strong> that <span class="math inline">\(S_i\)</span> is giving to <span class="math inline">\(S_j\)</span></li>
+<li>At each time <span class="math inline">\(t\)</span>, a site <span class="math inline">\(S_i\)</span> <strong>“spends”</strong> whatever voting power it currently has (<span class="math inline">\(r^{(t)}_i\)</span>) on the sites it links to.
+<ul>
+<li><span class="math inline">\(S_1\)</span> casts one vote for itself and one vote for <span class="math inline">\(S_2\)</span>, thus spending <span class="math inline">\(\frac{1}{2}\)</span> of its total PageRank on itself and <span class="math inline">\(\frac{1}{2}\)</span> of its total PageRank on <span class="math inline">\(S_2\)</span>.</li>
+</ul></li>
+<li><strong>State</strong> of the process at time <span class="math inline">\(t\)</span>: <span class="math inline">\(\mathbf{r}^{(t)} = \begin{bmatrix}r^{(t)}_1 &amp; r^{(t)}_2 &amp; r^{(t)}_3\end{bmatrix}^\top\)</span></li>
+<li>Can form a <strong>matrix</strong> specifying how this state <strong>evolves</strong> from time <span class="math inline">\(t\)</span> to time <span class="math inline">\(t+1\)</span>!</li>
+</ul>
+<p><span class="math display">\[
+\mathbf{E} = \begin{bmatrix}
+\frac{1}{2} &amp; \frac{1}{2} &amp; 0 \\
+\frac{1}{2} &amp; 0 &amp; 1 \\
+0 &amp; \frac{1}{2} &amp; 0
+\end{bmatrix} \; \leadsto \; \mathbf{r}^{(t+1)} = \mathbf{E}\mathbf{r}^{(t)}
+\]</span></p>
+<div class="notes">
+<ul>
+<li>Given the “<span class="math inline">\(S_1\)</span> casts one vote for itself…” part, can you say exactly what <span class="math inline">\(S_1\)</span> will “spend” on itself and on <span class="math inline">\(S_2\)</span> at time <span class="math inline">\(t = 0\)</span> (in the first round)?</li>
+</ul>
+</div>
+</section>
+<section id="section" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="section"></h2>
+<ul>
+<li>We can use <span class="math inline">\(\mathbf{E}\)</span> to figure out the state at each step, starting from <span class="math inline">\(t = 0\)</span>!</li>
+</ul>
+<p><span class="math display">\[
+\begin{array}{c@{}c@{}c@{}c@{}c@{}c@{}c}
+\mathbf{r}^{(1)} &amp; = &amp; \mathbf{E}\mathbf{r}^{(0)} &amp; = &amp; \begin{bmatrix}
+\frac{1}{2} &amp; \frac{1}{2} &amp; 0 \\
+\frac{1}{2} &amp; 0 &amp; 1 \\
+0 &amp; \frac{1}{2} &amp; 0
+\end{bmatrix}\begin{bmatrix}
+\frac{1}{3} \\
+\frac{1}{3} \\
+\frac{1}{3}\end{bmatrix} &amp; = &amp; \begin{bmatrix}
+\frac{1}{3} \\
+\frac{1}{2} \\
+\frac{1}{6}
+\end{bmatrix} \\
+~ &amp; ~ &amp; ~ &amp; ~ &amp; ~ &amp; \swarrow &amp; ~ \\
+\mathbf{r}^{(2)} &amp; = &amp; \mathbf{E}\mathbf{r}^{(1)} &amp; = &amp; \begin{bmatrix}
+\frac{1}{2} &amp; \frac{1}{2} &amp; 0 \\
+\frac{1}{2} &amp; 0 &amp; 1 \\
+0 &amp; \frac{1}{2} &amp; 0
+\end{bmatrix}\begin{bmatrix}\frac{1}{3} \\ \frac{1}{2} \\ \frac{1}{6}\end{bmatrix} &amp; = &amp; \begin{bmatrix}\frac{5}{12} \\ \frac{1}{3} \\ \frac{1}{4}\end{bmatrix} \\
+~ &amp; ~ &amp; ~ &amp; ~ &amp; ~ &amp; \swarrow &amp; ~ \\
+\mathbf{r}^{(3)} &amp; = &amp; \mathbf{E}\mathbf{r}^{(2)} &amp; = &amp; \cdots &amp; ~ &amp; ~
+\end{array}
+\]</span></p>
+</section>
+<section id="matrix-magic" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="matrix-magic">Matrix Magic</h2>
+<ul>
+<li>(1) Won’t we just have to run this forever? (2) How do we know it’ll converge to something?</li>
+<li>Answers: (1) No! (2) because <strong>Markov matrix magic</strong>!</li>
+<li>“Steady state” = state where <span class="math inline">\(\mathbf{r}^{(t)} = \mathbf{r}^{(t+1)} = \mathbf{r}^{(t+2)} = \cdots \definedas \mathbf{r}^*\)</span>. But this means</li>
+</ul>
+<p><span class="math display">\[
+\mathbf{r}^{(t+1)} = \mathbf{r}^{(t)} \iff \mathbf{E}\mathbf{r}^{(t)} = \mathbf{r}^{(t)} \iff \mathbf{E}\mathbf{r}^* = \mathbf{r}^*
+\]</span></p>
+<ul>
+<li>This <span class="math inline">\(\mathbf{r}^*\)</span> is (by definition!) an <strong>Eigenvector</strong> of <span class="math inline">\(\mathbf{E}\)</span> with <strong>Eigenvalue</strong> <span class="math inline">\(\lambda = 1\)</span>!<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+</ul>
+<div class="notes">
+<ul>
+<li>In my opinion, along with e.g.&nbsp;insolubility of the quintic, this is maybe the most mind-blowing case of math magic :3</li>
+</ul>
+</div>
+</section>
+<section id="solving-the-matrix-magic" class="level2 smaller crunch-title">
+<h2 class="smaller crunch-title anchored" data-anchor-id="solving-the-matrix-magic">Solving the Matrix Magic</h2>
+<ul>
+<li><p>Since we already know the <strong>Eigenvalue</strong> of interest, <span class="math inline">\(\lambda = 1\)</span>, all that’s left is solving for its corresponding <strong>Eigenvector</strong>:</p>
+<p><span class="math display">\[
+  \mathbf{E}\mathbf{r}^* = \mathbf{r}^* \iff \mathbf{E}\mathbf{r}^* - \mathbf{r}^* = \mathbf{0} \iff (\mathbf{E} - \mathbf{I})\mathbf{r}^* = \mathbf{0}
+  \]</span></p></li>
+<li><p>Written out, we see that this gives us a system of linear equations:</p>
+<p><span class="math display">\[
+  \begin{bmatrix}
+  \frac{1}{2} &amp; \frac{1}{2} &amp; 0 \\
+  \frac{1}{2} &amp; 0 &amp; 1 \\
+  0 &amp; \frac{1}{2} &amp; 0
+  \end{bmatrix}\begin{bmatrix}r^*_1 \\ r^*_2 \\ r^*_3\end{bmatrix} = \begin{bmatrix}0 \\ 0 \\ 0\end{bmatrix} \iff \begin{array}{ccccccc}\frac{1}{2}r^*_1 &amp; + &amp; \frac{1}{2}r^*_2 &amp; ~ &amp; ~ &amp; = &amp; 0 \\ \frac{1}{2}r^*_1 &amp; ~ &amp; ~ &amp; + &amp; r^*_3 &amp; = &amp; 0 \\ ~ &amp; ~ &amp; \frac{1}{2}r^*_2 &amp; ~ &amp; ~ &amp; = &amp; 0\end{array}
+  \]</span></p>
+<p>which we can solve however we want!</p></li>
+<li><p>To handle the fact that this system is <strong>underspecified</strong>, impose additional restriction that <span class="math inline">\(r^*_1 + r^*_2 + r^*_3 = 1\)</span>, so that the ranks form a <strong>probability distribution</strong></p></li>
+</ul>
+</section>
+<section id="the-point-of-all-this" class="level2 crunch-title">
+<h2 class="crunch-title anchored" data-anchor-id="the-point-of-all-this">The Point of All This</h2>
+<ul>
+<li>The final restriction <span class="math inline">\(r^*_1 + r^*_2 + r^*_3 = 1\)</span> ensures that the resulting PageRank values form a <strong>probability distribution</strong></li>
+<li>This is called the <strong>Stationary Distribution</strong> of the <strong>Markov chain</strong>: represents the probability that a <strong>random walker</strong> through the chain will be at page <span class="math inline">\(S_i\)</span> at a given time!
+<ul>
+<li>Equivalently: <strong>expected proportion of total walking time</strong> a random-walker will spend at each node</li>
+</ul></li>
+<li><strong>Every Markov chain has a Stationary Distribution</strong>! This fact has cool implications even above and beyond the Google $$$ implications 😜</li>
+</ul>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" role="list">
+
+</div>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>To snap out of this lull, keep in mind that engineering/nonlinear dynamical systems programs have <a href="https://www.youtube.com/watch?v=rXnZ-HFoOz8&amp;list=PLF0b3ThojznTzAA7bfLWh4RKzRrwNF4L0" target="_blank">entire courses</a> <strong>just</strong> on state space representations<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This is because an <strong>Eigenvalue-Eigenvector pair</strong> for a matrix <span class="math inline">\(\mathbf{M}\)</span> is a vector <span class="math inline">\(\mathbf{v}\)</span> and scalar value <span class="math inline">\(\lambda\)</span> which satisfy <span class="math inline">\(\mathbf{M}\mathbf{v} = \lambda \mathbf{v}\)</span>. In words: the result of (left) <strong>matrix-multiplying</strong> <span class="math inline">\(\mathbf{v}\)</span> by <span class="math inline">\(\mathbf{M}\)</span> is the same as <strong>scalar-multiplying</strong> <span class="math inline">\(\mathbf{v}\)</span> by a factor of <span class="math inline">\(\lambda\)</span>. In our case the <strong>Eigenvector</strong> is <span class="math inline">\(\mathbf{r}^*\)</span> and the <strong>Eigenvalue</strong> is <span class="math inline">\(\lambda = 1\)</span>, since <span class="math inline">\(\mathbf{E}\mathbf{r}^* = 1 \cdot \mathbf{r}^*\)</span>.<br>For the math-curious, there are lots of fun results from matrix theory which assure us that <span class="math inline">\(\mathbf{E}\)</span> is <strong>guaranteed</strong> to have principal eigenvalue <span class="math inline">\(\lambda = 1\)</span> 💆<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w08/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

@@ -1,23 +1,7 @@
 [
   {
-    "listing": "/recordings-archive/index.html",
+    "listing": "/extra-videos/index.html",
     "items": []
-  },
-  {
-    "listing": "/recordings/index.html",
-    "items": []
-  },
-  {
-    "listing": "/writeups/index.html",
-    "items": [
-      "/writeups/conditional-expectation/index.html",
-      "/writeups/order-of-integration/index.html",
-      "/writeups/sampling-from-df/index.html",
-      "/writeups/computing-probabilities/index.html",
-      "/writeups/deriving-pdf/index.html",
-      "/writeups/sample-space-tibbles/index.html",
-      "/writeups/marginalization/index.html"
-    ]
   },
   {
     "listing": "/index.html",
@@ -28,11 +12,29 @@
       "/w04/index.html",
       "/w05/index.html",
       "/w06/index.html",
-      "/w07/index.html"
+      "/w07/index.html",
+      "/w08/index.html"
     ]
   },
   {
-    "listing": "/extra-videos/index.html",
+    "listing": "/recordings-archive/index.html",
     "items": []
+  },
+  {
+    "listing": "/recordings/index.html",
+    "items": []
+  },
+  {
+    "listing": "/writeups/index.html",
+    "items": [
+      "/writeups/lab-6-clarifications/index.html",
+      "/writeups/deriving-pdf/index.html",
+      "/writeups/marginalization/index.html",
+      "/writeups/order-of-integration/index.html",
+      "/writeups/conditional-expectation/index.html",
+      "/writeups/sample-space-tibbles/index.html",
+      "/writeups/computing-probabilities/index.html",
+      "/writeups/sampling-from-df/index.html"
+    ]
   }
 ]

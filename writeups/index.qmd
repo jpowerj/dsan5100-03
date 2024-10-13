@@ -7,14 +7,15 @@ listing:
   type: table
   include:
     categories: "{Extra Writeups,Clarifications}"
-  fields: [title,date,categories]
+  fields: [title,weeknum,assignment]
   field-display-names: 
     title: "Title"
-    date: "Last Updated"
-    categories: "Category"
-  sort: "date desc"
+    weeknum: "Week"
+    # categories: "Category"
+    assignment: "Assignment"
+  sort: "weeknum desc"
   table-hover: true
-  date-format: full
+  date-format: medium
   categories: true
 ---
 

@@ -2,7 +2,8 @@
 title: "Simulating Sample Spaces With Tibbles"
 author: "Jeff Jacobs"
 institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>`jj1088@georgetown.edu`</a>"
-date: last-modified
+weeknum: 5
+assignment: "Quiz 1"
 categories:
   - "Extra Writeups"
 sidebar: mainnav
@@ -12,7 +13,7 @@ format:
     cache: false
 ---
 
-After working with a good number of students trying to set up a `tibble` (and/or `data.frame`) in R to represent the **sample space** of phone users given at the beginning of [Quiz 1](https://jfh.georgetown.domains/dsan5100/share-point/quizzes/quiz-1/quiz-1.html){target="_blank"}, and sort of winging it with a bunch of different approaches each time it came up, I decided to try and figure out some "standardized" way to generate a `tibble` which will represent a given sample space, with minimal headaches, that will work every time! This is the result.
+After working with a good number of students trying to set up a `tibble` (and/or `data.frame`) in R to represent the **sample space** of phone users problem in Quiz 1, and sort of winging it with a bunch of different approaches each time it came up, I decided to try and figure out some "standardized" way to generate a `tibble` which will represent a given sample space, with minimal headaches, that will work every time! This is the result.
 
 ## Step 0: What Do I Mean By "Simulating" a Sample Space?
 

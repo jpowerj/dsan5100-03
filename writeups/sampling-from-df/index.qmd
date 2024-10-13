@@ -2,7 +2,8 @@
 title: "Two Ways of Sampling from a Data Frame"
 author: "Jeff Jacobs"
 institute: "<a href='mailto:jj1088@georgetown.edu' target='_blank'>`jj1088@georgetown.edu`</a>"
-date: last-modified
+weeknum: 3
+assignment: "Labs 1-3"
 categories:
   - "Extra Writeups"
 sidebar: mainnav
