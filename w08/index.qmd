@@ -65,7 +65,7 @@ source("../dsan-globals/_globals.r")
 
 :::
 
-## The Course So Far {.crunch-center .crunch-lists .crunch-title .crunch-ul}
+## The Course So Far {.crunch-center .crunch-li .crunch-title .crunch-ul}
 
 * **Logic**: Reasoning about *T/F statements* using **and** and **or**
 * $\rightarrow$ **Set Theory**: Reasoning about *collections of objects* and their **union** and **intersection**
@@ -186,7 +186,7 @@ Possible State Spaces:
 | **Autonomous** | Markov Chain<br> | Hidden Markov Model |
 | **Controlled** | Markov Decision Process | Partially-Observable MDP | -->
 
-## Finite-State Automata {.nostretch .crunch-title}
+## Finite-State Automata {.nostretch .crunch-title .smaller-table}
 
 (Deterministic!) Only "accepts" strings with even number of `1`s:
 
@@ -249,7 +249,7 @@ Possible State Spaces:
 
 * ...But we're trying to model **probabilistic** evolution!
 
-## Enter Markov Chains
+## Enter Markov Chains {.crunch-title}
 
 ::: columns
 ::: {.column width="50%"}
@@ -340,7 +340,7 @@ ggplot(goog_df, aes(x=year, y=revenue_billions)) +
 ![](images/pagerank.svg){fig-align="center"}
 
 * Goal: Rank the relative "importance" of a site $S_i$, **taking into account** the importance of other sites that **link to** $S_i$
-  * "Important" sites are linked to often, and linked to often **by other important sites**
+  * "Important" sites: linked to often, and linked to often **by other important sites**
 
 ## Chickens and Eggs {.smaller}
 
@@ -375,11 +375,11 @@ $$
 
 * And yet, a guy named <a href="https://en.wikipedia.org/wiki/Daniel_Bernoulli" target="_blank">Bernoulli</a> figured out
 
-$$
-f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sqrt{5}},
-$$
+  $$
+  f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sqrt{5}},
+  $$
 
-where $\varphi$ is the "Golden Ratio" $\frac{1 + \sqrt{5}}{2}$ and $\psi$ its conjugate $\frac{1 - \sqrt{5}}{2}$.
+  where $\varphi$ is the "Golden Ratio" $\frac{1 + \sqrt{5}}{2}$ and $\psi$ its conjugate $\frac{1 - \sqrt{5}}{2}$.
 
 ## The PageRank Process {.smaller .crunch-title .crunch-ul}
 
@@ -477,8 +477,3 @@ $$
 * This is called the **Stationary Distribution** of the **Markov chain**: represents the probability that a **random walker** through the chain will be at page $S_i$ at a given time!
   * Equivalently: **expected proportion of total walking time** a random-walker will spend at each node
 * **Every Markov chain has a Stationary Distribution**! This fact has cool implications even above and beyond the Google $$$ implications 😜
-
-## References
-
-::: {#refs}
-:::

@@ -1912,7 +1912,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <span id="cb10-2"><a></a><span class="fu">sum</span>(ppl_df<span class="sc">$</span>has_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1</code></pre>
+<pre><code>[1] 0</code></pre>
 </div>
 </div>
 <ul>
@@ -1925,7 +1925,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <span id="cb12-2"><a></a><span class="fu">mean</span>(ppl_df<span class="sc">$</span>has_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1e-04</code></pre>
+<pre><code>[1] 0</code></pre>
 </div>
 </div>
 <ul>
@@ -1937,7 +1937,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a><span class="fu">format</span>(<span class="fu">mean</span>(ppl_df<span class="sc">$</span>has_disease), <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "0.0001"</code></pre>
+<pre><code>[1] "0"</code></pre>
 </div>
 </div>
 <aside class="notes">
@@ -1974,7 +1974,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <span id="cb16-13"><a></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(num_positive,<span class="st">" positive tests / "</span>,num_people,<span class="st">" total = "</span>,p_positive))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>96 positive tests / 10000 total = 0.0096</code></pre>
+<pre><code>114 positive tests / 10000 total = 0.0114</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
@@ -2042,32 +2042,32 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">246</td>
+<td style="text-align: right;">103</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">252</td>
+<td style="text-align: right;">154</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">297</td>
+<td style="text-align: right;">226</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">450</td>
+<td style="text-align: right;">243</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">565</td>
+<td style="text-align: right;">457</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">697</td>
+<td style="text-align: right;">464</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -2110,11 +2110,6 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: right;">8321</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -2127,7 +2122,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <div class="cell-output cell-output-stdout">
 <pre><code>Num with disease: 0
 Proportion with disease: 0
-Number of positive tests: 51</code></pre>
+Number of positive tests: 37</code></pre>
 </div>
 <div class="cell-output-display">
 <div class="kable-table">
@@ -2150,7 +2145,7 @@ Number of positive tests: 51</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Num with disease: 0
 Proportion with disease: 0
-Number of positive tests: 59</code></pre>
+Number of positive tests: 46</code></pre>
 </div>
 <div class="cell-output-display">
 <div class="kable-table">
@@ -2175,21 +2170,6 @@ Number of positive tests: 59</code></pre>
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
-<div class="cell-output cell-output-stdout">
-<pre><code>World #9 / 1000 (5000 people):
-# A tibble: 1 × 3
-     id has_disease test_result
-  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
-1  1302           1           0
-
-
-World #949 / 1000 (5000 people):
-# A tibble: 2 × 3
-     id has_disease test_result
-  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
-1  1669           1           1
-2  3556           1           0</code></pre>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "0.0000008"</code></pre>
 </div>
@@ -2273,20 +2253,20 @@ World #949 / 1000 (5000 people):
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a>gen_bday_room <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">room_num=</span><span class="cn">NULL</span>) {</span>
-<span id="cb25-2"><a></a>  num_people <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb25-3"><a></a>  num_days <span class="ot">&lt;-</span> <span class="dv">366</span></span>
-<span id="cb25-4"><a></a>  ppl_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">id=</span><span class="fu">seq</span>(<span class="dv">1</span>,num_people))</span>
-<span id="cb25-5"><a></a>birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>num_days, num_people,<span class="at">replace =</span> T)</span>
-<span id="cb25-6"><a></a>  ppl_df[<span class="st">'birthday'</span>] <span class="ot">&lt;-</span> birthdays</span>
-<span id="cb25-7"><a></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(room_num)) {</span>
-<span id="cb25-8"><a></a>    ppl_df <span class="ot">&lt;-</span> ppl_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">room_num=</span>room_num) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(room_num)</span>
-<span id="cb25-9"><a></a>  }</span>
-<span id="cb25-10"><a></a>  <span class="fu">return</span>(ppl_df)</span>
-<span id="cb25-11"><a></a>}</span>
-<span id="cb25-12"><a></a>ppl_df <span class="ot">&lt;-</span> <span class="fu">gen_bday_room</span>(<span class="dv">1</span>)</span>
-<span id="cb25-13"><a></a><span class="co">#disp(ppl_df %&gt;% head())</span></span>
-<span id="cb25-14"><a></a>ppl_df <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a></a>gen_bday_room <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">room_num=</span><span class="cn">NULL</span>) {</span>
+<span id="cb24-2"><a></a>  num_people <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb24-3"><a></a>  num_days <span class="ot">&lt;-</span> <span class="dv">366</span></span>
+<span id="cb24-4"><a></a>  ppl_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">id=</span><span class="fu">seq</span>(<span class="dv">1</span>,num_people))</span>
+<span id="cb24-5"><a></a>birthdays <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span>num_days, num_people,<span class="at">replace =</span> T)</span>
+<span id="cb24-6"><a></a>  ppl_df[<span class="st">'birthday'</span>] <span class="ot">&lt;-</span> birthdays</span>
+<span id="cb24-7"><a></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(room_num)) {</span>
+<span id="cb24-8"><a></a>    ppl_df <span class="ot">&lt;-</span> ppl_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">room_num=</span>room_num) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(room_num)</span>
+<span id="cb24-9"><a></a>  }</span>
+<span id="cb24-10"><a></a>  <span class="fu">return</span>(ppl_df)</span>
+<span id="cb24-11"><a></a>}</span>
+<span id="cb24-12"><a></a>ppl_df <span class="ot">&lt;-</span> <span class="fu">gen_bday_room</span>(<span class="dv">1</span>)</span>
+<span id="cb24-13"><a></a><span class="co">#disp(ppl_df %&gt;% head())</span></span>
+<span id="cb24-14"><a></a>ppl_df <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div class="kable-table">
@@ -2302,32 +2282,32 @@ World #949 / 1000 (5000 people):
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">46</td>
+<td style="text-align: right;">330</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">204</td>
+<td style="text-align: right;">5</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">208</td>
+<td style="text-align: right;">231</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">158</td>
+<td style="text-align: right;">177</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">234</td>
+<td style="text-align: right;">341</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">310</td>
+<td style="text-align: right;">165</td>
 </tr>
 </tbody>
 </table>
@@ -2351,14 +2331,9 @@ World #949 / 1000 (5000 people):
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">21</td>
-<td style="text-align: right;">30</td>
-<td style="text-align: right;">223</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">23</td>
-<td style="text-align: right;">29</td>
-<td style="text-align: right;">336</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">177</td>
 </tr>
 </tbody>
 </table>
@@ -2374,76 +2349,74 @@ World #949 / 1000 (5000 people):
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a></a><span class="co"># Get tibbles for each room</span></span>
-<span id="cb26-2"><a></a><span class="fu">library</span>(purrr)</span>
-<span id="cb26-3"><a></a>gen_bday_rooms <span class="ot">&lt;-</span> <span class="cf">function</span>(num_rooms) {</span>
-<span id="cb26-4"><a></a>  rooms_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
-<span id="cb26-5"><a></a>  <span class="cf">for</span> (r <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, num_rooms)) {</span>
-<span id="cb26-6"><a></a>      cur_room <span class="ot">&lt;-</span> <span class="fu">gen_bday_room</span>(r)</span>
-<span id="cb26-7"><a></a>      rooms_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(rooms_df, cur_room)</span>
-<span id="cb26-8"><a></a>  }</span>
-<span id="cb26-9"><a></a>  <span class="fu">return</span>(rooms_df)</span>
-<span id="cb26-10"><a></a>}</span>
-<span id="cb26-11"><a></a>num_rooms <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb26-12"><a></a>rooms_df <span class="ot">&lt;-</span> <span class="fu">gen_bday_rooms</span>(num_rooms)</span>
-<span id="cb26-13"><a></a>rooms_df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(room_num) <span class="sc">%&gt;%</span> <span class="fu">group_map</span>(<span class="sc">~</span> <span class="fu">get_shared_bdays</span>(.x, <span class="at">is_grouped=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a></a><span class="co"># Get tibbles for each room</span></span>
+<span id="cb25-2"><a></a><span class="fu">library</span>(purrr)</span>
+<span id="cb25-3"><a></a>gen_bday_rooms <span class="ot">&lt;-</span> <span class="cf">function</span>(num_rooms) {</span>
+<span id="cb25-4"><a></a>  rooms_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>()</span>
+<span id="cb25-5"><a></a>  <span class="cf">for</span> (r <span class="cf">in</span> <span class="fu">seq</span>(<span class="dv">1</span>, num_rooms)) {</span>
+<span id="cb25-6"><a></a>      cur_room <span class="ot">&lt;-</span> <span class="fu">gen_bday_room</span>(r)</span>
+<span id="cb25-7"><a></a>      rooms_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(rooms_df, cur_room)</span>
+<span id="cb25-8"><a></a>  }</span>
+<span id="cb25-9"><a></a>  <span class="fu">return</span>(rooms_df)</span>
+<span id="cb25-10"><a></a>}</span>
+<span id="cb25-11"><a></a>num_rooms <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb25-12"><a></a>rooms_df <span class="ot">&lt;-</span> <span class="fu">gen_bday_rooms</span>(num_rooms)</span>
+<span id="cb25-13"><a></a>rooms_df <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(room_num) <span class="sc">%&gt;%</span> <span class="fu">group_map</span>(<span class="sc">~</span> <span class="fu">get_shared_bdays</span>(.x, <span class="at">is_grouped=</span><span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-# A tibble: 0 × 0
+# A tibble: 1 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     4    14   235
 
 [[2]]
 # A tibble: 0 × 0
 
 [[3]]
-# A tibble: 1 × 3
+# A tibble: 2 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     6    16    37
+1     1    30    31
+2    10    16    83
 
 [[4]]
-# A tibble: 2 × 3
-      i     j  bday
-  &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     3     6   182
-2    10    21   122
-
-[[5]]
 # A tibble: 1 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1    20    27   167
+1     9    27   319
 
-[[6]]
-# A tibble: 0 × 0
-
-[[7]]
-# A tibble: 4 × 3
-      i     j  bday
-  &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     7    11   291
-2    15    18   103
-3    15    25   103
-4    18    25   103
-
-[[8]]
-# A tibble: 0 × 0
-
-[[9]]
+[[5]]
 # A tibble: 2 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1    18    28   311
-2    20    21     7
+1     2    21   339
+2     6     8   290
 
-[[10]]
-# A tibble: 4 × 3
+[[6]]
+# A tibble: 1 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     4    19   366
-2     8     9   101
-3     8    14   101
-4     9    14   101</code></pre>
+1     5    18   181
+
+[[7]]
+# A tibble: 0 × 0
+
+[[8]]
+# A tibble: 2 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     2    12    72
+2    18    24   255
+
+[[9]]
+# A tibble: 0 × 0
+
+[[10]]
+# A tibble: 1 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1    24    26   243</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:48%;">
@@ -2451,15 +2424,15 @@ World #949 / 1000 (5000 people):
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a></a><span class="co"># Now just get the # shared bdays</span></span>
-<span id="cb28-2"><a></a>shared_per_room <span class="ot">&lt;-</span> rooms_df <span class="sc">%&gt;%</span></span>
-<span id="cb28-3"><a></a>    <span class="fu">group_by</span>(room_num) <span class="sc">%&gt;%</span></span>
-<span id="cb28-4"><a></a>    <span class="fu">group_map</span>(<span class="sc">~</span> <span class="fu">get_shared_bdays</span>(.x, <span class="at">is_grouped =</span> <span class="cn">TRUE</span>, <span class="at">return_num=</span><span class="cn">TRUE</span>))</span>
-<span id="cb28-5"><a></a>shared_per_room <span class="ot">&lt;-</span> <span class="fu">unlist</span>(shared_per_room)</span>
-<span id="cb28-6"><a></a>shared_per_room</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a></a><span class="co"># Now just get the # shared bdays</span></span>
+<span id="cb27-2"><a></a>shared_per_room <span class="ot">&lt;-</span> rooms_df <span class="sc">%&gt;%</span></span>
+<span id="cb27-3"><a></a>    <span class="fu">group_by</span>(room_num) <span class="sc">%&gt;%</span></span>
+<span id="cb27-4"><a></a>    <span class="fu">group_map</span>(<span class="sc">~</span> <span class="fu">get_shared_bdays</span>(.x, <span class="at">is_grouped =</span> <span class="cn">TRUE</span>, <span class="at">return_num=</span><span class="cn">TRUE</span>))</span>
+<span id="cb27-5"><a></a>shared_per_room <span class="ot">&lt;-</span> <span class="fu">unlist</span>(shared_per_room)</span>
+<span id="cb27-6"><a></a>shared_per_room</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] 0 0 1 2 1 0 4 0 2 4</code></pre>
+<pre><code> [1] 1 0 2 1 2 1 0 2 0 1</code></pre>
 </div>
 </div>
 <ul>
@@ -2467,7 +2440,7 @@ World #949 / 1000 (5000 people):
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6</code></pre>
+<pre><code>[1] 0.7</code></pre>
 </div>
 </div>
 </div></div>
@@ -2479,9 +2452,9 @@ World #949 / 1000 (5000 people):
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code>  [1] 1 1 1 0 1 1 1 0 1 0 1 1 1 1 1 1 1 1 1 0 1 1 0 0 0 1 0 0 1 1 1 0 1 1 1 1 1
- [38] 0 1 1 1 1 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 0 0 0 1 0 0 1 0 1 0 1 1 1 1
- [75] 1 1 1 1 0 1 0 0 0 0 0 0 1 1 1 1 1 0 1 0 1 1 0 1 1 1</code></pre>
+<pre><code>  [1] 1 0 1 0 1 1 1 1 0 0 1 1 0 1 1 1 0 0 1 1 1 1 0 0 1 1 0 1 1 0 1 0 1 0 1 1 1
+ [38] 1 1 1 1 1 1 1 0 1 0 0 1 0 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 1 0 0 1 0 1 1 0 1
+ [75] 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 0 1 1 1 1 0 0 1 1</code></pre>
 </div>
 </div>
 <ul>
@@ -2489,7 +2462,7 @@ World #949 / 1000 (5000 people):
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.69</code></pre>
+<pre><code>[1] 0.71</code></pre>
 </div>
 </div>
 <ul>

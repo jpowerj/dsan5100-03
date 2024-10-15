@@ -95,26 +95,7 @@
     code span.va { color: #111111; } /* Variable */
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
-    /* CSS for citations */
-    div.csl-bib-body { }
-    div.csl-entry {
-      clear: both;
-    }
-    .hanging-indent div.csl-entry {
-      margin-left:2em;
-      text-indent:-2em;
-    }
-    div.csl-left-margin {
-      min-width:2em;
-      float:left;
-    }
-    div.csl-right-inline {
-      margin-left:2em;
-      padding-left:1em;
-    }
-    div.csl-indent {
-      margin-left: 2em;
-    }  </style>
+  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
   <link rel="stylesheet" href="../dsan-globals/jjstyles.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -473,7 +454,7 @@ Jeff Jacobs
 </div>
 </div>
 </section>
-<section id="the-course-so-far" class="slide level2 crunch-center crunch-lists crunch-title crunch-ul">
+<section id="the-course-so-far" class="slide level2 crunch-center crunch-li crunch-title crunch-ul">
 <h2>The Course So Far</h2>
 <ul>
 <li><strong>Logic</strong>: Reasoning about <em>T/F statements</em> using <strong>and</strong> and <strong>or</strong></li>
@@ -698,7 +679,7 @@ Possible State Spaces:
 | **Autonomous** | Markov Chain<br> | Hidden Markov Model |
 | **Controlled** | Markov Decision Process | Partially-Observable MDP | -->
 </section>
-<section id="finite-state-automata" class="slide level2 nostretch crunch-title">
+<section id="finite-state-automata" class="slide level2 nostretch crunch-title smaller-table">
 <h2>Finite-State Automata</h2>
 <p>(Deterministic!) Only “accepts” strings with even number of <code>1</code>s:</p>
 <div class="columns">
@@ -756,7 +737,7 @@ Possible State Spaces:
 <li>…But we’re trying to model <strong>probabilistic</strong> evolution!</li>
 </ul>
 </section>
-<section id="enter-markov-chains" class="slide level2">
+<section id="enter-markov-chains" class="slide level2 crunch-title">
 <h2>Enter Markov Chains</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -855,7 +836,7 @@ Mathematically
 <img data-src="images/pagerank.svg" class="quarto-figure quarto-figure-center r-stretch"><ul>
 <li>Goal: Rank the relative “importance” of a site <span class="math inline">\(S_i\)</span>, <strong>taking into account</strong> the importance of other sites that <strong>link to</strong> <span class="math inline">\(S_i\)</span>
 <ul>
-<li>“Important” sites are linked to often, and linked to often <strong>by other important sites</strong></li>
+<li>“Important” sites: linked to often, and linked to often <strong>by other important sites</strong></li>
 </ul></li>
 </ul>
 </section>
@@ -897,12 +878,12 @@ f(n-2) + f(n-1) &amp; n &gt; 2
 \end{cases}
 \]</span></p>
 <ul>
-<li>And yet, a guy named <a href="https://en.wikipedia.org/wiki/Daniel_Bernoulli" target="_blank">Bernoulli</a> figured out</li>
-</ul>
+<li><p>And yet, a guy named <a href="https://en.wikipedia.org/wiki/Daniel_Bernoulli" target="_blank">Bernoulli</a> figured out</p>
 <p><span class="math display">\[
 f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sqrt{5}},
 \]</span></p>
-<p>where <span class="math inline">\(\varphi\)</span> is the “Golden Ratio” <span class="math inline">\(\frac{1 + \sqrt{5}}{2}\)</span> and <span class="math inline">\(\psi\)</span> its conjugate <span class="math inline">\(\frac{1 - \sqrt{5}}{2}\)</span>.</p>
+<p>where <span class="math inline">\(\varphi\)</span> is the “Golden Ratio” <span class="math inline">\(\frac{1 + \sqrt{5}}{2}\)</span> and <span class="math inline">\(\psi\)</span> its conjugate <span class="math inline">\(\frac{1 - \sqrt{5}}{2}\)</span>.</p></li>
+</ul>
 </section>
 <section id="the-pagerank-process" class="slide level2 smaller crunch-title crunch-ul">
 <h2>The PageRank Process</h2>
@@ -1027,12 +1008,6 @@ f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sq
 </ul></li>
 <li><strong>Every Markov chain has a Stationary Distribution</strong>! This fact has cool implications even above and beyond the Google $$$ implications 😜</li>
 </ul>
-</section>
-<section id="references" class="slide level2 smaller scrollable">
-<h2>References</h2>
-<div id="refs" role="list">
-
-</div>
 
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">

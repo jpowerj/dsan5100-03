@@ -89,6 +89,10 @@ a.disabled {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
 }
+.crunch-figcaption figcaption {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
 
 .crunch-hr hr {
   margin-top: 8px !important;
@@ -130,6 +134,11 @@ a.disabled {
 .crunch-quarto-figure .quarto-figure {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
+}
+
+.crunch-quarto-layout-cell .quarto-layout-cell {
+  margin-left: 0px !important;
+  margin-right: 0px !important;
 }
 
 .crunch-quarto-layout-panel .quarto-layout-panel {

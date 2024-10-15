@@ -55,26 +55,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -309,7 +290,7 @@ window.Quarto = {
     </ul>
     </div>
 <div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
-<p><em>Updated 2024-10-12, 08:22:02 PM</em></p>
+<p><em>Updated 2024-10-15, 06:28:02 PM</em></p>
 </div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -347,7 +328,6 @@ window.Quarto = {
   <li><a href="#matrix-magic" id="toc-matrix-magic" class="nav-link" data-scroll-target="#matrix-magic">Matrix Magic</a></li>
   <li><a href="#solving-the-matrix-magic" id="toc-solving-the-matrix-magic" class="nav-link" data-scroll-target="#solving-the-matrix-magic">Solving the Matrix Magic</a></li>
   <li><a href="#the-point-of-all-this" id="toc-the-point-of-all-this" class="nav-link" data-scroll-target="#the-point-of-all-this">The Point of All This</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w08/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
@@ -443,8 +423,8 @@ window.Quarto = {
 \]</span></p>
 </div>
 </div>
-<section id="the-course-so-far" class="level2 crunch-center crunch-lists crunch-title crunch-ul">
-<h2 class="crunch-center crunch-lists crunch-title crunch-ul anchored" data-anchor-id="the-course-so-far">The Course So Far</h2>
+<section id="the-course-so-far" class="level2 crunch-center crunch-li crunch-title crunch-ul">
+<h2 class="crunch-center crunch-li crunch-title crunch-ul anchored" data-anchor-id="the-course-so-far">The Course So Far</h2>
 <ul>
 <li><strong>Logic</strong>: Reasoning about <em>T/F statements</em> using <strong>and</strong> and <strong>or</strong></li>
 <li><span class="math inline">\(\rightarrow\)</span> <strong>Set Theory</strong>: Reasoning about <em>collections of objects</em> and their <strong>union</strong> and <strong>intersection</strong></li>
@@ -672,8 +652,8 @@ Possible State Spaces:
 | - | - | - |
 | **Autonomous** | Markov Chain<br> | Hidden Markov Model |
 | **Controlled** | Markov Decision Process | Partially-Observable MDP | -->
-<section id="finite-state-automata" class="level2 nostretch crunch-title">
-<h2 class="nostretch crunch-title anchored" data-anchor-id="finite-state-automata">Finite-State Automata</h2>
+<section id="finite-state-automata" class="level2 nostretch crunch-title smaller-table">
+<h2 class="nostretch crunch-title smaller-table anchored" data-anchor-id="finite-state-automata">Finite-State Automata</h2>
 <p>(Deterministic!) Only “accepts” strings with even number of <code>1</code>s:</p>
 <div class="columns">
 <div class="column" style="width:44%;">
@@ -731,8 +711,8 @@ Possible State Spaces:
 <li>…But we’re trying to model <strong>probabilistic</strong> evolution!</li>
 </ul>
 </section>
-<section id="enter-markov-chains" class="level2">
-<h2 class="anchored" data-anchor-id="enter-markov-chains">Enter Markov Chains</h2>
+<section id="enter-markov-chains" class="level2 crunch-title">
+<h2 class="crunch-title anchored" data-anchor-id="enter-markov-chains">Enter Markov Chains</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <center>
@@ -840,7 +820,7 @@ Mathematically
 <ul>
 <li>Goal: Rank the relative “importance” of a site <span class="math inline">\(S_i\)</span>, <strong>taking into account</strong> the importance of other sites that <strong>link to</strong> <span class="math inline">\(S_i\)</span>
 <ul>
-<li>“Important” sites are linked to often, and linked to often <strong>by other important sites</strong></li>
+<li>“Important” sites: linked to often, and linked to often <strong>by other important sites</strong></li>
 </ul></li>
 </ul>
 </section>
@@ -882,12 +862,12 @@ f(n-2) + f(n-1) &amp; n &gt; 2
 \end{cases}
 \]</span></p>
 <ul>
-<li>And yet, a guy named <a href="https://en.wikipedia.org/wiki/Daniel_Bernoulli" target="_blank">Bernoulli</a> figured out</li>
-</ul>
+<li><p>And yet, a guy named <a href="https://en.wikipedia.org/wiki/Daniel_Bernoulli" target="_blank">Bernoulli</a> figured out</p>
 <p><span class="math display">\[
 f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sqrt{5}},
 \]</span></p>
-<p>where <span class="math inline">\(\varphi\)</span> is the “Golden Ratio” <span class="math inline">\(\frac{1 + \sqrt{5}}{2}\)</span> and <span class="math inline">\(\psi\)</span> its conjugate <span class="math inline">\(\frac{1 - \sqrt{5}}{2}\)</span>.</p>
+<p>where <span class="math inline">\(\varphi\)</span> is the “Golden Ratio” <span class="math inline">\(\frac{1 + \sqrt{5}}{2}\)</span> and <span class="math inline">\(\psi\)</span> its conjugate <span class="math inline">\(\frac{1 - \sqrt{5}}{2}\)</span>.</p></li>
+</ul>
 </section>
 <section id="the-pagerank-process" class="level2 smaller crunch-title crunch-ul">
 <h2 class="smaller crunch-title crunch-ul anchored" data-anchor-id="the-pagerank-process">The PageRank Process</h2>
@@ -992,12 +972,6 @@ f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sq
 </ul></li>
 <li><strong>Every Markov chain has a Stationary Distribution</strong>! This fact has cool implications even above and beyond the Google $$$ implications 😜</li>
 </ul>
-</section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">References</h2>
-<div id="refs" role="list">
-
-</div>
 
 
 </section>
