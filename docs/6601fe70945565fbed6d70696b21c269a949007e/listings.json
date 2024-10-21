@@ -4,27 +4,6 @@
     "items": []
   },
   {
-    "listing": "/index.html",
-    "items": [
-      "/w01/index.html",
-      "/w02/index.html",
-      "/w03/index.html",
-      "/w04/index.html",
-      "/w05/index.html",
-      "/w06/index.html",
-      "/w07/index.html",
-      "/w08/index.html"
-    ]
-  },
-  {
-    "listing": "/recordings-archive/index.html",
-    "items": []
-  },
-  {
-    "listing": "/recordings/index.html",
-    "items": []
-  },
-  {
     "listing": "/writeups/index.html",
     "items": [
       "/writeups/lab-6-clarifications/index.html",
@@ -35,6 +14,28 @@
       "/writeups/sample-space-tibbles/index.html",
       "/writeups/computing-probabilities/index.html",
       "/writeups/sampling-from-df/index.html"
+    ]
+  },
+  {
+    "listing": "/recordings/index.html",
+    "items": []
+  },
+  {
+    "listing": "/recordings-archive/index.html",
+    "items": []
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/w01/index.html",
+      "/w02/index.html",
+      "/w03/index.html",
+      "/w04/index.html",
+      "/w05/index.html",
+      "/w06/index.html",
+      "/w07/index.html",
+      "/w08/index.html",
+      "/w09/index.html"
     ]
   }
 ]

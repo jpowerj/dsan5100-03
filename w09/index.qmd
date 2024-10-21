@@ -1,0 +1,1560 @@
+---
+title: "Week 9: Statistical Inference"
+subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
+author: "Jeff Jacobs"
+institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
+date: 2024-10-22
+date-format: full
+lecnum: 9
+bibliography: "../_DSAN5100.bib"
+categories:
+  - "Class Sessions"
+format:
+  revealjs:
+    cache: false
+    css: "../dsan-globals/jjstyles.css"
+    footer: "DSAN 5100-03 W09: Statistical Inference"
+    output-file: slides.html
+    df-print: kable
+    code-fold: true
+    html-math-method: mathjax
+    scrollable: true
+    slide-number: true
+    number-sections: false
+    link-external-icon: true
+    link-external-newwindow: true
+    theme: [default]
+    revealjs-plugins:
+      - simplemenu
+    simplemenu:
+      flat: true
+      barhtml:
+        header: "<div class='menubar'><span style='position: absolute; left: 8; padding-left: 8px;'><a href='./index.html'>&larr; Return to Notes</a></span><ul class='menu'></ul></div>"
+      scale: 0.5
+    include-in-header:
+      text: "<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css' integrity='sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65' crossorigin='anonymous'><link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>"
+  html:
+    cache: false
+    output-file: index.html
+    df-print: kable
+    warning: false
+    link-external-icon: true
+    link-external-newwindow: true
+---
+
+::: {.content-visible unless-format="revealjs"}
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window &rarr;</a>
+</center>
+
+:::
+
+# Markov Models {data-stack-name="Markov Models"}
+
+::: {.hidden}
+
+```{r}
+#| label: r-source-globals
+source("../dsan-globals/_globals.r")
+```
+
+{{< include ../_globals-tex.qmd >}}
+
+:::
+
+<!-- ## Four Types {.smaller}
+
+| | Fully Observable | Partially Observable |
+| - | - | - |
+| **Autonomous** | Markov Chain<br> | Hidden Markov Model |
+| **Controlled** | Markov Decision Process | Partially-Observable MDP | -->
+
+## Finite-State Automata {.nostretch .crunch-title .smaller-table}
+
+(Deterministic!) Only "accepts" strings with even number of `1`s:
+
+::: columns
+::: {.column width="44%"}
+
+![](images/automata.svg){fig-align="center" width="80%"}
+
+:::
+::: {.column width="56%"}
+
+```{=html}
+<table>
+<thead>
+  <tr>
+  <th>Input String</th>
+  <th class='split-table'>Result</th>
+  <th>Input String</th>
+  <th>Result</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td><span data-qmd="$\varepsilon$"></span></td>
+    <td class='split-table'>✅</td>
+    <td><span data-qmd="`01`"></span></td>
+    <td><span data-qmd="<i class='bi bi-x-lg' style='color: red;'></i>"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="`0`"></span></td>
+    <td class='split-table'>✅</td>
+    <td><span data-qmd="`10`"></span></td>
+    <td><span data-qmd="<i class='bi bi-x-lg' style='color: red;'></i>"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="`1`"></span></td>
+    <td class='split-table'><span data-qmd="<i class='bi bi-x-lg' style='color: red;'></i>"></span></td>
+    <td><span data-qmd="`1000000`"></span></td>
+    <td><span data-qmd="<i class='bi bi-x-lg' style='color: red;'></i>"></span></td>
+  </tr>
+  <tr>
+    <td><span data-qmd="`00`"></span></td>
+    <td class='split-table'>✅</td>
+    <td><span data-qmd="`10000001`"></span></td>
+    <td>✅</td>
+  </tr>
+</tbody>
+</table>
+```
+
+<!-- | Input String | Result | Input String | Result |
+| - | - | - | - |
+| $\varepsilon$ | ✅ | `01` | <i class='bi bi-x-lg' style='color: red;'></i> |
+| `0` | ✅ | `10` | <i class='bi bi-x-lg' style='color: red;'></i> |
+| `1` | <i class='bi bi-x-lg' style='color: red;'></i> | `1000000` | <i class='bi bi-x-lg' style='color: red;'></i> |
+| `00` | ✅ | `10000001` | ✅ | -->
+
+:::
+:::
+
+* ...But we're trying to model **probabilistic** evolution!
+
+## Enter Markov Chains {.crunch-title}
+
+::: columns
+::: {.column width="50%"}
+
+<center>
+Graphically
+</center>
+
+![](images/basic_no_self_loops.svg){fig-align="center" width="60%"}
+
+![](images/basic_self_loops.svg){fig-align="center" width="60%"}
+
+:::
+::: {.column width="50%"}
+
+<center>
+Mathematically
+</center>
+
+$$
+\begin{array}{c c} 
+& \begin{array}{c c c} 1 & 2 & 3 \\ \end{array} \\
+\begin{array}{c c c}1 \\ 2 \\ 3 \end{array} &
+\left[
+\begin{array}{c c c}
+0 & 1/2 & 1/2 \\
+1/3 & 0 & 2/3 \\
+1/3 & 2/3 & 0
+\end{array}
+\right]
+\end{array}
+$$
+
+
+$$
+\begin{array}{c c} 
+& \begin{array}{c c c} 1 & 2 & 3 \\ \end{array} \\
+\begin{array}{c c c}1 \\ 2 \\ 3 \end{array} &
+\left[
+\begin{array}{c c c}
+1/2 & 1/3 & 1/6 \\
+1/10 & 1/2 & 2/5 \\
+1/8 & 3/8 & 1/2
+\end{array}
+\right]
+\end{array}
+$$
+
+:::
+:::
+
+## Hidden Markov Models {data-name="HMMs"}
+
+* Use **observed** data to infer **unobserved** variables
+
+![](images/hmm.svg){fig-align="center"}
+
+* (What our brains are doing, most of the time!)
+
+## PageRank (Matrix Magic)
+
+* What is the relevance of this abstract topic? ...🤑
+
+```{r}
+#| label: google-graph
+#| echo: true
+library(readr)
+library(ggplot2)
+goog_df <- read_csv("assets/google_yearly_revenue.csv")
+ggplot(goog_df, aes(x=year, y=revenue_billions)) +
+  geom_bar(stat="identity", fill=cbPalette[1]) +
+  labs(
+    title = "Google Yearly Revenue, 2002-2022",
+    x = "Year",
+    y = "Revenue (Billion USD)"
+  ) +
+  dsan_theme("full")
+```
+
+* PageRank = The "spark" that ignited the Google flame
+
+## PageRank Visualized {.smaller}
+
+* Nodes = Webpages, Edges = Links
+
+![](images/pagerank.svg){fig-align="center"}
+
+* Goal: Rank the relative "importance" of a site $S_i$, **taking into account** the importance of other sites that **link to** $S_i$
+  * "Important" sites: linked to often, and linked to often **by other important sites**
+
+## Chickens and Eggs {.smaller}
+
+* Paradoxical at first: how are we supposed to figure out the **importance of a site** $S_i$, when that's determined by
+  * the **importance of sites $S_j$ that link to $S_i$**, which is determined by
+    * the **importance of sites $S_k$ that link to sites $S_j$**, which is determined by
+      * the **importance of the sites $S_\ell$ that link to those sites $S_k$**, which is determined by...
+
+$$
+\begin{align*}
+\mathsf{Importance}(S_i) &= f(\mathsf{Importance}(S_{j \rightarrow i})) = f(f(\mathsf{Importance}(S_{k \rightarrow j \rightarrow i}))) \\
+&= f(f(f(\mathsf{Importance}(S_{\ell \rightarrow k \rightarrow j \rightarrow i})))) = \cdots
+\end{align*}
+$$
+
+::: {.aside}
+Sanity hint: Remember infinite sums from calculus! They can converge, despite having infinitely-many terms... This is something like that, but for **recursion** (the mathematical term for an object whose definition refers to itself)
+:::
+
+## Resolving Recursive Definitions {.smaller}
+
+* We **can** compute this importance ranking, despite its recursive definition!
+* Recall, for example, the Fibonacci sequence: $1, 1, 2, 3, 5, 8, 13, 21, \ldots$
+* Defined recursively!
+
+$$
+f(n) = \begin{cases}
+1 & n = 1\text{ or }n = 2 \\
+f(n-2) + f(n-1) & n > 2
+\end{cases}
+$$
+
+* And yet, a guy named <a href="https://en.wikipedia.org/wiki/Daniel_Bernoulli" target="_blank">Bernoulli</a> figured out
+
+  $$
+  f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sqrt{5}},
+  $$
+
+  where $\varphi$ is the "Golden Ratio" $\frac{1 + \sqrt{5}}{2}$ and $\psi$ its conjugate $\frac{1 - \sqrt{5}}{2}$.
+
+## The PageRank Process {.smaller .crunch-title .crunch-ul}
+
+* Every site starts with **equal** PageRank score: $r^{(0)}_1 = r^{(0)}_2 = r^{(0)}_3 = \frac{1}{3}$.
+* Each link $S_i \rightarrow S_j$ is a **vote of confidence** that $S_i$ is giving to $S_j$
+* At each time $t$, a site $S_i$ **"spends"** whatever voting power it currently has ($r^{(t)}_i$) on the sites it links to.
+  * $S_1$ casts one vote for itself and one vote for $S_2$, thus spending $\frac{1}{2}$ of its total PageRank on itself and $\frac{1}{2}$ of its total PageRank on $S_2$.
+* **State** of the process at time $t$: $\mathbf{r}^{(t)} = \begin{bmatrix}r^{(t)}_1 & r^{(t)}_2 & r^{(t)}_3\end{bmatrix}^\top$
+* Can form a **matrix** specifying how this state **evolves** from time $t$ to time $t+1$!
+
+$$
+\mathbf{E} = \begin{bmatrix}
+\frac{1}{2} & \frac{1}{2} & 0 \\
+\frac{1}{2} & 0 & 1 \\
+0 & \frac{1}{2} & 0
+\end{bmatrix} \; \leadsto \; \mathbf{r}^{(t+1)} = \mathbf{E}\mathbf{r}^{(t)}
+$$
+
+::: {.notes}
+* Given the "$S_1$ casts one vote for itself..." part, can you say exactly what $S_1$ will "spend" on itself and on $S_2$ at time $t = 0$ (in the first round)?
+:::
+
+## {.smaller}
+
+* We can use $\mathbf{E}$ to figure out the state at each step, starting from $t = 0$!
+
+$$
+\begin{array}{c@{}c@{}c@{}c@{}c@{}c@{}c}
+\mathbf{r}^{(1)} & = & \mathbf{E}\mathbf{r}^{(0)} & = & \begin{bmatrix}
+\frac{1}{2} & \frac{1}{2} & 0 \\
+\frac{1}{2} & 0 & 1 \\
+0 & \frac{1}{2} & 0
+\end{bmatrix}\begin{bmatrix}
+\frac{1}{3} \\
+\frac{1}{3} \\
+\frac{1}{3}\end{bmatrix} & = & \begin{bmatrix}
+\frac{1}{3} \\
+\frac{1}{2} \\
+\frac{1}{6}
+\end{bmatrix} \\
+~ & ~ & ~ & ~ & ~ & \swarrow & ~ \\
+\mathbf{r}^{(2)} & = & \mathbf{E}\mathbf{r}^{(1)} & = & \begin{bmatrix}
+\frac{1}{2} & \frac{1}{2} & 0 \\
+\frac{1}{2} & 0 & 1 \\
+0 & \frac{1}{2} & 0
+\end{bmatrix}\begin{bmatrix}\frac{1}{3} \\ \frac{1}{2} \\ \frac{1}{6}\end{bmatrix} & = & \begin{bmatrix}\frac{5}{12} \\ \frac{1}{3} \\ \frac{1}{4}\end{bmatrix} \\
+~ & ~ & ~ & ~ & ~ & \swarrow & ~ \\
+\mathbf{r}^{(3)} & = & \mathbf{E}\mathbf{r}^{(2)} & = & \cdots & ~ & ~
+\end{array}
+$$
+
+## Matrix Magic {.smaller}
+
+* \(1\) Won't we just have to run this forever? (2) How do we know it'll converge to something?
+* Answers: (1) No! (2) because **Markov matrix magic**!
+* "Steady state" = state where $\mathbf{r}^{(t)} = \mathbf{r}^{(t+1)} = \mathbf{r}^{(t+2)} = \cdots \definedas \mathbf{r}^*$. But this means
+
+$$
+\mathbf{r}^{(t+1)} = \mathbf{r}^{(t)} \iff \mathbf{E}\mathbf{r}^{(t)} = \mathbf{r}^{(t)} \iff \mathbf{E}\mathbf{r}^* = \mathbf{r}^*
+$$
+
+* This $\mathbf{r}^*$ is (by definition!) an **Eigenvector** of $\mathbf{E}$ with **Eigenvalue** $\lambda = 1$![^lambda]
+
+[^lambda]: This is because an **Eigenvalue-Eigenvector pair** for a matrix $\mathbf{M}$ is a vector $\mathbf{v}$ and scalar value $\lambda$ which satisfy $\mathbf{M}\mathbf{v} = \lambda \mathbf{v}$. In words: the result of (left) **matrix-multiplying** $\mathbf{v}$ by $\mathbf{M}$ is the same as **scalar-multiplying** $\mathbf{v}$ by a factor of $\lambda$. In our case the **Eigenvector** is $\mathbf{r}^*$ and the **Eigenvalue** is $\lambda = 1$, since $\mathbf{E}\mathbf{r}^* = 1 \cdot \mathbf{r}^*$.<br>For the math-curious, there are lots of fun results from matrix theory which assure us that $\mathbf{E}$ is **guaranteed** to have principal eigenvalue $\lambda = 1$ 💆
+
+::: {.notes}
+* In my opinion, along with e.g. insolubility of the quintic, this is maybe the most mind-blowing case of math magic :3
+:::
+
+## Solving the Matrix Magic {.smaller .crunch-title}
+
+* Since we already know the **Eigenvalue** of interest, $\lambda = 1$, all that's left is solving for its corresponding **Eigenvector**:
+
+    $$
+    \mathbf{E}\mathbf{r}^* = \mathbf{r}^* \iff \mathbf{E}\mathbf{r}^* - \mathbf{r}^* = \mathbf{0} \iff (\mathbf{E} - \mathbf{I})\mathbf{r}^* = \mathbf{0}
+    $$
+
+* Written out, we see that this gives us a system of linear equations:
+
+    $$
+    \begin{bmatrix}
+    \frac{1}{2} & \frac{1}{2} & 0 \\
+    \frac{1}{2} & 0 & 1 \\
+    0 & \frac{1}{2} & 0
+    \end{bmatrix}\begin{bmatrix}r^*_1 \\ r^*_2 \\ r^*_3\end{bmatrix} = \begin{bmatrix}0 \\ 0 \\ 0\end{bmatrix} \iff \begin{array}{ccccccc}\frac{1}{2}r^*_1 & + & \frac{1}{2}r^*_2 & ~ & ~ & = & 0 \\ \frac{1}{2}r^*_1 & ~ & ~ & + & r^*_3 & = & 0 \\ ~ & ~ & \frac{1}{2}r^*_2 & ~ & ~ & = & 0\end{array}
+    $$
+
+    which we can solve however we want!
+
+* To handle the fact that this system is **underspecified**, impose additional restriction that $r^*_1 + r^*_2 + r^*_3 = 1$, so that the ranks form a **probability distribution**
+
+## The Point of All This {.crunch-title}
+
+* The final restriction $r^*_1 + r^*_2 + r^*_3 = 1$ ensures that the resulting PageRank values form a **probability distribution**
+* This is called the **Stationary Distribution** of the **Markov chain**: represents the probability that a **random walker** through the chain will be at page $S_i$ at a given time!
+  * Equivalently: **expected proportion of total walking time** a random-walker will spend at each node
+* **Every Markov chain has a Stationary Distribution**! This fact has cool implications even above and beyond the Google $$$ implications 😜
+
+
+# Statistical Inference {data-stack-name="Inference"}
+
+## Statistical *Inference* vs. Statistics
+
+<!-- {data-name="Overview"} -->
+
+* Moving from *understanding* probability to *getting things done* using probability!
+* Everything up to this point: understanding the "rules" of stochastic processes
+* Now: Using what we know to allow us to draw inferences about **populations** without having to carry out a **census**
+
+## Samples vs. Populations
+
+* **Sample** = The data you have
+* **Population** = The thing you want to learn about, by looking at the sample
+* Like "success" vs. "failure" in Bernoulli trials, no exact definition of what counts as sample vs. population
+* What we call the "sample" and the "population" is vocabulary there to help us know what to do
+
+## Inference (Statistical and Otherwise)
+
+What are we doing when we do science?
+
+::: columns
+::: {.column width="50%"}
+
+<center>
+**Science in General**
+</center>
+
+```{dot}
+//| echo: false
+//| fig-width: 5
+//| fig-height: 3
+digraph grid
+{
+    graph [
+        overlap=true,
+        scale=0.2,
+        newrank=true
+    ]
+    nodesep=1.0
+    ranksep=1.0
+    rankdir="LR"
+    nodedir="LR"
+    scale=0.2
+    node [
+        style="filled",
+        color=black,
+        fillcolor=lightblue
+    ]
+	
+	subgraph cluster_01 {
+	    label="\"Nature\"";
+	    Obs[label="Thing(s) we can see"];
+	    Und[label="Underlying processes",fillcolor=white]
+	    
+	}
+	{
+	Und -> Model[dir=back,style=dashed];
+	Model -> Obs[style=dashed];
+	}
+	{
+	    rank=source;
+	    Und -> Obs [constraint=false];
+	}
+	
+	subgraph cluster_02 {
+	    label="\"Science\""
+	    Model[style=dashed];
+	}
+}
+```
+
+:::
+::: {.column width="50%"}
+
+<center>
+**Example: Newton**
+</center>
+
+```{dot}
+//| echo: false
+//| fig-width: 5
+//| fig-height: 3.1
+digraph grid
+{
+    graph [
+        overlap=true,
+        scale=0.2,
+        newrank=true
+    ]
+    nodesep=1.0
+    ranksep=1.0
+    rankdir="LR"
+    nodedir="LR"
+    scale=0.2
+    node [
+        style="filled",
+        color=black,
+        fillcolor=lightblue
+    ]
+  subgraph cluster_04 {
+    label=<<U>Woolsthorpe Manor</U>>;
+    URL="https://en.wikipedia.org/wiki/Woolsthorpe_Manor"
+    target="_blank"
+    Tree[label=<<U>Falling Apple</U>>,URL="https://www.popularmechanics.com/science/a5259/4343234/",target="_blank"];
+    Physics[label=<<U>Particle Interactions</U>>,URL="https://en.wikipedia.org/wiki/Fundamental_interaction",target="_blank",fillcolor=white];
+  }
+  subgraph cluster_03 {
+    label="Isaac Newton"
+    Newton[label="Newton's Laws",style=dashed,fillcolor=white]
+  }
+  Newton -> Tree [style=dashed];
+  {
+	    rank=source;
+	    Physics -> Tree [constraint=false];
+	}
+  Physics -> Newton[dir=back,style=dashed]
+}
+```
+
+:::
+:::
+
+::: {.aside}
+Remember that the **filled-in** nodes represent things we can **observe**, while the **non-filled** nodes represent things we have to **infer** from the observable data.
+:::
+
+## Examples Abound!
+
+::: columns
+::: {.column width="50%"}
+
+<center>
+**Darwinian Evolution**
+</center>
+
+```{dot}
+//| echo: false
+//| fig-width: 5
+//| fig-height: 3
+digraph grid
+{
+    graph [
+        overlap=true,
+        scale=0.2,
+        newrank=true
+    ]
+    nodesep=1.0
+    ranksep=1.0
+    rankdir="LR"
+    nodedir="LR"
+    scale=0.2
+    node [
+        style="filled",
+        color=black,
+        fillcolor=lightblue
+    ]
+  subgraph cluster_04 {
+    label="Galápagos Islands";
+    Tree[label=<<U>Finches</U>>,URL="https://en.wikipedia.org/wiki/Darwin%27s_finches",target="_blank"];
+    Physics[label="Natural selection",fillcolor=white];
+  }
+  subgraph cluster_03 {
+    label="Charles Darwin"
+    Newton[label="Theory of Evolution",style=dashed,fillcolor=white]
+  }
+  Newton -> Tree [style=dashed];
+  {
+	    rank=source;
+	    Physics -> Tree [constraint=false];
+	}
+  Physics -> Newton[dir=back,style=dashed]
+}
+```
+
+:::
+::: {.column width="50%"}
+
+<center>
+**Euclidean Geometry**
+</center>
+
+```{dot}
+//| echo: false
+//| fig-width: 5
+//| fig-height: 3
+digraph grid
+{
+    graph [
+        overlap=true,
+        scale=0.2,
+        newrank=true
+    ]
+    nodesep=1.0
+    ranksep=1.0
+    rankdir="LR"
+    nodedir="LR"
+    scale=0.2
+    node [
+        style="filled",
+        color=black,
+        fillcolor=lightblue
+    ]
+  subgraph cluster_04 {
+    label=<<U>Alexandria</U>>;
+    href="https://www.britannica.com/biography/Euclid-Greek-mathematician";
+    target="_blank";
+    Actual[label="Actual Triangles"];
+    Platonic[label="Platonic Ideal Triangle",fillcolor=white];
+  }
+  subgraph cluster_03 {
+    label="Euclid"
+    Euclid[label="Euclidean Geometry",style=dashed,fillcolor=white]
+  }
+  Euclid -> Actual [style=dashed];
+  {
+	    rank=source;
+	    Platonic -> Actual [constraint=false];
+	}
+  Platonic -> Euclid[dir=back,style=dashed]
+}
+```
+
+:::
+:::
+
+## Zooming in on Euclid {.smaller .crunch-figures .crunch-title}
+
+::: columns
+::: {.column width="47%"}
+
+**Observations**
+
+::: {layout-ncol=2}
+![Source: <a href="https://emilypiercemath221.weebly.com/math-221-blog/triangles-everywhere" target="_blank">Emily Pierce</a>](images/mountain_triangle.jpg)
+
+![Source: <a href="https://commons.wikimedia.org/wiki/File:All_Gizah_Pyramids.jpg" target="_blank">Wikimedia</a>](images/pyramids_giza_crop.jpg)
+:::
+
+![Interactive visualization from [UNC Archaeology](https://archaeology.sites.unc.edu/home/rla/){target='_blank'}](images/arrowhead.jpeg){fig-align="center" width="30%"}
+
+
+:::
+::: {.column width="6%"}
+
+<div style="height: 80vh; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+<p>&rarr;</p>
+</div>
+
+:::
+::: {.column width="47%"}
+
+**Inference**
+
+![13th-Century Arabic *Elements*, from <a href="http://www.sothebys.com/en/auctions/ecatalogue/2018/arts-of-the-islamic-world-l18220/lot.30.html" target="_blank">Sotheby's</a>](images/euclid_crop.jpg){fig-align="center" height=50%}
+
+:::
+:::
+
+::: {.aside}
+For an absolutely beautiful visual presentation of *Elements* see <a href="https://www.c82.net/euclid/book1/#prop25" target="_blank">here</a>
+:::
+
+## Inference in the Diagram
+
+```{dot}
+//| echo: false
+digraph grid
+{
+    graph [
+        overlap=true,
+        scale=0.2,
+        newrank=true
+    ]
+    nodesep=1.0
+    ranksep=1.0
+    rankdir="LR"
+    nodedir="LR"
+    scale=0.2
+    node [
+        style="filled",
+        color=black,
+        fillcolor=lightblue
+    ]
+  subgraph cluster_04 {
+    margin=28;
+    label=<<U>Alexandria</U>>;
+    href="https://www.britannica.com/biography/Euclid-Greek-mathematician";
+    target="_blank";
+    Actual[label="Actual Triangles"];
+    Platonic[label="Platonic Ideal Triangle",fillcolor=white];
+  }
+  subgraph cluster_03 {
+    label="Euclid"
+    Euclid[label="Euclidean Geometry",style=dashed,fillcolor=white]
+  }
+  Actual -> Euclid [style=solid,label=<<B>Observe</B>>];
+  {
+	    rank=source;
+	    Platonic -> Actual[
+        //label="What goes here? ",
+        constraint=false,
+        //labeldistance=10.0,
+        xlabel=<<B>What goes here? </B>>,
+        dir=both,
+        style=dashed
+      ];
+	}
+  Platonic -> Euclid[dir=back,style=solid,label=<<B>Infer</B>>]
+}
+```
+
+## Completing the Cycle
+
+```{dot}
+//| echo: false
+digraph grid
+{
+    graph [
+        overlap=true,
+        scale=0.2,
+        newrank=true
+    ]
+    nodesep=1.0
+    ranksep=1.0
+    rankdir="LR"
+    nodedir="LR"
+    scale=0.2
+    node [
+        style="filled",
+        color=black,
+        fillcolor=lightblue
+    ]
+  subgraph cluster_04 {
+    margin=28;
+    label=<<U>Alexandria</U>>;
+    href="https://www.britannica.com/biography/Euclid-Greek-mathematician";
+    target="_blank";
+    Actual[label="Actual Triangles"];
+    Platonic[label="Platonic Ideal Triangle",fillcolor=white];
+  }
+  subgraph cluster_03 {
+    label="Euclid"
+    Euclid[label="Euclidean Geometry",style=dashed,fillcolor=white]
+  }
+  Actual -> Euclid [style=solid,label=<<B>Observe</B>>];
+  {
+	    rank=source;
+	    Platonic -> Actual[
+        //label="What goes here? ",
+        constraint=false,
+        //labeldistance=10.0,
+        xlabel=<<B>Hypothesis Testing! </B>>,
+        dir=both,
+        style=dashed
+      ];
+	}
+  Platonic -> Euclid[dir=back,style=solid,label=<<B>Infer</B>>]
+}
+```
+
+## Our Case
+
+```{dot}
+//| echo: false
+digraph grid
+{
+    graph [
+        overlap=true,
+        scale=0.2,
+        newrank=true
+    ]
+    nodesep=1.0
+    ranksep=1.0
+    rankdir="LR"
+    nodedir="LR"
+    scale=0.2
+    node [
+        style="filled",
+        color=black,
+        fillcolor=lightblue
+    ]
+  subgraph cluster_04 {
+    label="The World";
+    margin=32;
+    Sample[label="Sample"];
+    Population[label="Population",fillcolor=white];
+  }
+  subgraph cluster_03 {
+    label="Us"
+    Stats[label="Statistics",style=dashed,fillcolor=white]
+  }
+  Stats -> Sample [style=solid,dir=back,label=<<B>Observe</B>>];
+  {
+	    rank=source;
+	    Population -> Sample [
+        constraint=false,
+        //style="invis",
+        //dir=both
+        xlabel=<<B>Take Sample </B>>
+      ];
+	}
+  Population -> Stats[label=<<B>Infer</B>>,dir=back,style=solid]
+}
+```
+
+::: {.aside}
+If you're wondering, "what happened to Hypothesis Testing?", don't worry, we'll dive back into that over the next 2 weeks!
+:::
+
+# Asymptotic Laws for Random Samples {data-stack-name="Asymptotic Laws"}
+
+* Law of Large Numbers (LLN)
+* Central Limit Theorem (CLT)
+
+## Stability out of Randomness
+
+* $X$ = result of coin flip
+* Remembering that $X$ is a **random variable**, so it maps **outcomes** to **numbers**: $X($<span class="svg-span"><img src="images/puerto_rico_adobe_express.svg" height="70px" style="vertical-align: bottom; transform: translate(0, 18px)"></span>$) = 0$, $X($<span class="svg-span"><img src="images/quarter_adobe_express.svg" height="70px" style="display: inline-flex; vertical-align: bottom; transform: translate(0, 18px)"></span>$) = 1$
+* We have no idea what the result of some **single** coin flip will be, yet we can be sure that the mean of **many trials** will converge to the **expected value** of $0.5$!
+
+::: {.aside}
+To check that you understand: what value would the mean of many **dice rolls** converge to?
+:::
+
+## Interactive Visualization {.smaller .crunch-title}
+
+::: {#fig-interactive-viz}
+
+```{=html}
+<iframe src="https://seeing-theory.brown.edu/basic-probability/index.html" width="100%" height="500px"></iframe>
+```
+
+[*Seeing Theory*, Brown University](https://seeing-theory.brown.edu/basic-probability/index.html){target='_blank'}
+:::
+
+## How Many is "Many"?
+
+```{r}
+#| label: large-nums-convergence
+library(ggplot2)
+library(tibble)
+library(dplyr)
+set.seed(5100)
+n_vals <- c(ceiling(sqrt(10)), 10, ceiling(10*sqrt(10)), 100, ceiling(100*sqrt(10)), 1000, ceiling(1000*sqrt(10)), 10000, ceiling(10000*sqrt(10)), 100000)
+heads_data <- c()
+total_data <- c()
+for (n in n_vals) {
+  coin_flips <- rbinom(n, 1, 0.5)
+  num_heads <- sum(coin_flips)
+  heads_data <- c(heads_data, num_heads)
+  num_flipped <- length(coin_flips)
+  total_data <- c(total_data, num_flipped)
+}
+results <- tibble(n = n_vals, heads=heads_data, total=total_data)
+results <- results %>% mutate(head_prop = heads / total)
+#results
+ggplot(results, aes(x=n, y=head_prop)) +
+  geom_hline(aes(yintercept=0.5, linetype='dashed'), color=cbPalette[2]) +
+  geom_line(aes(color='black'), fill=cbPalette[1], linewidth=g_linewidth, color=cbPalette[1]) +
+  geom_point(aes(color='black'), size=g_pointsize*0.9) +
+  scale_color_manual("", values=c("black","purple"), labels=c("Mean of n samples","Expected Value")) +
+  scale_linetype_manual("", values="dashed", labels="Expected Value") +
+  scale_fill_manual("", values=cbPalette[1], labels="95% CI") +
+  #scale_linetype_manual('type', values=c('dashed', 'solid'), labels=c("Expected Value", "Sample Mean")) +
+  #scale_color_manual('color', values=c(cbPalette[1], 'black'), labels=c('Expected Value', 'Sample Mean')) +
+  dsan_theme("full") +
+  theme(
+      legend.title = element_blank(),
+      legend.spacing.y = unit(0, "mm")
+  ) +
+      labs(
+          title = "Estimates of Population Mean for Increasing Sample Sizes",
+          x = "n (Sample Size)",
+          y = "Sample Mean"
+      ) +
+  scale_x_log10(breaks = c(10, 100, 1000, 10000, 100000), labels = c("10", "100", "1000", "10000", "100000"))
+```
+
+## The Sample Mean {.crunch-title .crunch-math .crunch-ul .math-90}
+
+* Like the **median** we saw earlier (along with lots of other examples), **sample mean** is just a function of RVs
+* Unlike the median, though, it is a **function of a vector-valued RV $\mathbf{X}_N$** (containing $N$ scalar RVs)![^cap-lower]
+* Let $\mathbf{X}_N = \{X_1, X_2, \ldots, X_n\}$, where $X_1$ is first observation, $X_2$ second observation, and so on. Then:
+
+$$
+\overline{X}_N = f(\mathbf{X}_N) = \frac{1}{n}\sum_{i=1}^{n}X_i
+$$
+
+[^cap-lower]: Note that I'm trying really hard to differentiate between (capital-letter) $N$ as **cardinality** of observations, then (lowercase) $1, 2, \ldots, n$ for **ordinal** labels on each individual observation. This will spare you many headaches in life!
+
+## Weak Law of Large Numbers (WLLN) {.crunch-title .crunch-math .crunch-ul .math-80 .inline-90}
+
+* Let $\mathbf{X}_N = \{X_1, \ldots, X_n\} \iid \mathcal{D}$ be a random sample from a distribution $\mathcal{D}$ with mean $\mu$, finite variance. Let $\overline{X}_N$ denote the sample mean from previous slide. Then
+
+$$
+\overline{X}_N \stackrel{p}{\longrightarrow} \mu
+$$
+
+* $\mathfrak{X}(N) \stackrel{p}{\longrightarrow} c$ means the Random Variable $\mathfrak{X}(N)$ (a **function** of the **sample size** $N$) **"converges in probability"** to the scalar value $c$. Formally:
+
+$$
+\mathfrak{X}(N) \overset{p}{\longrightarrow} c \iff \forall \varepsilon > 0 \left[ \lim_{N \rightarrow \infty}\Pr\left( | \mathfrak{X}(N) - c | < \varepsilon \right) = 1 \right]
+$$
+
+## Strong Law of Large Numbers (SLLN) {.crunch-title .crunch-math .crunch-ul .math-90 .small-inline}
+
+* Same setup as last slide, but
+
+$$
+\overline{X}_N \convergesAS \mu
+$$
+
+* $\mathfrak{X}(N) \convergesAS c$ means the Random Variable $\mathfrak{X}(N)$ (a **function** of the **sample size** $N$) **"converges almost surely"** to the scalar value $c$. Formally:
+
+$$
+\mathfrak{X}(N) \convergesAS c \iff \Pr\left( \lim_{N \rightarrow \infty} \mathfrak{X}(N) = c \right) = 1
+$$
+
+* SLLN $\implies$ WLLN, but WLLN $~\nimplies$ SLLN!
+* WLLN easy to prove, SLLN very un-easy to prove
+
+## Central Limit Theorem
+
+* We'll never actually reach $N = \infty$, so we zoom in on **how close** our sample-based estimate gets to the true value
+* Central Limit Theorem says: these "closeness" values are **normally distributed**!
+* **LLN** guarantees that $X_N \; \; \eqeventual \; \; \mu$
+* **CLT** tells us what the **gap** $(X_N - \mu)$ looks like
+
+## Formal CLT
+
+* Sampled observations: $\mathbf{X}_N = \{X_1, \ldots, X_n\}$
+* $\expect{X_i} = \mu, \Var{X_i} = \sigma^2 < \infty$
+* $\overline{X}_N \definedas M_1(\mathbf{X}_N) = \frac{X_1 + \cdots + X_n}{N}$
+
+$$
+\frac{\overline{X}_N - \mu}{\sigma / \sqrt{N}} \overset{\text{asymp}}{\sim} \mathcal{N}(0,1)
+$$
+
+## When is $\mathcal{N}(0, 1)$ a "good" approximation? {.smaller .title-12 .crunch-title .crunch-code .crunch-figures .crunch-quarto-layout-panel}
+
+```{r}
+#| echo: true
+#| code-fold: true
+#| label: clt-setup
+# Prepare data for all plots
+max_n <- 10000
+num_reps <- 1000
+all_rolls <- replicate(
+  num_reps,
+  sample(1:6, size = max_n, replace = TRUE, prob = rep(1 / 6, 6))
+)
+gen_clt_plot <- function(n) {
+  exp_val <- 3.5
+  sigma <- sqrt(35/12)
+  denom <- sigma / sqrt(n)
+  # Get the slice of all_rolls for this n
+  n_rolls <- all_rolls[1:n,]
+  sample_means <- colMeans(n_rolls)
+  norm_gaps <- (sample_means - exp_val) / denom
+  n_df <- tibble(norm_gap=norm_gaps)
+  #if (n == 5) {
+  #  print(sample_means)
+  #  print(n_df)
+  #}
+  ggplot(n_df, aes(x = norm_gap)) +
+  geom_histogram(aes(y = after_stat(density)), binwidth = 1/2) +
+  #geom_density() +
+  stat_function(fun=dnorm, size=g_linesize) +
+  dsan_theme("quarter") +
+  labs(
+    title = paste0("n = ",n),
+    x = "Normalized Sample Gap"
+  )
+}
+```
+
+::: {layout="[[1,1],[1,1]]"}
+
+```{r}
+#| label: clt-first
+#| echo: false
+gen_clt_plot(2)
+```
+
+```{r}
+#| label: clt-1k
+#| echo: false
+gen_clt_plot(4)
+```
+
+```{r}
+#| label: clt-100
+#| echo: false
+gen_clt_plot(5)
+```
+
+```{r}
+#| label: clt-10k
+#| echo: false
+gen_clt_plot(10000)
+```
+
+:::
+
+## Q-Q Plots {.smaller .crunch-title .crunch-code .crunch-figures .crunch-quarto-layout-panel}
+
+```{r}
+#| label: gen-qq-setup
+#| echo: true
+#| code-fold: true
+gen_qq <- function(n) {
+  n_rolls <- all_rolls[1:n,]
+  sample_means <- colMeans(n_rolls)
+  qq_df <- tibble(smean = sample_means)
+  qq_plot <- ggplot(qq_df, aes(sample = smean)) +
+  stat_qq() + stat_qq_line() +
+  dsan_theme("quarter") +
+  labs(
+    title = paste0("n = ",n)
+  )
+  return(qq_plot)
+}
+```
+
+::: {layout="[[1,1],[1,1]]"}
+
+```{r}
+#| label: qq-5
+#| echo: false
+gen_qq(5)
+```
+
+```{r}
+#| label: qq-10
+#| echo: false
+gen_qq(10)
+```
+
+```{r}
+#| label: qq-1k
+#| echo: false
+gen_qq(100)
+```
+
+```{r}
+#| label: qq-10k
+#| echo: false
+gen_qq(1000)
+```
+
+:::
+
+# Overthinking: Estimation {data-stack-name="Estimators"}
+
+* Maximum Likelihood Estimation (MLE)
+* Generalized Method of Moments (GMM) Estimation
+
+## Maximum Likelihood Estimation {data-stack-name="MLE"}
+
+* Creating a **model** $\mathcal{M}$ w/parameters $\param{\theta}$ means specifying
+
+$$
+\mathcal{M} = \Pr(\underbrace{x_1, \ldots, x_n}_{\text{Observed Data}} \mid \underbrace{\param{\theta}}_{\text{Model Parameters}})
+$$
+
+* When we view this as a function of $\param{\theta}$, **given** the observed data, we call it the **likelihood function** $\mathcal{L}_{\mathcal{M}}(\param{\theta} \mid x_1, \ldots, x_n)$
+* Read this as "the **likelihood** that our model $\mathcal{M}$, with parameters $\param{\theta}$, produced the data $x_1, \ldots, x_n$"
+
+## Probability Models are *Generative* Models {.title-09}
+
+* A given choice of model parameters $\param{\theta}$ can be used to **generate** simulated datapoints!
+* Simple example: $X \sim \text{Bern}(\param{p})$. Just one parameter, $\param{\theta} = \{\param{p}\}$
+* We observe 10 coin flips: 8 heads, 2 tails. Of all possible Bernoulli distributions (parameterized by $\param{p}$), which is **most likely to generate this data**?
+
+## Generative Models {.nostretch .crunch-title .crunch-figures .crunch-ul .crunch-lists .crunch-code}
+
+::: columns
+::: {.column width="60%"}
+
+* Given a choice of $\param{\theta}$, we can generate **simulated datasets** (here 10 for each labeled value of $\param{p}$), then compute **likelihood** as proportion of datasets with 8 heads, 2 tails
+
+* From the plot: (Among these vals) $\param{p} = 0.8$ is **maximum likelihood estimate**
+
+:::
+::: {.column width="40%"}
+
+```{r}
+#| label: bernoulli-sim
+#| fig-align: center
+#| fig-height: 12
+library(tibble)
+library(ggplot2)
+library(dplyr)
+set.seed(1948)
+obs_heads <- 8
+num_flips <- 10
+num_reps <- 10
+p_vals <- c(0.01, 0.2, 0.4, 0.6, 0.8, 0.99)
+obs_matches <- c()
+for (i in 1:length(p_vals)) {
+  cur_p <- p_vals[i]
+  theta_str <- sprintf("%.2f", cur_p)
+  sim_data <- replicate(
+    num_reps,
+    rbinom(num_flips, 1, cur_p)
+  )
+  #print(sim_data)
+  #data_str <- paste0(sim_data, collapse=", ")
+  num_heads <- colSums(sim_data)
+  #print(num_heads)
+  num_matches <- sum(num_heads == obs_heads)
+  obs_matches <- c(obs_matches, num_matches)
+  #print(num_matches)
+  #print(num_heads)
+  num_tails <- num_flips - num_heads
+  #print(num_tails)
+  data_strs <- paste0("[",num_heads," heads, ",num_tails," tails]")
+  data_str <- paste0(data_strs, collapse=", ")
+  #writeLines(paste0("p = ",theta_str,": ",data_str))
+}
+#print(obs_matches)
+result_df <- tibble(p=as.character(p_vals), num_matches=obs_matches)
+result_df <- result_df %>% mutate(prop_matches = obs_matches / num_reps)
+ggplot(result_df, aes(x=p, y=prop_matches)) +
+  geom_bar(stat = 'identity', fill=cbPalette[1]) +
+  dsan_theme("quarter") +
+  # theme(
+  #   axis.title.y = element_text(size = 12)
+  # ) +
+  labs(
+    title = "Likelihood of data (8 heads, 2 tails) given p",
+    y = "Proportion of times (8,2) generated"
+  )
+```
+
+:::
+:::
+
+## Simulations $\rightarrow$ Math {.crunch-title .small-inline .math-90 .inline-90}
+
+Prev example was overkill: we can **solve for** optimal $\param{p}$ value...
+
+$$
+\begin{align*}
+p^* &\overset{\phantom{x_i\text{ indep}}}{=} \argmax_{\param{p}} \mathcal{L}(x_1, \ldots, x_n \mid \param{p}) \\
+&\overset{x_i\text{ indep}}{=} \argmax_{\param{p}} \mathcal{L}(x_1 \mid \param{p})\mathcal{L}(x_2 \mid \param{p}) \cdots \mathcal{L}(x_n \mid \param{p})
+\end{align*}
+$$
+
+1. What are the individual $\mathcal{L}(x_i \mid \param{p})$ terms?
+2. How do we maximize the product $\mathcal{L}(x_1 \mid \param{p}) \cdots \mathcal{L}(x_n \mid \param{p})$?
+
+<center>
+Time for some **Math Magic**...
+</center>
+
+## Math Magic 1 {.small-math}
+
+1. What are the individual $P(x_i \mid \param{p})$ terms?
+
+$X \sim \text{Bern}(\param{p})$, so
+
+$$
+\begin{align*}
+\Pr(X = x_i \mid \param{p}) &= \begin{cases}1 - \param{p} & x_i = 0 \\ \param{p} & x_i = 1\end{cases} \; \leftarrow \genfrac{}{}{0pt}{}{\text{ Non-differentiable}}{😭} \\
+&\overset{\text{math}}{\underset{\text{magic}}{=}} (1-\param{p})^{1-x_i}\param{p}^{x_i} \; \leftarrow \text{ Differentiable! 😲}
+\end{align*}
+$$
+
+Why do we need it to be differentiable? Stay tuned...
+
+## Math Magic 2 {.crunch-title .crunch-math .crunch-p .crunch-quarto-layout-panel .math-90}
+
+::: {layout="[2,1]" layout-valign="center"}
+
+::: {#calculus-text}
+
+2. How do we maximize the product?
+
+$$
+p^* = \argmax_{\param{p}} f(\param{p}) \implies f'(p^*) = 0
+$$
+
+To **maximize** likelihood, we need to find its **derivative**[^deriv], set equal to 0, and solve:
+
+:::
+
+![](images/koolaid_calculus.png){width="320" height="190"}
+
+:::
+
+$$
+\begin{align*}
+&\frac{d}{d\param{p}}\lik(x \mid \param{p}) = 0 \iff \\
+&\frac{d}{d\param{p}}\left[\lik(x_1 \mid \param{p})\lik(x_2 \mid \param{p})\cdots \lik(x_n \mid \param{p})\right] = 0
+\end{align*}
+$$
+
+[^deriv]: And that's why we used math magic to make $\Pr(x_i \mid \param{p})$ differentiable, in the previous slide!
+
+## Obstacle: Products vs. Sums {.smaller .crunch-title}
+
+* Finding $\frac{d}{d\param{p}}\left[ \lik(x_1)\lik(x_2)\cdots \lik(x_n)\right]$ is a doozy, even with just $n = 2$ datapoints:
+
+$$
+\begin{align*}
+&\frac{d}{d\param{p}}\left[ \lik(x_1)\lik(x_2) \right] = \left( \frac{d}{d\param{p}}\lik(x_1)\right) \cdot \lik(x_2) + \lik(x_1)\cdot \left( \frac{d}{d\param{p}}\lik(x_2) \right) \\
+&= (1-\param{p})^{-x_1}\param{p}^{x_1-1}(x_1-\param{p})\cdot (1-\param{p})^{1-x_2}\param{p}^{x_2} \\
+&+ (1-\param{p})^{1-x_1}\param{p}^{x_1} \cdot (1-\param{p})^{-x_2}\param{p}^{x_2-1}(x_2 - \param{p})
+%&= \frac{d}{d\theta}\left[ (1-p)^{1-x_1}p^{x_1}(1-p)^{1-x_2}p^{x_2} \right]
+\end{align*}
+$$
+
+* Complicating factor: $\lik(x_i)$ terms are all **multiplied together**, forcing us to use product rule: $\frac{d}{d\param{p}}\left[\lik(x_1)\lik(x_2)\right] = \left(\frac{d}{d\param{p}}\lik(x_1)\right)\cdot \lik(x_2) + \lik(x_1)\cdot \left(\frac{d}{d\param{p}}\lik(x_2)\right)$
+* If we had terms that were **added** rather than **multiplied**, we'd have a much easier time: $\frac{d}{d\param{p}}\left[ \lik(x_1) + \lik(x_2)\right] = \frac{d}{d\param{p}}\lik(x_1) + \frac{d}{d\param{p}} \lik(x_2)$[^additive]
+* So, what math operation do we know that turns **multiplications** into **additions**?
+
+[^additive]: We achieve this simplification because the derivative operator is **additive**: $\frac{d}{dx}\left[ f(x) + g(x) \right] = \frac{d}{dx}f(x) + \frac{d}{dx}g(x)$
+
+<!-- ::: {.aside}
+Remember the **product rule**: $\frac{d}{dx}\left[f(x)g(x)\right] = \left(\frac{d}{dx}f(x)\right)\cdot g(x) + \left(\frac{d}{dx}g(x)\right) \cdot f(x)$.
+::: -->
+
+## Math Magic 3: Log-Likelihood {.crunch-title}
+
+$$
+\log(a\cdot b) = \log(a) + \log(b)
+$$
+
+Bingo! So, can we maximize $\loglik(x_i) = \log(\mathcal{L}(x_i))$ rather than $\mathcal{L}(x_i)$? Bingo again! Because logarithms are **monotonic**,
+
+$$
+x^* = \argmax_x \left[ \log\left(f(x)\right) \right] \iff x^* = \argmax_x \left[ f(x) \right]
+$$
+
+So, we can just solve
+
+$$
+p^* = \argmax_{\param{p}} \left[ \ell(x_1, \ldots, x_n)\right]
+$$
+
+## Simplifying {.smaller .math-90}
+
+Our problem simplifies to figuring out
+
+$$
+\begin{align*}
+\frac{d}{d\param{p}}\left[ \log \left( \lik(x_1)\cdots \lik(x_n) \right) \right] &= \frac{d}{d\param{p}}\left[ \log \lik(x_1) + \log\lik(x_2) + \cdots + \log\lik(x_n) \right] \\
+&= \frac{d}{d\param{p}}\left[ \ell(x_1) + \ell(x_2) + \cdots + \ell(x_n) \right] = \frac{d}{d\param{p}}\left[ \sum_{i=1}^n \ell(x_i)\right]
+\end{align*}
+$$
+
+But since the derivative is an **additive** operator, $\frac{d}{d\param{p}}\left[ \sum_{i=1}^n \ell(x_i) \right] = \sum_{i=1}^n \frac{d}{d\param{p}}\left[ \ell(x_i) \right]$, so we just have to compute $\frac{d}{d\param{p}}\ell(x_i)$! No product rule required (we still need chain rule):
+
+$$
+\begin{align*}
+\frac{d}{d\param{p}}\left[ \ell(x_i) \right] &= \frac{d}{d\param{p}}\left[ \log((1-\param{p})^{1-x_i}\param{p}^{x_i}) \right] = \frac{d}{d\param{p}}\left[(1-x_i)\log(1-\param{p}) + x_i\log(\param{p})\right] \\
+&= (1-x_i)\frac{d}{d\param{p}}\log(1-\param{p}) + x_i\frac{d}{d\param{p}}\log(\param{p}) = -\frac{1-x_i}{1-\param{p}} + \frac{x_i}{\param{p}} \\
+&= \frac{\param{p} - x_i}{(\param{p}-1)\param{p}}
+\end{align*}
+$$
+
+## Maximizing {.crunch-title .crunch-math .math-90 .inline-90}
+
+Now that we know $\frac{d}{d\param{p}}\ell(x_i)$, we set our log-likelihood equation equal to zero to find the likelihood-maximizing $\param{p}$ value, $p^*$:
+
+$$
+\begin{align*}
+&\sum_{i=1}^n\frac{d}{d\param{p}}\ell(x_i) = 0 \iff \sum_{i=1}^n \frac{p^* - x_i}{(p^*-1)p^*} = 0 \\
+&\iff -\frac{1}{(p^*-1)p^*}\sum_{i=1}^nx_i - np^* = 0 \\
+&\iff \sum_{i=1}^nx_i = np^* \iff \boxed{p^* = \frac{\sum_{i=1}^nx_i}{n}}
+\end{align*}
+$$
+
+## MLE Intuition {.crunch-title .crunch-ul .math-90 .inline-90}
+
+$$
+p^* = \frac{\sum_{i=1}^nx_i}{n} = \frac{\sum_{i=1}^n \mathbf{1}[x_i = 1]}{n} \genfrac{}{}{0pt}{}{\leftarrow \text{\# Heads}}{\leftarrow \text{\# Flips }}
+$$
+
+* MLE almost always matches intuition! Example: given data $x_1, \ldots, x_n$, what **Normal distribution** best fits this data?
+* Same as asking: what **parameter settings** for $\mathcal{N}(\param{\mu}, \param{\sigma^2})$ are most likely to produce $x_1, \ldots, x_n$? The answer:
+
+$$
+\mu^* = \frac{\sum_{i=1}^n x_i}{n} \; \; \; \sigma^2_* = \frac{\sum_{i=1}^n (x_i-\mu^*)^2}{n}
+$$
+
+## The Dark Side of MLE {.crunch-math .crunch-title}
+
+* Sometimes steers us in the wrong direction!
+* Consider values from previous slide, as **estimators** for population $\mu$ and $\sigma^2$: $\mu^*$ **unbiased** if $\expect{\mu^*} = \mu$:
+
+$$
+\begin{align*}
+\expect{\mu^*} &= \bigexpect{\frac{\sum_{i=1}^nx_i}{n}} = \frac{1}{n}\sum_{i=1}^n\expect{x_i} \\
+&= \frac{1}{n}\sum_{i=1}^n\mu = \frac{n\mu}{n} = \mu \; ✅
+\end{align*}
+$$
+
+* So far so good. How about $\sigma^2_*$?
+
+## MLE as Biased Estimator {.smaller}
+
+* Before we think about $\expect{\sigma^2_*}$, let's rewrite $\sigma^2_*$:
+
+$$
+\begin{align*}
+\sigma^2_* &= \frac{1}{n}\sum_{i=1}^n(x_i - \mu^*)^2 = \frac{1}{n}\sum_{i=1}^n \left( x_i^2 - 2 \mu^* x_i + (\mu^*)^2 \right) \\
+&= \frac{1}{n}\sum_{i=1}^nx_i^2 - 2\mu^*\underbrace{\frac{\sum_{i=1}^nx_i}{n}}_{\mu^*} + (\mu^*)^2 = \frac{1}{n}\sum_{i=1}^nx_i^2 - (\mu^*)^2 \\
+&= \frac{1}{n}\sum_{i=1}^nx_i^2 - (\mu^*)^2
+\end{align*}
+$$
+
+* Now we're ready to compute $\expect{\sigma^2_*}$!
+
+## Computing $\mathbb{E}[\sigma^2_*]$ {.smaller .crunch-title .math-90}
+
+$$
+\begin{align*}
+\expect{\sigma^2_*} &= \bigexpect{\frac{1}{n}\sum_{i=1}^nx_i^2 - (\mu^*)^2} = \frac{1}{n}\sum_{i=1}^n \expect{x_i^2} - \expect{(\mu^*)^2}
+\end{align*}
+$$
+
+* What do we know about $\expect{x_i^2}$? Remember the (alternate) definition of **variance**: $\Var{X} = \expect{X^2} - \left(\expect{X}\right)^2$. Then
+
+$$
+\expect{X^2} = \Var{X} + \left(\expect{X}\right)^2
+$$
+
+So let's plug in the right side when we see $\expect{X^2}$ or $\expect{(\mu^*)^2}$:
+
+$$
+\begin{align*}
+\frac{1}{n}\sum_{i=1}^n \expect{x_i^2} - \expect{(\mu^*)^2} &= \frac{1}{n}\sum_{i=1}^n\left(\Var{X} + \left(\expect{X}\right)^2\right) - \expect{(\mu^*)^2} \\
+&= (\sigma^2 + \mu^2) - \left(\Var{\mu^*} + \left(\expect{\mu^*}\right)^2\right)
+\end{align*}
+$$
+
+## Almost There! {.smaller}
+
+We know that $\expect{\mu^*} = \mu$, but what is $\Var{\mu^*}$? Remember that $\Var{aX} = a^2\Var{X}$!
+
+$$
+\Var{\mu^*} = \bigVar{\frac{1}{n}\sum_{i=1}^nx_i} = \frac{1}{n^2}\sum_{i=1}^n\Var{x_i} = \frac{n\sigma^2}{n^2} = \frac{\sigma^2}{n}
+$$
+
+And we plug back in to get:
+
+$$
+\begin{align*}
+\expect{\sigma^2_*} &= \sigma^2 + \mu^2 - \Var{\mu^*} - \left(\expect{\mu^*}\right)^2 \\
+&= \sigma^2 + \mu^2 - \frac{\sigma^2}{n} - \mu^2 = \sigma^2 - \frac{\sigma^2}{n} \\
+&= \frac{n\sigma^2 - \sigma^2}{n} = \frac{\sigma^2(n-1)}{n} \\
+&= \color{red}{\left(\frac{n-1}{n}\right)\sigma^2} \neq \sigma^2 \; 💀
+\end{align*}
+$$
+
+## Why Does This Happen?: Handwaving {.crunch-math}
+
+* Long story short, we **underpredict** the population variance because we already **used some of the data to compute $\mu^*$**!
+* This is where the **heuristic** of **degrees of freedom** comes in:
+  * When we construct an **estimate** $e$, $df(e) = n - k_e$
+  * $k_e =$ number of **other estimates** used to calculate $e$!
+
+## Handwavy Intuition {.crunch-title .crunch-ul .crunch-math .smaller}
+
+* Consider $X_1, X_2 \sim \mathcal{N}(0,1)$: $\mu = 0$, $\sigma^2 = 1$.
+
+$$
+\expect{\mu^*} = \bigexpect{\frac{X_1 + X_2}{2}} = \frac{1}{2}\left(\expect{X_1} + \expect{X_2}\right) = 0 = \mu \; ✅
+$$
+
+
+$$
+\begin{align*}
+\expect{\sigma^2_*} &= \frac{1}{2}\bigexpect{(X_1 - \mu^*)^2 + (X_2 - \mu^*)^2} \\
+&= \frac{1}{2}\bigexpect{\left(X_1^2 + \mu^2_* -2\mu^*X_1\right) + \left(X_2^2 + \mu^2_* - 2X_2\mu^*\right)} \\
+&= \frac{1}{2}\expect{X_1^2 + X_2^2 + 2\mu_*^2 - 2\mu^*X_1 - 2\mu^*X_2} \\
+&= \frac{1}{2}\left(\expect{X_1^2} + \expect{X_2^2} + 2\expect{\mu_*^2} - 2\expect{\mu^*X_1} - 2\expect{\mu^*X_2}\right) \\
+&\implies \boxed{\expect{\sigma^2_*} = \frac{1}{2}\sigma^2}
+\end{align*}
+$$
+
+* We're off by $\frac{1}{2}$! What to do?
+
+## Handwavy Solution
+
+* We can **account for degrees of freedom**, correcting the MLE by a factor of $\frac{n}{df(e^*)}$!
+  * $e^\circledast = \frac{n}{df(e^*)}e^*$
+* Ex: Since $\expect{\sigma_*^2} = \frac{n-1}{n}\sigma^2$, we can instead use $\sigma^2_\circledast = \frac{n}{n-1}\sigma^2_*$. This gives us:
+
+$$
+\expect{\sigma^2_\circledast} = \bigexpect{\frac{n}{n-1}\sigma^2_*} = \frac{n}{n-1}\frac{n-1}{n}\sigma^2 = \color{green}{\sigma^2} \; ✅
+$$
+
+## 21st-Century Solution {.smaller .crunch-math .crunch-title .nobotmargin}
+
+* Be **Bayesian**, use priors on parameters (creating hyperparameters)!
+* Pretend we know $\sigma^2$, but want to find the "best" value of $\mu$:
+
+$$
+\begin{array}{rlccc}
+X_1, X_2 \overset{iid}{\sim} \mathcal{N}( &\hspace{-5mm}\mu\hspace{0.5mm}, &\hspace{-8mm}\overbrace{\sigma^2}^{\large\text{known}}\hspace{-2mm}) & & \\
+ &\hspace{-4mm}\downarrow & ~ &\hspace{-10mm}{\small\text{estimate}} & \hspace{-6mm} & \hspace{-8mm}{\small\text{uncertainty}} \\[-5mm]
+ &\hspace{-5mm}\mu &\hspace{-5mm}\sim \mathcal{N}&\hspace{-7mm}(\overbrace{m}&\hspace{-12mm}, &\hspace{-16mm}\overbrace{s})
+\end{array}
+$$
+
+::: {.no-stretch style="margin-top: 8px;"}
+
+![](images/bayesian_pgm.svg){fig-align="center" width="40%"}
+
+:::
+
+## Single Datapoint {.smaller .crunch-title .crunch-math}
+
+* Let's consider the estimate of $\mu$ from a single datapoint $X_i$. MLE just gives us $\mu^* = X_i$. How about MAP estimate?
+
+$$
+\lik\left(X_i, \mu, m, s\right) \overset{\text{factors}}{\underset{\text{into}}{=}} P(X_i \mid \mu)P(\mu \mid m, s)P(m, s)
+$$
+
+* Remembering the pdf of the **Normal distribution**, we have:
+
+$$
+\lik\left(X_i, \mu, m, s\right) = \frac{1}{\sigma\sqrt{2\pi}}\exp\left[-\frac{(X_i-\mu)^2}{2\sigma^2}\right]\frac{1}{s\sqrt{2\pi}}\exp\left[-\frac{(\mu - m)^2}{2s^2}\right]
+$$
+
+* Then, remembering that we can maximize the **log-likelihood** rather than the likelihood:
+
+$$
+\ell(X_i, \mu, m, s) = \log\left[\frac{1}{\sigma\sqrt{2\pi}}\right] - \frac{(X_i-\mu)^2}{2\sigma^2} + \log\left[\frac{1}{s\sqrt{2\pi}}\right] - \frac{(\mu - m)^2}{2s^2}
+$$
+
+## Taking the Derivative {.smaller .crunch-math .nobotmargin .crunch-title}
+
+* Taking the derivative gives us:
+
+$$
+\begin{align*}
+\frac{\partial\ell}{\partial \mu} &= \frac{\partial}{\partial\mu}\left[ {\color{red}\cancel{\color{black}\log\left[\frac{1}{\sigma\sqrt{2\pi}}\right]}} - \frac{(X_i-\mu)^2}{2\sigma^2} + {\color{red}\cancel{\color{black}\log\left[\frac{1}{s\sqrt{2\pi}}\right]}} - \frac{(\mu - m)^2}{2s^2}\right] \\
+&= - \frac{1}{2\sigma^2}\cdot\frac{\partial}{\partial\mu}\left[{\color{red}\cancel{\color{black}X_i^2}} + \mu^2 - 2X_i\mu\right] - \frac{1}{2s^2}\cdot\frac{\partial}{\partial\mu}\left[\mu^2 + {\color{red}\cancel{\color{black}m^2}} - 2\mu m\right] \\
+&= -\frac{1}{2\sigma^2}\cdot (2\mu -2X_i) - \frac{1}{2s^2}\cdot (2\mu - 2m) = \frac{X_i-\mu}{\sigma^2} + \frac{m - \mu}{s^2}
+\end{align*}
+$$
+
+* And we set equal to zero and solve to obtain the MAP estimate:
+
+$$
+\begin{align*}
+&\frac{X_i - \mu^*}{\sigma^2} + \frac{m - \mu^*}{s^2} = 0 \iff \frac{\mu^*}{\sigma^2} + \frac{\mu^*}{s^2} = \frac{X_i}{\sigma^2} + \frac{m}{s^2} \iff \\
+&\frac{s^2\mu^* + \sigma^2\mu^*}{\sigma^2s^2} = \frac{s^2X_i + \sigma^2m}{\sigma^2s^2} \iff \mu^*(s^2+\sigma^2) = s^2X_i + \sigma^2m \\
+&\iff \boxed{\mu^* = \left(\frac{s^2}{s^2 + \sigma^2}\right)X_i + \left(\frac{\sigma^2}{s^2 + \sigma^2}\right)m}
+\end{align*}
+$$
+
+## The Takeaway
+
+* Bayesian approach **allows new evidence to be weighed against existing evidence**, with **statistically principled** way to derive these weights:
+
+$$
+\begin{array}{ccccc}
+P_{\text{post}}(\mathcal{H}) &\hspace{-6mm}\propto &\hspace{-6mm} P(X \mid \mathcal{H}) &\hspace{-6mm} \times &\hspace{-6mm} P_{\text{pre}}(\mathcal{H}) \\
+\text{Posterior} &\hspace{-6mm}\propto &\hspace{-6mm}\text{Evidence} &\hspace{-6mm} \times &\hspace{-6mm} \text{Prior}
+\end{array}
+$$
+
+## Generalized Method of Moments (GMM) Estimation {.smaller .title-10}
+
+* Recall that the **$k$th moment** of an RV $X$ is $\mu_k = \expect{X^k}$
+* e.g., $\mu_1 = \expect{X}$, $\mu_2 = \Var{X} + \expect{X}^2$
+* Also recall (I rambled on about) how the MGF contains **all information about a distribution**. This means we can **estimate distributions from data**:
+* Define **$k$th sample moment** of $\mathbf{X}_N$ to be $\widehat{\mu}_k = \frac{1}{N}\sum_{i=1}^nX_i^k$. Then the system of equations:
+
+    $$
+    \begin{align*}
+    \mu_1(\param{\theta}) &= \widehat{\mu}_1 \\
+    \mu_2(\param{\theta}) &= \widehat{\mu}_2 \\
+    &\vdots \\
+    \mu_N(\param{\theta}) &= \widehat{\mu}_N
+    \end{align*}
+    $$
+
+    Gives us a system of equations, allowing us to **solve for parameters of our distribution**!
+
+
+# The Bias-Variance Tradeoff {.title-14 .not-title-slide .full-width-quotes .crunch-images data-stack-name="Bias-Variance"}
+
+::: {.callout-note appearance="minimal"}
+::: {.quote-text style="display: block; width: 100% !important;"}
+*There's no such thing as a free lunch.*
+
+::: {.align-right}
+<a href='https://en.wikipedia.org/wiki/No_such_thing_as_a_free_lunch' target='_blank'>Life</a> / <a href='https://www.nytimes.com/1993/02/14/magazine/on-language-words-out-in-the-cold.html' target='_blank'>Conservative Economists</a>
+:::
+
+:::
+
+:::
+
+::: {.callout-note appearance="minimal"}
+::: {.quote-text style="display: block; width: 100% !important;"}
+*But modern Machine Learning basically gets us rly close to a free lunch*
+
+::: {.align-right}
+![](images/always_exhausted.jpeg){width="130"} Jeff
+:::
+
+:::
+
+:::
+
+## Intuition {.fix-tex-headers}
+
+| | **Low Variance** | **High Variance** |
+| -:|:-:|:-:|
+| **Low Bias** | ![](images/var-low-bias-low.svg) | ![](images/var-high-bias-low.svg) |
+| **High Bias**  | ![](images/var-low-bias-high.svg) | ![](images/var-high-bias-high.svg) |
+
+::: {.aside}
+
+Figure adapted from Fortmann-Roe (2012), <a href='https://scott.fortmann-roe.com/docs/BiasVariance.html' target='_blank'>"Understanding the Bias-Variance Tradeoff"</a>
+
+:::
+
+## Math {.small-math .crunch-title .crunch-ul .crunch-p .crunch-lists}
+
+* We estimate "true" DGP $Y = f(X)$ with model $\widehat{f}(X)$^[It's even more complicated, since we don't even know whether the features $X$ we've chosen are actually the features in the world that causally affect $Y$, but that's for later classes... Or see @hastie_elements_2013!], and then we use $\widehat{f}$ to predict the value of $Y$ for a point $x_0$.
+* What is our **expected error** at this point, $\Err(x_0)$?
+
+$$
+\begin{align*}
+\Err(x_0) &= \bigexpect{\left.(Y − \widehat{f}(x_0))^2 \right| X = x_0} \\
+&= \sigma^2_{\varepsilon} + \left( \bigexpect{\widehat{f}(x_0)} − f(x_0) \right)^2 + \mathbb{E}\left[\widehat{f}(x_0) − \bigexpect{\widehat{f}(x_0)}\right]^2 \\
+&= \sigma^2_{\varepsilon} + \left( \text{Bias}(\widehat{f}(x_0)\right)^2 + \bigVar{\widehat{f}(x_0)} \\
+&= \text{Irreducible Error} + \text{Bias}^2 + \text{Variance}.
+\end{align*}
+$$
+
+## In Practice
+
+![Figure from @tharwat_parameter_2019](images/overfitting-underfitting.jpg){fig-align="center"}
+
+<!--
+
+APPENDICES
+
+-->
+
+## Appendix 1: Derivation of $\mathbb{E}[\mu_*^2]$ {.smaller .crunch-math}
+
+$$
+\begin{align*}
+\expect{\mu_*^2} &= \bigexpect{\left(\frac{X_1 + X_2}{2}\right)^2} = \frac{1}{4}\expect{(X_1+X_2)^2} \\
+&= \frac{1}{4}\expect{X_1^2 + X_2^2 + 2X_1X_2} = \frac{1}{4}\left(\expect{X_1^2} + \expect{X_2^2} + 2\expect{X_1X_2}\right) \\
+&= \frac{1}{4}\left(\Var{X_1} + \expect{X_1}^2 + \Var{X_2} + \expect{X_2}^2 + 2\expect{X_1X_2}\right) \\
+&= \frac{1}{4}\left(2\sigma^2 + 2\mu^2 + 2\expect{X_1X_2}\right) \\
+&= \frac{1}{2}\left(\sigma^2 + \mu^2 + \expect{X_1X_2}\right) \overset{iid}{=} \frac{1}{2}\left(\sigma^2 + \mu^2 + \mu^2\right) \\
+&\implies \boxed{\expect{\mu^2_*} = \mu^2 + \frac{\sigma^2}{2}} \; \; \left(\therefore \; \expect{\mu_*^2} \neq \mu^2 \right)
+\end{align*}
+$$
+
+## Appendix 2: Derivation of $\mathbb{E}[\mu^*X_i]$ {.smaller}
+
+$$
+\begin{align*}
+\expect{\mu^*X_1} &= \bigexpect{\left(\frac{X_1 + X_2}{2}\right)X_1} = \frac{1}{2}\expect{X_1^2 + X_1X_2} \\
+&= \frac{1}{2}\expect{X_1^2} + \frac{1}{2}\expect{X_1X_2} = \frac{1}{2}\left(\sigma^2 + \mu^2\right) + \frac{1}{2}\mu^2 \\
+&\implies \expect{\mu^*X_1} = \mu^2 + \frac{\sigma^2}{2}
+\end{align*}
+$$
+
+And since $X_1$ was chosen without loss of generality,
+
+$$
+\boxed{\expect{\mu^*X_i} = \mu^2 + \frac{\sigma^2}{2}}
+$$
+
+## Appendix 3: Derivation of $\mathbb{E}[\sigma^2_*]$ {.smaller .crunch-math}
+
+$$
+\begin{align*}
+\expect{\sigma^2_*} &= \frac{1}{2}\bigexpect{(X_1 - \mu^*)^2 + (X_2 - \mu^*)^2} \\
+&= \frac{1}{2}\bigexpect{\left(X_1^2 + \mu^2_* -2\mu^*X_1\right) + \left(X_2^2 + \mu^2_* - 2X_2\mu^*\right)} \\
+&= \frac{1}{2}\expect{X_1^2 + X_2^2 + 2\mu_*^2 - 2\mu^*X_1 - 2\mu^*X_2} \\
+&= \frac{1}{2}\left(\expect{X_1^2} + \expect{X_2^2} + 2\expect{\mu_*^2} - 2\expect{\mu^*X_1} - 2\expect{\mu^*X_2}\right) \\
+&= \frac{1}{2}\left( 2\sigma^2 + 2\mu^2 + 2\left(\mu^2 + \frac{\sigma^2}{2}\right) - 2\left(\mu^2 + s/2\right) - 2\left(\mu^2 + s/2\right) \right) \\
+&= \sigma^2 + \mu^2 + \mu^2 + \frac{\sigma^2}{2} - \mu^2 - \frac{\sigma^2}{2} - \mu^2 - \frac{\sigma^2}{2} = \sigma^2 - \frac{\sigma^2}{2} \\
+&\implies \boxed{\expect{\sigma^2_*} = \frac{1}{2}\sigma^2}
+\end{align*}
+$$
+
+## References
+
+::: {#refs}
+:::
