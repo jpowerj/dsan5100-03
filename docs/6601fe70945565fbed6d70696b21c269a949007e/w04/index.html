@@ -296,7 +296,7 @@ window.Quarto = {
     </ul>
     </div>
 <div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
-<p><em>Updated 2024-10-21, 04:24:54 PM</em></p>
+<p><em>Updated 2024-10-22, 06:42:21 PM</em></p>
 </div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -1072,7 +1072,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(ppl_df<span class="sc">$</span>has_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>[1] 2</code></pre>
 </div>
 </div>
 <ul>
@@ -1085,7 +1085,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(ppl_df<span class="sc">$</span>has_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>[1] 2e-04</code></pre>
 </div>
 </div>
 <ul>
@@ -1097,7 +1097,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">mean</span>(ppl_df<span class="sc">$</span>has_disease), <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "0"</code></pre>
+<pre><code>[1] "0.0002"</code></pre>
 </div>
 </div>
 <div class="notes">
@@ -1124,7 +1124,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(num_positive,<span class="st">" positive tests / "</span>,num_people,<span class="st">" total = "</span>,p_positive))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>81 positive tests / 10000 total = 0.0081</code></pre>
+<pre><code>97 positive tests / 10000 total = 0.0097</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
@@ -1197,32 +1197,32 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">45</td>
+<td style="text-align: right;">52</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">101</td>
+<td style="text-align: right;">61</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">117</td>
+<td style="text-align: right;">87</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">187</td>
+<td style="text-align: right;">355</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">311</td>
+<td style="text-align: right;">593</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">409</td>
+<td style="text-align: right;">595</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -1257,7 +1257,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 </details>
 <div class="cell-output-display">
 <div class="kable-table">
-<table class="caption-top">
+<table class="caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th style="text-align: right;">id</th>
@@ -1266,6 +1266,16 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td style="text-align: right;">1587</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5149</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1278,7 +1288,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <div class="cell-output cell-output-stdout">
 <pre><code>Num with disease: 0
 Proportion with disease: 0
-Number of positive tests: 48</code></pre>
+Number of positive tests: 54</code></pre>
 </div>
 <div class="cell-output-display">
 <div class="kable-table">
@@ -1303,7 +1313,7 @@ Number of positive tests: 48</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>Num with disease: 1
 Proportion with disease: 0.0002
-Number of positive tests: 51</code></pre>
+Number of positive tests: 48</code></pre>
 </div>
 <div class="cell-output-display">
 <div class="kable-table">
@@ -1317,7 +1327,7 @@ Number of positive tests: 51</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">2361</td>
+<td style="text-align: right;">1692</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -1343,25 +1353,62 @@ Number of positive tests: 51</code></pre>
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>World #160 / 1000 (5000 people):
+<pre><code>World #220 / 1000 (5000 people):
 # A tibble: 1 × 3
      id has_disease test_result
   &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
-1  3511           1           0
+1   823           1           0
 
 
-World #618 / 1000 (5000 people):
+World #377 / 1000 (5000 people):
 # A tibble: 1 × 3
      id has_disease test_result
   &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
-1  2519           1           0
+1  1923           1           0
 
 
-World #965 / 1000 (5000 people):
+World #399 / 1000 (5000 people):
 # A tibble: 1 × 3
      id has_disease test_result
   &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
-1  4589           1           0</code></pre>
+1  2013           1           0
+
+
+World #877 / 1000 (5000 people):
+# A tibble: 1 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1  2490           1           0
+
+
+World #884 / 1000 (5000 people):
+# A tibble: 1 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1  1986           1           0
+
+
+World #936 / 1000 (5000 people):
+# A tibble: 3 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1  1498           1           1
+2  1744           1           1
+3  3971           1           0
+
+
+World #954 / 1000 (5000 people):
+# A tibble: 1 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1  2520           1           0
+
+
+World #980 / 1000 (5000 people):
+# A tibble: 1 × 3
+     id has_disease test_result
+  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+1   672           1           0</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="dv">4</span> <span class="sc">/</span> <span class="dv">5000000</span>, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1384,13 +1431,13 @@ World #965 / 1000 (5000 people):
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>num_false_negatives <span class="ot">&lt;-</span> <span class="fu">nrow</span>(false_negatives)</span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(<span class="st">"False Negatives: "</span>,num_false_negatives,<span class="st">", Total Cases: "</span>, <span class="fu">nrow</span>(result_df)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>False Negatives: 1, Total Cases: 1000000</code></pre>
+<pre><code>False Negatives: 0, Total Cases: 1000000</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>false_negative_rate <span class="ot">&lt;-</span> num_false_negatives <span class="sc">/</span> <span class="fu">nrow</span>(result_df)</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>false_negative_rate_decimal <span class="ot">&lt;-</span> <span class="fu">format</span>(false_negative_rate, <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(<span class="st">"False Negative Rate: "</span>, false_negative_rate_decimal))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>False Negative Rate: 0.000001</code></pre>
+<pre><code>False Negative Rate: 0</code></pre>
 </div>
 </div>
 <p>(Perfect match!)</p>
@@ -1475,32 +1522,32 @@ World #965 / 1000 (5000 people):
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">325</td>
+<td style="text-align: right;">315</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">9</td>
+<td style="text-align: right;">13</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">328</td>
+<td style="text-align: right;">228</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">6</td>
+<td style="text-align: right;">247</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">157</td>
+<td style="text-align: right;">174</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">183</td>
+<td style="text-align: right;">136</td>
 </tr>
 </tbody>
 </table>
@@ -1559,9 +1606,14 @@ World #965 / 1000 (5000 people):
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">328</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">208</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">330</td>
 </tr>
 </tbody>
 </table>
@@ -1593,67 +1645,68 @@ World #965 / 1000 (5000 people):
 # A tibble: 1 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     2    25    63
+1    16    17   193
 
 [[2]]
 # A tibble: 1 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     3    26    21
+1    23    29   148
 
 [[3]]
-# A tibble: 1 × 3
+# A tibble: 3 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     5     9    33
+1     1    29    47
+2     6    22   187
+3    18    27    58
 
 [[4]]
-# A tibble: 1 × 3
-      i     j  bday
-  &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1    22    28   276
+# A tibble: 0 × 0
 
 [[5]]
 # A tibble: 2 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     9    14    65
-2    16    29    30
+1    15    23   214
+2    16    18   365
 
 [[6]]
 # A tibble: 1 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     1     7   335
+1     8    22   244
 
 [[7]]
-# A tibble: 1 × 3
+# A tibble: 6 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     2    10   117
+1     1    24   274
+2     5     7   211
+3     5    30   211
+4     6    18   176
+5     7    30   211
+6    21    25   154
 
 [[8]]
 # A tibble: 1 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1    24    25   250
+1    10    25   140
 
 [[9]]
-# A tibble: 5 × 3
+# A tibble: 3 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     2     7    31
-2     2    21    31
-3     7    21    31
-4    14    16   254
-5    22    29    63
+1     3     7    82
+2     8    18    93
+3    12    23    54
 
 [[10]]
-# A tibble: 2 × 3
+# A tibble: 1 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     4    11   108
-2     5    25   134</code></pre>
+1     1    18   168</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:48%;">
@@ -1666,7 +1719,7 @@ World #965 / 1000 (5000 people):
 <span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>shared_per_room <span class="ot">&lt;-</span> <span class="fu">unlist</span>(shared_per_room)</span>
 <span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>shared_per_room</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] 1 1 1 1 2 1 1 1 5 2</code></pre>
+<pre><code> [1] 1 1 3 0 2 1 6 1 3 1</code></pre>
 </div>
 </div>
 <ul>
@@ -1675,7 +1728,7 @@ World #965 / 1000 (5000 people):
 <div class="cell" data-layout-align="center">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(shared_per_room <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">/</span> num_rooms</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1</code></pre>
+<pre><code>[1] 0.9</code></pre>
 </div>
 </div>
 </div>
@@ -1695,9 +1748,9 @@ World #965 / 1000 (5000 people):
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>anyshared_per_room <span class="ot">&lt;-</span> <span class="fu">unlist</span>(anyshared_per_room)</span>
 <span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>anyshared_per_room</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  [1] 0 0 1 1 0 0 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1
- [38] 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 0 0 0 1 1 1 1 1 1 0 0 0 0 1 1 1 1 1 0
- [75] 0 0 1 1 0 1 1 1 0 1 1 1 0 0 1 1 1 0 0 0 0 0 0 1 1 1</code></pre>
+<pre><code>  [1] 1 1 0 1 0 1 0 1 1 0 1 1 1 1 1 0 0 0 1 1 0 1 1 1 1 1 1 0 1 1 0 1 1 1 1 1 0
+ [38] 1 0 0 0 1 1 1 0 1 1 0 1 1 0 1 1 0 1 1 1 1 1 1 1 1 1 0 0 0 1 1 1 0 0 1 1 0
+ [75] 1 1 1 1 0 1 0 1 1 0 1 1 1 0 1 0 1 1 1 1 1 1 1 1 0 1</code></pre>
 </div>
 </div>
 <ul>
@@ -1707,7 +1760,7 @@ World #965 / 1000 (5000 people):
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="co"># And now the probability estimate</span></span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(anyshared_per_room <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">/</span> num_rooms_many</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.72</code></pre>
+<pre><code>[1] 0.7</code></pre>
 </div>
 </div>
 <ul>

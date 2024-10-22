@@ -75,12 +75,12 @@ source("../dsan-globals/_globals.r")
 (Deterministic!) Only "accepts" strings with even number of `1`s:
 
 ::: columns
-::: {.column width="44%"}
+::: {.column width="40%"}
 
 ![](images/automata.svg){fig-align="center" width="80%"}
 
 :::
-::: {.column width="56%"}
+::: {.column width="60%"}
 
 ```{=html}
 <table>
@@ -133,9 +133,9 @@ source("../dsan-globals/_globals.r")
 
 * ...But we're trying to model **probabilistic** evolution!
 
-## Enter Markov Chains {.crunch-title}
+## Enter Markov Chains {.crunch-title .math-90 .crunch-math}
 
-::: columns
+:::: {.columns}
 ::: {.column width="50%"}
 
 <center>
@@ -155,7 +155,7 @@ Mathematically
 
 $$
 \begin{array}{c c} 
-& \begin{array}{c c c} 1 & 2 & 3 \\ \end{array} \\
+& \begin{array}{c c c} 1\phantom{1} & \phantom{1}2\phantom{1} & \phantom{1}3 \\ \end{array} \\
 \begin{array}{c c c}1 \\ 2 \\ 3 \end{array} &
 \left[
 \begin{array}{c c c}
@@ -167,10 +167,11 @@ $$
 \end{array}
 $$
 
+<br>
 
 $$
 \begin{array}{c c} 
-& \begin{array}{c c c} 1 & 2 & 3 \\ \end{array} \\
+& \begin{array}{c c c} 1\phantom{1} & \phantom{2}2\phantom{2} & \phantom{1}3 \\ \end{array} \\
 \begin{array}{c c c}1 \\ 2 \\ 3 \end{array} &
 \left[
 \begin{array}{c c c}
@@ -183,7 +184,7 @@ $$
 $$
 
 :::
-:::
+::::
 
 ## Hidden Markov Models {data-name="HMMs"}
 
@@ -353,7 +354,7 @@ $$
 
 * To handle the fact that this system is **underspecified**, impose additional restriction that $r^*_1 + r^*_2 + r^*_3 = 1$, so that the ranks form a **probability distribution**
 
-## The Point of All This {.crunch-title}
+## The Point of All This {.crunch-title .crunch-ul}
 
 * The final restriction $r^*_1 + r^*_2 + r^*_3 = 1$ ensures that the resulting PageRank values form a **probability distribution**
 * This is called the **Stationary Distribution** of the **Markov chain**: represents the probability that a **random walker** through the chain will be at page $S_i$ at a given time!
@@ -788,19 +789,14 @@ To check that you understand: what value would the mean of many **dice rolls** c
 
 ## Interactive Visualization {.smaller .crunch-title}
 
-::: {#fig-interactive-viz}
-
-```{=html}
-<iframe src="https://seeing-theory.brown.edu/basic-probability/index.html" width="100%" height="500px"></iframe>
-```
-
-[*Seeing Theory*, Brown University](https://seeing-theory.brown.edu/basic-probability/index.html){target='_blank'}
-:::
+![[*Seeing Theory*, Brown University](https://seeing-theory.brown.edu/basic-probability/index.html){target='_blank'}](images/seeing-theory.jpeg){fig-align="center"}
 
 ## How Many is "Many"?
 
 ```{r}
 #| label: large-nums-convergence
+#| echo: true
+#| code-fold: true
 library(ggplot2)
 library(tibble)
 library(dplyr)
@@ -825,8 +821,6 @@ ggplot(results, aes(x=n, y=head_prop)) +
   scale_color_manual("", values=c("black","purple"), labels=c("Mean of n samples","Expected Value")) +
   scale_linetype_manual("", values="dashed", labels="Expected Value") +
   scale_fill_manual("", values=cbPalette[1], labels="95% CI") +
-  #scale_linetype_manual('type', values=c('dashed', 'solid'), labels=c("Expected Value", "Sample Mean")) +
-  #scale_color_manual('color', values=c(cbPalette[1], 'black'), labels=c('Expected Value', 'Sample Mean')) +
   dsan_theme("full") +
   theme(
       legend.title = element_blank(),
@@ -840,7 +834,7 @@ ggplot(results, aes(x=n, y=head_prop)) +
   scale_x_log10(breaks = c(10, 100, 1000, 10000, 100000), labels = c("10", "100", "1000", "10000", "100000"))
 ```
 
-## The Sample Mean {.crunch-title .crunch-math .crunch-ul .math-90}
+## The Sample Mean {.crunch-title .crunch-math .crunch-ul .math-90 .inline-90 .crunch-li-8}
 
 * Like the **median** we saw earlier (along with lots of other examples), **sample mean** is just a function of RVs
 * Unlike the median, though, it is a **function of a vector-valued RV $\mathbf{X}_N$** (containing $N$ scalar RVs)![^cap-lower]
@@ -850,7 +844,7 @@ $$
 \overline{X}_N = f(\mathbf{X}_N) = \frac{1}{n}\sum_{i=1}^{n}X_i
 $$
 
-[^cap-lower]: Note that I'm trying really hard to differentiate between (capital-letter) $N$ as **cardinality** of observations, then (lowercase) $1, 2, \ldots, n$ for **ordinal** labels on each individual observation. This will spare you many headaches in life!
+[^cap-lower]: Note the capital $N$ for **cardinality** of observations, vs. (lowercase) $1, 2, \ldots, n$ for **ordinal labels** on each observation. This will spare you many headaches!
 
 ## Weak Law of Large Numbers (WLLN) {.crunch-title .crunch-math .crunch-ul .math-80 .inline-90}
 
@@ -866,7 +860,7 @@ $$
 \mathfrak{X}(N) \overset{p}{\longrightarrow} c \iff \forall \varepsilon > 0 \left[ \lim_{N \rightarrow \infty}\Pr\left( | \mathfrak{X}(N) - c | < \varepsilon \right) = 1 \right]
 $$
 
-## Strong Law of Large Numbers (SLLN) {.crunch-title .crunch-math .crunch-ul .math-90 .small-inline}
+## Strong Law of Large Numbers (SLLN) {.crunch-title .crunch-math .crunch-ul .math-90 .inline-90 .crunch-li-8}
 
 * Same setup as last slide, but
 
@@ -900,7 +894,7 @@ $$
 \frac{\overline{X}_N - \mu}{\sigma / \sqrt{N}} \overset{\text{asymp}}{\sim} \mathcal{N}(0,1)
 $$
 
-## When is $\mathcal{N}(0, 1)$ a "good" approximation? {.smaller .title-12 .crunch-title .crunch-code .crunch-figures .crunch-quarto-layout-panel}
+## When is $\mathcal{N}(0, 1)$ a "good" approximation? {.smaller .title-12 .crunch-title .crunch-code .crunch-figures .crunch-img .crunch-quarto-layout-panel}
 
 ```{r}
 #| echo: true
@@ -1014,12 +1008,12 @@ gen_qq(1000)
 
 :::
 
-# Overthinking: Estimation {data-stack-name="Estimators"}
+# Estimating Parameters {data-stack-name="Estimators"}
 
 * Maximum Likelihood Estimation (MLE)
 * Generalized Method of Moments (GMM) Estimation
 
-## Maximum Likelihood Estimation {data-stack-name="MLE"}
+## Maximum Likelihood Estimation {.crunch-title .inline-90}
 
 * Creating a **model** $\mathcal{M}$ w/parameters $\param{\theta}$ means specifying
 
@@ -1036,17 +1030,17 @@ $$
 * Simple example: $X \sim \text{Bern}(\param{p})$. Just one parameter, $\param{\theta} = \{\param{p}\}$
 * We observe 10 coin flips: 8 heads, 2 tails. Of all possible Bernoulli distributions (parameterized by $\param{p}$), which is **most likely to generate this data**?
 
-## Generative Models {.nostretch .crunch-title .crunch-figures .crunch-ul .crunch-lists .crunch-code}
+## Generative Models {.nostretch .crunch-title .crunch-figures .crunch-ul .crunch-lists .crunch-code .crunch-img}
 
 ::: columns
-::: {.column width="60%"}
+::: {.column width="50%"}
 
 * Given a choice of $\param{\theta}$, we can generate **simulated datasets** (here 10 for each labeled value of $\param{p}$), then compute **likelihood** as proportion of datasets with 8 heads, 2 tails
 
-* From the plot: (Among these vals) $\param{p} = 0.8$ is **maximum likelihood estimate**
+* From plot: (Among these vals) $\param{p} = 0.8$ is **maximum likelihood estimate**
 
 :::
-::: {.column width="40%"}
+::: {.column width="50%"}
 
 ```{r}
 #| label: bernoulli-sim
@@ -1118,9 +1112,9 @@ $$
 Time for some **Math Magic**...
 </center>
 
-## Math Magic 1 {.small-math}
+## Math Magic 1 {.crunch-title .math-90}
 
-1. What are the individual $P(x_i \mid \param{p})$ terms?
+1\. What are the individual $\Pr(x_i \mid \param{p})$ terms?<br>
 
 $X \sim \text{Bern}(\param{p})$, so
 
@@ -1139,7 +1133,7 @@ Why do we need it to be differentiable? Stay tuned...
 
 ::: {#calculus-text}
 
-2. How do we maximize the product?
+2\. How do we maximize the product?
 
 $$
 p^* = \argmax_{\param{p}} f(\param{p}) \implies f'(p^*) = 0
@@ -1162,7 +1156,7 @@ $$
 
 [^deriv]: And that's why we used math magic to make $\Pr(x_i \mid \param{p})$ differentiable, in the previous slide!
 
-## Obstacle: Products vs. Sums {.smaller .crunch-title}
+## Obstacle: Products vs. Sums {.smaller .crunch-title .crunch-ul .inline-90}
 
 * Finding $\frac{d}{d\param{p}}\left[ \lik(x_1)\lik(x_2)\cdots \lik(x_n)\right]$ is a doozy, even with just $n = 2$ datapoints:
 
@@ -1185,7 +1179,7 @@ $$
 Remember the **product rule**: $\frac{d}{dx}\left[f(x)g(x)\right] = \left(\frac{d}{dx}f(x)\right)\cdot g(x) + \left(\frac{d}{dx}g(x)\right) \cdot f(x)$.
 ::: -->
 
-## Math Magic 3: Log-Likelihood {.crunch-title}
+## Math Magic 3: Log-Likelihood {.crunch-title .math-90 .inline-90}
 
 $$
 \log(a\cdot b) = \log(a) + \log(b)
@@ -1322,7 +1316,7 @@ $$
 ## Why Does This Happen?: Handwaving {.crunch-math}
 
 * Long story short, we **underpredict** the population variance because we already **used some of the data to compute $\mu^*$**!
-* This is where the **heuristic** of **degrees of freedom** comes in:
+* This is where the **degrees of freedom heuristic** comes in:
   * When we construct an **estimate** $e$, $df(e) = n - k_e$
   * $k_e =$ number of **other estimates** used to calculate $e$!
 
@@ -1357,7 +1351,7 @@ $$
 \expect{\sigma^2_\circledast} = \bigexpect{\frac{n}{n-1}\sigma^2_*} = \frac{n}{n-1}\frac{n-1}{n}\sigma^2 = \color{green}{\sigma^2} \; ✅
 $$
 
-## 21st-Century Solution {.smaller .crunch-math .crunch-title .nobotmargin}
+## 21st-Century Solution {.smaller .crunch-math .crunch-title .nobotmargin .math-90 .crunch-ul .crunch-p .crunch-quarto-figure}
 
 * Be **Bayesian**, use priors on parameters (creating hyperparameters)!
 * Pretend we know $\sigma^2$, but want to find the "best" value of $\mu$:
@@ -1376,7 +1370,7 @@ $$
 
 :::
 
-## Single Datapoint {.smaller .crunch-title .crunch-math}
+## Single Datapoint {.smaller .crunch-title .crunch-math .math-90}
 
 * Let's consider the estimate of $\mu$ from a single datapoint $X_i$. MLE just gives us $\mu^* = X_i$. How about MAP estimate?
 
@@ -1396,7 +1390,7 @@ $$
 \ell(X_i, \mu, m, s) = \log\left[\frac{1}{\sigma\sqrt{2\pi}}\right] - \frac{(X_i-\mu)^2}{2\sigma^2} + \log\left[\frac{1}{s\sqrt{2\pi}}\right] - \frac{(\mu - m)^2}{2s^2}
 $$
 
-## Taking the Derivative {.smaller .crunch-math .nobotmargin .crunch-title}
+## Taking the Derivative {.smaller .crunch-math .nobotmargin .crunch-title .math-90 .crunch-li}
 
 * Taking the derivative gives us:
 
@@ -1424,28 +1418,28 @@ $$
 
 $$
 \begin{array}{ccccc}
-P_{\text{post}}(\mathcal{H}) &\hspace{-6mm}\propto &\hspace{-6mm} P(X \mid \mathcal{H}) &\hspace{-6mm} \times &\hspace{-6mm} P_{\text{pre}}(\mathcal{H}) \\
+\Pr_{\text{post}}(\mathcal{H}) &\hspace{-6mm}\propto &\hspace{-6mm} \Pr(X \mid \mathcal{H}) &\hspace{-6mm} \times &\hspace{-6mm} \Pr_{\text{pre}}(\mathcal{H}) \\
 \text{Posterior} &\hspace{-6mm}\propto &\hspace{-6mm}\text{Evidence} &\hspace{-6mm} \times &\hspace{-6mm} \text{Prior}
 \end{array}
 $$
 
-## Generalized Method of Moments (GMM) Estimation {.smaller .title-10}
+## Generalized Method of Moments (GMM) Estimation {.smaller .title-10 .crunch-title .inline-90}
 
 * Recall that the **$k$th moment** of an RV $X$ is $\mu_k = \expect{X^k}$
 * e.g., $\mu_1 = \expect{X}$, $\mu_2 = \Var{X} + \expect{X}^2$
 * Also recall (I rambled on about) how the MGF contains **all information about a distribution**. This means we can **estimate distributions from data**:
-* Define **$k$th sample moment** of $\mathbf{X}_N$ to be $\widehat{\mu}_k = \frac{1}{N}\sum_{i=1}^nX_i^k$. Then the system of equations:
+* Define **$k$th sample moment** of $\mathbf{X}_N$: $\widehat{\mu}_k = \frac{1}{N}\sum_{i=1}^nX_i^k$. Then:
 
     $$
     \begin{align*}
     \mu_1(\param{\theta}) &= \widehat{\mu}_1 \\
     \mu_2(\param{\theta}) &= \widehat{\mu}_2 \\
-    &\vdots \\
+    &~\vdots \\
     \mu_N(\param{\theta}) &= \widehat{\mu}_N
     \end{align*}
     $$
 
-    Gives us a system of equations, allowing us to **solve for parameters of our distribution**!
+    Gives us a system of equations, allowing us to **solve for parameters $\param{\theta}$ of our distribution**!
 
 
 # The Bias-Variance Tradeoff {.title-14 .not-title-slide .full-width-quotes .crunch-images data-stack-name="Bias-Variance"}
@@ -1455,7 +1449,7 @@ $$
 *There's no such thing as a free lunch.*
 
 ::: {.align-right}
-<a href='https://en.wikipedia.org/wiki/No_such_thing_as_a_free_lunch' target='_blank'>Life</a> / <a href='https://www.nytimes.com/1993/02/14/magazine/on-language-words-out-in-the-cold.html' target='_blank'>Conservative Economists</a>
+<a href='https://en.wikipedia.org/wiki/No_such_thing_as_a_free_lunch' target='_blank'>Life</a> / <a href='https://www.nytimes.com/1993/02/14/magazine/on-language-words-out-in-the-cold.html' target='_blank'>Economists</a>
 :::
 
 :::
@@ -1483,11 +1477,11 @@ $$
 
 ::: {.aside}
 
-Figure adapted from Fortmann-Roe (2012), <a href='https://scott.fortmann-roe.com/docs/BiasVariance.html' target='_blank'>"Understanding the Bias-Variance Tradeoff"</a>
+Adapted from Fortmann-Roe (2012), <a href='https://scott.fortmann-roe.com/docs/BiasVariance.html' target='_blank'>"Understanding the Bias-Variance Tradeoff"</a>
 
 :::
 
-## Math {.small-math .crunch-title .crunch-ul .crunch-p .crunch-lists}
+## Components of the Error Term {.math-80 .inline-90 .crunch-title .crunch-ul .crunch-p .crunch-li}
 
 * We estimate "true" DGP $Y = f(X)$ with model $\widehat{f}(X)$^[It's even more complicated, since we don't even know whether the features $X$ we've chosen are actually the features in the world that causally affect $Y$, but that's for later classes... Or see @hastie_elements_2013!], and then we use $\widehat{f}$ to predict the value of $Y$ for a point $x_0$.
 * What is our **expected error** at this point, $\Err(x_0)$?
@@ -1558,3 +1552,7 @@ $$
 
 ::: {#refs}
 :::
+
+## Week 9 Lab
+
+* [Link here](https://colab.research.google.com/drive/1o8cHv3T2zcfXOguIQ8NTxphtt62WSL98#scrollTo=RU91KcT9NHHA){target='_blank'}

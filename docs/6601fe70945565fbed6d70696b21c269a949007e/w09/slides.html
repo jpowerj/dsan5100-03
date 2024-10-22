@@ -484,13 +484,13 @@ Jeff Jacobs
 <h2>Finite-State Automata</h2>
 <p>(Deterministic!) Only “accepts” strings with even number of <code>1</code>s:</p>
 <div class="columns">
-<div class="column" style="width:44%;">
+<div class="column" style="width:40%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/automata.svg" class="quarto-figure quarto-figure-center" style="width:80.0%"></p>
 </figure>
 </div>
-</div><div class="column" style="width:56%;">
+</div><div class="column" style="width:60%;">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
 <tr class="header">
@@ -538,7 +538,7 @@ Jeff Jacobs
 <li>…But we’re trying to model <strong>probabilistic</strong> evolution!</li>
 </ul>
 </section>
-<section id="enter-markov-chains" class="slide level2 crunch-title">
+<section id="enter-markov-chains" class="slide level2 crunch-title math-90 crunch-math">
 <h2>Enter Markov Chains</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -561,7 +561,7 @@ Mathematically
 </center>
 <p><span class="math display">\[
 \begin{array}{c c}
-&amp; \begin{array}{c c c} 1 &amp; 2 &amp; 3 \\ \end{array} \\
+&amp; \begin{array}{c c c} 1\phantom{1} &amp; \phantom{1}2\phantom{1} &amp; \phantom{1}3 \\ \end{array} \\
 \begin{array}{c c c}1 \\ 2 \\ 3 \end{array} &amp;
 \left[
 \begin{array}{c c c}
@@ -572,9 +572,10 @@ Mathematically
 \right]
 \end{array}
 \]</span></p>
+<p><br></p>
 <p><span class="math display">\[
 \begin{array}{c c}
-&amp; \begin{array}{c c c} 1 &amp; 2 &amp; 3 \\ \end{array} \\
+&amp; \begin{array}{c c c} 1\phantom{1} &amp; \phantom{2}2\phantom{2} &amp; \phantom{1}3 \\ \end{array} \\
 \begin{array}{c c c}1 \\ 2 \\ 3 \end{array} &amp;
 \left[
 \begin{array}{c c c}
@@ -794,7 +795,7 @@ f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sq
 <li><p>To handle the fact that this system is <strong>underspecified</strong>, impose additional restriction that <span class="math inline">\(r^*_1 + r^*_2 + r^*_3 = 1\)</span>, so that the ranks form a <strong>probability distribution</strong></p></li>
 </ul>
 </section>
-<section id="the-point-of-all-this" class="slide level2 crunch-title">
+<section id="the-point-of-all-this" class="slide level2 crunch-title crunch-ul">
 <h2>The Point of All This</h2>
 <ul>
 <li>The final restriction <span class="math inline">\(r^*_1 + r^*_2 + r^*_3 = 1\)</span> ensures that the resulting PageRank values form a <strong>probability distribution</strong></li>
@@ -1410,22 +1411,53 @@ f(n) = \frac{\varphi^n - \psi^n}{\varphi - \psi} = \frac{\varphi^n - \psi^n}{\sq
 </div></aside></section>
 <section id="interactive-visualization" class="slide level2 smaller crunch-title">
 <h2>Interactive Visualization</h2>
-<div id="fig-interactive-viz" class="quarto-float quarto-figure quarto-figure-center">
-<figure class="quarto-float quarto-float-fig">
-<div aria-describedby="fig-interactive-viz-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<iframe src="https://seeing-theory.brown.edu/basic-probability/index.html" width="100%" height="500px"></iframe>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interactive-viz-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;1: <a href="https://seeing-theory.brown.edu/basic-probability/index.html" target="_blank"><em>Seeing Theory</em>, Brown University</a>
-</figcaption>
-</figure>
-</div>
-</section>
+
+<img data-src="images/seeing-theory.jpeg" class="r-stretch quarto-figure-center"><p class="caption"><a href="https://seeing-theory.brown.edu/basic-probability/index.html" target="_blank"><em>Seeing Theory</em>, Brown University</a></p></section>
 <section id="how-many-is-many" class="slide level2">
 <h2>How Many is “Many”?</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-2"><a></a><span class="fu">library</span>(tibble)</span>
+<span id="cb2-3"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-4"><a></a><span class="fu">set.seed</span>(<span class="dv">5100</span>)</span>
+<span id="cb2-5"><a></a>n_vals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">ceiling</span>(<span class="fu">sqrt</span>(<span class="dv">10</span>)), <span class="dv">10</span>, <span class="fu">ceiling</span>(<span class="dv">10</span><span class="sc">*</span><span class="fu">sqrt</span>(<span class="dv">10</span>)), <span class="dv">100</span>, <span class="fu">ceiling</span>(<span class="dv">100</span><span class="sc">*</span><span class="fu">sqrt</span>(<span class="dv">10</span>)), <span class="dv">1000</span>, <span class="fu">ceiling</span>(<span class="dv">1000</span><span class="sc">*</span><span class="fu">sqrt</span>(<span class="dv">10</span>)), <span class="dv">10000</span>, <span class="fu">ceiling</span>(<span class="dv">10000</span><span class="sc">*</span><span class="fu">sqrt</span>(<span class="dv">10</span>)), <span class="dv">100000</span>)</span>
+<span id="cb2-6"><a></a>heads_data <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb2-7"><a></a>total_data <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb2-8"><a></a><span class="cf">for</span> (n <span class="cf">in</span> n_vals) {</span>
+<span id="cb2-9"><a></a>  coin_flips <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(n, <span class="dv">1</span>, <span class="fl">0.5</span>)</span>
+<span id="cb2-10"><a></a>  num_heads <span class="ot">&lt;-</span> <span class="fu">sum</span>(coin_flips)</span>
+<span id="cb2-11"><a></a>  heads_data <span class="ot">&lt;-</span> <span class="fu">c</span>(heads_data, num_heads)</span>
+<span id="cb2-12"><a></a>  num_flipped <span class="ot">&lt;-</span> <span class="fu">length</span>(coin_flips)</span>
+<span id="cb2-13"><a></a>  total_data <span class="ot">&lt;-</span> <span class="fu">c</span>(total_data, num_flipped)</span>
+<span id="cb2-14"><a></a>}</span>
+<span id="cb2-15"><a></a>results <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">n =</span> n_vals, <span class="at">heads=</span>heads_data, <span class="at">total=</span>total_data)</span>
+<span id="cb2-16"><a></a>results <span class="ot">&lt;-</span> results <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">head_prop =</span> heads <span class="sc">/</span> total)</span>
+<span id="cb2-17"><a></a><span class="co">#results</span></span>
+<span id="cb2-18"><a></a><span class="fu">ggplot</span>(results, <span class="fu">aes</span>(<span class="at">x=</span>n, <span class="at">y=</span>head_prop)) <span class="sc">+</span></span>
+<span id="cb2-19"><a></a>  <span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept=</span><span class="fl">0.5</span>, <span class="at">linetype=</span><span class="st">'dashed'</span>), <span class="at">color=</span>cbPalette[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb2-20"><a></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">color=</span><span class="st">'black'</span>), <span class="at">fill=</span>cbPalette[<span class="dv">1</span>], <span class="at">linewidth=</span>g_linewidth, <span class="at">color=</span>cbPalette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb2-21"><a></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color=</span><span class="st">'black'</span>), <span class="at">size=</span>g_pointsize<span class="sc">*</span><span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb2-22"><a></a>  <span class="fu">scale_color_manual</span>(<span class="st">""</span>, <span class="at">values=</span><span class="fu">c</span>(<span class="st">"black"</span>,<span class="st">"purple"</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"Mean of n samples"</span>,<span class="st">"Expected Value"</span>)) <span class="sc">+</span></span>
+<span id="cb2-23"><a></a>  <span class="fu">scale_linetype_manual</span>(<span class="st">""</span>, <span class="at">values=</span><span class="st">"dashed"</span>, <span class="at">labels=</span><span class="st">"Expected Value"</span>) <span class="sc">+</span></span>
+<span id="cb2-24"><a></a>  <span class="fu">scale_fill_manual</span>(<span class="st">""</span>, <span class="at">values=</span>cbPalette[<span class="dv">1</span>], <span class="at">labels=</span><span class="st">"95% CI"</span>) <span class="sc">+</span></span>
+<span id="cb2-25"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"full"</span>) <span class="sc">+</span></span>
+<span id="cb2-26"><a></a>  <span class="fu">theme</span>(</span>
+<span id="cb2-27"><a></a>      <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb2-28"><a></a>      <span class="at">legend.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">"mm"</span>)</span>
+<span id="cb2-29"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb2-30"><a></a>      <span class="fu">labs</span>(</span>
+<span id="cb2-31"><a></a>          <span class="at">title =</span> <span class="st">"Estimates of Population Mean for Increasing Sample Sizes"</span>,</span>
+<span id="cb2-32"><a></a>          <span class="at">x =</span> <span class="st">"n (Sample Size)"</span>,</span>
+<span id="cb2-33"><a></a>          <span class="at">y =</span> <span class="st">"Sample Mean"</span></span>
+<span id="cb2-34"><a></a>      ) <span class="sc">+</span></span>
+<span id="cb2-35"><a></a>  <span class="fu">scale_x_log10</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">100</span>, <span class="dv">1000</span>, <span class="dv">10000</span>, <span class="dv">100000</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"10"</span>, <span class="st">"100"</span>, <span class="st">"1000"</span>, <span class="st">"10000"</span>, <span class="st">"100000"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
+</div>
 <img data-src="index_files/figure-revealjs/large-nums-convergence-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
-<section id="the-sample-mean" class="slide level2 crunch-title crunch-math crunch-ul math-90 scrollable">
+<section id="the-sample-mean" class="slide level2 crunch-title crunch-math crunch-ul math-90 inline-90 crunch-li-8 scrollable">
 <h2>The Sample Mean</h2>
 <ul>
 <li>Like the <strong>median</strong> we saw earlier (along with lots of other examples), <strong>sample mean</strong> is just a function of RVs</li>
@@ -1435,7 +1467,7 @@ Figure&nbsp;1: <a href="https://seeing-theory.brown.edu/basic-probability/index.
 <p><span class="math display">\[
 \overline{X}_N = f(\mathbf{X}_N) = \frac{1}{n}\sum_{i=1}^{n}X_i
 \]</span></p>
-<aside><ol class="aside-footnotes"><li id="fn2"><p>Note that I’m trying really hard to differentiate between (capital-letter) <span class="math inline">\(N\)</span> as <strong>cardinality</strong> of observations, then (lowercase) <span class="math inline">\(1, 2, \ldots, n\)</span> for <strong>ordinal</strong> labels on each individual observation. This will spare you many headaches in life!</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn2"><p>Note the capital <span class="math inline">\(N\)</span> for <strong>cardinality</strong> of observations, vs.&nbsp;(lowercase) <span class="math inline">\(1, 2, \ldots, n\)</span> for <strong>ordinal labels</strong> on each observation. This will spare you many headaches!</p></li></ol></aside></section>
 <section id="weak-law-of-large-numbers-wlln" class="slide level2 crunch-title crunch-math crunch-ul math-80 inline-90">
 <h2>Weak Law of Large Numbers (WLLN)</h2>
 <ul>
@@ -1451,7 +1483,7 @@ Figure&nbsp;1: <a href="https://seeing-theory.brown.edu/basic-probability/index.
 \mathfrak{X}(N) \overset{p}{\longrightarrow} c \iff \forall \varepsilon &gt; 0 \left[ \lim_{N \rightarrow \infty}\Pr\left( | \mathfrak{X}(N) - c | &lt; \varepsilon \right) = 1 \right]
 \]</span></p>
 </section>
-<section id="strong-law-of-large-numbers-slln" class="slide level2 crunch-title crunch-math crunch-ul math-90 small-inline">
+<section id="strong-law-of-large-numbers-slln" class="slide level2 crunch-title crunch-math crunch-ul math-90 inline-90 crunch-li-8">
 <h2>Strong Law of Large Numbers (SLLN)</h2>
 <ul>
 <li>Same setup as last slide, but</li>
@@ -1490,41 +1522,41 @@ Figure&nbsp;1: <a href="https://seeing-theory.brown.edu/basic-probability/index.
 \frac{\overline{X}_N - \mu}{\sigma / \sqrt{N}} \overset{\text{asymp}}{\sim} \mathcal{N}(0,1)
 \]</span></p>
 </section>
-<section id="when-is-mathcaln0-1-a-good-approximation" class="slide level2 smaller title-12 crunch-title crunch-code crunch-figures crunch-quarto-layout-panel">
+<section id="when-is-mathcaln0-1-a-good-approximation" class="slide level2 smaller title-12 crunch-title crunch-code crunch-figures crunch-img crunch-quarto-layout-panel">
 <h2>When is <span class="math inline">\(\mathcal{N}(0, 1)\)</span> a “good” approximation?</h2>
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="co"># Prepare data for all plots</span></span>
-<span id="cb2-2"><a></a>max_n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
-<span id="cb2-3"><a></a>num_reps <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb2-4"><a></a>all_rolls <span class="ot">&lt;-</span> <span class="fu">replicate</span>(</span>
-<span id="cb2-5"><a></a>  num_reps,</span>
-<span id="cb2-6"><a></a>  <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">size =</span> max_n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">rep</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="dv">6</span>, <span class="dv">6</span>))</span>
-<span id="cb2-7"><a></a>)</span>
-<span id="cb2-8"><a></a>gen_clt_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
-<span id="cb2-9"><a></a>  exp_val <span class="ot">&lt;-</span> <span class="fl">3.5</span></span>
-<span id="cb2-10"><a></a>  sigma <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">35</span><span class="sc">/</span><span class="dv">12</span>)</span>
-<span id="cb2-11"><a></a>  denom <span class="ot">&lt;-</span> sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n)</span>
-<span id="cb2-12"><a></a>  <span class="co"># Get the slice of all_rolls for this n</span></span>
-<span id="cb2-13"><a></a>  n_rolls <span class="ot">&lt;-</span> all_rolls[<span class="dv">1</span><span class="sc">:</span>n,]</span>
-<span id="cb2-14"><a></a>  sample_means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(n_rolls)</span>
-<span id="cb2-15"><a></a>  norm_gaps <span class="ot">&lt;-</span> (sample_means <span class="sc">-</span> exp_val) <span class="sc">/</span> denom</span>
-<span id="cb2-16"><a></a>  n_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">norm_gap=</span>norm_gaps)</span>
-<span id="cb2-17"><a></a>  <span class="co">#if (n == 5) {</span></span>
-<span id="cb2-18"><a></a>  <span class="co">#  print(sample_means)</span></span>
-<span id="cb2-19"><a></a>  <span class="co">#  print(n_df)</span></span>
-<span id="cb2-20"><a></a>  <span class="co">#}</span></span>
-<span id="cb2-21"><a></a>  <span class="fu">ggplot</span>(n_df, <span class="fu">aes</span>(<span class="at">x =</span> norm_gap)) <span class="sc">+</span></span>
-<span id="cb2-22"><a></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">binwidth =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb2-23"><a></a>  <span class="co">#geom_density() +</span></span>
-<span id="cb2-24"><a></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>dnorm, <span class="at">size=</span>g_linesize) <span class="sc">+</span></span>
-<span id="cb2-25"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
-<span id="cb2-26"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb2-27"><a></a>    <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"n = "</span>,n),</span>
-<span id="cb2-28"><a></a>    <span class="at">x =</span> <span class="st">"Normalized Sample Gap"</span></span>
-<span id="cb2-29"><a></a>  )</span>
-<span id="cb2-30"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="co"># Prepare data for all plots</span></span>
+<span id="cb3-2"><a></a>max_n <span class="ot">&lt;-</span> <span class="dv">10000</span></span>
+<span id="cb3-3"><a></a>num_reps <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb3-4"><a></a>all_rolls <span class="ot">&lt;-</span> <span class="fu">replicate</span>(</span>
+<span id="cb3-5"><a></a>  num_reps,</span>
+<span id="cb3-6"><a></a>  <span class="fu">sample</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="at">size =</span> max_n, <span class="at">replace =</span> <span class="cn">TRUE</span>, <span class="at">prob =</span> <span class="fu">rep</span>(<span class="dv">1</span> <span class="sc">/</span> <span class="dv">6</span>, <span class="dv">6</span>))</span>
+<span id="cb3-7"><a></a>)</span>
+<span id="cb3-8"><a></a>gen_clt_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb3-9"><a></a>  exp_val <span class="ot">&lt;-</span> <span class="fl">3.5</span></span>
+<span id="cb3-10"><a></a>  sigma <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="dv">35</span><span class="sc">/</span><span class="dv">12</span>)</span>
+<span id="cb3-11"><a></a>  denom <span class="ot">&lt;-</span> sigma <span class="sc">/</span> <span class="fu">sqrt</span>(n)</span>
+<span id="cb3-12"><a></a>  <span class="co"># Get the slice of all_rolls for this n</span></span>
+<span id="cb3-13"><a></a>  n_rolls <span class="ot">&lt;-</span> all_rolls[<span class="dv">1</span><span class="sc">:</span>n,]</span>
+<span id="cb3-14"><a></a>  sample_means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(n_rolls)</span>
+<span id="cb3-15"><a></a>  norm_gaps <span class="ot">&lt;-</span> (sample_means <span class="sc">-</span> exp_val) <span class="sc">/</span> denom</span>
+<span id="cb3-16"><a></a>  n_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">norm_gap=</span>norm_gaps)</span>
+<span id="cb3-17"><a></a>  <span class="co">#if (n == 5) {</span></span>
+<span id="cb3-18"><a></a>  <span class="co">#  print(sample_means)</span></span>
+<span id="cb3-19"><a></a>  <span class="co">#  print(n_df)</span></span>
+<span id="cb3-20"><a></a>  <span class="co">#}</span></span>
+<span id="cb3-21"><a></a>  <span class="fu">ggplot</span>(n_df, <span class="fu">aes</span>(<span class="at">x =</span> norm_gap)) <span class="sc">+</span></span>
+<span id="cb3-22"><a></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> <span class="fu">after_stat</span>(density)), <span class="at">binwidth =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb3-23"><a></a>  <span class="co">#geom_density() +</span></span>
+<span id="cb3-24"><a></a>  <span class="fu">stat_function</span>(<span class="at">fun=</span>dnorm, <span class="at">size=</span>g_linesize) <span class="sc">+</span></span>
+<span id="cb3-25"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb3-26"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb3-27"><a></a>    <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"n = "</span>,n),</span>
+<span id="cb3-28"><a></a>    <span class="at">x =</span> <span class="st">"Normalized Sample Gap"</span></span>
+<span id="cb3-29"><a></a>  )</span>
+<span id="cb3-30"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div>
@@ -1578,18 +1610,18 @@ Figure&nbsp;1: <a href="https://seeing-theory.brown.edu/basic-probability/index.
 <div class="cell" data-layout-align="center">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a>gen_qq <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
-<span id="cb3-2"><a></a>  n_rolls <span class="ot">&lt;-</span> all_rolls[<span class="dv">1</span><span class="sc">:</span>n,]</span>
-<span id="cb3-3"><a></a>  sample_means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(n_rolls)</span>
-<span id="cb3-4"><a></a>  qq_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">smean =</span> sample_means)</span>
-<span id="cb3-5"><a></a>  qq_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(qq_df, <span class="fu">aes</span>(<span class="at">sample =</span> smean)) <span class="sc">+</span></span>
-<span id="cb3-6"><a></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span> <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
-<span id="cb3-7"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
-<span id="cb3-8"><a></a>  <span class="fu">labs</span>(</span>
-<span id="cb3-9"><a></a>    <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"n = "</span>,n)</span>
-<span id="cb3-10"><a></a>  )</span>
-<span id="cb3-11"><a></a>  <span class="fu">return</span>(qq_plot)</span>
-<span id="cb3-12"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a>gen_qq <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb4-2"><a></a>  n_rolls <span class="ot">&lt;-</span> all_rolls[<span class="dv">1</span><span class="sc">:</span>n,]</span>
+<span id="cb4-3"><a></a>  sample_means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(n_rolls)</span>
+<span id="cb4-4"><a></a>  qq_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">smean =</span> sample_means)</span>
+<span id="cb4-5"><a></a>  qq_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(qq_df, <span class="fu">aes</span>(<span class="at">sample =</span> smean)) <span class="sc">+</span></span>
+<span id="cb4-6"><a></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span> <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb4-7"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb4-8"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-9"><a></a>    <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"n = "</span>,n)</span>
+<span id="cb4-10"><a></a>  )</span>
+<span id="cb4-11"><a></a>  <span class="fu">return</span>(qq_plot)</span>
+<span id="cb4-12"><a></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div>
@@ -1639,14 +1671,14 @@ Figure&nbsp;1: <a href="https://seeing-theory.brown.edu/basic-probability/index.
 </div>
 </section></section>
 <section>
-<section id="overthinking-estimation" class="title-slide slide level1 center" data-stack-name="Estimators">
-<h1>Overthinking: Estimation</h1>
+<section id="estimating-parameters" class="title-slide slide level1 center" data-stack-name="Estimators">
+<h1>Estimating Parameters</h1>
 <ul>
 <li>Maximum Likelihood Estimation (MLE)</li>
 <li>Generalized Method of Moments (GMM) Estimation</li>
 </ul>
 </section>
-<section id="maximum-likelihood-estimation" class="slide level2" data-stack-name="MLE">
+<section id="maximum-likelihood-estimation" class="slide level2 crunch-title inline-90">
 <h2>Maximum Likelihood Estimation</h2>
 <ul>
 <li>Creating a <strong>model</strong> <span class="math inline">\(\mathcal{M}\)</span> w/parameters <span class="math inline">\(\param{\theta}\)</span> means specifying</li>
@@ -1667,15 +1699,15 @@ Figure&nbsp;1: <a href="https://seeing-theory.brown.edu/basic-probability/index.
 <li>We observe 10 coin flips: 8 heads, 2 tails. Of all possible Bernoulli distributions (parameterized by <span class="math inline">\(\param{p}\)</span>), which is <strong>most likely to generate this data</strong>?</li>
 </ul>
 </section>
-<section id="generative-models" class="slide level2 nostretch crunch-title crunch-figures crunch-ul crunch-lists crunch-code">
+<section id="generative-models" class="slide level2 nostretch crunch-title crunch-figures crunch-ul crunch-lists crunch-code crunch-img">
 <h2>Generative Models</h2>
 <div class="columns">
-<div class="column" style="width:60%;">
+<div class="column" style="width:50%;">
 <ul>
 <li><p>Given a choice of <span class="math inline">\(\param{\theta}\)</span>, we can generate <strong>simulated datasets</strong> (here 10 for each labeled value of <span class="math inline">\(\param{p}\)</span>), then compute <strong>likelihood</strong> as proportion of datasets with 8 heads, 2 tails</p></li>
-<li><p>From the plot: (Among these vals) <span class="math inline">\(\param{p} = 0.8\)</span> is <strong>maximum likelihood estimate</strong></p></li>
+<li><p>From plot: (Among these vals) <span class="math inline">\(\param{p} = 0.8\)</span> is <strong>maximum likelihood estimate</strong></p></li>
 </ul>
-</div><div class="column" style="width:40%;">
+</div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -1704,11 +1736,9 @@ p^* &amp;\overset{\phantom{x_i\text{ indep}}}{=} \argmax_{\param{p}} \mathcal{L}
 Time for some <strong>Math Magic</strong>…
 </center>
 </section>
-<section id="math-magic-1" class="slide level2 small-math scrollable">
+<section id="math-magic-1" class="slide level2 crunch-title math-90">
 <h2>Math Magic 1</h2>
-<ol type="1">
-<li>What are the individual <span class="math inline">\(P(x_i \mid \param{p})\)</span> terms?</li>
-</ol>
+<p>1. What are the individual <span class="math inline">\(\Pr(x_i \mid \param{p})\)</span> terms?<br></p>
 <p><span class="math inline">\(X \sim \text{Bern}(\param{p})\)</span>, so</p>
 <p><span class="math display">\[
 \begin{align*}
@@ -1726,9 +1756,7 @@ Time for some <strong>Math Magic</strong>…
 <div class="quarto-layout-panel" data-layout="[2,1]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div id="calculus-text" class="quarto-layout-cell" style="flex-basis: 66.7%;justify-content: flex-start;">
-<ol start="2" type="1">
-<li>How do we maximize the product?</li>
-</ol>
+<p>2. How do we maximize the product?</p>
 <p><span class="math display">\[
 p^* = \argmax_{\param{p}} f(\param{p}) \implies f'(p^*) = 0
 \]</span></p>
@@ -1746,7 +1774,7 @@ p^* = \argmax_{\param{p}} f(\param{p}) \implies f'(p^*) = 0
 \end{align*}
 \]</span></p>
 <aside><ol class="aside-footnotes"><li id="fn3"><p>And that’s why we used math magic to make <span class="math inline">\(\Pr(x_i \mid \param{p})\)</span> differentiable, in the previous slide!</p></li></ol></aside></section>
-<section id="obstacle-products-vs.-sums" class="slide level2 smaller crunch-title scrollable">
+<section id="obstacle-products-vs.-sums" class="slide level2 smaller crunch-title crunch-ul inline-90 scrollable">
 <h2>Obstacle: Products vs.&nbsp;Sums</h2>
 <ul>
 <li>Finding <span class="math inline">\(\frac{d}{d\param{p}}\left[ \lik(x_1)\lik(x_2)\cdots \lik(x_n)\right]\)</span> is a doozy, even with just <span class="math inline">\(n = 2\)</span> datapoints:</li>
@@ -1768,7 +1796,7 @@ p^* = \argmax_{\param{p}} f(\param{p}) \implies f'(p^*) = 0
 Remember the **product rule**: $\frac{d}{dx}\left[f(x)g(x)\right] = \left(\frac{d}{dx}f(x)\right)\cdot g(x) + \left(\frac{d}{dx}g(x)\right) \cdot f(x)$.
 ::: -->
 <aside><ol class="aside-footnotes"><li id="fn4"><p>We achieve this simplification because the derivative operator is <strong>additive</strong>: <span class="math inline">\(\frac{d}{dx}\left[ f(x) + g(x) \right] = \frac{d}{dx}f(x) + \frac{d}{dx}g(x)\)</span></p></li></ol></aside></section>
-<section id="math-magic-3-log-likelihood" class="slide level2 crunch-title">
+<section id="math-magic-3-log-likelihood" class="slide level2 crunch-title math-90 inline-90">
 <h2>Math Magic 3: Log-Likelihood</h2>
 <p><span class="math display">\[
 \log(a\cdot b) = \log(a) + \log(b)
@@ -1897,7 +1925,7 @@ p^* = \frac{\sum_{i=1}^nx_i}{n} = \frac{\sum_{i=1}^n \mathbf{1}[x_i = 1]}{n} \ge
 <h2>Why Does This Happen?: Handwaving</h2>
 <ul>
 <li>Long story short, we <strong>underpredict</strong> the population variance because we already <strong>used some of the data to compute <span class="math inline">\(\mu^*\)</span></strong>!</li>
-<li>This is where the <strong>heuristic</strong> of <strong>degrees of freedom</strong> comes in:
+<li>This is where the <strong>degrees of freedom heuristic</strong> comes in:
 <ul>
 <li>When we construct an <strong>estimate</strong> <span class="math inline">\(e\)</span>, <span class="math inline">\(df(e) = n - k_e\)</span></li>
 <li><span class="math inline">\(k_e =\)</span> number of <strong>other estimates</strong> used to calculate <span class="math inline">\(e\)</span>!</li>
@@ -1938,7 +1966,7 @@ p^* = \frac{\sum_{i=1}^nx_i}{n} = \frac{\sum_{i=1}^n \mathbf{1}[x_i = 1]}{n} \ge
 \expect{\sigma^2_\circledast} = \bigexpect{\frac{n}{n-1}\sigma^2_*} = \frac{n}{n-1}\frac{n-1}{n}\sigma^2 = \color{green}{\sigma^2} \; ✅
 \]</span></p>
 </section>
-<section id="st-century-solution" class="slide level2 smaller crunch-math crunch-title nobotmargin">
+<section id="st-century-solution" class="slide level2 smaller crunch-math crunch-title nobotmargin math-90 crunch-ul crunch-p crunch-quarto-figure">
 <h2>21st-Century Solution</h2>
 <ul>
 <li>Be <strong>Bayesian</strong>, use priors on parameters (creating hyperparameters)!</li>
@@ -1959,7 +1987,7 @@ X_1, X_2 \overset{iid}{\sim} \mathcal{N}( &amp;\hspace{-5mm}\mu\hspace{0.5mm}, &
 </div>
 </div>
 </section>
-<section id="single-datapoint" class="slide level2 smaller crunch-title crunch-math">
+<section id="single-datapoint" class="slide level2 smaller crunch-title crunch-math math-90">
 <h2>Single Datapoint</h2>
 <ul>
 <li>Let’s consider the estimate of <span class="math inline">\(\mu\)</span> from a single datapoint <span class="math inline">\(X_i\)</span>. MLE just gives us <span class="math inline">\(\mu^* = X_i\)</span>. How about MAP estimate?</li>
@@ -1980,7 +2008,7 @@ X_1, X_2 \overset{iid}{\sim} \mathcal{N}( &amp;\hspace{-5mm}\mu\hspace{0.5mm}, &
 \ell(X_i, \mu, m, s) = \log\left[\frac{1}{\sigma\sqrt{2\pi}}\right] - \frac{(X_i-\mu)^2}{2\sigma^2} + \log\left[\frac{1}{s\sqrt{2\pi}}\right] - \frac{(\mu - m)^2}{2s^2}
 \]</span></p>
 </section>
-<section id="taking-the-derivative" class="slide level2 smaller crunch-math nobotmargin crunch-title">
+<section id="taking-the-derivative" class="slide level2 smaller crunch-math nobotmargin crunch-title math-90 crunch-li">
 <h2>Taking the Derivative</h2>
 <ul>
 <li>Taking the derivative gives us:</li>
@@ -2010,27 +2038,27 @@ X_1, X_2 \overset{iid}{\sim} \mathcal{N}( &amp;\hspace{-5mm}\mu\hspace{0.5mm}, &
 </ul>
 <p><span class="math display">\[
 \begin{array}{ccccc}
-P_{\text{post}}(\mathcal{H}) &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm} P(X \mid \mathcal{H}) &amp;\hspace{-6mm} \times &amp;\hspace{-6mm} P_{\text{pre}}(\mathcal{H}) \\
+\Pr_{\text{post}}(\mathcal{H}) &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm} \Pr(X \mid \mathcal{H}) &amp;\hspace{-6mm} \times &amp;\hspace{-6mm} \Pr_{\text{pre}}(\mathcal{H}) \\
 \text{Posterior} &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm}\text{Evidence} &amp;\hspace{-6mm} \times &amp;\hspace{-6mm} \text{Prior}
 \end{array}
 \]</span></p>
 </section>
-<section id="generalized-method-of-moments-gmm-estimation" class="slide level2 smaller title-10">
+<section id="generalized-method-of-moments-gmm-estimation" class="slide level2 smaller title-10 crunch-title inline-90">
 <h2>Generalized Method of Moments (GMM) Estimation</h2>
 <ul>
 <li><p>Recall that the <strong><span class="math inline">\(k\)</span>th moment</strong> of an RV <span class="math inline">\(X\)</span> is <span class="math inline">\(\mu_k = \expect{X^k}\)</span></p></li>
 <li><p>e.g., <span class="math inline">\(\mu_1 = \expect{X}\)</span>, <span class="math inline">\(\mu_2 = \Var{X} + \expect{X}^2\)</span></p></li>
 <li><p>Also recall (I rambled on about) how the MGF contains <strong>all information about a distribution</strong>. This means we can <strong>estimate distributions from data</strong>:</p></li>
-<li><p>Define <strong><span class="math inline">\(k\)</span>th sample moment</strong> of <span class="math inline">\(\mathbf{X}_N\)</span> to be <span class="math inline">\(\widehat{\mu}_k = \frac{1}{N}\sum_{i=1}^nX_i^k\)</span>. Then the system of equations:</p>
+<li><p>Define <strong><span class="math inline">\(k\)</span>th sample moment</strong> of <span class="math inline">\(\mathbf{X}_N\)</span>: <span class="math inline">\(\widehat{\mu}_k = \frac{1}{N}\sum_{i=1}^nX_i^k\)</span>. Then:</p>
 <p><span class="math display">\[
   \begin{align*}
   \mu_1(\param{\theta}) &amp;= \widehat{\mu}_1 \\
   \mu_2(\param{\theta}) &amp;= \widehat{\mu}_2 \\
-  &amp;\vdots \\
+  &amp;~\vdots \\
   \mu_N(\param{\theta}) &amp;= \widehat{\mu}_N
   \end{align*}
   \]</span></p>
-<p>Gives us a system of equations, allowing us to <strong>solve for parameters of our distribution</strong>!</p></li>
+<p>Gives us a system of equations, allowing us to <strong>solve for parameters <span class="math inline">\(\param{\theta}\)</span> of our distribution</strong>!</p></li>
 </ul>
 </section></section>
 <section>
@@ -2042,7 +2070,7 @@ P_{\text{post}}(\mathcal{H}) &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm} P(X \m
 <div class="quote-text" style="display: block; width: 100% !important;">
 <p><em>There’s no such thing as a free lunch.</em></p>
 <div class="align-right">
-<p><a href="https://en.wikipedia.org/wiki/No_such_thing_as_a_free_lunch" target="_blank">Life</a> / <a href="https://www.nytimes.com/1993/02/14/magazine/on-language-words-out-in-the-cold.html" target="_blank">Conservative Economists</a></p>
+<p><a href="https://en.wikipedia.org/wiki/No_such_thing_as_a_free_lunch" target="_blank">Life</a> / <a href="https://www.nytimes.com/1993/02/14/magazine/on-language-words-out-in-the-cold.html" target="_blank">Economists</a></p>
 </div>
 </div>
 </div>
@@ -2091,10 +2119,10 @@ P_{\text{post}}(\mathcal{H}) &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm} P(X \m
 </table>
 
 <aside><div>
-<p>Figure adapted from Fortmann-Roe (2012), <a href="https://scott.fortmann-roe.com/docs/BiasVariance.html" target="_blank">“Understanding the Bias-Variance Tradeoff”</a></p>
+<p>Adapted from Fortmann-Roe (2012), <a href="https://scott.fortmann-roe.com/docs/BiasVariance.html" target="_blank">“Understanding the Bias-Variance Tradeoff”</a></p>
 </div></aside></section>
-<section id="math" class="slide level2 small-math crunch-title crunch-ul crunch-p crunch-lists scrollable">
-<h2>Math</h2>
+<section id="components-of-the-error-term" class="slide level2 math-80 inline-90 crunch-title crunch-ul crunch-p crunch-li scrollable">
+<h2>Components of the Error Term</h2>
 <ul>
 <li>We estimate “true” DGP <span class="math inline">\(Y = f(X)\)</span> with model <span class="math inline">\(\widehat{f}(X)\)</span><sup>1</sup>, and then we use <span class="math inline">\(\widehat{f}\)</span> to predict the value of <span class="math inline">\(Y\)</span> for a point <span class="math inline">\(x_0\)</span>.</li>
 <li>What is our <strong>expected error</strong> at this point, <span class="math inline">\(\Err(x_0)\)</span>?</li>
@@ -2168,6 +2196,12 @@ Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2013. <em>The <span>Elem
 Tharwat, Alaa. 2019. <span>“Parameter Investigation of Support Vector Machine Classifier with Kernel Functions.”</span> <em>Knowledge and Information Systems</em> 61 (3): 1269–1302. <a href="https://doi.org/10.1007/s10115-019-01335-4">https://doi.org/10.1007/s10115-019-01335-4</a>.
 </div>
 </div>
+</section>
+<section id="week-9-lab" class="slide level2">
+<h2>Week 9 Lab</h2>
+<ul>
+<li><a href="https://colab.research.google.com/drive/1o8cHv3T2zcfXOguIQ8NTxphtt62WSL98#scrollTo=RU91KcT9NHHA" target="_blank">Link here</a></li>
+</ul>
 
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">

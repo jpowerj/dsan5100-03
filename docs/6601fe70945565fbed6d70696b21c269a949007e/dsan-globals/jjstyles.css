@@ -76,6 +76,10 @@ a.disabled {
     text-align: center !important;
 }
 
+.code-90 code {
+  font-size: 90% !important;
+}
+
 .crunch-blockquote blockquote {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
@@ -83,6 +87,11 @@ a.disabled {
 
 .crunch-code-filename .code-with-filename {
   margin-left: 0px !important;
+}
+
+.crunch-columns .columns {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
 }
 
 .crunch-figure figure {
@@ -215,6 +224,9 @@ figcaption {
 }
 
 .smaller-table td {
+  font-size: 80% !important;
+}
+.smaller-table th {
   font-size: 80% !important;
 }
 
