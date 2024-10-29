@@ -1,0 +1,1466 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jeff Jacobs">
+
+<title>Week 10: Parameter Estimation – DSAN 5100-03</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script><script src="../sidebar.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../dsan-globals/jjstyles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#estimating-parameters" id="toc-estimating-parameters" class="nav-link active" data-scroll-target="#estimating-parameters">Estimating Parameters</a>
+  <ul class="collapse">
+  <li><a href="#maximum-likelihood-estimation" id="toc-maximum-likelihood-estimation" class="nav-link" data-scroll-target="#maximum-likelihood-estimation">Maximum Likelihood Estimation</a></li>
+  <li><a href="#probability-models-are-generative-models" id="toc-probability-models-are-generative-models" class="nav-link" data-scroll-target="#probability-models-are-generative-models">Probability Models are <em>Generative</em> Models</a></li>
+  <li><a href="#generative-models" id="toc-generative-models" class="nav-link" data-scroll-target="#generative-models">Generative Models</a></li>
+  <li><a href="#simulations-rightarrow-math" id="toc-simulations-rightarrow-math" class="nav-link" data-scroll-target="#simulations-rightarrow-math">Simulations <span class="math inline">\(\rightarrow\)</span> Math</a></li>
+  <li><a href="#math-magic-1" id="toc-math-magic-1" class="nav-link" data-scroll-target="#math-magic-1">Math Magic 1</a></li>
+  <li><a href="#math-magic-2" id="toc-math-magic-2" class="nav-link" data-scroll-target="#math-magic-2">Math Magic 2</a></li>
+  <li><a href="#obstacle-products-vs.-sums" id="toc-obstacle-products-vs.-sums" class="nav-link" data-scroll-target="#obstacle-products-vs.-sums">Obstacle: Products vs.&nbsp;Sums</a></li>
+  <li><a href="#math-magic-3-log-likelihood" id="toc-math-magic-3-log-likelihood" class="nav-link" data-scroll-target="#math-magic-3-log-likelihood">Math Magic 3: Log-Likelihood</a></li>
+  <li><a href="#simplifying" id="toc-simplifying" class="nav-link" data-scroll-target="#simplifying">Simplifying</a></li>
+  <li><a href="#maximizing" id="toc-maximizing" class="nav-link" data-scroll-target="#maximizing">Maximizing</a></li>
+  <li><a href="#mle-intuition" id="toc-mle-intuition" class="nav-link" data-scroll-target="#mle-intuition">MLE Intuition</a></li>
+  <li><a href="#the-dark-side-of-mle" id="toc-the-dark-side-of-mle" class="nav-link" data-scroll-target="#the-dark-side-of-mle">The Dark Side of MLE</a></li>
+  <li><a href="#mle-as-biased-estimator" id="toc-mle-as-biased-estimator" class="nav-link" data-scroll-target="#mle-as-biased-estimator">MLE as Biased Estimator</a></li>
+  <li><a href="#computing-mathbbesigma2_" id="toc-computing-mathbbesigma2_" class="nav-link" data-scroll-target="#computing-mathbbesigma2_">Computing <span class="math inline">\(\mathbb{E}[\sigma^2_*]\)</span></a></li>
+  <li><a href="#almost-there" id="toc-almost-there" class="nav-link" data-scroll-target="#almost-there">Almost There!</a></li>
+  <li><a href="#why-does-this-happen-handwaving" id="toc-why-does-this-happen-handwaving" class="nav-link" data-scroll-target="#why-does-this-happen-handwaving">Why Does This Happen?: Handwaving</a></li>
+  <li><a href="#handwavy-intuition" id="toc-handwavy-intuition" class="nav-link" data-scroll-target="#handwavy-intuition">Handwavy Intuition</a></li>
+  <li><a href="#handwavy-solution" id="toc-handwavy-solution" class="nav-link" data-scroll-target="#handwavy-solution">Handwavy Solution</a></li>
+  <li><a href="#st-century-solution" id="toc-st-century-solution" class="nav-link" data-scroll-target="#st-century-solution">21st-Century Solution</a></li>
+  <li><a href="#single-datapoint" id="toc-single-datapoint" class="nav-link" data-scroll-target="#single-datapoint">Single Datapoint</a></li>
+  <li><a href="#taking-the-derivative" id="toc-taking-the-derivative" class="nav-link" data-scroll-target="#taking-the-derivative">Taking the Derivative</a></li>
+  <li><a href="#the-takeaway" id="toc-the-takeaway" class="nav-link" data-scroll-target="#the-takeaway">The Takeaway</a></li>
+  <li><a href="#generalized-method-of-moments-gmm-estimation" id="toc-generalized-method-of-moments-gmm-estimation" class="nav-link" data-scroll-target="#generalized-method-of-moments-gmm-estimation">Generalized Method of Moments (GMM) Estimation</a></li>
+  </ul></li>
+  <li><a href="#the-bias-variance-tradeoff" id="toc-the-bias-variance-tradeoff" class="nav-link" data-scroll-target="#the-bias-variance-tradeoff">The Bias-Variance Tradeoff</a>
+  <ul class="collapse">
+  <li><a href="#intuition" id="toc-intuition" class="nav-link" data-scroll-target="#intuition">Intuition</a></li>
+  <li><a href="#components-of-the-error-term" id="toc-components-of-the-error-term" class="nav-link" data-scroll-target="#components-of-the-error-term">Components of the Error Term</a></li>
+  <li><a href="#in-practice" id="toc-in-practice" class="nav-link" data-scroll-target="#in-practice">In Practice</a></li>
+  <li><a href="#appendix-1-derivation-of-mathbbemu_2" id="toc-appendix-1-derivation-of-mathbbemu_2" class="nav-link" data-scroll-target="#appendix-1-derivation-of-mathbbemu_2">Appendix 1: Derivation of <span class="math inline">\(\mathbb{E}[\mu_*^2]\)</span></a></li>
+  <li><a href="#appendix-2-derivation-of-mathbbemux_i" id="toc-appendix-2-derivation-of-mathbbemux_i" class="nav-link" data-scroll-target="#appendix-2-derivation-of-mathbbemux_i">Appendix 2: Derivation of <span class="math inline">\(\mathbb{E}[\mu^*X_i]\)</span></a></li>
+  <li><a href="#appendix-3-derivation-of-mathbbesigma2_" id="toc-appendix-3-derivation-of-mathbbesigma2_" class="nav-link" data-scroll-target="#appendix-3-derivation-of-mathbbesigma2_">Appendix 3: Derivation of <span class="math inline">\(\mathbb{E}[\sigma^2_*]\)</span></a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w10/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 10: Parameter Estimation</h1>
+<p class="subtitle lead"><em>DSAN 5100: Probabilistic Modeling and Statistical Computing</em><br>Section 03</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Class Sessions</div>
+  </div>
+  </div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jeff Jacobs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Tuesday, October 29, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<center>
+<a class="h2" href="slides.html" target="_blank">Open slides in new window →</a>
+</center>
+<section id="estimating-parameters" class="level1" data-stack-name="Estimators">
+<h1 data-stack-name="Estimators">Estimating Parameters</h1>
+<ul>
+<li>Maximum Likelihood Estimation (MLE)</li>
+<li>Generalized Method of Moments (GMM) Estimation</li>
+</ul>
+<div class="hidden">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../dsan-globals/_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="hidden">
+<p><span class="math display">\[
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\bigexp}[1]{\exp\mkern-4mu\left[ #1 \right]}
+\newcommand{\bigexpect}[1]{\mathbb{E}\mkern-4mu \left[ #1 \right]}
+\newcommand{\definedas}{\overset{\text{defn}}{=}}
+\newcommand{\definedalign}{\overset{\phantom{\text{defn}}}{=}}
+\newcommand{\eqeventual}{\overset{\text{eventually}}{=}}
+\newcommand{\Err}{\text{Err}}
+\newcommand{\expect}[1]{\mathbb{E}[#1]}
+\newcommand{\expectsq}[1]{\mathbb{E}^2[#1]}
+\newcommand{\fw}[1]{\texttt{#1}}
+\newcommand{\given}{\mid}
+\newcommand{\green}[1]{\color{green}{#1}}
+\newcommand{\heads}{\outcome{heads}}
+\newcommand{\lik}{\mathcal{L}}
+\newcommand{\loglik}{\ell}
+\newcommand{\mle}{\textsf{ML}}
+\newcommand{\orange}[1]{\color{orange}{#1}}
+\newcommand{\outcome}[1]{\textsf{#1}}
+\newcommand{\param}[1]{{\color{purple} #1}}
+\newcommand{\pgsamplespace}{\{\green{1},\green{2},\green{3},\purp{4},\purp{5},\purp{6}\}}
+\newcommand{\prob}[1]{P\left( #1 \right)}
+\newcommand{\purp}[1]{\color{purple}{#1}}
+\newcommand{\spacecap}{\; \cap \;}
+\newcommand{\spacewedge}{\; \wedge \;}
+\newcommand{\tails}{\outcome{tails}}
+\newcommand{\Var}[1]{\text{Var}[#1]}
+\newcommand{\bigVar}[1]{\text{Var}\mkern-4mu \left[ #1 \right]}
+\]</span></p>
+</div>
+<section id="maximum-likelihood-estimation" class="level2 crunch-title inline-90">
+<h2 class="crunch-title inline-90 anchored" data-anchor-id="maximum-likelihood-estimation">Maximum Likelihood Estimation</h2>
+<ul>
+<li>Creating a <strong>model</strong> <span class="math inline">\(\mathcal{M}\)</span> w/parameters <span class="math inline">\(\param{\theta}\)</span> means specifying</li>
+</ul>
+<p><span class="math display">\[
+\mathcal{M} = \Pr(\underbrace{x_1, \ldots, x_n}_{\text{Observed Data}} \mid \underbrace{\param{\theta}}_{\text{Model Parameters}})
+\]</span></p>
+<ul>
+<li>When we view this as a function of <span class="math inline">\(\param{\theta}\)</span>, <strong>given</strong> the observed data, we call it the <strong>likelihood function</strong> <span class="math inline">\(\mathcal{L}_{\mathcal{M}}(\param{\theta} \mid x_1, \ldots, x_n)\)</span></li>
+<li>Read this as “the <strong>likelihood</strong> that our model <span class="math inline">\(\mathcal{M}\)</span>, with parameters <span class="math inline">\(\param{\theta}\)</span>, produced the data <span class="math inline">\(x_1, \ldots, x_n\)</span>”</li>
+</ul>
+</section>
+<section id="probability-models-are-generative-models" class="level2 title-09">
+<h2 class="title-09 anchored" data-anchor-id="probability-models-are-generative-models">Probability Models are <em>Generative</em> Models</h2>
+<ul>
+<li>A given choice of model parameters <span class="math inline">\(\param{\theta}\)</span> can be used to <strong>generate</strong> simulated datapoints!</li>
+<li>Simple example: <span class="math inline">\(X \sim \text{Bern}(\param{p})\)</span>. Just one parameter, <span class="math inline">\(\param{\theta} = \{\param{p}\}\)</span></li>
+<li>We observe 10 coin flips: 8 heads, 2 tails. Of all possible Bernoulli distributions (parameterized by <span class="math inline">\(\param{p}\)</span>), which is <strong>most likely to generate this data</strong>?</li>
+</ul>
+</section>
+<section id="generative-models" class="level2 nostretch crunch-title crunch-figures crunch-ul crunch-lists crunch-code crunch-img">
+<h2 class="nostretch crunch-title crunch-figures crunch-ul crunch-lists crunch-code crunch-img anchored" data-anchor-id="generative-models">Generative Models</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<ul>
+<li><p>Given a choice of <span class="math inline">\(\param{\theta}\)</span>, we can generate <strong>simulated datasets</strong> (here 10 for each labeled value of <span class="math inline">\(\param{p}\)</span>), then compute <strong>likelihood</strong> as proportion of datasets with 8 heads, 2 tails</p></li>
+<li><p>From plot: (Among these vals) <span class="math inline">\(\param{p} = 0.8\)</span> is <strong>maximum likelihood estimate</strong></p></li>
+</ul>
+</div><div class="column" style="width:50%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tibble)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1948</span>)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>obs_heads <span class="ot">&lt;-</span> <span class="dv">8</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>num_flips <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>num_reps <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>p_vals <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">0.01</span>, <span class="fl">0.2</span>, <span class="fl">0.4</span>, <span class="fl">0.6</span>, <span class="fl">0.8</span>, <span class="fl">0.99</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>obs_matches <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(p_vals)) {</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  cur_p <span class="ot">&lt;-</span> p_vals[i]</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  theta_str <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%.2f"</span>, cur_p)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  sim_data <span class="ot">&lt;-</span> <span class="fu">replicate</span>(</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    num_reps,</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rbinom</span>(num_flips, <span class="dv">1</span>, cur_p)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(sim_data)</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">#data_str &lt;- paste0(sim_data, collapse=", ")</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  num_heads <span class="ot">&lt;-</span> <span class="fu">colSums</span>(sim_data)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(num_heads)</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  num_matches <span class="ot">&lt;-</span> <span class="fu">sum</span>(num_heads <span class="sc">==</span> obs_heads)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  obs_matches <span class="ot">&lt;-</span> <span class="fu">c</span>(obs_matches, num_matches)</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(num_matches)</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(num_heads)</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  num_tails <span class="ot">&lt;-</span> num_flips <span class="sc">-</span> num_heads</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">#print(num_tails)</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  data_strs <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"["</span>,num_heads,<span class="st">" heads, "</span>,num_tails,<span class="st">" tails]"</span>)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  data_str <span class="ot">&lt;-</span> <span class="fu">paste0</span>(data_strs, <span class="at">collapse=</span><span class="st">", "</span>)</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="co">#writeLines(paste0("p = ",theta_str,": ",data_str))</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#print(obs_matches)</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>result_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">p=</span><span class="fu">as.character</span>(p_vals), <span class="at">num_matches=</span>obs_matches)</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>result_df <span class="ot">&lt;-</span> result_df <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">prop_matches =</span> obs_matches <span class="sc">/</span> num_reps)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(result_df, <span class="fu">aes</span>(<span class="at">x=</span>p, <span class="at">y=</span>prop_matches)) <span class="sc">+</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">'identity'</span>, <span class="at">fill=</span>cb_palette[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="co"># theme(</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="co">#   axis.title.y = element_text(size = 12)</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ) +</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Likelihood of data (8 heads, 2 tails) given p"</span>,</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Proportion of times (8,2) generated"</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/bernoulli-sim-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="simulations-rightarrow-math" class="level2 crunch-title small-inline math-90 inline-90">
+<h2 class="crunch-title small-inline math-90 inline-90 anchored" data-anchor-id="simulations-rightarrow-math">Simulations <span class="math inline">\(\rightarrow\)</span> Math</h2>
+<p>Prev example was overkill: we can <strong>solve for</strong> optimal <span class="math inline">\(\param{p}\)</span> value…</p>
+<p><span class="math display">\[
+\begin{align*}
+p^* &amp;\overset{\phantom{x_i\text{ indep}}}{=} \argmax_{\param{p}} \mathcal{L}(x_1, \ldots, x_n \mid \param{p}) \\
+&amp;\overset{x_i\text{ indep}}{=} \argmax_{\param{p}} \mathcal{L}(x_1 \mid \param{p})\mathcal{L}(x_2 \mid \param{p}) \cdots \mathcal{L}(x_n \mid \param{p})
+\end{align*}
+\]</span></p>
+<ol type="1">
+<li>What are the individual <span class="math inline">\(\mathcal{L}(x_i \mid \param{p})\)</span> terms?</li>
+<li>How do we maximize the product <span class="math inline">\(\mathcal{L}(x_1 \mid \param{p}) \cdots \mathcal{L}(x_n \mid \param{p})\)</span>?</li>
+</ol>
+<center>
+Time for some <strong>Math Magic</strong>…
+</center>
+</section>
+<section id="math-magic-1" class="level2 crunch-title math-90">
+<h2 class="crunch-title math-90 anchored" data-anchor-id="math-magic-1">Math Magic 1</h2>
+<p><i class="bi bi-1-circle"></i> What are the individual <span class="math inline">\(\Pr(x_i \mid \param{p})\)</span> terms?<br><br></p>
+<p><span class="math inline">\(X \sim \text{Bern}(\param{p})\)</span>, so</p>
+<p><span class="math display">\[
+\begin{align*}
+\Pr(X = x_i \mid \param{p}) &amp;= \begin{cases}1 - \param{p} &amp; x_i = 0 \\ \param{p} &amp; x_i = 1\end{cases} \; \leftarrow \genfrac{}{}{0pt}{}{\text{ Non-differentiable}}{😭} \\
+&amp;\overset{\text{math}}{\underset{\text{magic}}{=}} (1-\param{p})^{1-x_i}\param{p}^{x_i} \; \leftarrow \text{ Differentiable! 😲}
+\end{align*}
+\]</span></p>
+<p>Why do we need it to be differentiable? Stay tuned…</p>
+</section>
+<section id="math-magic-2" class="level2 crunch-title crunch-math crunch-p crunch-quarto-layout-panel math-90">
+<h2 class="crunch-title crunch-math crunch-p crunch-quarto-layout-panel math-90 anchored" data-anchor-id="math-magic-2">Math Magic 2</h2>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[2,1]">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div id="calculus-text" class="quarto-layout-cell" style="flex-basis: 66.7%;justify-content: flex-start;">
+<p><i class="bi bi-2-circle"></i> How do we maximize the product?</p>
+<p><span class="math display">\[
+p^* = \argmax_{\param{p}} f(\param{p}) \implies f'(p^*) = 0
+\]</span></p>
+<p>To <strong>maximize</strong> likelihood, we need to find its <strong>derivative</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, set equal to 0, and solve:</p>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 33.3%;justify-content: center;">
+<p><img src="images/koolaid_calculus.png" class="img-fluid" width="320"></p>
+</div>
+</div>
+</div>
+<p><span class="math display">\[
+\begin{align*}
+&amp;\frac{d}{d\param{p}}\lik(x \mid \param{p}) = 0 \iff \\
+&amp;\frac{d}{d\param{p}}\left[\lik(x_1 \mid \param{p})\lik(x_2 \mid \param{p})\cdots \lik(x_n \mid \param{p})\right] = 0
+\end{align*}
+\]</span></p>
+</section>
+<section id="obstacle-products-vs.-sums" class="level2 smaller crunch-title crunch-ul inline-90">
+<h2 class="smaller crunch-title crunch-ul inline-90 anchored" data-anchor-id="obstacle-products-vs.-sums">Obstacle: Products vs.&nbsp;Sums</h2>
+<ul>
+<li>Finding <span class="math inline">\(\frac{d}{d\param{p}}\left[ \lik(x_1)\lik(x_2)\cdots \lik(x_n)\right]\)</span> is a doozy, even with just <span class="math inline">\(n = 2\)</span> datapoints:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+&amp;\frac{d}{d\param{p}}\left[ \lik(x_1)\lik(x_2) \right] = \left( \frac{d}{d\param{p}}\lik(x_1)\right) \cdot \lik(x_2) + \lik(x_1)\cdot \left( \frac{d}{d\param{p}}\lik(x_2) \right) \\
+&amp;= (1-\param{p})^{-x_1}\param{p}^{x_1-1}(x_1-\param{p})\cdot (1-\param{p})^{1-x_2}\param{p}^{x_2} \\
+&amp;+ (1-\param{p})^{1-x_1}\param{p}^{x_1} \cdot (1-\param{p})^{-x_2}\param{p}^{x_2-1}(x_2 - \param{p})
+%&amp;= \frac{d}{d\theta}\left[ (1-p)^{1-x_1}p^{x_1}(1-p)^{1-x_2}p^{x_2} \right]
+\end{align*}
+\]</span></p>
+<ul>
+<li>Complicating factor: <span class="math inline">\(\lik(x_i)\)</span> terms are all <strong>multiplied together</strong>, forcing us to use product rule: <span class="math inline">\(\frac{d}{d\param{p}}\left[\lik(x_1)\lik(x_2)\right] = \left(\frac{d}{d\param{p}}\lik(x_1)\right)\cdot \lik(x_2) + \lik(x_1)\cdot \left(\frac{d}{d\param{p}}\lik(x_2)\right)\)</span></li>
+<li>If we had terms that were <strong>added</strong> rather than <strong>multiplied</strong>, we’d have a much easier time: <span class="math inline">\(\frac{d}{d\param{p}}\left[ \lik(x_1) + \lik(x_2)\right] = \frac{d}{d\param{p}}\lik(x_1) + \frac{d}{d\param{p}} \lik(x_2)\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li>So, what math operation do we know that turns <strong>multiplications</strong> into <strong>additions</strong>?</li>
+</ul>
+<!-- ::: {.aside}
+Remember the **product rule**: $\frac{d}{dx}\left[f(x)g(x)\right] = \left(\frac{d}{dx}f(x)\right)\cdot g(x) + \left(\frac{d}{dx}g(x)\right) \cdot f(x)$.
+::: -->
+</section>
+<section id="math-magic-3-log-likelihood" class="level2 crunch-title math-90 inline-90">
+<h2 class="crunch-title math-90 inline-90 anchored" data-anchor-id="math-magic-3-log-likelihood">Math Magic 3: Log-Likelihood</h2>
+<p><span class="math display">\[
+\log(a\cdot b) = \log(a) + \log(b)
+\]</span></p>
+<p>Bingo! So, can we maximize <span class="math inline">\(\loglik(x_i) = \log(\mathcal{L}(x_i))\)</span> rather than <span class="math inline">\(\mathcal{L}(x_i)\)</span>? Bingo again! Because logarithms are <strong>monotonic</strong>,</p>
+<p><span class="math display">\[
+x^* = \argmax_x \left[ \log\left(f(x)\right) \right] \iff x^* = \argmax_x \left[ f(x) \right]
+\]</span></p>
+<p>So, we can just solve</p>
+<p><span class="math display">\[
+p^* = \argmax_{\param{p}} \left[ \ell(x_1, \ldots, x_n)\right]
+\]</span></p>
+</section>
+<section id="simplifying" class="level2 smaller math-90">
+<h2 class="smaller math-90 anchored" data-anchor-id="simplifying">Simplifying</h2>
+<p>Our problem simplifies to figuring out</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac{d}{d\param{p}}\left[ \log \left( \lik(x_1)\cdots \lik(x_n) \right) \right] &amp;= \frac{d}{d\param{p}}\left[ \log \lik(x_1) + \log\lik(x_2) + \cdots + \log\lik(x_n) \right] \\
+&amp;= \frac{d}{d\param{p}}\left[ \ell(x_1) + \ell(x_2) + \cdots + \ell(x_n) \right] = \frac{d}{d\param{p}}\left[ \sum_{i=1}^n \ell(x_i)\right]
+\end{align*}
+\]</span></p>
+<p>But since the derivative is an <strong>additive</strong> operator, <span class="math inline">\(\frac{d}{d\param{p}}\left[ \sum_{i=1}^n \ell(x_i) \right] = \sum_{i=1}^n \frac{d}{d\param{p}}\left[ \ell(x_i) \right]\)</span>, so we just have to compute <span class="math inline">\(\frac{d}{d\param{p}}\ell(x_i)\)</span>! No product rule required (we still need chain rule):</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac{d}{d\param{p}}\left[ \ell(x_i) \right] &amp;= \frac{d}{d\param{p}}\left[ \log((1-\param{p})^{1-x_i}\param{p}^{x_i}) \right] = \frac{d}{d\param{p}}\left[(1-x_i)\log(1-\param{p}) + x_i\log(\param{p})\right] \\
+&amp;= (1-x_i)\frac{d}{d\param{p}}\log(1-\param{p}) + x_i\frac{d}{d\param{p}}\log(\param{p}) = -\frac{1-x_i}{1-\param{p}} + \frac{x_i}{\param{p}} \\
+&amp;= \frac{\param{p} - x_i}{(\param{p}-1)\param{p}}
+\end{align*}
+\]</span></p>
+</section>
+<section id="maximizing" class="level2 crunch-title crunch-math math-90 inline-90">
+<h2 class="crunch-title crunch-math math-90 inline-90 anchored" data-anchor-id="maximizing">Maximizing</h2>
+<p>Now that we know <span class="math inline">\(\frac{d}{d\param{p}}\ell(x_i)\)</span>, we set our log-likelihood equation equal to zero to find the likelihood-maximizing <span class="math inline">\(\param{p}\)</span> value, <span class="math inline">\(p^*\)</span>:</p>
+<p><span class="math display">\[
+\begin{align*}
+&amp;\sum_{i=1}^n\frac{d}{d\param{p}}\ell(x_i) = 0 \iff \sum_{i=1}^n \frac{p^* - x_i}{(p^*-1)p^*} = 0 \\
+&amp;\iff -\frac{1}{(p^*-1)p^*}\sum_{i=1}^nx_i - np^* = 0 \\
+&amp;\iff \sum_{i=1}^nx_i = np^* \iff \boxed{p^* = \frac{\sum_{i=1}^nx_i}{n}}
+\end{align*}
+\]</span></p>
+</section>
+<section id="mle-intuition" class="level2 crunch-title crunch-ul math-90 inline-90">
+<h2 class="crunch-title crunch-ul math-90 inline-90 anchored" data-anchor-id="mle-intuition">MLE Intuition</h2>
+<p><span class="math display">\[
+p^* = \frac{\sum_{i=1}^nx_i}{n} = \frac{\sum_{i=1}^n \mathbf{1}[x_i = 1]}{n} \genfrac{}{}{0pt}{}{\leftarrow \text{\# Heads}}{\leftarrow \text{\# Flips }}
+\]</span></p>
+<ul>
+<li>MLE almost always matches intuition! Example: given data <span class="math inline">\(x_1, \ldots, x_n\)</span>, what <strong>Normal distribution</strong> best fits this data?</li>
+<li>Same as asking: what <strong>parameter settings</strong> for <span class="math inline">\(\mathcal{N}(\param{\mu}, \param{\sigma^2})\)</span> are most likely to produce <span class="math inline">\(x_1, \ldots, x_n\)</span>? The answer:</li>
+</ul>
+<p><span class="math display">\[
+\mu^* = \frac{\sum_{i=1}^n x_i}{n} \; \; \; \sigma^2_* = \frac{\sum_{i=1}^n (x_i-\mu^*)^2}{n}
+\]</span></p>
+</section>
+<section id="the-dark-side-of-mle" class="level2 crunch-math crunch-title">
+<h2 class="crunch-math crunch-title anchored" data-anchor-id="the-dark-side-of-mle">The Dark Side of MLE</h2>
+<ul>
+<li>Sometimes steers us in the wrong direction!</li>
+<li>Consider values from previous slide, as <strong>estimators</strong> for population <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma^2\)</span>: <span class="math inline">\(\mu^*\)</span> <strong>unbiased</strong> if <span class="math inline">\(\expect{\mu^*} = \mu\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\expect{\mu^*} &amp;= \bigexpect{\frac{\sum_{i=1}^nx_i}{n}} = \frac{1}{n}\sum_{i=1}^n\expect{x_i} \\
+&amp;= \frac{1}{n}\sum_{i=1}^n\mu = \frac{n\mu}{n} = \mu \; ✅
+\end{align*}
+\]</span></p>
+<ul>
+<li>So far so good. How about <span class="math inline">\(\sigma^2_*\)</span>?</li>
+</ul>
+</section>
+<section id="mle-as-biased-estimator" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="mle-as-biased-estimator">MLE as Biased Estimator</h2>
+<ul>
+<li>Before we think about <span class="math inline">\(\expect{\sigma^2_*}\)</span>, let’s rewrite <span class="math inline">\(\sigma^2_*\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\sigma^2_* &amp;= \frac{1}{n}\sum_{i=1}^n(x_i - \mu^*)^2 = \frac{1}{n}\sum_{i=1}^n \left( x_i^2 - 2 \mu^* x_i + (\mu^*)^2 \right) \\
+&amp;= \frac{1}{n}\sum_{i=1}^nx_i^2 - 2\mu^*\underbrace{\frac{\sum_{i=1}^nx_i}{n}}_{\mu^*} + (\mu^*)^2 = \frac{1}{n}\sum_{i=1}^nx_i^2 - (\mu^*)^2 \\
+&amp;= \frac{1}{n}\sum_{i=1}^nx_i^2 - (\mu^*)^2
+\end{align*}
+\]</span></p>
+<ul>
+<li>Now we’re ready to compute <span class="math inline">\(\expect{\sigma^2_*}\)</span>!</li>
+</ul>
+</section>
+<section id="computing-mathbbesigma2_" class="level2 smaller crunch-title math-90">
+<h2 class="smaller crunch-title math-90 anchored" data-anchor-id="computing-mathbbesigma2_">Computing <span class="math inline">\(\mathbb{E}[\sigma^2_*]\)</span></h2>
+<p><span class="math display">\[
+\begin{align*}
+\expect{\sigma^2_*} &amp;= \bigexpect{\frac{1}{n}\sum_{i=1}^nx_i^2 - (\mu^*)^2} = \frac{1}{n}\sum_{i=1}^n \expect{x_i^2} - \expect{(\mu^*)^2}
+\end{align*}
+\]</span></p>
+<ul>
+<li>What do we know about <span class="math inline">\(\expect{x_i^2}\)</span>? Remember the (alternate) definition of <strong>variance</strong>: <span class="math inline">\(\Var{X} = \expect{X^2} - \left(\expect{X}\right)^2\)</span>. Then</li>
+</ul>
+<p><span class="math display">\[
+\expect{X^2} = \Var{X} + \left(\expect{X}\right)^2
+\]</span></p>
+<p>So let’s plug in the right side when we see <span class="math inline">\(\expect{X^2}\)</span> or <span class="math inline">\(\expect{(\mu^*)^2}\)</span>:</p>
+<p><span class="math display">\[
+\begin{align*}
+\frac{1}{n}\sum_{i=1}^n \expect{x_i^2} - \expect{(\mu^*)^2} &amp;= \frac{1}{n}\sum_{i=1}^n\left(\Var{X} + \left(\expect{X}\right)^2\right) - \expect{(\mu^*)^2} \\
+&amp;= (\sigma^2 + \mu^2) - \left(\Var{\mu^*} + \left(\expect{\mu^*}\right)^2\right)
+\end{align*}
+\]</span></p>
+</section>
+<section id="almost-there" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="almost-there">Almost There!</h2>
+<p>We know that <span class="math inline">\(\expect{\mu^*} = \mu\)</span>, but what is <span class="math inline">\(\Var{\mu^*}\)</span>? Remember that <span class="math inline">\(\Var{aX} = a^2\Var{X}\)</span>!</p>
+<p><span class="math display">\[
+\Var{\mu^*} = \bigVar{\frac{1}{n}\sum_{i=1}^nx_i} = \frac{1}{n^2}\sum_{i=1}^n\Var{x_i} = \frac{n\sigma^2}{n^2} = \frac{\sigma^2}{n}
+\]</span></p>
+<p>And we plug back in to get:</p>
+<p><span class="math display">\[
+\begin{align*}
+\expect{\sigma^2_*} &amp;= \sigma^2 + \mu^2 - \Var{\mu^*} - \left(\expect{\mu^*}\right)^2 \\
+&amp;= \sigma^2 + \mu^2 - \frac{\sigma^2}{n} - \mu^2 = \sigma^2 - \frac{\sigma^2}{n} \\
+&amp;= \frac{n\sigma^2 - \sigma^2}{n} = \frac{\sigma^2(n-1)}{n} \\
+&amp;= \color{red}{\left(\frac{n-1}{n}\right)\sigma^2} \neq \sigma^2 \; 💀
+\end{align*}
+\]</span></p>
+</section>
+<section id="why-does-this-happen-handwaving" class="level2 crunch-math">
+<h2 class="crunch-math anchored" data-anchor-id="why-does-this-happen-handwaving">Why Does This Happen?: Handwaving</h2>
+<ul>
+<li>Long story short, we <strong>underpredict</strong> the population variance because we already <strong>used some of the data to compute <span class="math inline">\(\mu^*\)</span></strong>!</li>
+<li>This is where the <strong>degrees of freedom heuristic</strong> comes in:
+<ul>
+<li>When we construct an <strong>estimate</strong> <span class="math inline">\(e\)</span>, <span class="math inline">\(df(e) = n - k_e\)</span></li>
+<li><span class="math inline">\(k_e =\)</span> number of <strong>other estimates</strong> used to calculate <span class="math inline">\(e\)</span>!</li>
+</ul></li>
+</ul>
+</section>
+<section id="handwavy-intuition" class="level2 crunch-title crunch-ul crunch-math smaller">
+<h2 class="crunch-title crunch-ul crunch-math smaller anchored" data-anchor-id="handwavy-intuition">Handwavy Intuition</h2>
+<ul>
+<li>Consider <span class="math inline">\(X_1, X_2 \sim \mathcal{N}(0,1)\)</span>: <span class="math inline">\(\mu = 0\)</span>, <span class="math inline">\(\sigma^2 = 1\)</span>.</li>
+</ul>
+<p><span class="math display">\[
+\expect{\mu^*} = \bigexpect{\frac{X_1 + X_2}{2}} = \frac{1}{2}\left(\expect{X_1} + \expect{X_2}\right) = 0 = \mu \; ✅
+\]</span></p>
+<p><span class="math display">\[
+\begin{align*}
+\expect{\sigma^2_*} &amp;= \frac{1}{2}\bigexpect{(X_1 - \mu^*)^2 + (X_2 - \mu^*)^2} \\
+&amp;= \frac{1}{2}\bigexpect{\left(X_1^2 + \mu^2_* -2\mu^*X_1\right) + \left(X_2^2 + \mu^2_* - 2X_2\mu^*\right)} \\
+&amp;= \frac{1}{2}\expect{X_1^2 + X_2^2 + 2\mu_*^2 - 2\mu^*X_1 - 2\mu^*X_2} \\
+&amp;= \frac{1}{2}\left(\expect{X_1^2} + \expect{X_2^2} + 2\expect{\mu_*^2} - 2\expect{\mu^*X_1} - 2\expect{\mu^*X_2}\right) \\
+&amp;\implies \boxed{\expect{\sigma^2_*} = \frac{1}{2}\sigma^2}
+\end{align*}
+\]</span></p>
+<ul>
+<li>We’re off by <span class="math inline">\(\frac{1}{2}\)</span>! What to do?</li>
+</ul>
+</section>
+<section id="handwavy-solution" class="level2">
+<h2 class="anchored" data-anchor-id="handwavy-solution">Handwavy Solution</h2>
+<ul>
+<li>We can <strong>account for degrees of freedom</strong>, correcting the MLE by a factor of <span class="math inline">\(\frac{n}{df(e^*)}\)</span>!
+<ul>
+<li><span class="math inline">\(e^\circledast = \frac{n}{df(e^*)}e^*\)</span></li>
+</ul></li>
+<li>Ex: Since <span class="math inline">\(\expect{\sigma_*^2} = \frac{n-1}{n}\sigma^2\)</span>, we can instead use <span class="math inline">\(\sigma^2_\circledast = \frac{n}{n-1}\sigma^2_*\)</span>. This gives us:</li>
+</ul>
+<p><span class="math display">\[
+\expect{\sigma^2_\circledast} = \bigexpect{\frac{n}{n-1}\sigma^2_*} = \frac{n}{n-1}\frac{n-1}{n}\sigma^2 = \color{green}{\sigma^2} \; ✅
+\]</span></p>
+</section>
+<section id="st-century-solution" class="level2 smaller crunch-math crunch-title nobotmargin math-90 crunch-ul crunch-p crunch-quarto-figure">
+<h2 class="smaller crunch-math crunch-title nobotmargin math-90 crunch-ul crunch-p crunch-quarto-figure anchored" data-anchor-id="st-century-solution">21st-Century Solution</h2>
+<ul>
+<li>Be <strong>Bayesian</strong>, use priors on parameters (creating hyperparameters)!</li>
+<li>Pretend we know <span class="math inline">\(\sigma^2\)</span>, but want to find the “best” value of <span class="math inline">\(\mu\)</span>:</li>
+</ul>
+<p><span class="math display">\[
+\begin{array}{rlccc}
+X_1, X_2 \overset{iid}{\sim} \mathcal{N}( &amp;\hspace{-5mm}\mu\hspace{0.5mm}, &amp;\hspace{-8mm}\overbrace{\sigma^2}^{\large\text{known}}\hspace{-2mm}) &amp; &amp; \\
+&amp;\hspace{-4mm}\downarrow &amp; ~ &amp;\hspace{-10mm}{\small\text{estimate}} &amp; \hspace{-6mm} &amp; \hspace{-8mm}{\small\text{uncertainty}} \\[-5mm]
+&amp;\hspace{-5mm}\mu &amp;\hspace{-5mm}\sim \mathcal{N}&amp;\hspace{-7mm}(\overbrace{m}&amp;\hspace{-12mm}, &amp;\hspace{-16mm}\overbrace{s})
+\end{array}
+\]</span></p>
+<div class="no-stretch" style="margin-top: 8px;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/bayesian_pgm.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:40.0%"></p>
+</figure>
+</div>
+</div>
+</section>
+<section id="single-datapoint" class="level2 smaller crunch-title crunch-math math-90">
+<h2 class="smaller crunch-title crunch-math math-90 anchored" data-anchor-id="single-datapoint">Single Datapoint</h2>
+<ul>
+<li>Let’s consider the estimate of <span class="math inline">\(\mu\)</span> from a single datapoint <span class="math inline">\(X_i\)</span>. MLE just gives us <span class="math inline">\(\mu^* = X_i\)</span>. How about MAP estimate?</li>
+</ul>
+<p><span class="math display">\[
+\lik\left(X_i, \mu, m, s\right) \overset{\text{factors}}{\underset{\text{into}}{=}} P(X_i \mid \mu)P(\mu \mid m, s)P(m, s)
+\]</span></p>
+<ul>
+<li>Remembering the pdf of the <strong>Normal distribution</strong>, we have:</li>
+</ul>
+<p><span class="math display">\[
+\lik\left(X_i, \mu, m, s\right) = \frac{1}{\sigma\sqrt{2\pi}}\exp\left[-\frac{(X_i-\mu)^2}{2\sigma^2}\right]\frac{1}{s\sqrt{2\pi}}\exp\left[-\frac{(\mu - m)^2}{2s^2}\right]
+\]</span></p>
+<ul>
+<li>Then, remembering that we can maximize the <strong>log-likelihood</strong> rather than the likelihood:</li>
+</ul>
+<p><span class="math display">\[
+\ell(X_i, \mu, m, s) = \log\left[\frac{1}{\sigma\sqrt{2\pi}}\right] - \frac{(X_i-\mu)^2}{2\sigma^2} + \log\left[\frac{1}{s\sqrt{2\pi}}\right] - \frac{(\mu - m)^2}{2s^2}
+\]</span></p>
+</section>
+<section id="taking-the-derivative" class="level2 smaller crunch-math nobotmargin crunch-title math-90 crunch-li">
+<h2 class="smaller crunch-math nobotmargin crunch-title math-90 crunch-li anchored" data-anchor-id="taking-the-derivative">Taking the Derivative</h2>
+<ul>
+<li>Taking the derivative gives us:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\frac{\partial\ell}{\partial \mu} &amp;= \frac{\partial}{\partial\mu}\left[ {\color{red}\cancel{\color{black}\log\left[\frac{1}{\sigma\sqrt{2\pi}}\right]}} - \frac{(X_i-\mu)^2}{2\sigma^2} + {\color{red}\cancel{\color{black}\log\left[\frac{1}{s\sqrt{2\pi}}\right]}} - \frac{(\mu - m)^2}{2s^2}\right] \\
+&amp;= - \frac{1}{2\sigma^2}\cdot\frac{\partial}{\partial\mu}\left[{\color{red}\cancel{\color{black}X_i^2}} + \mu^2 - 2X_i\mu\right] - \frac{1}{2s^2}\cdot\frac{\partial}{\partial\mu}\left[\mu^2 + {\color{red}\cancel{\color{black}m^2}} - 2\mu m\right] \\
+&amp;= -\frac{1}{2\sigma^2}\cdot (2\mu -2X_i) - \frac{1}{2s^2}\cdot (2\mu - 2m) = \frac{X_i-\mu}{\sigma^2} + \frac{m - \mu}{s^2}
+\end{align*}
+\]</span></p>
+<ul>
+<li>And we set equal to zero and solve to obtain the MAP estimate:</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+&amp;\frac{X_i - \mu^*}{\sigma^2} + \frac{m - \mu^*}{s^2} = 0 \iff \frac{\mu^*}{\sigma^2} + \frac{\mu^*}{s^2} = \frac{X_i}{\sigma^2} + \frac{m}{s^2} \iff \\
+&amp;\frac{s^2\mu^* + \sigma^2\mu^*}{\sigma^2s^2} = \frac{s^2X_i + \sigma^2m}{\sigma^2s^2} \iff \mu^*(s^2+\sigma^2) = s^2X_i + \sigma^2m \\
+&amp;\iff \boxed{\mu^* = \left(\frac{s^2}{s^2 + \sigma^2}\right)X_i + \left(\frac{\sigma^2}{s^2 + \sigma^2}\right)m}
+\end{align*}
+\]</span></p>
+</section>
+<section id="the-takeaway" class="level2">
+<h2 class="anchored" data-anchor-id="the-takeaway">The Takeaway</h2>
+<ul>
+<li>Bayesian approach <strong>allows new evidence to be weighed against existing evidence</strong>, with <strong>statistically principled</strong> way to derive these weights:</li>
+</ul>
+<p><span class="math display">\[
+\begin{array}{ccccc}
+\Pr_{\text{post}}(\mathcal{H}) &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm} \Pr(X \mid \mathcal{H}) &amp;\hspace{-6mm} \times &amp;\hspace{-6mm} \Pr_{\text{pre}}(\mathcal{H}) \\
+\text{Posterior} &amp;\hspace{-6mm}\propto &amp;\hspace{-6mm}\text{Evidence} &amp;\hspace{-6mm} \times &amp;\hspace{-6mm} \text{Prior}
+\end{array}
+\]</span></p>
+</section>
+<section id="generalized-method-of-moments-gmm-estimation" class="level2 smaller title-10 crunch-title inline-90">
+<h2 class="smaller title-10 crunch-title inline-90 anchored" data-anchor-id="generalized-method-of-moments-gmm-estimation">Generalized Method of Moments (GMM) Estimation</h2>
+<ul>
+<li><p>Recall that the <strong><span class="math inline">\(k\)</span>th moment</strong> of an RV <span class="math inline">\(X\)</span> is <span class="math inline">\(\mu_k = \expect{X^k}\)</span></p></li>
+<li><p>e.g., <span class="math inline">\(\mu_1 = \expect{X}\)</span>, <span class="math inline">\(\mu_2 = \Var{X} + \expect{X}^2\)</span></p></li>
+<li><p>Also recall (I rambled on about) how the MGF contains <strong>all information about a distribution</strong>. This means we can <strong>estimate distributions from data</strong>:</p></li>
+<li><p>Define <strong><span class="math inline">\(k\)</span>th sample moment</strong> of <span class="math inline">\(\mathbf{X}_N\)</span>: <span class="math inline">\(\widehat{\mu}_k = \frac{1}{N}\sum_{i=1}^nX_i^k\)</span>. Then:</p>
+<p><span class="math display">\[
+  \begin{align*}
+  \mu_1(\param{\theta}) &amp;= \widehat{\mu}_1 \\
+  \mu_2(\param{\theta}) &amp;= \widehat{\mu}_2 \\
+  &amp;~\vdots \\
+  \mu_N(\param{\theta}) &amp;= \widehat{\mu}_N
+  \end{align*}
+  \]</span></p>
+<p>Gives us a system of equations, allowing us to <strong>solve for parameters <span class="math inline">\(\param{\theta}\)</span> of our distribution</strong>!</p></li>
+</ul>
+</section>
+</section>
+<section id="the-bias-variance-tradeoff" class="level1 title-14 not-title-slide full-width-quotes crunch-images page-columns page-full" data-stack-name="Bias-Variance">
+<h1 class="title-14 not-title-slide full-width-quotes crunch-images" data-stack-name="Bias-Variance">The Bias-Variance Tradeoff</h1>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div class="quote-text" style="display: block; width: 100% !important;">
+<p><em>There’s no such thing as a free lunch.</em></p>
+<div class="align-right">
+<p><a href="https://en.wikipedia.org/wiki/No_such_thing_as_a_free_lunch" target="_blank">Life</a> / <a href="https://www.nytimes.com/1993/02/14/magazine/on-language-words-out-in-the-cold.html" target="_blank">Economists</a></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="callout callout-style-simple callout-note no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<div class="quote-text" style="display: block; width: 100% !important;">
+<p><em>But modern Machine Learning basically gets us rly close to a free lunch</em></p>
+<div class="align-right">
+<p><img src="images/always_exhausted.jpeg" class="img-fluid" width="130"> Jeff</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section id="intuition" class="level2 fix-tex-headers page-columns page-full">
+<h2 class="fix-tex-headers anchored" data-anchor-id="intuition">Intuition</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 37%">
+<col style="width: 37%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;"></th>
+<th style="text-align: center;"><strong>Low Variance</strong></th>
+<th style="text-align: center;"><strong>High Variance</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><strong>Low Bias</strong></td>
+<td style="text-align: center;"><img src="images/var-low-bias-low.svg" class="img-fluid"></td>
+<td style="text-align: center;"><img src="images/var-high-bias-low.svg" class="img-fluid"></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>High Bias</strong></td>
+<td style="text-align: center;"><img src="images/var-low-bias-high.svg" class="img-fluid"></td>
+<td style="text-align: center;"><img src="images/var-high-bias-high.svg" class="img-fluid"></td>
+</tr>
+</tbody>
+</table>
+
+<div class="no-row-height column-margin column-container"><div class="margin-aside">
+<p>Adapted from Fortmann-Roe (2012), <a href="https://scott.fortmann-roe.com/docs/BiasVariance.html" target="_blank">“Understanding the Bias-Variance Tradeoff”</a></p>
+</div></div></section>
+<section id="components-of-the-error-term" class="level2 math-80 inline-90 crunch-title crunch-ul crunch-p crunch-li">
+<h2 class="math-80 inline-90 crunch-title crunch-ul crunch-p crunch-li anchored" data-anchor-id="components-of-the-error-term">Components of the Error Term</h2>
+<ul>
+<li>We estimate “true” DGP <span class="math inline">\(Y = f(X)\)</span> with model <span class="math inline">\(\widehat{f}(X)\)</span><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, and then we use <span class="math inline">\(\widehat{f}\)</span> to predict the value of <span class="math inline">\(Y\)</span> for a point <span class="math inline">\(x_0\)</span>.</li>
+<li>What is our <strong>expected error</strong> at this point, <span class="math inline">\(\Err(x_0)\)</span>?</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\Err(x_0) &amp;= \bigexpect{\left.(Y − \widehat{f}(x_0))^2 \right| X = x_0} \\
+&amp;= \sigma^2_{\varepsilon} + \left( \bigexpect{\widehat{f}(x_0)} − f(x_0) \right)^2 + \mathbb{E}\left[\widehat{f}(x_0) − \bigexpect{\widehat{f}(x_0)}\right]^2 \\
+&amp;= \sigma^2_{\varepsilon} + \left( \text{Bias}(\widehat{f}(x_0)\right)^2 + \bigVar{\widehat{f}(x_0)} \\
+&amp;= \text{Irreducible Error} + \text{Bias}^2 + \text{Variance}.
+\end{align*}
+\]</span></p>
+</section>
+<section id="in-practice" class="level2">
+<h2 class="anchored" data-anchor-id="in-practice">In Practice</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/overfitting-underfitting.jpg" class="img-fluid figure-img"></p>
+<figcaption>Figure from <span class="citation" data-cites="tharwat_parameter_2019">Tharwat (<a href="#ref-tharwat_parameter_2019" role="doc-biblioref">2019</a>)</span></figcaption>
+</figure>
+</div>
+<!--
+
+APPENDICES
+
+-->
+</section>
+<section id="appendix-1-derivation-of-mathbbemu_2" class="level2 smaller crunch-math">
+<h2 class="smaller crunch-math anchored" data-anchor-id="appendix-1-derivation-of-mathbbemu_2">Appendix 1: Derivation of <span class="math inline">\(\mathbb{E}[\mu_*^2]\)</span></h2>
+<p><span class="math display">\[
+\begin{align*}
+\expect{\mu_*^2} &amp;= \bigexpect{\left(\frac{X_1 + X_2}{2}\right)^2} = \frac{1}{4}\expect{(X_1+X_2)^2} \\
+&amp;= \frac{1}{4}\expect{X_1^2 + X_2^2 + 2X_1X_2} = \frac{1}{4}\left(\expect{X_1^2} + \expect{X_2^2} + 2\expect{X_1X_2}\right) \\
+&amp;= \frac{1}{4}\left(\Var{X_1} + \expect{X_1}^2 + \Var{X_2} + \expect{X_2}^2 + 2\expect{X_1X_2}\right) \\
+&amp;= \frac{1}{4}\left(2\sigma^2 + 2\mu^2 + 2\expect{X_1X_2}\right) \\
+&amp;= \frac{1}{2}\left(\sigma^2 + \mu^2 + \expect{X_1X_2}\right) \overset{iid}{=} \frac{1}{2}\left(\sigma^2 + \mu^2 + \mu^2\right) \\
+&amp;\implies \boxed{\expect{\mu^2_*} = \mu^2 + \frac{\sigma^2}{2}} \; \; \left(\therefore \; \expect{\mu_*^2} \neq \mu^2 \right)
+\end{align*}
+\]</span></p>
+</section>
+<section id="appendix-2-derivation-of-mathbbemux_i" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="appendix-2-derivation-of-mathbbemux_i">Appendix 2: Derivation of <span class="math inline">\(\mathbb{E}[\mu^*X_i]\)</span></h2>
+<p><span class="math display">\[
+\begin{align*}
+\expect{\mu^*X_1} &amp;= \bigexpect{\left(\frac{X_1 + X_2}{2}\right)X_1} = \frac{1}{2}\expect{X_1^2 + X_1X_2} \\
+&amp;= \frac{1}{2}\expect{X_1^2} + \frac{1}{2}\expect{X_1X_2} = \frac{1}{2}\left(\sigma^2 + \mu^2\right) + \frac{1}{2}\mu^2 \\
+&amp;\implies \expect{\mu^*X_1} = \mu^2 + \frac{\sigma^2}{2}
+\end{align*}
+\]</span></p>
+<p>And since <span class="math inline">\(X_1\)</span> was chosen without loss of generality,</p>
+<p><span class="math display">\[
+\boxed{\expect{\mu^*X_i} = \mu^2 + \frac{\sigma^2}{2}}
+\]</span></p>
+</section>
+<section id="appendix-3-derivation-of-mathbbesigma2_" class="level2 smaller crunch-math">
+<h2 class="smaller crunch-math anchored" data-anchor-id="appendix-3-derivation-of-mathbbesigma2_">Appendix 3: Derivation of <span class="math inline">\(\mathbb{E}[\sigma^2_*]\)</span></h2>
+<p><span class="math display">\[
+\begin{align*}
+\expect{\sigma^2_*} &amp;= \frac{1}{2}\bigexpect{(X_1 - \mu^*)^2 + (X_2 - \mu^*)^2} \\
+&amp;= \frac{1}{2}\bigexpect{\left(X_1^2 + \mu^2_* -2\mu^*X_1\right) + \left(X_2^2 + \mu^2_* - 2X_2\mu^*\right)} \\
+&amp;= \frac{1}{2}\expect{X_1^2 + X_2^2 + 2\mu_*^2 - 2\mu^*X_1 - 2\mu^*X_2} \\
+&amp;= \frac{1}{2}\left(\expect{X_1^2} + \expect{X_2^2} + 2\expect{\mu_*^2} - 2\expect{\mu^*X_1} - 2\expect{\mu^*X_2}\right) \\
+&amp;= \frac{1}{2}\left( 2\sigma^2 + 2\mu^2 + 2\left(\mu^2 + \frac{\sigma^2}{2}\right) - 2\left(\mu^2 + s/2\right) - 2\left(\mu^2 + s/2\right) \right) \\
+&amp;= \sigma^2 + \mu^2 + \mu^2 + \frac{\sigma^2}{2} - \mu^2 - \frac{\sigma^2}{2} - \mu^2 - \frac{\sigma^2}{2} = \sigma^2 - \frac{\sigma^2}{2} \\
+&amp;\implies \boxed{\expect{\sigma^2_*} = \frac{1}{2}\sigma^2}
+\end{align*}
+\]</span></p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="ref-hastie_elements_2013" class="csl-entry" role="listitem">
+Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2013. <em>The <span>Elements</span> of <span>Statistical Learning</span>: <span>Data Mining</span>, <span>Inference</span>, and <span>Prediction</span></em>. <span>Springer Science &amp; Business Media</span>.
+</div>
+<div id="ref-tharwat_parameter_2019" class="csl-entry" role="listitem">
+Tharwat, Alaa. 2019. <span>“Parameter Investigation of Support Vector Machine Classifier with Kernel Functions.”</span> <em>Knowledge and Information Systems</em> 61 (3): 1269–1302. <a href="https://doi.org/10.1007/s10115-019-01335-4">https://doi.org/10.1007/s10115-019-01335-4</a>.
+</div>
+</div>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>That’s why we used math magic to make <span class="math inline">\(\Pr(x_i \mid \param{p})\)</span> differentiable on prev slide!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>We achieve this simplification because the derivative operator is <strong>additive</strong>: <span class="math inline">\(\frac{d}{dx}\left[ f(x) + g(x) \right] = \frac{d}{dx}f(x) + \frac{d}{dx}g(x)\)</span><a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>A complication we put aside for now: do the features <span class="math inline">\(X\)</span> we chose in fact causally impact <span class="math inline">\(Y\)</span>? See <span class="citation" data-cites="hastie_elements_2013">Hastie, Tibshirani, and Friedman (<a href="#ref-hastie_elements_2013" role="doc-biblioref">2013</a>)</span>!<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w10/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>
