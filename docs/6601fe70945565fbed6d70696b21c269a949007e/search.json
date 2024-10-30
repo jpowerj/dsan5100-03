@@ -686,6 +686,13 @@
     "text": "Generative Models\n\n\n\nGiven a choice of \\(\\param{\\theta}\\), we can generate simulated datasets (here 10 for each labeled value of \\(\\param{p}\\)), then compute likelihood as proportion of datasets with 8 heads, 2 tails\nFrom plot: (Among these vals) \\(\\param{p} = 0.8\\) is maximum likelihood estimate"
   },
   {
+    "objectID": "w10/slides.html#week-10-lab",
+    "href": "w10/slides.html#week-10-lab",
+    "title": "Week 10: Parameter Estimation",
+    "section": "Week 10 Lab!",
+    "text": "Week 10 Lab!\n\nLink to Colab"
+  },
+  {
     "objectID": "w10/slides.html#simulations-rightarrow-math",
     "href": "w10/slides.html#simulations-rightarrow-math",
     "title": "Week 10: Parameter Estimation",
@@ -879,224 +886,330 @@
     "href": "w10/index.html",
     "title": "Week 10: Parameter Estimation",
     "section": "",
-    "text": "Open slides in new window →"
+    "text": "Open slides in new window →",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#maximum-likelihood-estimation",
     "href": "w10/index.html#maximum-likelihood-estimation",
     "title": "Week 10: Parameter Estimation",
     "section": "Maximum Likelihood Estimation",
-    "text": "Maximum Likelihood Estimation\n\nCreating a model \\(\\mathcal{M}\\) w/parameters \\(\\param{\\theta}\\) means specifying\n\n\\[\n\\mathcal{M} = \\Pr(\\underbrace{x_1, \\ldots, x_n}_{\\text{Observed Data}} \\mid \\underbrace{\\param{\\theta}}_{\\text{Model Parameters}})\n\\]\n\nWhen we view this as a function of \\(\\param{\\theta}\\), given the observed data, we call it the likelihood function \\(\\mathcal{L}_{\\mathcal{M}}(\\param{\\theta} \\mid x_1, \\ldots, x_n)\\)\nRead this as “the likelihood that our model \\(\\mathcal{M}\\), with parameters \\(\\param{\\theta}\\), produced the data \\(x_1, \\ldots, x_n\\)”"
+    "text": "Maximum Likelihood Estimation\n\nCreating a model \\(\\mathcal{M}\\) w/parameters \\(\\param{\\theta}\\) means specifying\n\n\\[\n\\mathcal{M} = \\Pr(\\underbrace{x_1, \\ldots, x_n}_{\\text{Observed Data}} \\mid \\underbrace{\\param{\\theta}}_{\\text{Model Parameters}})\n\\]\n\nWhen we view this as a function of \\(\\param{\\theta}\\), given the observed data, we call it the likelihood function \\(\\mathcal{L}_{\\mathcal{M}}(\\param{\\theta} \\mid x_1, \\ldots, x_n)\\)\nRead this as “the likelihood that our model \\(\\mathcal{M}\\), with parameters \\(\\param{\\theta}\\), produced the data \\(x_1, \\ldots, x_n\\)”",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#probability-models-are-generative-models",
     "href": "w10/index.html#probability-models-are-generative-models",
     "title": "Week 10: Parameter Estimation",
     "section": "Probability Models are Generative Models",
-    "text": "Probability Models are Generative Models\n\nA given choice of model parameters \\(\\param{\\theta}\\) can be used to generate simulated datapoints!\nSimple example: \\(X \\sim \\text{Bern}(\\param{p})\\). Just one parameter, \\(\\param{\\theta} = \\{\\param{p}\\}\\)\nWe observe 10 coin flips: 8 heads, 2 tails. Of all possible Bernoulli distributions (parameterized by \\(\\param{p}\\)), which is most likely to generate this data?"
+    "text": "Probability Models are Generative Models\n\nA given choice of model parameters \\(\\param{\\theta}\\) can be used to generate simulated datapoints!\nSimple example: \\(X \\sim \\text{Bern}(\\param{p})\\). Just one parameter, \\(\\param{\\theta} = \\{\\param{p}\\}\\)\nWe observe 10 coin flips: 8 heads, 2 tails. Of all possible Bernoulli distributions (parameterized by \\(\\param{p}\\)), which is most likely to generate this data?",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#generative-models",
     "href": "w10/index.html#generative-models",
     "title": "Week 10: Parameter Estimation",
     "section": "Generative Models",
-    "text": "Generative Models\n\n\n\nGiven a choice of \\(\\param{\\theta}\\), we can generate simulated datasets (here 10 for each labeled value of \\(\\param{p}\\)), then compute likelihood as proportion of datasets with 8 heads, 2 tails\nFrom plot: (Among these vals) \\(\\param{p} = 0.8\\) is maximum likelihood estimate\n\n\n\nlibrary(tibble)\nlibrary(ggplot2)\nlibrary(dplyr)\nset.seed(1948)\nobs_heads &lt;- 8\nnum_flips &lt;- 10\nnum_reps &lt;- 10\np_vals &lt;- c(0.01, 0.2, 0.4, 0.6, 0.8, 0.99)\nobs_matches &lt;- c()\nfor (i in 1:length(p_vals)) {\n  cur_p &lt;- p_vals[i]\n  theta_str &lt;- sprintf(\"%.2f\", cur_p)\n  sim_data &lt;- replicate(\n    num_reps,\n    rbinom(num_flips, 1, cur_p)\n  )\n  #print(sim_data)\n  #data_str &lt;- paste0(sim_data, collapse=\", \")\n  num_heads &lt;- colSums(sim_data)\n  #print(num_heads)\n  num_matches &lt;- sum(num_heads == obs_heads)\n  obs_matches &lt;- c(obs_matches, num_matches)\n  #print(num_matches)\n  #print(num_heads)\n  num_tails &lt;- num_flips - num_heads\n  #print(num_tails)\n  data_strs &lt;- paste0(\"[\",num_heads,\" heads, \",num_tails,\" tails]\")\n  data_str &lt;- paste0(data_strs, collapse=\", \")\n  #writeLines(paste0(\"p = \",theta_str,\": \",data_str))\n}\n#print(obs_matches)\nresult_df &lt;- tibble(p=as.character(p_vals), num_matches=obs_matches)\nresult_df &lt;- result_df %&gt;% mutate(prop_matches = obs_matches / num_reps)\nggplot(result_df, aes(x=p, y=prop_matches)) +\n  geom_bar(stat = 'identity', fill=cb_palette[1]) +\n  dsan_theme(\"quarter\") +\n  # theme(\n  #   axis.title.y = element_text(size = 12)\n  # ) +\n  labs(\n    title = \"Likelihood of data (8 heads, 2 tails) given p\",\n    y = \"Proportion of times (8,2) generated\"\n  )"
+    "text": "Generative Models\n\n\n\nGiven a choice of \\(\\param{\\theta}\\), we can generate simulated datasets (here 10 for each labeled value of \\(\\param{p}\\)), then compute likelihood as proportion of datasets with 8 heads, 2 tails\nFrom plot: (Among these vals) \\(\\param{p} = 0.8\\) is maximum likelihood estimate\n\n\n\nlibrary(tibble)\nlibrary(ggplot2)\nlibrary(dplyr)\nset.seed(1948)\nobs_heads &lt;- 8\nnum_flips &lt;- 10\nnum_reps &lt;- 10\np_vals &lt;- c(0.01, 0.2, 0.4, 0.6, 0.8, 0.99)\nobs_matches &lt;- c()\nfor (i in 1:length(p_vals)) {\n  cur_p &lt;- p_vals[i]\n  theta_str &lt;- sprintf(\"%.2f\", cur_p)\n  sim_data &lt;- replicate(\n    num_reps,\n    rbinom(num_flips, 1, cur_p)\n  )\n  #print(sim_data)\n  #data_str &lt;- paste0(sim_data, collapse=\", \")\n  num_heads &lt;- colSums(sim_data)\n  #print(num_heads)\n  num_matches &lt;- sum(num_heads == obs_heads)\n  obs_matches &lt;- c(obs_matches, num_matches)\n  #print(num_matches)\n  #print(num_heads)\n  num_tails &lt;- num_flips - num_heads\n  #print(num_tails)\n  data_strs &lt;- paste0(\"[\",num_heads,\" heads, \",num_tails,\" tails]\")\n  data_str &lt;- paste0(data_strs, collapse=\", \")\n  #writeLines(paste0(\"p = \",theta_str,\": \",data_str))\n}\n#print(obs_matches)\nresult_df &lt;- tibble(p=as.character(p_vals), num_matches=obs_matches)\nresult_df &lt;- result_df %&gt;% mutate(prop_matches = obs_matches / num_reps)\nggplot(result_df, aes(x=p, y=prop_matches)) +\n  geom_bar(stat = 'identity', fill=cb_palette[1]) +\n  dsan_theme(\"quarter\") +\n  # theme(\n  #   axis.title.y = element_text(size = 12)\n  # ) +\n  labs(\n    title = \"Likelihood of data (8 heads, 2 tails) given p\",\n    y = \"Proportion of times (8,2) generated\"\n  )",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
+  },
+  {
+    "objectID": "w10/index.html#week-10-lab",
+    "href": "w10/index.html#week-10-lab",
+    "title": "Week 10: Parameter Estimation",
+    "section": "Week 10 Lab!",
+    "text": "Week 10 Lab!\n\nLink to Colab",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#simulations-rightarrow-math",
     "href": "w10/index.html#simulations-rightarrow-math",
     "title": "Week 10: Parameter Estimation",
     "section": "Simulations \\(\\rightarrow\\) Math",
-    "text": "Simulations \\(\\rightarrow\\) Math\nPrev example was overkill: we can solve for optimal \\(\\param{p}\\) value…\n\\[\n\\begin{align*}\np^* &\\overset{\\phantom{x_i\\text{ indep}}}{=} \\argmax_{\\param{p}} \\mathcal{L}(x_1, \\ldots, x_n \\mid \\param{p}) \\\\\n&\\overset{x_i\\text{ indep}}{=} \\argmax_{\\param{p}} \\mathcal{L}(x_1 \\mid \\param{p})\\mathcal{L}(x_2 \\mid \\param{p}) \\cdots \\mathcal{L}(x_n \\mid \\param{p})\n\\end{align*}\n\\]\n\nWhat are the individual \\(\\mathcal{L}(x_i \\mid \\param{p})\\) terms?\nHow do we maximize the product \\(\\mathcal{L}(x_1 \\mid \\param{p}) \\cdots \\mathcal{L}(x_n \\mid \\param{p})\\)?\n\n\nTime for some Math Magic…"
+    "text": "Simulations \\(\\rightarrow\\) Math\nPrev example was overkill: we can solve for optimal \\(\\param{p}\\) value…\n\\[\n\\begin{align*}\np^* &\\overset{\\phantom{x_i\\text{ indep}}}{=} \\argmax_{\\param{p}} \\mathcal{L}(x_1, \\ldots, x_n \\mid \\param{p}) \\\\\n&\\overset{x_i\\text{ indep}}{=} \\argmax_{\\param{p}} \\mathcal{L}(x_1 \\mid \\param{p})\\mathcal{L}(x_2 \\mid \\param{p}) \\cdots \\mathcal{L}(x_n \\mid \\param{p})\n\\end{align*}\n\\]\n\nWhat are the individual \\(\\mathcal{L}(x_i \\mid \\param{p})\\) terms?\nHow do we maximize the product \\(\\mathcal{L}(x_1 \\mid \\param{p}) \\cdots \\mathcal{L}(x_n \\mid \\param{p})\\)?\n\n\nTime for some Math Magic…",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#math-magic-1",
     "href": "w10/index.html#math-magic-1",
     "title": "Week 10: Parameter Estimation",
     "section": "Math Magic 1",
-    "text": "Math Magic 1\n What are the individual \\(\\Pr(x_i \\mid \\param{p})\\) terms?\n\\(X \\sim \\text{Bern}(\\param{p})\\), so\n\\[\n\\begin{align*}\n\\Pr(X = x_i \\mid \\param{p}) &= \\begin{cases}1 - \\param{p} & x_i = 0 \\\\ \\param{p} & x_i = 1\\end{cases} \\; \\leftarrow \\genfrac{}{}{0pt}{}{\\text{ Non-differentiable}}{😭} \\\\\n&\\overset{\\text{math}}{\\underset{\\text{magic}}{=}} (1-\\param{p})^{1-x_i}\\param{p}^{x_i} \\; \\leftarrow \\text{ Differentiable! 😲}\n\\end{align*}\n\\]\nWhy do we need it to be differentiable? Stay tuned…"
+    "text": "Math Magic 1\n What are the individual \\(\\Pr(x_i \\mid \\param{p})\\) terms?\n\\(X \\sim \\text{Bern}(\\param{p})\\), so\n\\[\n\\begin{align*}\n\\Pr(X = x_i \\mid \\param{p}) &= \\begin{cases}1 - \\param{p} & x_i = 0 \\\\ \\param{p} & x_i = 1\\end{cases} \\; \\leftarrow \\genfrac{}{}{0pt}{}{\\text{ Non-differentiable}}{😭} \\\\\n&\\overset{\\text{math}}{\\underset{\\text{magic}}{=}} (1-\\param{p})^{1-x_i}\\param{p}^{x_i} \\; \\leftarrow \\text{ Differentiable! 😲}\n\\end{align*}\n\\]\nWhy do we need it to be differentiable? Stay tuned…",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#math-magic-2",
     "href": "w10/index.html#math-magic-2",
     "title": "Week 10: Parameter Estimation",
     "section": "Math Magic 2",
-    "text": "Math Magic 2\n\n\n\n\n\n\n How do we maximize the product?\n\\[\np^* = \\argmax_{\\param{p}} f(\\param{p}) \\implies f'(p^*) = 0\n\\]\nTo maximize likelihood, we need to find its derivative1, set equal to 0, and solve:\n\n\n\n\n\n\n\\[\n\\begin{align*}\n&\\frac{d}{d\\param{p}}\\lik(x \\mid \\param{p}) = 0 \\iff \\\\\n&\\frac{d}{d\\param{p}}\\left[\\lik(x_1 \\mid \\param{p})\\lik(x_2 \\mid \\param{p})\\cdots \\lik(x_n \\mid \\param{p})\\right] = 0\n\\end{align*}\n\\]"
+    "text": "Math Magic 2\n\n\n\n\n\n\n How do we maximize the product?\n\\[\np^* = \\argmax_{\\param{p}} f(\\param{p}) \\implies f'(p^*) = 0\n\\]\nTo maximize likelihood, we need to find its derivative1, set equal to 0, and solve:\n\n\n\n\n\n\n\\[\n\\begin{align*}\n&\\frac{d}{d\\param{p}}\\lik(x \\mid \\param{p}) = 0 \\iff \\\\\n&\\frac{d}{d\\param{p}}\\left[\\lik(x_1 \\mid \\param{p})\\lik(x_2 \\mid \\param{p})\\cdots \\lik(x_n \\mid \\param{p})\\right] = 0\n\\end{align*}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#obstacle-products-vs.-sums",
     "href": "w10/index.html#obstacle-products-vs.-sums",
     "title": "Week 10: Parameter Estimation",
     "section": "Obstacle: Products vs. Sums",
-    "text": "Obstacle: Products vs. Sums\n\nFinding \\(\\frac{d}{d\\param{p}}\\left[ \\lik(x_1)\\lik(x_2)\\cdots \\lik(x_n)\\right]\\) is a doozy, even with just \\(n = 2\\) datapoints:\n\n\\[\n\\begin{align*}\n&\\frac{d}{d\\param{p}}\\left[ \\lik(x_1)\\lik(x_2) \\right] = \\left( \\frac{d}{d\\param{p}}\\lik(x_1)\\right) \\cdot \\lik(x_2) + \\lik(x_1)\\cdot \\left( \\frac{d}{d\\param{p}}\\lik(x_2) \\right) \\\\\n&= (1-\\param{p})^{-x_1}\\param{p}^{x_1-1}(x_1-\\param{p})\\cdot (1-\\param{p})^{1-x_2}\\param{p}^{x_2} \\\\\n&+ (1-\\param{p})^{1-x_1}\\param{p}^{x_1} \\cdot (1-\\param{p})^{-x_2}\\param{p}^{x_2-1}(x_2 - \\param{p})\n%&= \\frac{d}{d\\theta}\\left[ (1-p)^{1-x_1}p^{x_1}(1-p)^{1-x_2}p^{x_2} \\right]\n\\end{align*}\n\\]\n\nComplicating factor: \\(\\lik(x_i)\\) terms are all multiplied together, forcing us to use product rule: \\(\\frac{d}{d\\param{p}}\\left[\\lik(x_1)\\lik(x_2)\\right] = \\left(\\frac{d}{d\\param{p}}\\lik(x_1)\\right)\\cdot \\lik(x_2) + \\lik(x_1)\\cdot \\left(\\frac{d}{d\\param{p}}\\lik(x_2)\\right)\\)\nIf we had terms that were added rather than multiplied, we’d have a much easier time: \\(\\frac{d}{d\\param{p}}\\left[ \\lik(x_1) + \\lik(x_2)\\right] = \\frac{d}{d\\param{p}}\\lik(x_1) + \\frac{d}{d\\param{p}} \\lik(x_2)\\)2\nSo, what math operation do we know that turns multiplications into additions?"
+    "text": "Obstacle: Products vs. Sums\n\nFinding \\(\\frac{d}{d\\param{p}}\\left[ \\lik(x_1)\\lik(x_2)\\cdots \\lik(x_n)\\right]\\) is a doozy, even with just \\(n = 2\\) datapoints:\n\n\\[\n\\begin{align*}\n&\\frac{d}{d\\param{p}}\\left[ \\lik(x_1)\\lik(x_2) \\right] = \\left( \\frac{d}{d\\param{p}}\\lik(x_1)\\right) \\cdot \\lik(x_2) + \\lik(x_1)\\cdot \\left( \\frac{d}{d\\param{p}}\\lik(x_2) \\right) \\\\\n&= (1-\\param{p})^{-x_1}\\param{p}^{x_1-1}(x_1-\\param{p})\\cdot (1-\\param{p})^{1-x_2}\\param{p}^{x_2} \\\\\n&+ (1-\\param{p})^{1-x_1}\\param{p}^{x_1} \\cdot (1-\\param{p})^{-x_2}\\param{p}^{x_2-1}(x_2 - \\param{p})\n%&= \\frac{d}{d\\theta}\\left[ (1-p)^{1-x_1}p^{x_1}(1-p)^{1-x_2}p^{x_2} \\right]\n\\end{align*}\n\\]\n\nComplicating factor: \\(\\lik(x_i)\\) terms are all multiplied together, forcing us to use product rule: \\(\\frac{d}{d\\param{p}}\\left[\\lik(x_1)\\lik(x_2)\\right] = \\left(\\frac{d}{d\\param{p}}\\lik(x_1)\\right)\\cdot \\lik(x_2) + \\lik(x_1)\\cdot \\left(\\frac{d}{d\\param{p}}\\lik(x_2)\\right)\\)\nIf we had terms that were added rather than multiplied, we’d have a much easier time: \\(\\frac{d}{d\\param{p}}\\left[ \\lik(x_1) + \\lik(x_2)\\right] = \\frac{d}{d\\param{p}}\\lik(x_1) + \\frac{d}{d\\param{p}} \\lik(x_2)\\)2\nSo, what math operation do we know that turns multiplications into additions?",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#math-magic-3-log-likelihood",
     "href": "w10/index.html#math-magic-3-log-likelihood",
     "title": "Week 10: Parameter Estimation",
     "section": "Math Magic 3: Log-Likelihood",
-    "text": "Math Magic 3: Log-Likelihood\n\\[\n\\log(a\\cdot b) = \\log(a) + \\log(b)\n\\]\nBingo! So, can we maximize \\(\\loglik(x_i) = \\log(\\mathcal{L}(x_i))\\) rather than \\(\\mathcal{L}(x_i)\\)? Bingo again! Because logarithms are monotonic,\n\\[\nx^* = \\argmax_x \\left[ \\log\\left(f(x)\\right) \\right] \\iff x^* = \\argmax_x \\left[ f(x) \\right]\n\\]\nSo, we can just solve\n\\[\np^* = \\argmax_{\\param{p}} \\left[ \\ell(x_1, \\ldots, x_n)\\right]\n\\]"
+    "text": "Math Magic 3: Log-Likelihood\n\\[\n\\log(a\\cdot b) = \\log(a) + \\log(b)\n\\]\nBingo! So, can we maximize \\(\\loglik(x_i) = \\log(\\mathcal{L}(x_i))\\) rather than \\(\\mathcal{L}(x_i)\\)? Bingo again! Because logarithms are monotonic,\n\\[\nx^* = \\argmax_x \\left[ \\log\\left(f(x)\\right) \\right] \\iff x^* = \\argmax_x \\left[ f(x) \\right]\n\\]\nSo, we can just solve\n\\[\np^* = \\argmax_{\\param{p}} \\left[ \\ell(x_1, \\ldots, x_n)\\right]\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#simplifying",
     "href": "w10/index.html#simplifying",
     "title": "Week 10: Parameter Estimation",
     "section": "Simplifying",
-    "text": "Simplifying\nOur problem simplifies to figuring out\n\\[\n\\begin{align*}\n\\frac{d}{d\\param{p}}\\left[ \\log \\left( \\lik(x_1)\\cdots \\lik(x_n) \\right) \\right] &= \\frac{d}{d\\param{p}}\\left[ \\log \\lik(x_1) + \\log\\lik(x_2) + \\cdots + \\log\\lik(x_n) \\right] \\\\\n&= \\frac{d}{d\\param{p}}\\left[ \\ell(x_1) + \\ell(x_2) + \\cdots + \\ell(x_n) \\right] = \\frac{d}{d\\param{p}}\\left[ \\sum_{i=1}^n \\ell(x_i)\\right]\n\\end{align*}\n\\]\nBut since the derivative is an additive operator, \\(\\frac{d}{d\\param{p}}\\left[ \\sum_{i=1}^n \\ell(x_i) \\right] = \\sum_{i=1}^n \\frac{d}{d\\param{p}}\\left[ \\ell(x_i) \\right]\\), so we just have to compute \\(\\frac{d}{d\\param{p}}\\ell(x_i)\\)! No product rule required (we still need chain rule):\n\\[\n\\begin{align*}\n\\frac{d}{d\\param{p}}\\left[ \\ell(x_i) \\right] &= \\frac{d}{d\\param{p}}\\left[ \\log((1-\\param{p})^{1-x_i}\\param{p}^{x_i}) \\right] = \\frac{d}{d\\param{p}}\\left[(1-x_i)\\log(1-\\param{p}) + x_i\\log(\\param{p})\\right] \\\\\n&= (1-x_i)\\frac{d}{d\\param{p}}\\log(1-\\param{p}) + x_i\\frac{d}{d\\param{p}}\\log(\\param{p}) = -\\frac{1-x_i}{1-\\param{p}} + \\frac{x_i}{\\param{p}} \\\\\n&= \\frac{\\param{p} - x_i}{(\\param{p}-1)\\param{p}}\n\\end{align*}\n\\]"
+    "text": "Simplifying\nOur problem simplifies to figuring out\n\\[\n\\begin{align*}\n\\frac{d}{d\\param{p}}\\left[ \\log \\left( \\lik(x_1)\\cdots \\lik(x_n) \\right) \\right] &= \\frac{d}{d\\param{p}}\\left[ \\log \\lik(x_1) + \\log\\lik(x_2) + \\cdots + \\log\\lik(x_n) \\right] \\\\\n&= \\frac{d}{d\\param{p}}\\left[ \\ell(x_1) + \\ell(x_2) + \\cdots + \\ell(x_n) \\right] = \\frac{d}{d\\param{p}}\\left[ \\sum_{i=1}^n \\ell(x_i)\\right]\n\\end{align*}\n\\]\nBut since the derivative is an additive operator, \\(\\frac{d}{d\\param{p}}\\left[ \\sum_{i=1}^n \\ell(x_i) \\right] = \\sum_{i=1}^n \\frac{d}{d\\param{p}}\\left[ \\ell(x_i) \\right]\\), so we just have to compute \\(\\frac{d}{d\\param{p}}\\ell(x_i)\\)! No product rule required (we still need chain rule):\n\\[\n\\begin{align*}\n\\frac{d}{d\\param{p}}\\left[ \\ell(x_i) \\right] &= \\frac{d}{d\\param{p}}\\left[ \\log((1-\\param{p})^{1-x_i}\\param{p}^{x_i}) \\right] = \\frac{d}{d\\param{p}}\\left[(1-x_i)\\log(1-\\param{p}) + x_i\\log(\\param{p})\\right] \\\\\n&= (1-x_i)\\frac{d}{d\\param{p}}\\log(1-\\param{p}) + x_i\\frac{d}{d\\param{p}}\\log(\\param{p}) = -\\frac{1-x_i}{1-\\param{p}} + \\frac{x_i}{\\param{p}} \\\\\n&= \\frac{\\param{p} - x_i}{(\\param{p}-1)\\param{p}}\n\\end{align*}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#maximizing",
     "href": "w10/index.html#maximizing",
     "title": "Week 10: Parameter Estimation",
     "section": "Maximizing",
-    "text": "Maximizing\nNow that we know \\(\\frac{d}{d\\param{p}}\\ell(x_i)\\), we set our log-likelihood equation equal to zero to find the likelihood-maximizing \\(\\param{p}\\) value, \\(p^*\\):\n\\[\n\\begin{align*}\n&\\sum_{i=1}^n\\frac{d}{d\\param{p}}\\ell(x_i) = 0 \\iff \\sum_{i=1}^n \\frac{p^* - x_i}{(p^*-1)p^*} = 0 \\\\\n&\\iff -\\frac{1}{(p^*-1)p^*}\\sum_{i=1}^nx_i - np^* = 0 \\\\\n&\\iff \\sum_{i=1}^nx_i = np^* \\iff \\boxed{p^* = \\frac{\\sum_{i=1}^nx_i}{n}}\n\\end{align*}\n\\]"
+    "text": "Maximizing\nNow that we know \\(\\frac{d}{d\\param{p}}\\ell(x_i)\\), we set our log-likelihood equation equal to zero to find the likelihood-maximizing \\(\\param{p}\\) value, \\(p^*\\):\n\\[\n\\begin{align*}\n&\\sum_{i=1}^n\\frac{d}{d\\param{p}}\\ell(x_i) = 0 \\iff \\sum_{i=1}^n \\frac{p^* - x_i}{(p^*-1)p^*} = 0 \\\\\n&\\iff -\\frac{1}{(p^*-1)p^*}\\sum_{i=1}^nx_i - np^* = 0 \\\\\n&\\iff \\sum_{i=1}^nx_i = np^* \\iff \\boxed{p^* = \\frac{\\sum_{i=1}^nx_i}{n}}\n\\end{align*}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#mle-intuition",
     "href": "w10/index.html#mle-intuition",
     "title": "Week 10: Parameter Estimation",
     "section": "MLE Intuition",
-    "text": "MLE Intuition\n\\[\np^* = \\frac{\\sum_{i=1}^nx_i}{n} = \\frac{\\sum_{i=1}^n \\mathbf{1}[x_i = 1]}{n} \\genfrac{}{}{0pt}{}{\\leftarrow \\text{\\# Heads}}{\\leftarrow \\text{\\# Flips }}\n\\]\n\nMLE almost always matches intuition! Example: given data \\(x_1, \\ldots, x_n\\), what Normal distribution best fits this data?\nSame as asking: what parameter settings for \\(\\mathcal{N}(\\param{\\mu}, \\param{\\sigma^2})\\) are most likely to produce \\(x_1, \\ldots, x_n\\)? The answer:\n\n\\[\n\\mu^* = \\frac{\\sum_{i=1}^n x_i}{n} \\; \\; \\; \\sigma^2_* = \\frac{\\sum_{i=1}^n (x_i-\\mu^*)^2}{n}\n\\]"
+    "text": "MLE Intuition\n\\[\np^* = \\frac{\\sum_{i=1}^nx_i}{n} = \\frac{\\sum_{i=1}^n \\mathbf{1}[x_i = 1]}{n} \\genfrac{}{}{0pt}{}{\\leftarrow \\text{\\# Heads}}{\\leftarrow \\text{\\# Flips }}\n\\]\n\nMLE almost always matches intuition! Example: given data \\(x_1, \\ldots, x_n\\), what Normal distribution best fits this data?\nSame as asking: what parameter settings for \\(\\mathcal{N}(\\param{\\mu}, \\param{\\sigma^2})\\) are most likely to produce \\(x_1, \\ldots, x_n\\)? The answer:\n\n\\[\n\\mu^* = \\frac{\\sum_{i=1}^n x_i}{n} \\; \\; \\; \\sigma^2_* = \\frac{\\sum_{i=1}^n (x_i-\\mu^*)^2}{n}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#the-dark-side-of-mle",
     "href": "w10/index.html#the-dark-side-of-mle",
     "title": "Week 10: Parameter Estimation",
     "section": "The Dark Side of MLE",
-    "text": "The Dark Side of MLE\n\nSometimes steers us in the wrong direction!\nConsider values from previous slide, as estimators for population \\(\\mu\\) and \\(\\sigma^2\\): \\(\\mu^*\\) unbiased if \\(\\expect{\\mu^*} = \\mu\\):\n\n\\[\n\\begin{align*}\n\\expect{\\mu^*} &= \\bigexpect{\\frac{\\sum_{i=1}^nx_i}{n}} = \\frac{1}{n}\\sum_{i=1}^n\\expect{x_i} \\\\\n&= \\frac{1}{n}\\sum_{i=1}^n\\mu = \\frac{n\\mu}{n} = \\mu \\; ✅\n\\end{align*}\n\\]\n\nSo far so good. How about \\(\\sigma^2_*\\)?"
+    "text": "The Dark Side of MLE\n\nSometimes steers us in the wrong direction!\nConsider values from previous slide, as estimators for population \\(\\mu\\) and \\(\\sigma^2\\): \\(\\mu^*\\) unbiased if \\(\\expect{\\mu^*} = \\mu\\):\n\n\\[\n\\begin{align*}\n\\expect{\\mu^*} &= \\bigexpect{\\frac{\\sum_{i=1}^nx_i}{n}} = \\frac{1}{n}\\sum_{i=1}^n\\expect{x_i} \\\\\n&= \\frac{1}{n}\\sum_{i=1}^n\\mu = \\frac{n\\mu}{n} = \\mu \\; ✅\n\\end{align*}\n\\]\n\nSo far so good. How about \\(\\sigma^2_*\\)?",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#mle-as-biased-estimator",
     "href": "w10/index.html#mle-as-biased-estimator",
     "title": "Week 10: Parameter Estimation",
     "section": "MLE as Biased Estimator",
-    "text": "MLE as Biased Estimator\n\nBefore we think about \\(\\expect{\\sigma^2_*}\\), let’s rewrite \\(\\sigma^2_*\\):\n\n\\[\n\\begin{align*}\n\\sigma^2_* &= \\frac{1}{n}\\sum_{i=1}^n(x_i - \\mu^*)^2 = \\frac{1}{n}\\sum_{i=1}^n \\left( x_i^2 - 2 \\mu^* x_i + (\\mu^*)^2 \\right) \\\\\n&= \\frac{1}{n}\\sum_{i=1}^nx_i^2 - 2\\mu^*\\underbrace{\\frac{\\sum_{i=1}^nx_i}{n}}_{\\mu^*} + (\\mu^*)^2 = \\frac{1}{n}\\sum_{i=1}^nx_i^2 - (\\mu^*)^2 \\\\\n&= \\frac{1}{n}\\sum_{i=1}^nx_i^2 - (\\mu^*)^2\n\\end{align*}\n\\]\n\nNow we’re ready to compute \\(\\expect{\\sigma^2_*}\\)!"
+    "text": "MLE as Biased Estimator\n\nBefore we think about \\(\\expect{\\sigma^2_*}\\), let’s rewrite \\(\\sigma^2_*\\):\n\n\\[\n\\begin{align*}\n\\sigma^2_* &= \\frac{1}{n}\\sum_{i=1}^n(x_i - \\mu^*)^2 = \\frac{1}{n}\\sum_{i=1}^n \\left( x_i^2 - 2 \\mu^* x_i + (\\mu^*)^2 \\right) \\\\\n&= \\frac{1}{n}\\sum_{i=1}^nx_i^2 - 2\\mu^*\\underbrace{\\frac{\\sum_{i=1}^nx_i}{n}}_{\\mu^*} + (\\mu^*)^2 = \\frac{1}{n}\\sum_{i=1}^nx_i^2 - (\\mu^*)^2 \\\\\n&= \\frac{1}{n}\\sum_{i=1}^nx_i^2 - (\\mu^*)^2\n\\end{align*}\n\\]\n\nNow we’re ready to compute \\(\\expect{\\sigma^2_*}\\)!",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#computing-mathbbesigma2_",
     "href": "w10/index.html#computing-mathbbesigma2_",
     "title": "Week 10: Parameter Estimation",
     "section": "Computing \\(\\mathbb{E}[\\sigma^2_*]\\)",
-    "text": "Computing \\(\\mathbb{E}[\\sigma^2_*]\\)\n\\[\n\\begin{align*}\n\\expect{\\sigma^2_*} &= \\bigexpect{\\frac{1}{n}\\sum_{i=1}^nx_i^2 - (\\mu^*)^2} = \\frac{1}{n}\\sum_{i=1}^n \\expect{x_i^2} - \\expect{(\\mu^*)^2}\n\\end{align*}\n\\]\n\nWhat do we know about \\(\\expect{x_i^2}\\)? Remember the (alternate) definition of variance: \\(\\Var{X} = \\expect{X^2} - \\left(\\expect{X}\\right)^2\\). Then\n\n\\[\n\\expect{X^2} = \\Var{X} + \\left(\\expect{X}\\right)^2\n\\]\nSo let’s plug in the right side when we see \\(\\expect{X^2}\\) or \\(\\expect{(\\mu^*)^2}\\):\n\\[\n\\begin{align*}\n\\frac{1}{n}\\sum_{i=1}^n \\expect{x_i^2} - \\expect{(\\mu^*)^2} &= \\frac{1}{n}\\sum_{i=1}^n\\left(\\Var{X} + \\left(\\expect{X}\\right)^2\\right) - \\expect{(\\mu^*)^2} \\\\\n&= (\\sigma^2 + \\mu^2) - \\left(\\Var{\\mu^*} + \\left(\\expect{\\mu^*}\\right)^2\\right)\n\\end{align*}\n\\]"
+    "text": "Computing \\(\\mathbb{E}[\\sigma^2_*]\\)\n\\[\n\\begin{align*}\n\\expect{\\sigma^2_*} &= \\bigexpect{\\frac{1}{n}\\sum_{i=1}^nx_i^2 - (\\mu^*)^2} = \\frac{1}{n}\\sum_{i=1}^n \\expect{x_i^2} - \\expect{(\\mu^*)^2}\n\\end{align*}\n\\]\n\nWhat do we know about \\(\\expect{x_i^2}\\)? Remember the (alternate) definition of variance: \\(\\Var{X} = \\expect{X^2} - \\left(\\expect{X}\\right)^2\\). Then\n\n\\[\n\\expect{X^2} = \\Var{X} + \\left(\\expect{X}\\right)^2\n\\]\nSo let’s plug in the right side when we see \\(\\expect{X^2}\\) or \\(\\expect{(\\mu^*)^2}\\):\n\\[\n\\begin{align*}\n\\frac{1}{n}\\sum_{i=1}^n \\expect{x_i^2} - \\expect{(\\mu^*)^2} &= \\frac{1}{n}\\sum_{i=1}^n\\left(\\Var{X} + \\left(\\expect{X}\\right)^2\\right) - \\expect{(\\mu^*)^2} \\\\\n&= (\\sigma^2 + \\mu^2) - \\left(\\Var{\\mu^*} + \\left(\\expect{\\mu^*}\\right)^2\\right)\n\\end{align*}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#almost-there",
     "href": "w10/index.html#almost-there",
     "title": "Week 10: Parameter Estimation",
     "section": "Almost There!",
-    "text": "Almost There!\nWe know that \\(\\expect{\\mu^*} = \\mu\\), but what is \\(\\Var{\\mu^*}\\)? Remember that \\(\\Var{aX} = a^2\\Var{X}\\)!\n\\[\n\\Var{\\mu^*} = \\bigVar{\\frac{1}{n}\\sum_{i=1}^nx_i} = \\frac{1}{n^2}\\sum_{i=1}^n\\Var{x_i} = \\frac{n\\sigma^2}{n^2} = \\frac{\\sigma^2}{n}\n\\]\nAnd we plug back in to get:\n\\[\n\\begin{align*}\n\\expect{\\sigma^2_*} &= \\sigma^2 + \\mu^2 - \\Var{\\mu^*} - \\left(\\expect{\\mu^*}\\right)^2 \\\\\n&= \\sigma^2 + \\mu^2 - \\frac{\\sigma^2}{n} - \\mu^2 = \\sigma^2 - \\frac{\\sigma^2}{n} \\\\\n&= \\frac{n\\sigma^2 - \\sigma^2}{n} = \\frac{\\sigma^2(n-1)}{n} \\\\\n&= \\color{red}{\\left(\\frac{n-1}{n}\\right)\\sigma^2} \\neq \\sigma^2 \\; 💀\n\\end{align*}\n\\]"
+    "text": "Almost There!\nWe know that \\(\\expect{\\mu^*} = \\mu\\), but what is \\(\\Var{\\mu^*}\\)? Remember that \\(\\Var{aX} = a^2\\Var{X}\\)!\n\\[\n\\Var{\\mu^*} = \\bigVar{\\frac{1}{n}\\sum_{i=1}^nx_i} = \\frac{1}{n^2}\\sum_{i=1}^n\\Var{x_i} = \\frac{n\\sigma^2}{n^2} = \\frac{\\sigma^2}{n}\n\\]\nAnd we plug back in to get:\n\\[\n\\begin{align*}\n\\expect{\\sigma^2_*} &= \\sigma^2 + \\mu^2 - \\Var{\\mu^*} - \\left(\\expect{\\mu^*}\\right)^2 \\\\\n&= \\sigma^2 + \\mu^2 - \\frac{\\sigma^2}{n} - \\mu^2 = \\sigma^2 - \\frac{\\sigma^2}{n} \\\\\n&= \\frac{n\\sigma^2 - \\sigma^2}{n} = \\frac{\\sigma^2(n-1)}{n} \\\\\n&= \\color{red}{\\left(\\frac{n-1}{n}\\right)\\sigma^2} \\neq \\sigma^2 \\; 💀\n\\end{align*}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#why-does-this-happen-handwaving",
     "href": "w10/index.html#why-does-this-happen-handwaving",
     "title": "Week 10: Parameter Estimation",
     "section": "Why Does This Happen?: Handwaving",
-    "text": "Why Does This Happen?: Handwaving\n\nLong story short, we underpredict the population variance because we already used some of the data to compute \\(\\mu^*\\)!\nThis is where the degrees of freedom heuristic comes in:\n\nWhen we construct an estimate \\(e\\), \\(df(e) = n - k_e\\)\n\\(k_e =\\) number of other estimates used to calculate \\(e\\)!"
+    "text": "Why Does This Happen?: Handwaving\n\nLong story short, we underpredict the population variance because we already used some of the data to compute \\(\\mu^*\\)!\nThis is where the degrees of freedom heuristic comes in:\n\nWhen we construct an estimate \\(e\\), \\(df(e) = n - k_e\\)\n\\(k_e =\\) number of other estimates used to calculate \\(e\\)!",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#handwavy-intuition",
     "href": "w10/index.html#handwavy-intuition",
     "title": "Week 10: Parameter Estimation",
     "section": "Handwavy Intuition",
-    "text": "Handwavy Intuition\n\nConsider \\(X_1, X_2 \\sim \\mathcal{N}(0,1)\\): \\(\\mu = 0\\), \\(\\sigma^2 = 1\\).\n\n\\[\n\\expect{\\mu^*} = \\bigexpect{\\frac{X_1 + X_2}{2}} = \\frac{1}{2}\\left(\\expect{X_1} + \\expect{X_2}\\right) = 0 = \\mu \\; ✅\n\\]\n\\[\n\\begin{align*}\n\\expect{\\sigma^2_*} &= \\frac{1}{2}\\bigexpect{(X_1 - \\mu^*)^2 + (X_2 - \\mu^*)^2} \\\\\n&= \\frac{1}{2}\\bigexpect{\\left(X_1^2 + \\mu^2_* -2\\mu^*X_1\\right) + \\left(X_2^2 + \\mu^2_* - 2X_2\\mu^*\\right)} \\\\\n&= \\frac{1}{2}\\expect{X_1^2 + X_2^2 + 2\\mu_*^2 - 2\\mu^*X_1 - 2\\mu^*X_2} \\\\\n&= \\frac{1}{2}\\left(\\expect{X_1^2} + \\expect{X_2^2} + 2\\expect{\\mu_*^2} - 2\\expect{\\mu^*X_1} - 2\\expect{\\mu^*X_2}\\right) \\\\\n&\\implies \\boxed{\\expect{\\sigma^2_*} = \\frac{1}{2}\\sigma^2}\n\\end{align*}\n\\]\n\nWe’re off by \\(\\frac{1}{2}\\)! What to do?"
+    "text": "Handwavy Intuition\n\nConsider \\(X_1, X_2 \\sim \\mathcal{N}(0,1)\\): \\(\\mu = 0\\), \\(\\sigma^2 = 1\\).\n\n\\[\n\\expect{\\mu^*} = \\bigexpect{\\frac{X_1 + X_2}{2}} = \\frac{1}{2}\\left(\\expect{X_1} + \\expect{X_2}\\right) = 0 = \\mu \\; ✅\n\\]\n\\[\n\\begin{align*}\n\\expect{\\sigma^2_*} &= \\frac{1}{2}\\bigexpect{(X_1 - \\mu^*)^2 + (X_2 - \\mu^*)^2} \\\\\n&= \\frac{1}{2}\\bigexpect{\\left(X_1^2 + \\mu^2_* -2\\mu^*X_1\\right) + \\left(X_2^2 + \\mu^2_* - 2X_2\\mu^*\\right)} \\\\\n&= \\frac{1}{2}\\expect{X_1^2 + X_2^2 + 2\\mu_*^2 - 2\\mu^*X_1 - 2\\mu^*X_2} \\\\\n&= \\frac{1}{2}\\left(\\expect{X_1^2} + \\expect{X_2^2} + 2\\expect{\\mu_*^2} - 2\\expect{\\mu^*X_1} - 2\\expect{\\mu^*X_2}\\right) \\\\\n&\\implies \\boxed{\\expect{\\sigma^2_*} = \\frac{1}{2}\\sigma^2}\n\\end{align*}\n\\]\n\nWe’re off by \\(\\frac{1}{2}\\)! What to do?",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#handwavy-solution",
     "href": "w10/index.html#handwavy-solution",
     "title": "Week 10: Parameter Estimation",
     "section": "Handwavy Solution",
-    "text": "Handwavy Solution\n\nWe can account for degrees of freedom, correcting the MLE by a factor of \\(\\frac{n}{df(e^*)}\\)!\n\n\\(e^\\circledast = \\frac{n}{df(e^*)}e^*\\)\n\nEx: Since \\(\\expect{\\sigma_*^2} = \\frac{n-1}{n}\\sigma^2\\), we can instead use \\(\\sigma^2_\\circledast = \\frac{n}{n-1}\\sigma^2_*\\). This gives us:\n\n\\[\n\\expect{\\sigma^2_\\circledast} = \\bigexpect{\\frac{n}{n-1}\\sigma^2_*} = \\frac{n}{n-1}\\frac{n-1}{n}\\sigma^2 = \\color{green}{\\sigma^2} \\; ✅\n\\]"
+    "text": "Handwavy Solution\n\nWe can account for degrees of freedom, correcting the MLE by a factor of \\(\\frac{n}{df(e^*)}\\)!\n\n\\(e^\\circledast = \\frac{n}{df(e^*)}e^*\\)\n\nEx: Since \\(\\expect{\\sigma_*^2} = \\frac{n-1}{n}\\sigma^2\\), we can instead use \\(\\sigma^2_\\circledast = \\frac{n}{n-1}\\sigma^2_*\\). This gives us:\n\n\\[\n\\expect{\\sigma^2_\\circledast} = \\bigexpect{\\frac{n}{n-1}\\sigma^2_*} = \\frac{n}{n-1}\\frac{n-1}{n}\\sigma^2 = \\color{green}{\\sigma^2} \\; ✅\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#st-century-solution",
     "href": "w10/index.html#st-century-solution",
     "title": "Week 10: Parameter Estimation",
     "section": "21st-Century Solution",
-    "text": "21st-Century Solution\n\nBe Bayesian, use priors on parameters (creating hyperparameters)!\nPretend we know \\(\\sigma^2\\), but want to find the “best” value of \\(\\mu\\):\n\n\\[\n\\begin{array}{rlccc}\nX_1, X_2 \\overset{iid}{\\sim} \\mathcal{N}( &\\hspace{-5mm}\\mu\\hspace{0.5mm}, &\\hspace{-8mm}\\overbrace{\\sigma^2}^{\\large\\text{known}}\\hspace{-2mm}) & & \\\\\n&\\hspace{-4mm}\\downarrow & ~ &\\hspace{-10mm}{\\small\\text{estimate}} & \\hspace{-6mm} & \\hspace{-8mm}{\\small\\text{uncertainty}} \\\\[-5mm]\n&\\hspace{-5mm}\\mu &\\hspace{-5mm}\\sim \\mathcal{N}&\\hspace{-7mm}(\\overbrace{m}&\\hspace{-12mm}, &\\hspace{-16mm}\\overbrace{s})\n\\end{array}\n\\]"
+    "text": "21st-Century Solution\n\nBe Bayesian, use priors on parameters (creating hyperparameters)!\nPretend we know \\(\\sigma^2\\), but want to find the “best” value of \\(\\mu\\):\n\n\\[\n\\begin{array}{rlccc}\nX_1, X_2 \\overset{iid}{\\sim} \\mathcal{N}( &\\hspace{-5mm}\\mu\\hspace{0.5mm}, &\\hspace{-8mm}\\overbrace{\\sigma^2}^{\\large\\text{known}}\\hspace{-2mm}) & & \\\\\n&\\hspace{-4mm}\\downarrow & ~ &\\hspace{-10mm}{\\small\\text{estimate}} & \\hspace{-6mm} & \\hspace{-8mm}{\\small\\text{uncertainty}} \\\\[-5mm]\n&\\hspace{-5mm}\\mu &\\hspace{-5mm}\\sim \\mathcal{N}&\\hspace{-7mm}(\\overbrace{m}&\\hspace{-12mm}, &\\hspace{-16mm}\\overbrace{s})\n\\end{array}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#single-datapoint",
     "href": "w10/index.html#single-datapoint",
     "title": "Week 10: Parameter Estimation",
     "section": "Single Datapoint",
-    "text": "Single Datapoint\n\nLet’s consider the estimate of \\(\\mu\\) from a single datapoint \\(X_i\\). MLE just gives us \\(\\mu^* = X_i\\). How about MAP estimate?\n\n\\[\n\\lik\\left(X_i, \\mu, m, s\\right) \\overset{\\text{factors}}{\\underset{\\text{into}}{=}} P(X_i \\mid \\mu)P(\\mu \\mid m, s)P(m, s)\n\\]\n\nRemembering the pdf of the Normal distribution, we have:\n\n\\[\n\\lik\\left(X_i, \\mu, m, s\\right) = \\frac{1}{\\sigma\\sqrt{2\\pi}}\\exp\\left[-\\frac{(X_i-\\mu)^2}{2\\sigma^2}\\right]\\frac{1}{s\\sqrt{2\\pi}}\\exp\\left[-\\frac{(\\mu - m)^2}{2s^2}\\right]\n\\]\n\nThen, remembering that we can maximize the log-likelihood rather than the likelihood:\n\n\\[\n\\ell(X_i, \\mu, m, s) = \\log\\left[\\frac{1}{\\sigma\\sqrt{2\\pi}}\\right] - \\frac{(X_i-\\mu)^2}{2\\sigma^2} + \\log\\left[\\frac{1}{s\\sqrt{2\\pi}}\\right] - \\frac{(\\mu - m)^2}{2s^2}\n\\]"
+    "text": "Single Datapoint\n\nLet’s consider the estimate of \\(\\mu\\) from a single datapoint \\(X_i\\). MLE just gives us \\(\\mu^* = X_i\\). How about MAP estimate?\n\n\\[\n\\lik\\left(X_i, \\mu, m, s\\right) \\overset{\\text{factors}}{\\underset{\\text{into}}{=}} P(X_i \\mid \\mu)P(\\mu \\mid m, s)P(m, s)\n\\]\n\nRemembering the pdf of the Normal distribution, we have:\n\n\\[\n\\lik\\left(X_i, \\mu, m, s\\right) = \\frac{1}{\\sigma\\sqrt{2\\pi}}\\exp\\left[-\\frac{(X_i-\\mu)^2}{2\\sigma^2}\\right]\\frac{1}{s\\sqrt{2\\pi}}\\exp\\left[-\\frac{(\\mu - m)^2}{2s^2}\\right]\n\\]\n\nThen, remembering that we can maximize the log-likelihood rather than the likelihood:\n\n\\[\n\\ell(X_i, \\mu, m, s) = \\log\\left[\\frac{1}{\\sigma\\sqrt{2\\pi}}\\right] - \\frac{(X_i-\\mu)^2}{2\\sigma^2} + \\log\\left[\\frac{1}{s\\sqrt{2\\pi}}\\right] - \\frac{(\\mu - m)^2}{2s^2}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#taking-the-derivative",
     "href": "w10/index.html#taking-the-derivative",
     "title": "Week 10: Parameter Estimation",
     "section": "Taking the Derivative",
-    "text": "Taking the Derivative\n\nTaking the derivative gives us:\n\n\\[\n\\begin{align*}\n\\frac{\\partial\\ell}{\\partial \\mu} &= \\frac{\\partial}{\\partial\\mu}\\left[ {\\color{red}\\cancel{\\color{black}\\log\\left[\\frac{1}{\\sigma\\sqrt{2\\pi}}\\right]}} - \\frac{(X_i-\\mu)^2}{2\\sigma^2} + {\\color{red}\\cancel{\\color{black}\\log\\left[\\frac{1}{s\\sqrt{2\\pi}}\\right]}} - \\frac{(\\mu - m)^2}{2s^2}\\right] \\\\\n&= - \\frac{1}{2\\sigma^2}\\cdot\\frac{\\partial}{\\partial\\mu}\\left[{\\color{red}\\cancel{\\color{black}X_i^2}} + \\mu^2 - 2X_i\\mu\\right] - \\frac{1}{2s^2}\\cdot\\frac{\\partial}{\\partial\\mu}\\left[\\mu^2 + {\\color{red}\\cancel{\\color{black}m^2}} - 2\\mu m\\right] \\\\\n&= -\\frac{1}{2\\sigma^2}\\cdot (2\\mu -2X_i) - \\frac{1}{2s^2}\\cdot (2\\mu - 2m) = \\frac{X_i-\\mu}{\\sigma^2} + \\frac{m - \\mu}{s^2}\n\\end{align*}\n\\]\n\nAnd we set equal to zero and solve to obtain the MAP estimate:\n\n\\[\n\\begin{align*}\n&\\frac{X_i - \\mu^*}{\\sigma^2} + \\frac{m - \\mu^*}{s^2} = 0 \\iff \\frac{\\mu^*}{\\sigma^2} + \\frac{\\mu^*}{s^2} = \\frac{X_i}{\\sigma^2} + \\frac{m}{s^2} \\iff \\\\\n&\\frac{s^2\\mu^* + \\sigma^2\\mu^*}{\\sigma^2s^2} = \\frac{s^2X_i + \\sigma^2m}{\\sigma^2s^2} \\iff \\mu^*(s^2+\\sigma^2) = s^2X_i + \\sigma^2m \\\\\n&\\iff \\boxed{\\mu^* = \\left(\\frac{s^2}{s^2 + \\sigma^2}\\right)X_i + \\left(\\frac{\\sigma^2}{s^2 + \\sigma^2}\\right)m}\n\\end{align*}\n\\]"
+    "text": "Taking the Derivative\n\nTaking the derivative gives us:\n\n\\[\n\\begin{align*}\n\\frac{\\partial\\ell}{\\partial \\mu} &= \\frac{\\partial}{\\partial\\mu}\\left[ {\\color{red}\\cancel{\\color{black}\\log\\left[\\frac{1}{\\sigma\\sqrt{2\\pi}}\\right]}} - \\frac{(X_i-\\mu)^2}{2\\sigma^2} + {\\color{red}\\cancel{\\color{black}\\log\\left[\\frac{1}{s\\sqrt{2\\pi}}\\right]}} - \\frac{(\\mu - m)^2}{2s^2}\\right] \\\\\n&= - \\frac{1}{2\\sigma^2}\\cdot\\frac{\\partial}{\\partial\\mu}\\left[{\\color{red}\\cancel{\\color{black}X_i^2}} + \\mu^2 - 2X_i\\mu\\right] - \\frac{1}{2s^2}\\cdot\\frac{\\partial}{\\partial\\mu}\\left[\\mu^2 + {\\color{red}\\cancel{\\color{black}m^2}} - 2\\mu m\\right] \\\\\n&= -\\frac{1}{2\\sigma^2}\\cdot (2\\mu -2X_i) - \\frac{1}{2s^2}\\cdot (2\\mu - 2m) = \\frac{X_i-\\mu}{\\sigma^2} + \\frac{m - \\mu}{s^2}\n\\end{align*}\n\\]\n\nAnd we set equal to zero and solve to obtain the MAP estimate:\n\n\\[\n\\begin{align*}\n&\\frac{X_i - \\mu^*}{\\sigma^2} + \\frac{m - \\mu^*}{s^2} = 0 \\iff \\frac{\\mu^*}{\\sigma^2} + \\frac{\\mu^*}{s^2} = \\frac{X_i}{\\sigma^2} + \\frac{m}{s^2} \\iff \\\\\n&\\frac{s^2\\mu^* + \\sigma^2\\mu^*}{\\sigma^2s^2} = \\frac{s^2X_i + \\sigma^2m}{\\sigma^2s^2} \\iff \\mu^*(s^2+\\sigma^2) = s^2X_i + \\sigma^2m \\\\\n&\\iff \\boxed{\\mu^* = \\left(\\frac{s^2}{s^2 + \\sigma^2}\\right)X_i + \\left(\\frac{\\sigma^2}{s^2 + \\sigma^2}\\right)m}\n\\end{align*}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#the-takeaway",
     "href": "w10/index.html#the-takeaway",
     "title": "Week 10: Parameter Estimation",
     "section": "The Takeaway",
-    "text": "The Takeaway\n\nBayesian approach allows new evidence to be weighed against existing evidence, with statistically principled way to derive these weights:\n\n\\[\n\\begin{array}{ccccc}\n\\Pr_{\\text{post}}(\\mathcal{H}) &\\hspace{-6mm}\\propto &\\hspace{-6mm} \\Pr(X \\mid \\mathcal{H}) &\\hspace{-6mm} \\times &\\hspace{-6mm} \\Pr_{\\text{pre}}(\\mathcal{H}) \\\\\n\\text{Posterior} &\\hspace{-6mm}\\propto &\\hspace{-6mm}\\text{Evidence} &\\hspace{-6mm} \\times &\\hspace{-6mm} \\text{Prior}\n\\end{array}\n\\]"
+    "text": "The Takeaway\n\nBayesian approach allows new evidence to be weighed against existing evidence, with statistically principled way to derive these weights:\n\n\\[\n\\begin{array}{ccccc}\n\\Pr_{\\text{post}}(\\mathcal{H}) &\\hspace{-6mm}\\propto &\\hspace{-6mm} \\Pr(X \\mid \\mathcal{H}) &\\hspace{-6mm} \\times &\\hspace{-6mm} \\Pr_{\\text{pre}}(\\mathcal{H}) \\\\\n\\text{Posterior} &\\hspace{-6mm}\\propto &\\hspace{-6mm}\\text{Evidence} &\\hspace{-6mm} \\times &\\hspace{-6mm} \\text{Prior}\n\\end{array}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#generalized-method-of-moments-gmm-estimation",
     "href": "w10/index.html#generalized-method-of-moments-gmm-estimation",
     "title": "Week 10: Parameter Estimation",
     "section": "Generalized Method of Moments (GMM) Estimation",
-    "text": "Generalized Method of Moments (GMM) Estimation\n\nRecall that the \\(k\\)th moment of an RV \\(X\\) is \\(\\mu_k = \\expect{X^k}\\)\ne.g., \\(\\mu_1 = \\expect{X}\\), \\(\\mu_2 = \\Var{X} + \\expect{X}^2\\)\nAlso recall (I rambled on about) how the MGF contains all information about a distribution. This means we can estimate distributions from data:\nDefine \\(k\\)th sample moment of \\(\\mathbf{X}_N\\): \\(\\widehat{\\mu}_k = \\frac{1}{N}\\sum_{i=1}^nX_i^k\\). Then:\n\\[\n  \\begin{align*}\n  \\mu_1(\\param{\\theta}) &= \\widehat{\\mu}_1 \\\\\n  \\mu_2(\\param{\\theta}) &= \\widehat{\\mu}_2 \\\\\n  &~\\vdots \\\\\n  \\mu_N(\\param{\\theta}) &= \\widehat{\\mu}_N\n  \\end{align*}\n  \\]\nGives us a system of equations, allowing us to solve for parameters \\(\\param{\\theta}\\) of our distribution!"
+    "text": "Generalized Method of Moments (GMM) Estimation\n\nRecall that the \\(k\\)th moment of an RV \\(X\\) is \\(\\mu_k = \\expect{X^k}\\)\ne.g., \\(\\mu_1 = \\expect{X}\\), \\(\\mu_2 = \\Var{X} + \\expect{X}^2\\)\nAlso recall (I rambled on about) how the MGF contains all information about a distribution. This means we can estimate distributions from data:\nDefine \\(k\\)th sample moment of \\(\\mathbf{X}_N\\): \\(\\widehat{\\mu}_k = \\frac{1}{N}\\sum_{i=1}^nX_i^k\\). Then:\n\\[\n  \\begin{align*}\n  \\mu_1(\\param{\\theta}) &= \\widehat{\\mu}_1 \\\\\n  \\mu_2(\\param{\\theta}) &= \\widehat{\\mu}_2 \\\\\n  &~\\vdots \\\\\n  \\mu_N(\\param{\\theta}) &= \\widehat{\\mu}_N\n  \\end{align*}\n  \\]\nGives us a system of equations, allowing us to solve for parameters \\(\\param{\\theta}\\) of our distribution!",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#intuition",
     "href": "w10/index.html#intuition",
     "title": "Week 10: Parameter Estimation",
     "section": "Intuition",
-    "text": "Intuition\n\n\n\n\n\n\n\n\n\nLow Variance\nHigh Variance\n\n\n\n\nLow Bias\n\n\n\n\nHigh Bias\n\n\n\n\n\n\n\nAdapted from Fortmann-Roe (2012), “Understanding the Bias-Variance Tradeoff”"
+    "text": "Intuition\n\n\n\n\n\n\n\n\n\nLow Variance\nHigh Variance\n\n\n\n\nLow Bias\n\n\n\n\nHigh Bias\n\n\n\n\n\n\n\nAdapted from Fortmann-Roe (2012), “Understanding the Bias-Variance Tradeoff”",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#components-of-the-error-term",
     "href": "w10/index.html#components-of-the-error-term",
     "title": "Week 10: Parameter Estimation",
     "section": "Components of the Error Term",
-    "text": "Components of the Error Term\n\nWe estimate “true” DGP \\(Y = f(X)\\) with model \\(\\widehat{f}(X)\\)3, and then we use \\(\\widehat{f}\\) to predict the value of \\(Y\\) for a point \\(x_0\\).\nWhat is our expected error at this point, \\(\\Err(x_0)\\)?\n\n\\[\n\\begin{align*}\n\\Err(x_0) &= \\bigexpect{\\left.(Y − \\widehat{f}(x_0))^2 \\right| X = x_0} \\\\\n&= \\sigma^2_{\\varepsilon} + \\left( \\bigexpect{\\widehat{f}(x_0)} − f(x_0) \\right)^2 + \\mathbb{E}\\left[\\widehat{f}(x_0) − \\bigexpect{\\widehat{f}(x_0)}\\right]^2 \\\\\n&= \\sigma^2_{\\varepsilon} + \\left( \\text{Bias}(\\widehat{f}(x_0)\\right)^2 + \\bigVar{\\widehat{f}(x_0)} \\\\\n&= \\text{Irreducible Error} + \\text{Bias}^2 + \\text{Variance}.\n\\end{align*}\n\\]"
+    "text": "Components of the Error Term\n\nWe estimate “true” DGP \\(Y = f(X)\\) with model \\(\\widehat{f}(X)\\)3, and then we use \\(\\widehat{f}\\) to predict the value of \\(Y\\) for a point \\(x_0\\).\nWhat is our expected error at this point, \\(\\Err(x_0)\\)?\n\n\\[\n\\begin{align*}\n\\Err(x_0) &= \\bigexpect{\\left.(Y − \\widehat{f}(x_0))^2 \\right| X = x_0} \\\\\n&= \\sigma^2_{\\varepsilon} + \\left( \\bigexpect{\\widehat{f}(x_0)} − f(x_0) \\right)^2 + \\mathbb{E}\\left[\\widehat{f}(x_0) − \\bigexpect{\\widehat{f}(x_0)}\\right]^2 \\\\\n&= \\sigma^2_{\\varepsilon} + \\left( \\text{Bias}(\\widehat{f}(x_0)\\right)^2 + \\bigVar{\\widehat{f}(x_0)} \\\\\n&= \\text{Irreducible Error} + \\text{Bias}^2 + \\text{Variance}.\n\\end{align*}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#in-practice",
     "href": "w10/index.html#in-practice",
     "title": "Week 10: Parameter Estimation",
     "section": "In Practice",
-    "text": "In Practice\n\n\n\nFigure from Tharwat (2019)"
+    "text": "In Practice\n\n\n\nFigure from Tharwat (2019)",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#appendix-1-derivation-of-mathbbemu_2",
     "href": "w10/index.html#appendix-1-derivation-of-mathbbemu_2",
     "title": "Week 10: Parameter Estimation",
     "section": "Appendix 1: Derivation of \\(\\mathbb{E}[\\mu_*^2]\\)",
-    "text": "Appendix 1: Derivation of \\(\\mathbb{E}[\\mu_*^2]\\)\n\\[\n\\begin{align*}\n\\expect{\\mu_*^2} &= \\bigexpect{\\left(\\frac{X_1 + X_2}{2}\\right)^2} = \\frac{1}{4}\\expect{(X_1+X_2)^2} \\\\\n&= \\frac{1}{4}\\expect{X_1^2 + X_2^2 + 2X_1X_2} = \\frac{1}{4}\\left(\\expect{X_1^2} + \\expect{X_2^2} + 2\\expect{X_1X_2}\\right) \\\\\n&= \\frac{1}{4}\\left(\\Var{X_1} + \\expect{X_1}^2 + \\Var{X_2} + \\expect{X_2}^2 + 2\\expect{X_1X_2}\\right) \\\\\n&= \\frac{1}{4}\\left(2\\sigma^2 + 2\\mu^2 + 2\\expect{X_1X_2}\\right) \\\\\n&= \\frac{1}{2}\\left(\\sigma^2 + \\mu^2 + \\expect{X_1X_2}\\right) \\overset{iid}{=} \\frac{1}{2}\\left(\\sigma^2 + \\mu^2 + \\mu^2\\right) \\\\\n&\\implies \\boxed{\\expect{\\mu^2_*} = \\mu^2 + \\frac{\\sigma^2}{2}} \\; \\; \\left(\\therefore \\; \\expect{\\mu_*^2} \\neq \\mu^2 \\right)\n\\end{align*}\n\\]"
+    "text": "Appendix 1: Derivation of \\(\\mathbb{E}[\\mu_*^2]\\)\n\\[\n\\begin{align*}\n\\expect{\\mu_*^2} &= \\bigexpect{\\left(\\frac{X_1 + X_2}{2}\\right)^2} = \\frac{1}{4}\\expect{(X_1+X_2)^2} \\\\\n&= \\frac{1}{4}\\expect{X_1^2 + X_2^2 + 2X_1X_2} = \\frac{1}{4}\\left(\\expect{X_1^2} + \\expect{X_2^2} + 2\\expect{X_1X_2}\\right) \\\\\n&= \\frac{1}{4}\\left(\\Var{X_1} + \\expect{X_1}^2 + \\Var{X_2} + \\expect{X_2}^2 + 2\\expect{X_1X_2}\\right) \\\\\n&= \\frac{1}{4}\\left(2\\sigma^2 + 2\\mu^2 + 2\\expect{X_1X_2}\\right) \\\\\n&= \\frac{1}{2}\\left(\\sigma^2 + \\mu^2 + \\expect{X_1X_2}\\right) \\overset{iid}{=} \\frac{1}{2}\\left(\\sigma^2 + \\mu^2 + \\mu^2\\right) \\\\\n&\\implies \\boxed{\\expect{\\mu^2_*} = \\mu^2 + \\frac{\\sigma^2}{2}} \\; \\; \\left(\\therefore \\; \\expect{\\mu_*^2} \\neq \\mu^2 \\right)\n\\end{align*}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#appendix-2-derivation-of-mathbbemux_i",
     "href": "w10/index.html#appendix-2-derivation-of-mathbbemux_i",
     "title": "Week 10: Parameter Estimation",
     "section": "Appendix 2: Derivation of \\(\\mathbb{E}[\\mu^*X_i]\\)",
-    "text": "Appendix 2: Derivation of \\(\\mathbb{E}[\\mu^*X_i]\\)\n\\[\n\\begin{align*}\n\\expect{\\mu^*X_1} &= \\bigexpect{\\left(\\frac{X_1 + X_2}{2}\\right)X_1} = \\frac{1}{2}\\expect{X_1^2 + X_1X_2} \\\\\n&= \\frac{1}{2}\\expect{X_1^2} + \\frac{1}{2}\\expect{X_1X_2} = \\frac{1}{2}\\left(\\sigma^2 + \\mu^2\\right) + \\frac{1}{2}\\mu^2 \\\\\n&\\implies \\expect{\\mu^*X_1} = \\mu^2 + \\frac{\\sigma^2}{2}\n\\end{align*}\n\\]\nAnd since \\(X_1\\) was chosen without loss of generality,\n\\[\n\\boxed{\\expect{\\mu^*X_i} = \\mu^2 + \\frac{\\sigma^2}{2}}\n\\]"
+    "text": "Appendix 2: Derivation of \\(\\mathbb{E}[\\mu^*X_i]\\)\n\\[\n\\begin{align*}\n\\expect{\\mu^*X_1} &= \\bigexpect{\\left(\\frac{X_1 + X_2}{2}\\right)X_1} = \\frac{1}{2}\\expect{X_1^2 + X_1X_2} \\\\\n&= \\frac{1}{2}\\expect{X_1^2} + \\frac{1}{2}\\expect{X_1X_2} = \\frac{1}{2}\\left(\\sigma^2 + \\mu^2\\right) + \\frac{1}{2}\\mu^2 \\\\\n&\\implies \\expect{\\mu^*X_1} = \\mu^2 + \\frac{\\sigma^2}{2}\n\\end{align*}\n\\]\nAnd since \\(X_1\\) was chosen without loss of generality,\n\\[\n\\boxed{\\expect{\\mu^*X_i} = \\mu^2 + \\frac{\\sigma^2}{2}}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#appendix-3-derivation-of-mathbbesigma2_",
     "href": "w10/index.html#appendix-3-derivation-of-mathbbesigma2_",
     "title": "Week 10: Parameter Estimation",
     "section": "Appendix 3: Derivation of \\(\\mathbb{E}[\\sigma^2_*]\\)",
-    "text": "Appendix 3: Derivation of \\(\\mathbb{E}[\\sigma^2_*]\\)\n\\[\n\\begin{align*}\n\\expect{\\sigma^2_*} &= \\frac{1}{2}\\bigexpect{(X_1 - \\mu^*)^2 + (X_2 - \\mu^*)^2} \\\\\n&= \\frac{1}{2}\\bigexpect{\\left(X_1^2 + \\mu^2_* -2\\mu^*X_1\\right) + \\left(X_2^2 + \\mu^2_* - 2X_2\\mu^*\\right)} \\\\\n&= \\frac{1}{2}\\expect{X_1^2 + X_2^2 + 2\\mu_*^2 - 2\\mu^*X_1 - 2\\mu^*X_2} \\\\\n&= \\frac{1}{2}\\left(\\expect{X_1^2} + \\expect{X_2^2} + 2\\expect{\\mu_*^2} - 2\\expect{\\mu^*X_1} - 2\\expect{\\mu^*X_2}\\right) \\\\\n&= \\frac{1}{2}\\left( 2\\sigma^2 + 2\\mu^2 + 2\\left(\\mu^2 + \\frac{\\sigma^2}{2}\\right) - 2\\left(\\mu^2 + s/2\\right) - 2\\left(\\mu^2 + s/2\\right) \\right) \\\\\n&= \\sigma^2 + \\mu^2 + \\mu^2 + \\frac{\\sigma^2}{2} - \\mu^2 - \\frac{\\sigma^2}{2} - \\mu^2 - \\frac{\\sigma^2}{2} = \\sigma^2 - \\frac{\\sigma^2}{2} \\\\\n&\\implies \\boxed{\\expect{\\sigma^2_*} = \\frac{1}{2}\\sigma^2}\n\\end{align*}\n\\]"
+    "text": "Appendix 3: Derivation of \\(\\mathbb{E}[\\sigma^2_*]\\)\n\\[\n\\begin{align*}\n\\expect{\\sigma^2_*} &= \\frac{1}{2}\\bigexpect{(X_1 - \\mu^*)^2 + (X_2 - \\mu^*)^2} \\\\\n&= \\frac{1}{2}\\bigexpect{\\left(X_1^2 + \\mu^2_* -2\\mu^*X_1\\right) + \\left(X_2^2 + \\mu^2_* - 2X_2\\mu^*\\right)} \\\\\n&= \\frac{1}{2}\\expect{X_1^2 + X_2^2 + 2\\mu_*^2 - 2\\mu^*X_1 - 2\\mu^*X_2} \\\\\n&= \\frac{1}{2}\\left(\\expect{X_1^2} + \\expect{X_2^2} + 2\\expect{\\mu_*^2} - 2\\expect{\\mu^*X_1} - 2\\expect{\\mu^*X_2}\\right) \\\\\n&= \\frac{1}{2}\\left( 2\\sigma^2 + 2\\mu^2 + 2\\left(\\mu^2 + \\frac{\\sigma^2}{2}\\right) - 2\\left(\\mu^2 + s/2\\right) - 2\\left(\\mu^2 + s/2\\right) \\right) \\\\\n&= \\sigma^2 + \\mu^2 + \\mu^2 + \\frac{\\sigma^2}{2} - \\mu^2 - \\frac{\\sigma^2}{2} - \\mu^2 - \\frac{\\sigma^2}{2} = \\sigma^2 - \\frac{\\sigma^2}{2} \\\\\n&\\implies \\boxed{\\expect{\\sigma^2_*} = \\frac{1}{2}\\sigma^2}\n\\end{align*}\n\\]",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#references",
     "href": "w10/index.html#references",
     "title": "Week 10: Parameter Estimation",
     "section": "References",
-    "text": "References\n\n\nHastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2013. The Elements of Statistical Learning: Data Mining, Inference, and Prediction. Springer Science & Business Media.\n\n\nTharwat, Alaa. 2019. “Parameter Investigation of Support Vector Machine Classifier with Kernel Functions.” Knowledge and Information Systems 61 (3): 1269–1302. https://doi.org/10.1007/s10115-019-01335-4."
+    "text": "References\n\n\nHastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2013. The Elements of Statistical Learning: Data Mining, Inference, and Prediction. Springer Science & Business Media.\n\n\nTharwat, Alaa. 2019. “Parameter Investigation of Support Vector Machine Classifier with Kernel Functions.” Knowledge and Information Systems 61 (3): 1269–1302. https://doi.org/10.1007/s10115-019-01335-4.",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "w10/index.html#footnotes",
     "href": "w10/index.html#footnotes",
     "title": "Week 10: Parameter Estimation",
     "section": "Footnotes",
-    "text": "Footnotes\n\n\nThat’s why we used math magic to make \\(\\Pr(x_i \\mid \\param{p})\\) differentiable on prev slide!↩︎\nWe achieve this simplification because the derivative operator is additive: \\(\\frac{d}{dx}\\left[ f(x) + g(x) \\right] = \\frac{d}{dx}f(x) + \\frac{d}{dx}g(x)\\)↩︎\nA complication we put aside for now: do the features \\(X\\) we chose in fact causally impact \\(Y\\)? See Hastie, Tibshirani, and Friedman (2013)!↩︎"
+    "text": "Footnotes\n\n\nThat’s why we used math magic to make \\(\\Pr(x_i \\mid \\param{p})\\) differentiable on prev slide!↩︎\nWe achieve this simplification because the derivative operator is additive: \\(\\frac{d}{dx}\\left[ f(x) + g(x) \\right] = \\frac{d}{dx}f(x) + \\frac{d}{dx}g(x)\\)↩︎\nA complication we put aside for now: do the features \\(X\\) we chose in fact causally impact \\(Y\\)? See Hastie, Tibshirani, and Friedman (2013)!↩︎",
+    "crumbs": [
+      "Week 10: Oct 29"
+    ]
   },
   {
     "objectID": "writeups/lab-6-clarifications/index.html",
@@ -2766,35 +2879,35 @@
     "href": "w03/slides.html#applying-this-to-the-disease-data",
     "title": "Week 3: Random Variables",
     "section": "Applying This to the Disease Data",
-    "text": "Applying This to the Disease Data\n\nIf we want the number of people who have the disease:\n\n\n\nCode\n# Compute the *number* of people who have the disease\nsum(ppl_df$has_disease)\n\n\n[1] 0\n\n\n\nIf we want the proportion of people who have the disease:\n\n\n\nCode\n# Compute the *proportion* of people who have the disease\nmean(ppl_df$has_disease)\n\n\n[1] 0\n\n\n\n(And if you dislike scientific notation like I do…)\n\n\n\nCode\nformat(mean(ppl_df$has_disease), scientific = FALSE)\n\n\n[1] \"0\"\n\n\n\n(Foreshadowing Monte Carlo methods)"
+    "text": "Applying This to the Disease Data\n\nIf we want the number of people who have the disease:\n\n\n\nCode\n# Compute the *number* of people who have the disease\nsum(ppl_df$has_disease)\n\n\n[1] 1\n\n\n\nIf we want the proportion of people who have the disease:\n\n\n\nCode\n# Compute the *proportion* of people who have the disease\nmean(ppl_df$has_disease)\n\n\n[1] 1e-04\n\n\n\n(And if you dislike scientific notation like I do…)\n\n\n\nCode\nformat(mean(ppl_df$has_disease), scientific = FALSE)\n\n\n[1] \"0.0001\"\n\n\n\n(Foreshadowing Monte Carlo methods)"
   },
   {
     "objectID": "w03/slides.html#data-generating-process-test-results",
     "href": "w03/slides.html#data-generating-process-test-results",
     "title": "Week 3: Random Variables",
     "section": "Data-Generating Process: Test Results",
-    "text": "Data-Generating Process: Test Results\n\n\nCode\nlibrary(dplyr)\n# Data Generating Process\ntake_test &lt;- function(is_sick) {\n  if (is_sick) {\n    return(rbinom(1,1,p_pos_given_sick))\n  } else {\n    return(rbinom(1,1,p_pos_given_healthy))\n  }\n}\nppl_df['test_result'] &lt;- unlist(lapply(ppl_df$has_disease, take_test))\nnum_positive &lt;- sum(ppl_df$test_result)\np_positive &lt;- mean(ppl_df$test_result)\nwriteLines(paste0(num_positive,\" positive tests / \",num_people,\" total = \",p_positive))\n\n\n102 positive tests / 10000 total = 0.0102\n\n\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n1\n0\n0\n\n\n2\n0\n0\n\n\n3\n0\n0\n\n\n4\n0\n0\n\n\n5\n0\n0\n\n\n6\n0\n0"
+    "text": "Data-Generating Process: Test Results\n\n\nCode\nlibrary(dplyr)\n# Data Generating Process\ntake_test &lt;- function(is_sick) {\n  if (is_sick) {\n    return(rbinom(1,1,p_pos_given_sick))\n  } else {\n    return(rbinom(1,1,p_pos_given_healthy))\n  }\n}\nppl_df['test_result'] &lt;- unlist(lapply(ppl_df$has_disease, take_test))\nnum_positive &lt;- sum(ppl_df$test_result)\np_positive &lt;- mean(ppl_df$test_result)\nwriteLines(paste0(num_positive,\" positive tests / \",num_people,\" total = \",p_positive))\n\n\n89 positive tests / 10000 total = 0.0089\n\n\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n1\n0\n0\n\n\n2\n0\n0\n\n\n3\n0\n0\n\n\n4\n0\n0\n\n\n5\n0\n0\n\n\n6\n0\n0"
   },
   {
     "objectID": "w03/slides.html#zooming-in-on-positive-tests",
     "href": "w03/slides.html#zooming-in-on-positive-tests",
     "title": "Week 3: Random Variables",
     "section": "Zooming In On Positive Tests",
-    "text": "Zooming In On Positive Tests\n\n\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n51\n0\n1\n\n\n123\n0\n1\n\n\n140\n0\n1\n\n\n144\n0\n1\n\n\n148\n0\n1\n\n\n292\n0\n1\n\n\n\n\n\n\n\n\nBo doesn’t have it, and neither do 110 of the 111 total people who tested positive!\nBut, in the real world, we only observe \\(T\\)"
+    "text": "Zooming In On Positive Tests\n\n\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n106\n0\n1\n\n\n190\n0\n1\n\n\n330\n0\n1\n\n\n371\n0\n1\n\n\n413\n0\n1\n\n\n445\n0\n1\n\n\n\n\n\n\n\n\nBo doesn’t have it, and neither do 110 of the 111 total people who tested positive!\nBut, in the real world, we only observe \\(T\\)"
   },
   {
     "objectID": "w03/slides.html#zooming-in-on-disease-havers",
     "href": "w03/slides.html#zooming-in-on-disease-havers",
     "title": "Week 3: Random Variables",
     "section": "Zooming In On Disease-Havers",
-    "text": "Zooming In On Disease-Havers\n\nWhat if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?\n\n\n\nCode\n#disp(ppl_df[ppl_df$has_disease == 1,])\nppl_df[ppl_df$has_disease == 1,]\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n\n\n\n\nIs this always going to be the case?\n\n\n\n\nNum with disease: 0\nProportion with disease: 0\nNumber of positive tests: 38\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n\n\n\n\n\n\n\nNum with disease: 1\nProportion with disease: 0.0002\nNumber of positive tests: 60\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n1043\n1\n1"
+    "text": "Zooming In On Disease-Havers\n\nWhat if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?\n\n\n\nCode\n#disp(ppl_df[ppl_df$has_disease == 1,])\nppl_df[ppl_df$has_disease == 1,]\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n7587\n1\n1\n\n\n\n\n\n\nIs this always going to be the case?\n\n\n\n\nNum with disease: 0\nProportion with disease: 0\nNumber of positive tests: 52\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n\n\n\n\n\n\n\nNum with disease: 1\nProportion with disease: 0.0002\nNumber of positive tests: 44\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n3731\n1\n1"
   },
   {
     "objectID": "w03/slides.html#worst-case-worlds",
     "href": "w03/slides.html#worst-case-worlds",
     "title": "Week 3: Random Variables",
     "section": "Worst-Case Worlds",
-    "text": "Worst-Case Worlds\n\n\n\n\nWorld #50 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   277           1           0\n2  2701           1           1\n\n\nWorld #125 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1    22           1           1\n2  1762           1           0\n\n\nWorld #512 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   782           1           0\n2  4864           1           1\n\n\nWorld #558 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1811           1           0\n\n\nWorld #693 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2740           1           0\n\n\nWorld #702 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1626           1           0\n\n\nWorld #729 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2565           1           0\n\n\nWorld #886 / 1000 (5000 people):\n# A tibble: 3 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   249           1           1\n2  1089           1           0\n3  2627           1           1\n\n\nWorld #954 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1022           1           0\n\n\n[1] \"0.0000008\"\n\n\n\nHow unlikely is this? Math:\n\\[\n\\begin{align*}\n\\Pr(\\textsf{T}^- \\cap \\textsf{Sick}) &= \\Pr(\\textsf{T}^- \\mid \\textsf{Sick})\\Pr(\\textsf{Sick}) \\\\\n&= (0.01)\\frac{1}{10000} \\\\\n&= \\frac{1}{1000000}\n\\end{align*}\n\\]\nComputers:\n\n\nFalse Negatives: 1, Total Cases: 1000000\n\n\nFalse Negative Rate: 0.000001\n\n\n(Perfect match!)"
+    "text": "Worst-Case Worlds\n\n\n\n\nWorld #17 / 1000 (5000 people):\n# A tibble: 3 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   496           1           1\n2  3858           1           1\n3  4818           1           0\n\n\nWorld #74 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1711           1           0\n\n\nWorld #108 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   324           1           0\n2  2870           1           1\n\n\nWorld #912 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2678           1           0\n\n\n[1] \"0.0000008\"\n\n\n\nHow unlikely is this? Math:\n\\[\n\\begin{align*}\n\\Pr(\\textsf{T}^- \\cap \\textsf{Sick}) &= \\Pr(\\textsf{T}^- \\mid \\textsf{Sick})\\Pr(\\textsf{Sick}) \\\\\n&= (0.01)\\frac{1}{10000} \\\\\n&= \\frac{1}{1000000}\n\\end{align*}\n\\]\nComputers:\n\n\nFalse Negatives: 0, Total Cases: 1000000\n\n\nFalse Negative Rate: 0\n\n\n(Perfect match!)"
   },
   {
     "objectID": "w03/slides.html#bayes-takeaway",
@@ -2815,28 +2928,28 @@
     "href": "w03/slides.html#birthday-problem",
     "title": "Week 3: Random Variables",
     "section": "Birthday Problem",
-    "text": "Birthday Problem\n\n\n\n30 people gather in a room together. What is the probability that two of them share the same birthday?\nAnalytic solution is fun, but requires some thought… Monte Carlo it!\n\n\n\n\nCode\ngen_bday_room &lt;- function(room_num=NULL) {\n  num_people &lt;- 30\n  num_days &lt;- 366\n  ppl_df &lt;- tibble(id=seq(1,num_people))\nbirthdays &lt;- sample(1:num_days, num_people,replace = T)\n  ppl_df['birthday'] &lt;- birthdays\n  if (!is.null(room_num)) {\n    ppl_df &lt;- ppl_df %&gt;% mutate(room_num=room_num) %&gt;% relocate(room_num)\n  }\n  return(ppl_df)\n}\nppl_df &lt;- gen_bday_room(1)\n#disp(ppl_df %&gt;% head())\nppl_df |&gt; head()\n\n\n\n\n\n\nroom_num\nid\nbirthday\n\n\n\n\n1\n1\n63\n\n\n1\n2\n343\n\n\n1\n3\n20\n\n\n1\n4\n94\n\n\n1\n5\n82\n\n\n1\n6\n62"
+    "text": "Birthday Problem\n\n\n\n30 people gather in a room together. What is the probability that two of them share the same birthday?\nAnalytic solution is fun, but requires some thought… Monte Carlo it!\n\n\n\n\nCode\ngen_bday_room &lt;- function(room_num=NULL) {\n  num_people &lt;- 30\n  num_days &lt;- 366\n  ppl_df &lt;- tibble(id=seq(1,num_people))\nbirthdays &lt;- sample(1:num_days, num_people,replace = T)\n  ppl_df['birthday'] &lt;- birthdays\n  if (!is.null(room_num)) {\n    ppl_df &lt;- ppl_df %&gt;% mutate(room_num=room_num) %&gt;% relocate(room_num)\n  }\n  return(ppl_df)\n}\nppl_df &lt;- gen_bday_room(1)\n#disp(ppl_df %&gt;% head())\nppl_df |&gt; head()\n\n\n\n\n\n\nroom_num\nid\nbirthday\n\n\n\n\n1\n1\n112\n\n\n1\n2\n196\n\n\n1\n3\n282\n\n\n1\n4\n365\n\n\n1\n5\n44\n\n\n1\n6\n299"
   },
   {
     "objectID": "w03/slides.html#section-5",
     "href": "w03/slides.html#section-5",
     "title": "Week 3: Random Variables",
     "section": "",
-    "text": "i\nj\nbday\n\n\n\n\n1\n21\n63\n\n\n2\n10\n343\n\n\n11\n24\n15\n\n\n13\n27\n19"
+    "text": "i\nj\nbday\n\n\n\n\n2\n8\n196"
   },
   {
     "objectID": "w03/slides.html#section-6",
     "href": "w03/slides.html#section-6",
     "title": "Week 3: Random Variables",
     "section": "",
-    "text": "Let’s try more rooms…\n\n\n\n\nCode\n# Get tibbles for each room\nlibrary(purrr)\ngen_bday_rooms &lt;- function(num_rooms) {\n  rooms_df &lt;- tibble()\n  for (r in seq(1, num_rooms)) {\n      cur_room &lt;- gen_bday_room(r)\n      rooms_df &lt;- bind_rows(rooms_df, cur_room)\n  }\n  return(rooms_df)\n}\nnum_rooms &lt;- 10\nrooms_df &lt;- gen_bday_rooms(num_rooms)\nrooms_df %&gt;% group_by(room_num) %&gt;% group_map(~ get_shared_bdays(.x, is_grouped=TRUE))\n\n\n[[1]]\n# A tibble: 0 × 0\n\n[[2]]\n# A tibble: 0 × 0\n\n[[3]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     4    20   322\n2     8    14   231\n\n[[4]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    20    28    76\n\n[[5]]\n# A tibble: 0 × 0\n\n[[6]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    18    27   198\n\n[[7]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    19    21   316\n\n[[8]]\n# A tibble: 4 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     1    22   316\n2     5    13    53\n3    14    18   249\n4    17    26   322\n\n[[9]]\n# A tibble: 0 × 0\n\n[[10]]\n# A tibble: 3 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     6    29   232\n2     7    20    36\n3    14    30   291\n\n\n\nNumber of shared birthdays per room:\n\n\nCode\n# Now just get the # shared bdays\nshared_per_room &lt;- rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_num=TRUE))\nshared_per_room &lt;- unlist(shared_per_room)\nshared_per_room\n\n\n [1] 0 0 2 1 0 1 1 4 0 3\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared})\\)\n\n\n\n[1] 0.6"
+    "text": "Let’s try more rooms…\n\n\n\n\nCode\n# Get tibbles for each room\nlibrary(purrr)\ngen_bday_rooms &lt;- function(num_rooms) {\n  rooms_df &lt;- tibble()\n  for (r in seq(1, num_rooms)) {\n      cur_room &lt;- gen_bday_room(r)\n      rooms_df &lt;- bind_rows(rooms_df, cur_room)\n  }\n  return(rooms_df)\n}\nnum_rooms &lt;- 10\nrooms_df &lt;- gen_bday_rooms(num_rooms)\nrooms_df %&gt;% group_by(room_num) %&gt;% group_map(~ get_shared_bdays(.x, is_grouped=TRUE))\n\n\n[[1]]\n# A tibble: 0 × 0\n\n[[2]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     7    26   274\n\n[[3]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    23    25   324\n\n[[4]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     7    13   169\n\n[[5]]\n# A tibble: 3 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     1     2   249\n2     8    27   365\n3    12    26    17\n\n[[6]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     7    11   101\n2    13    23   253\n\n[[7]]\n# A tibble: 0 × 0\n\n[[8]]\n# A tibble: 0 × 0\n\n[[9]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    19    29   159\n\n[[10]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    26    27   136\n\n\n\nNumber of shared birthdays per room:\n\n\nCode\n# Now just get the # shared bdays\nshared_per_room &lt;- rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_num=TRUE))\nshared_per_room &lt;- unlist(shared_per_room)\nshared_per_room\n\n\n [1] 0 1 1 1 3 2 0 0 1 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared})\\)\n\n\n\n[1] 0.7"
   },
   {
     "objectID": "w03/slides.html#section-7",
     "href": "w03/slides.html#section-7",
     "title": "Week 3: Random Variables",
     "section": "",
-    "text": "How about A THOUSAND ROOMS?\n\n\n\n  [1] 1 0 1 1 0 1 1 1 1 1 1 0 1 0 0 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 1\n [38] 0 1 0 1 1 0 1 0 0 1 0 1 1 1 1 1 1 1 0 0 1 0 1 1 1 0 1 1 0 1 1 0 1 1 1 1 1\n [75] 1 1 1 1 0 1 1 1 0 1 1 1 1 1 1 0 1 1 0 0 0 1 0 1 1 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared bday})\\)?\n\n\n\n[1] 0.69\n\n\n\nThe analytic solution: \\(\\Pr(\\text{shared} \\mid k\\text{ people in room}) = 1 - \\frac{366!}{366^{k}(366-k)!}\\)\nIn our case: \\(1 - \\frac{366!}{366^{30}(366-30)!} = 1 - \\frac{366!}{366^{30}336!} = 1 - \\frac{\\prod_{i=337}^{366}i}{366^{30}}\\)\nR can juust barely handle these numbers:\n\n\n\n[1] 0.7053034"
+    "text": "How about A THOUSAND ROOMS?\n\n\n\n  [1] 1 0 1 1 1 1 1 0 0 0 0 1 0 1 0 1 0 0 0 1 0 1 0 1 0 0 0 1 1 1 1 1 1 1 0 1 1\n [38] 1 0 1 0 0 1 0 0 0 0 1 1 1 1 1 1 1 0 0 0 1 0 0 1 1 1 0 1 1 1 1 0 1 1 1 1 1\n [75] 1 1 0 0 1 1 0 1 1 1 1 1 0 1 0 0 0 0 1 1 1 1 1 1 0 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared bday})\\)?\n\n\n\n[1] 0.61\n\n\n\nThe analytic solution: \\(\\Pr(\\text{shared} \\mid k\\text{ people in room}) = 1 - \\frac{366!}{366^{k}(366-k)!}\\)\nIn our case: \\(1 - \\frac{366!}{366^{30}(366-30)!} = 1 - \\frac{366!}{366^{30}336!} = 1 - \\frac{\\prod_{i=337}^{366}i}{366^{30}}\\)\nR can juust barely handle these numbers:\n\n\n\n[1] 0.7053034"
   },
   {
     "objectID": "w03/slides.html#wrapping-up",
@@ -3361,7 +3474,7 @@
     "href": "w03/index.html#applying-this-to-the-disease-data",
     "title": "Week 3: Random Variables",
     "section": "Applying This to the Disease Data",
-    "text": "Applying This to the Disease Data\n\nIf we want the number of people who have the disease:\n\n\n\nCode\n# Compute the *number* of people who have the disease\nsum(ppl_df$has_disease)\n\n\n[1] 2\n\n\n\nIf we want the proportion of people who have the disease:\n\n\n\nCode\n# Compute the *proportion* of people who have the disease\nmean(ppl_df$has_disease)\n\n\n[1] 2e-04\n\n\n\n(And if you dislike scientific notation like I do…)\n\n\n\nCode\nformat(mean(ppl_df$has_disease), scientific = FALSE)\n\n\n[1] \"0.0002\"\n\n\n\n(Foreshadowing Monte Carlo methods)",
+    "text": "Applying This to the Disease Data\n\nIf we want the number of people who have the disease:\n\n\n\nCode\n# Compute the *number* of people who have the disease\nsum(ppl_df$has_disease)\n\n\n[1] 1\n\n\n\nIf we want the proportion of people who have the disease:\n\n\n\nCode\n# Compute the *proportion* of people who have the disease\nmean(ppl_df$has_disease)\n\n\n[1] 1e-04\n\n\n\n(And if you dislike scientific notation like I do…)\n\n\n\nCode\nformat(mean(ppl_df$has_disease), scientific = FALSE)\n\n\n[1] \"0.0001\"\n\n\n\n(Foreshadowing Monte Carlo methods)",
     "crumbs": [
       "Week 3: Sep 10"
     ]
@@ -3371,7 +3484,7 @@
     "href": "w03/index.html#data-generating-process-test-results",
     "title": "Week 3: Random Variables",
     "section": "Data-Generating Process: Test Results",
-    "text": "Data-Generating Process: Test Results\n\n\nCode\nlibrary(dplyr)\n# Data Generating Process\ntake_test &lt;- function(is_sick) {\n  if (is_sick) {\n    return(rbinom(1,1,p_pos_given_sick))\n  } else {\n    return(rbinom(1,1,p_pos_given_healthy))\n  }\n}\nppl_df['test_result'] &lt;- unlist(lapply(ppl_df$has_disease, take_test))\nnum_positive &lt;- sum(ppl_df$test_result)\np_positive &lt;- mean(ppl_df$test_result)\nwriteLines(paste0(num_positive,\" positive tests / \",num_people,\" total = \",p_positive))\n\n\n84 positive tests / 10000 total = 0.0084\n\n\n\n#disp(ppl_df %&gt;% head(50), obs_per_page = 3)\nppl_df |&gt; head()\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n1\n0\n0\n\n\n2\n0\n0\n\n\n3\n0\n0\n\n\n4\n0\n0\n\n\n5\n0\n0\n\n\n6\n0\n0",
+    "text": "Data-Generating Process: Test Results\n\n\nCode\nlibrary(dplyr)\n# Data Generating Process\ntake_test &lt;- function(is_sick) {\n  if (is_sick) {\n    return(rbinom(1,1,p_pos_given_sick))\n  } else {\n    return(rbinom(1,1,p_pos_given_healthy))\n  }\n}\nppl_df['test_result'] &lt;- unlist(lapply(ppl_df$has_disease, take_test))\nnum_positive &lt;- sum(ppl_df$test_result)\np_positive &lt;- mean(ppl_df$test_result)\nwriteLines(paste0(num_positive,\" positive tests / \",num_people,\" total = \",p_positive))\n\n\n87 positive tests / 10000 total = 0.0087\n\n\n\n#disp(ppl_df %&gt;% head(50), obs_per_page = 3)\nppl_df |&gt; head()\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n1\n0\n0\n\n\n2\n0\n0\n\n\n3\n0\n0\n\n\n4\n0\n0\n\n\n5\n0\n0\n\n\n6\n0\n0",
     "crumbs": [
       "Week 3: Sep 10"
     ]
@@ -3381,7 +3494,7 @@
     "href": "w03/index.html#zooming-in-on-positive-tests",
     "title": "Week 3: Random Variables",
     "section": "Zooming In On Positive Tests",
-    "text": "Zooming In On Positive Tests\n\n\n\npos_ppl &lt;- ppl_df %&gt;% filter(test_result == 1)\n#disp(pos_ppl, obs_per_page = 10)\npos_ppl |&gt; head()\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n27\n0\n1\n\n\n85\n0\n1\n\n\n266\n0\n1\n\n\n288\n0\n1\n\n\n319\n0\n1\n\n\n366\n0\n1\n\n\n\n\n\n\n\n\nBo doesn’t have it, and neither do 110 of the 111 total people who tested positive!\nBut, in the real world, we only observe \\(T\\)",
+    "text": "Zooming In On Positive Tests\n\n\n\npos_ppl &lt;- ppl_df %&gt;% filter(test_result == 1)\n#disp(pos_ppl, obs_per_page = 10)\npos_ppl |&gt; head()\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n124\n0\n1\n\n\n129\n0\n1\n\n\n278\n0\n1\n\n\n688\n0\n1\n\n\n711\n0\n1\n\n\n749\n0\n1\n\n\n\n\n\n\n\n\nBo doesn’t have it, and neither do 110 of the 111 total people who tested positive!\nBut, in the real world, we only observe \\(T\\)",
     "crumbs": [
       "Week 3: Sep 10"
     ]
@@ -3391,7 +3504,7 @@
     "href": "w03/index.html#zooming-in-on-disease-havers",
     "title": "Week 3: Random Variables",
     "section": "Zooming In On Disease-Havers",
-    "text": "Zooming In On Disease-Havers\n\nWhat if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?\n\n\n\nCode\n#disp(ppl_df[ppl_df$has_disease == 1,])\nppl_df[ppl_df$has_disease == 1,]\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n952\n1\n1\n\n\n9593\n1\n1\n\n\n\n\n\n\nIs this always going to be the case?\n\n\n\n\nNum with disease: 0\nProportion with disease: 0\nNumber of positive tests: 52\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n\n\n\n\n\n\n#disp(simulate_disease(5000, 1/10000))\nsimulate_disease(5000, 1/10000)\n\nNum with disease: 0\nProportion with disease: 0\nNumber of positive tests: 48\n\n\n\n\n\n\nid\nhas_disease\ntest_result",
+    "text": "Zooming In On Disease-Havers\n\nWhat if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?\n\n\n\nCode\n#disp(ppl_df[ppl_df$has_disease == 1,])\nppl_df[ppl_df$has_disease == 1,]\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n3872\n1\n1\n\n\n\n\n\n\nIs this always going to be the case?\n\n\n\n\nNum with disease: 1\nProportion with disease: 0.0002\nNumber of positive tests: 50\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n4053\n1\n1\n\n\n\n\n\n\n\n\n#disp(simulate_disease(5000, 1/10000))\nsimulate_disease(5000, 1/10000)\n\nNum with disease: 1\nProportion with disease: 0.0002\nNumber of positive tests: 43\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n2006\n1\n1",
     "crumbs": [
       "Week 3: Sep 10"
     ]
@@ -3401,7 +3514,7 @@
     "href": "w03/index.html#worst-case-worlds",
     "title": "Week 3: Random Variables",
     "section": "Worst-Case Worlds",
-    "text": "Worst-Case Worlds\n\n\n\nfor (i in seq(1,1000)) {\n  sim_result &lt;- simulate_disease(5000, 1/10000, verbose = FALSE, return_all_detected = FALSE, return_df = FALSE, return_info = TRUE)\n  if (!sim_result$all_detected) {\n    writeLines(paste0(\"World #\",i,\" / 1000 (\",sim_result$num_people,\" people):\"))\n    print(sim_result$df)\n    writeLines('\\n')\n  }\n}\n\nWorld #86 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2145           1           0\n\n\nWorld #176 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  3415           1           0\n\n\nWorld #231 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  4978           1           0\n\n\nWorld #305 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2839           1           0\n\n\nWorld #331 / 1000 (5000 people):\n# A tibble: 3 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   594           1           1\n2   931           1           0\n3  1229           1           1\n\n\nWorld #341 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  4680           1           1\n2  4748           1           0\n\n\nWorld #649 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1912           1           0\n2  2668           1           1\n\n\nWorld #922 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2058           1           0\n\nformat(4 / 5000000, scientific = FALSE)\n\n[1] \"0.0000008\"\n\n\n\nHow unlikely is this? Math:\n\\[\n\\begin{align*}\n\\Pr(\\textsf{T}^- \\cap \\textsf{Sick}) &= \\Pr(\\textsf{T}^- \\mid \\textsf{Sick})\\Pr(\\textsf{Sick}) \\\\\n&= (0.01)\\frac{1}{10000} \\\\\n&= \\frac{1}{1000000}\n\\end{align*}\n\\]\nComputers:\n\nresult_df &lt;- simulate_disease(1000000, 1/10000, verbose = FALSE, return_full_df = TRUE)\nfalse_negatives &lt;- result_df[result_df$has_disease == 1 & result_df$test_result == 0,]\nnum_false_negatives &lt;- nrow(false_negatives)\nwriteLines(paste0(\"False Negatives: \",num_false_negatives,\", Total Cases: \", nrow(result_df)))\n\nFalse Negatives: 0, Total Cases: 1000000\n\nfalse_negative_rate &lt;- num_false_negatives / nrow(result_df)\nfalse_negative_rate_decimal &lt;- format(false_negative_rate, scientific = FALSE)\nwriteLines(paste0(\"False Negative Rate: \", false_negative_rate_decimal))\n\nFalse Negative Rate: 0\n\n\n(Perfect match!)",
+    "text": "Worst-Case Worlds\n\n\n\nfor (i in seq(1,1000)) {\n  sim_result &lt;- simulate_disease(5000, 1/10000, verbose = FALSE, return_all_detected = FALSE, return_df = FALSE, return_info = TRUE)\n  if (!sim_result$all_detected) {\n    writeLines(paste0(\"World #\",i,\" / 1000 (\",sim_result$num_people,\" people):\"))\n    print(sim_result$df)\n    writeLines('\\n')\n  }\n}\n\nWorld #318 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   442           1           1\n2   536           1           0\n\n\nWorld #394 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2425           1           1\n2  4062           1           0\n\n\nWorld #694 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1     2           1           0\n\n\nWorld #850 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  3987           1           0\n\n\nWorld #969 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   800           1           0\n2  2650           1           1\n\nformat(4 / 5000000, scientific = FALSE)\n\n[1] \"0.0000008\"\n\n\n\nHow unlikely is this? Math:\n\\[\n\\begin{align*}\n\\Pr(\\textsf{T}^- \\cap \\textsf{Sick}) &= \\Pr(\\textsf{T}^- \\mid \\textsf{Sick})\\Pr(\\textsf{Sick}) \\\\\n&= (0.01)\\frac{1}{10000} \\\\\n&= \\frac{1}{1000000}\n\\end{align*}\n\\]\nComputers:\n\nresult_df &lt;- simulate_disease(1000000, 1/10000, verbose = FALSE, return_full_df = TRUE)\nfalse_negatives &lt;- result_df[result_df$has_disease == 1 & result_df$test_result == 0,]\nnum_false_negatives &lt;- nrow(false_negatives)\nwriteLines(paste0(\"False Negatives: \",num_false_negatives,\", Total Cases: \", nrow(result_df)))\n\nFalse Negatives: 1, Total Cases: 1000000\n\nfalse_negative_rate &lt;- num_false_negatives / nrow(result_df)\nfalse_negative_rate_decimal &lt;- format(false_negative_rate, scientific = FALSE)\nwriteLines(paste0(\"False Negative Rate: \", false_negative_rate_decimal))\n\nFalse Negative Rate: 0.000001\n\n\n(Perfect match!)",
     "crumbs": [
       "Week 3: Sep 10"
     ]
@@ -3431,7 +3544,7 @@
     "href": "w03/index.html#birthday-problem",
     "title": "Week 3: Random Variables",
     "section": "Birthday Problem",
-    "text": "Birthday Problem\n\n\n\n30 people gather in a room together. What is the probability that two of them share the same birthday?\nAnalytic solution is fun, but requires some thought… Monte Carlo it!\n\n\n\n\nCode\ngen_bday_room &lt;- function(room_num=NULL) {\n  num_people &lt;- 30\n  num_days &lt;- 366\n  ppl_df &lt;- tibble(id=seq(1,num_people))\nbirthdays &lt;- sample(1:num_days, num_people,replace = T)\n  ppl_df['birthday'] &lt;- birthdays\n  if (!is.null(room_num)) {\n    ppl_df &lt;- ppl_df %&gt;% mutate(room_num=room_num) %&gt;% relocate(room_num)\n  }\n  return(ppl_df)\n}\nppl_df &lt;- gen_bday_room(1)\n#disp(ppl_df %&gt;% head())\nppl_df |&gt; head()\n\n\n\n\n\n\nroom_num\nid\nbirthday\n\n\n\n\n1\n1\n98\n\n\n1\n2\n223\n\n\n1\n3\n356\n\n\n1\n4\n265\n\n\n1\n5\n299\n\n\n1\n6\n266",
+    "text": "Birthday Problem\n\n\n\n30 people gather in a room together. What is the probability that two of them share the same birthday?\nAnalytic solution is fun, but requires some thought… Monte Carlo it!\n\n\n\n\nCode\ngen_bday_room &lt;- function(room_num=NULL) {\n  num_people &lt;- 30\n  num_days &lt;- 366\n  ppl_df &lt;- tibble(id=seq(1,num_people))\nbirthdays &lt;- sample(1:num_days, num_people,replace = T)\n  ppl_df['birthday'] &lt;- birthdays\n  if (!is.null(room_num)) {\n    ppl_df &lt;- ppl_df %&gt;% mutate(room_num=room_num) %&gt;% relocate(room_num)\n  }\n  return(ppl_df)\n}\nppl_df &lt;- gen_bday_room(1)\n#disp(ppl_df %&gt;% head())\nppl_df |&gt; head()\n\n\n\n\n\n\nroom_num\nid\nbirthday\n\n\n\n\n1\n1\n102\n\n\n1\n2\n132\n\n\n1\n3\n76\n\n\n1\n4\n35\n\n\n1\n5\n8\n\n\n1\n6\n211",
     "crumbs": [
       "Week 3: Sep 10"
     ]
@@ -3441,7 +3554,7 @@
     "href": "w03/index.html#section-5",
     "title": "Week 3: Random Variables",
     "section": "",
-    "text": "# Inefficient version (return_num=FALSE) is for: if you want tibbles of *all* shared bdays for each room\nget_shared_bdays &lt;- function(df, is_grouped=NULL, return_num=FALSE, return_bool=FALSE) {\n  bday_pairs &lt;- tibble()\n  for (i in 1:(nrow(df)-1)) {\n    i_data &lt;- df[i,]\n    i_bday &lt;- i_data$birthday\n    for (j in (i+1):nrow(df)) {\n      j_data &lt;- df[j,]\n      j_bday &lt;- j_data$birthday\n      # Check if they're the same\n      same_bday &lt;- i_bday == j_bday\n      if (same_bday) {\n        if (return_bool) {\n          return(1)\n        }\n        pair_data &lt;- tibble(i=i,j=j,bday=i_bday)\n        if (!is.null(is_grouped)) {\n          i_room &lt;- i_data$room_num\n          pair_data['room'] &lt;- i_room\n        }\n        bday_pairs &lt;- bind_rows(bday_pairs, pair_data)\n      }\n    }\n  }\n  if (return_bool) {\n    return(0)\n  }\n  if (return_num) {\n    return(nrow(bday_pairs))\n  }\n  return(bday_pairs)\n}\n#get_shared_bdays(ppl_df)\nget_shared_bdays(ppl_df)\n\n\n\n\n\ni\nj\nbday\n\n\n\n\n10\n27\n349\n\n\n13\n15\n131\n\n\n13\n17\n131\n\n\n13\n30\n131\n\n\n15\n17\n131\n\n\n15\n30\n131\n\n\n17\n30\n131",
+    "text": "# Inefficient version (return_num=FALSE) is for: if you want tibbles of *all* shared bdays for each room\nget_shared_bdays &lt;- function(df, is_grouped=NULL, return_num=FALSE, return_bool=FALSE) {\n  bday_pairs &lt;- tibble()\n  for (i in 1:(nrow(df)-1)) {\n    i_data &lt;- df[i,]\n    i_bday &lt;- i_data$birthday\n    for (j in (i+1):nrow(df)) {\n      j_data &lt;- df[j,]\n      j_bday &lt;- j_data$birthday\n      # Check if they're the same\n      same_bday &lt;- i_bday == j_bday\n      if (same_bday) {\n        if (return_bool) {\n          return(1)\n        }\n        pair_data &lt;- tibble(i=i,j=j,bday=i_bday)\n        if (!is.null(is_grouped)) {\n          i_room &lt;- i_data$room_num\n          pair_data['room'] &lt;- i_room\n        }\n        bday_pairs &lt;- bind_rows(bday_pairs, pair_data)\n      }\n    }\n  }\n  if (return_bool) {\n    return(0)\n  }\n  if (return_num) {\n    return(nrow(bday_pairs))\n  }\n  return(bday_pairs)\n}\n#get_shared_bdays(ppl_df)\nget_shared_bdays(ppl_df)\n\n\n\n\n\ni\nj\nbday\n\n\n\n\n7\n11\n110",
     "crumbs": [
       "Week 3: Sep 10"
     ]
@@ -3451,7 +3564,7 @@
     "href": "w03/index.html#section-6",
     "title": "Week 3: Random Variables",
     "section": "",
-    "text": "Let’s try more rooms…\n\n\n\n# Get tibbles for each room\nlibrary(purrr)\ngen_bday_rooms &lt;- function(num_rooms) {\n  rooms_df &lt;- tibble()\n  for (r in seq(1, num_rooms)) {\n      cur_room &lt;- gen_bday_room(r)\n      rooms_df &lt;- bind_rows(rooms_df, cur_room)\n  }\n  return(rooms_df)\n}\nnum_rooms &lt;- 10\nrooms_df &lt;- gen_bday_rooms(num_rooms)\nrooms_df %&gt;% group_by(room_num) %&gt;% group_map(~ get_shared_bdays(.x, is_grouped=TRUE))\n\n[[1]]\n# A tibble: 3 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     2    20   232\n2     5    14    40\n3     8    21   134\n\n[[2]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     6    27   322\n2    11    22   243\n\n[[3]]\n# A tibble: 0 × 0\n\n[[4]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    13    14   179\n\n[[5]]\n# A tibble: 4 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     2     8   323\n2     2    17   323\n3     8    17   323\n4     9    14   129\n\n[[6]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     4    10   229\n\n[[7]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    18    21   110\n\n[[8]]\n# A tibble: 0 × 0\n\n[[9]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     1     3   336\n\n[[10]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    17    19    73\n\n\n\nNumber of shared birthdays per room:\n\n# Now just get the # shared bdays\nshared_per_room &lt;- rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_num=TRUE))\nshared_per_room &lt;- unlist(shared_per_room)\nshared_per_room\n\n [1] 3 2 0 1 4 1 1 0 1 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared})\\)\n\n\nsum(shared_per_room &gt; 0) / num_rooms\n\n[1] 0.8",
+    "text": "Let’s try more rooms…\n\n\n\n# Get tibbles for each room\nlibrary(purrr)\ngen_bday_rooms &lt;- function(num_rooms) {\n  rooms_df &lt;- tibble()\n  for (r in seq(1, num_rooms)) {\n      cur_room &lt;- gen_bday_room(r)\n      rooms_df &lt;- bind_rows(rooms_df, cur_room)\n  }\n  return(rooms_df)\n}\nnum_rooms &lt;- 10\nrooms_df &lt;- gen_bday_rooms(num_rooms)\nrooms_df %&gt;% group_by(room_num) %&gt;% group_map(~ get_shared_bdays(.x, is_grouped=TRUE))\n\n[[1]]\n# A tibble: 3 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     6    21   242\n2     9    26   216\n3    22    24   168\n\n[[2]]\n# A tibble: 0 × 0\n\n[[3]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     8    28   280\n\n[[4]]\n# A tibble: 0 × 0\n\n[[5]]\n# A tibble: 0 × 0\n\n[[6]]\n# A tibble: 0 × 0\n\n[[7]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    15    17   288\n\n[[8]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     7    20     8\n2    21    27   121\n\n[[9]]\n# A tibble: 0 × 0\n\n[[10]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    11    15   135\n\n\n\nNumber of shared birthdays per room:\n\n# Now just get the # shared bdays\nshared_per_room &lt;- rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_num=TRUE))\nshared_per_room &lt;- unlist(shared_per_room)\nshared_per_room\n\n [1] 3 0 1 0 0 0 1 2 0 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared})\\)\n\n\nsum(shared_per_room &gt; 0) / num_rooms\n\n[1] 0.5",
     "crumbs": [
       "Week 3: Sep 10"
     ]
@@ -3461,7 +3574,7 @@
     "href": "w03/index.html#section-7",
     "title": "Week 3: Random Variables",
     "section": "",
-    "text": "How about A THOUSAND ROOMS?\n\n\nnum_rooms_many &lt;- 100\nmany_rooms_df &lt;- gen_bday_rooms(num_rooms_many)\nanyshared_per_room &lt;- many_rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_bool = TRUE))\nanyshared_per_room &lt;- unlist(anyshared_per_room)\nanyshared_per_room\n\n  [1] 0 0 1 0 1 1 1 1 0 0 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 0 1 1 0 1\n [38] 0 1 1 1 1 0 0 0 1 1 1 1 1 1 1 0 0 1 1 0 1 0 0 0 1 1 1 0 1 1 0 1 1 1 1 1 1\n [75] 1 1 1 0 0 1 1 1 1 1 0 1 1 0 1 1 0 1 1 0 1 0 1 1 1 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared bday})\\)?\n\n\n# And now the probability estimate\nsum(anyshared_per_room &gt; 0) / num_rooms_many\n\n[1] 0.71\n\n\n\nThe analytic solution: \\(\\Pr(\\text{shared} \\mid k\\text{ people in room}) = 1 - \\frac{366!}{366^{k}(366-k)!}\\)\nIn our case: \\(1 - \\frac{366!}{366^{30}(366-30)!} = 1 - \\frac{366!}{366^{30}336!} = 1 - \\frac{\\prod_{i=337}^{366}i}{366^{30}}\\)\nR can juust barely handle these numbers:\n\n\n(exact_solution &lt;- 1 - (prod(seq(337,366))) / (366^30))\n\n[1] 0.7053034",
+    "text": "How about A THOUSAND ROOMS?\n\n\nnum_rooms_many &lt;- 100\nmany_rooms_df &lt;- gen_bday_rooms(num_rooms_many)\nanyshared_per_room &lt;- many_rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_bool = TRUE))\nanyshared_per_room &lt;- unlist(anyshared_per_room)\nanyshared_per_room\n\n  [1] 1 1 0 0 0 1 1 0 1 1 1 1 0 0 1 0 1 0 0 1 1 1 1 0 1 1 1 1 1 1 1 0 0 0 1 1 0\n [38] 0 1 1 1 1 1 1 0 1 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 0 0 1 1\n [75] 1 1 1 0 0 1 0 1 1 0 0 1 1 0 0 0 1 0 1 1 1 1 0 1 1 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared bday})\\)?\n\n\n# And now the probability estimate\nsum(anyshared_per_room &gt; 0) / num_rooms_many\n\n[1] 0.67\n\n\n\nThe analytic solution: \\(\\Pr(\\text{shared} \\mid k\\text{ people in room}) = 1 - \\frac{366!}{366^{k}(366-k)!}\\)\nIn our case: \\(1 - \\frac{366!}{366^{30}(366-30)!} = 1 - \\frac{366!}{366^{30}336!} = 1 - \\frac{\\prod_{i=337}^{366}i}{366^{30}}\\)\nR can juust barely handle these numbers:\n\n\n(exact_solution &lt;- 1 - (prod(seq(337,366))) / (366^30))\n\n[1] 0.7053034",
     "crumbs": [
       "Week 3: Sep 10"
     ]
@@ -3741,7 +3854,7 @@
     "href": "w04/index.html#applying-this-to-the-disease-data",
     "title": "Week 4: Discrete Distributions",
     "section": "Applying This to the Disease Data",
-    "text": "Applying This to the Disease Data\n\nIf we want the number of people who have the disease:\n\n\n\nCode\n# Compute the *number* of people who have the disease\nsum(ppl_df$has_disease)\n\n\n[1] 2\n\n\n\nIf we want the proportion of people who have the disease:\n\n\n\nCode\n# Compute the *proportion* of people who have the disease\nmean(ppl_df$has_disease)\n\n\n[1] 2e-04\n\n\n\n(And if you dislike scientific notation like I do…)\n\n\n\nCode\nformat(mean(ppl_df$has_disease), scientific = FALSE)\n\n\n[1] \"0.0002\"\n\n\n\n(Foreshadowing Monte Carlo methods)",
+    "text": "Applying This to the Disease Data\n\nIf we want the number of people who have the disease:\n\n\n\nCode\n# Compute the *number* of people who have the disease\nsum(ppl_df$has_disease)\n\n\n[1] 0\n\n\n\nIf we want the proportion of people who have the disease:\n\n\n\nCode\n# Compute the *proportion* of people who have the disease\nmean(ppl_df$has_disease)\n\n\n[1] 0\n\n\n\n(And if you dislike scientific notation like I do…)\n\n\n\nCode\nformat(mean(ppl_df$has_disease), scientific = FALSE)\n\n\n[1] \"0\"\n\n\n\n(Foreshadowing Monte Carlo methods)",
     "crumbs": [
       "Week 4: Sep 17"
     ]
@@ -3751,7 +3864,7 @@
     "href": "w04/index.html#data-generating-process-test-results",
     "title": "Week 4: Discrete Distributions",
     "section": "Data-Generating Process: Test Results",
-    "text": "Data-Generating Process: Test Results\n\n\nCode\nlibrary(dplyr)\n# Data Generating Process\ntake_test &lt;- function(is_sick) {\n  if (is_sick) {\n    return(rbinom(1,1,p_pos_given_sick))\n  } else {\n    return(rbinom(1,1,p_pos_given_healthy))\n  }\n}\nppl_df['test_result'] &lt;- unlist(lapply(ppl_df$has_disease, take_test))\nnum_positive &lt;- sum(ppl_df$test_result)\np_positive &lt;- mean(ppl_df$test_result)\nwriteLines(paste0(num_positive,\" positive tests / \",num_people,\" total = \",p_positive))\n\n\n108 positive tests / 10000 total = 0.0108\n\n\n\n#disp(ppl_df %&gt;% head(50), obs_per_page = 3)\nppl_df |&gt; head()\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n1\n0\n0\n\n\n2\n0\n0\n\n\n3\n0\n0\n\n\n4\n0\n0\n\n\n5\n0\n0\n\n\n6\n0\n0",
+    "text": "Data-Generating Process: Test Results\n\n\nCode\nlibrary(dplyr)\n# Data Generating Process\ntake_test &lt;- function(is_sick) {\n  if (is_sick) {\n    return(rbinom(1,1,p_pos_given_sick))\n  } else {\n    return(rbinom(1,1,p_pos_given_healthy))\n  }\n}\nppl_df['test_result'] &lt;- unlist(lapply(ppl_df$has_disease, take_test))\nnum_positive &lt;- sum(ppl_df$test_result)\np_positive &lt;- mean(ppl_df$test_result)\nwriteLines(paste0(num_positive,\" positive tests / \",num_people,\" total = \",p_positive))\n\n\n94 positive tests / 10000 total = 0.0094\n\n\n\n#disp(ppl_df %&gt;% head(50), obs_per_page = 3)\nppl_df |&gt; head()\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n1\n0\n0\n\n\n2\n0\n0\n\n\n3\n0\n0\n\n\n4\n0\n0\n\n\n5\n0\n0\n\n\n6\n0\n0",
     "crumbs": [
       "Week 4: Sep 17"
     ]
@@ -3761,7 +3874,7 @@
     "href": "w04/index.html#zooming-in-on-positive-tests",
     "title": "Week 4: Discrete Distributions",
     "section": "Zooming In On Positive Tests",
-    "text": "Zooming In On Positive Tests\n\n\n\npos_ppl &lt;- ppl_df %&gt;% filter(test_result == 1)\n#disp(pos_ppl, obs_per_page = 10)\npos_ppl |&gt; head()\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n148\n0\n1\n\n\n258\n0\n1\n\n\n326\n0\n1\n\n\n379\n0\n1\n\n\n445\n0\n1\n\n\n505\n0\n1\n\n\n\n\n\n\n\n\nBo doesn’t have it, and neither do 110 of the 111 total people who tested positive!\nBut, in the real world, we only observe \\(T\\)",
+    "text": "Zooming In On Positive Tests\n\n\n\npos_ppl &lt;- ppl_df %&gt;% filter(test_result == 1)\n#disp(pos_ppl, obs_per_page = 10)\npos_ppl |&gt; head()\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n27\n0\n1\n\n\n296\n0\n1\n\n\n362\n0\n1\n\n\n377\n0\n1\n\n\n384\n0\n1\n\n\n471\n0\n1\n\n\n\n\n\n\n\n\nBo doesn’t have it, and neither do 110 of the 111 total people who tested positive!\nBut, in the real world, we only observe \\(T\\)",
     "crumbs": [
       "Week 4: Sep 17"
     ]
@@ -3771,7 +3884,7 @@
     "href": "w04/index.html#zooming-in-on-disease-havers",
     "title": "Week 4: Discrete Distributions",
     "section": "Zooming In On Disease-Havers",
-    "text": "Zooming In On Disease-Havers\n\nWhat if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?\n\n\n\nCode\n#disp(ppl_df[ppl_df$has_disease == 1,])\nppl_df[ppl_df$has_disease == 1,]\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n5535\n1\n1\n\n\n6952\n1\n1\n\n\n\n\n\n\nIs this always going to be the case?\n\n\n\n\nNum with disease: 0\nProportion with disease: 0\nNumber of positive tests: 57\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n\n\n\n\n\n\n#disp(simulate_disease(5000, 1/10000))\nsimulate_disease(5000, 1/10000)\n\nNum with disease: 1\nProportion with disease: 0.0002\nNumber of positive tests: 57\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n641\n1\n1",
+    "text": "Zooming In On Disease-Havers\n\nWhat if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?\n\n\n\nCode\n#disp(ppl_df[ppl_df$has_disease == 1,])\nppl_df[ppl_df$has_disease == 1,]\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n\n\n\n\nIs this always going to be the case?\n\n\n\n\nNum with disease: 0\nProportion with disease: 0\nNumber of positive tests: 58\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n\n\n\n\n\n\n#disp(simulate_disease(5000, 1/10000))\nsimulate_disease(5000, 1/10000)\n\nNum with disease: 1\nProportion with disease: 0.0002\nNumber of positive tests: 54\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n4806\n1\n1",
     "crumbs": [
       "Week 4: Sep 17"
     ]
@@ -3781,7 +3894,7 @@
     "href": "w04/index.html#worst-case-worlds",
     "title": "Week 4: Discrete Distributions",
     "section": "Worst-Case Worlds",
-    "text": "Worst-Case Worlds\n\n\n\nfor (i in seq(1,1000)) {\n  sim_result &lt;- simulate_disease(5000, 1/10000, verbose = FALSE, return_all_detected = FALSE, return_df = FALSE, return_info = TRUE)\n  if (!sim_result$all_detected) {\n    writeLines(paste0(\"World #\",i,\" / 1000 (\",sim_result$num_people,\" people):\"))\n    print(sim_result$df)\n    writeLines('\\n')\n  }\n}\n\nWorld #13 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  4816           1           0\n\n\nWorld #19 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  3644           1           0\n\n\nWorld #53 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   766           1           0\n\n\nWorld #72 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   787           1           1\n2  3754           1           0\n\n\nWorld #303 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1240           1           0\n2  2899           1           1\n\n\nWorld #809 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1726           1           0\n\n\nWorld #834 / 1000 (5000 people):\n# A tibble: 3 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2328           1           1\n2  4375           1           1\n3  4637           1           0\n\nformat(4 / 5000000, scientific = FALSE)\n\n[1] \"0.0000008\"\n\n\n\nHow unlikely is this? Math:\n\\[\n\\begin{align*}\n\\Pr(\\textsf{T}^- \\cap \\textsf{Sick}) &= \\Pr(\\textsf{T}^- \\mid \\textsf{Sick})\\Pr(\\textsf{Sick}) \\\\\n&= (0.01)\\frac{1}{10000} \\\\\n&= \\frac{1}{1000000}\n\\end{align*}\n\\]\nComputers:\n\nresult_df &lt;- simulate_disease(1000000, 1/10000, verbose = FALSE, return_full_df = TRUE)\nfalse_negatives &lt;- result_df[result_df$has_disease == 1 & result_df$test_result == 0,]\nnum_false_negatives &lt;- nrow(false_negatives)\nwriteLines(paste0(\"False Negatives: \",num_false_negatives,\", Total Cases: \", nrow(result_df)))\n\nFalse Negatives: 1, Total Cases: 1000000\n\nfalse_negative_rate &lt;- num_false_negatives / nrow(result_df)\nfalse_negative_rate_decimal &lt;- format(false_negative_rate, scientific = FALSE)\nwriteLines(paste0(\"False Negative Rate: \", false_negative_rate_decimal))\n\nFalse Negative Rate: 0.000001\n\n\n(Perfect match!)",
+    "text": "Worst-Case Worlds\n\n\n\nfor (i in seq(1,1000)) {\n  sim_result &lt;- simulate_disease(5000, 1/10000, verbose = FALSE, return_all_detected = FALSE, return_df = FALSE, return_info = TRUE)\n  if (!sim_result$all_detected) {\n    writeLines(paste0(\"World #\",i,\" / 1000 (\",sim_result$num_people,\" people):\"))\n    print(sim_result$df)\n    writeLines('\\n')\n  }\n}\n\nWorld #85 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2289           1           0\n\n\nWorld #291 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2073           1           1\n2  2528           1           0\n\n\nWorld #383 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  4109           1           0\n\n\nWorld #413 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   199           1           0\n2  1730           1           1\n\n\nWorld #475 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1914           1           0\n\n\nWorld #505 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2648           1           1\n2  4281           1           0\n\n\nWorld #515 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   251           1           0\n\n\nWorld #863 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  3984           1           0\n\nformat(4 / 5000000, scientific = FALSE)\n\n[1] \"0.0000008\"\n\n\n\nHow unlikely is this? Math:\n\\[\n\\begin{align*}\n\\Pr(\\textsf{T}^- \\cap \\textsf{Sick}) &= \\Pr(\\textsf{T}^- \\mid \\textsf{Sick})\\Pr(\\textsf{Sick}) \\\\\n&= (0.01)\\frac{1}{10000} \\\\\n&= \\frac{1}{1000000}\n\\end{align*}\n\\]\nComputers:\n\nresult_df &lt;- simulate_disease(1000000, 1/10000, verbose = FALSE, return_full_df = TRUE)\nfalse_negatives &lt;- result_df[result_df$has_disease == 1 & result_df$test_result == 0,]\nnum_false_negatives &lt;- nrow(false_negatives)\nwriteLines(paste0(\"False Negatives: \",num_false_negatives,\", Total Cases: \", nrow(result_df)))\n\nFalse Negatives: 1, Total Cases: 1000000\n\nfalse_negative_rate &lt;- num_false_negatives / nrow(result_df)\nfalse_negative_rate_decimal &lt;- format(false_negative_rate, scientific = FALSE)\nwriteLines(paste0(\"False Negative Rate: \", false_negative_rate_decimal))\n\nFalse Negative Rate: 0.000001\n\n\n(Perfect match!)",
     "crumbs": [
       "Week 4: Sep 17"
     ]
@@ -3811,7 +3924,7 @@
     "href": "w04/index.html#birthday-problem",
     "title": "Week 4: Discrete Distributions",
     "section": "Birthday Problem",
-    "text": "Birthday Problem\n\n\n\n30 people gather in a room together. What is the probability that two of them share the same birthday?\nAnalytic solution is fun, but requires some thought… Monte Carlo it!\n\n\n\n\nCode\ngen_bday_room &lt;- function(room_num=NULL) {\n  num_people &lt;- 30\n  num_days &lt;- 366\n  ppl_df &lt;- tibble(id=seq(1,num_people))\nbirthdays &lt;- sample(1:num_days, num_people,replace = T)\n  ppl_df['birthday'] &lt;- birthdays\n  if (!is.null(room_num)) {\n    ppl_df &lt;- ppl_df %&gt;% mutate(room_num=room_num) %&gt;% relocate(room_num)\n  }\n  return(ppl_df)\n}\nppl_df &lt;- gen_bday_room(1)\n#disp(ppl_df %&gt;% head())\nppl_df |&gt; head()\n\n\n\n\n\n\nroom_num\nid\nbirthday\n\n\n\n\n1\n1\n20\n\n\n1\n2\n329\n\n\n1\n3\n248\n\n\n1\n4\n311\n\n\n1\n5\n20\n\n\n1\n6\n11",
+    "text": "Birthday Problem\n\n\n\n30 people gather in a room together. What is the probability that two of them share the same birthday?\nAnalytic solution is fun, but requires some thought… Monte Carlo it!\n\n\n\n\nCode\ngen_bday_room &lt;- function(room_num=NULL) {\n  num_people &lt;- 30\n  num_days &lt;- 366\n  ppl_df &lt;- tibble(id=seq(1,num_people))\nbirthdays &lt;- sample(1:num_days, num_people,replace = T)\n  ppl_df['birthday'] &lt;- birthdays\n  if (!is.null(room_num)) {\n    ppl_df &lt;- ppl_df %&gt;% mutate(room_num=room_num) %&gt;% relocate(room_num)\n  }\n  return(ppl_df)\n}\nppl_df &lt;- gen_bday_room(1)\n#disp(ppl_df %&gt;% head())\nppl_df |&gt; head()\n\n\n\n\n\n\nroom_num\nid\nbirthday\n\n\n\n\n1\n1\n267\n\n\n1\n2\n59\n\n\n1\n3\n331\n\n\n1\n4\n65\n\n\n1\n5\n263\n\n\n1\n6\n7",
     "crumbs": [
       "Week 4: Sep 17"
     ]
@@ -3821,7 +3934,7 @@
     "href": "w04/index.html#birthday-problem-1",
     "title": "Week 4: Discrete Distributions",
     "section": "Birthday Problem",
-    "text": "Birthday Problem\n\n# Inefficient version (return_num=FALSE) is for: if you want tibbles of *all* shared bdays for each room\nget_shared_bdays &lt;- function(df, is_grouped=NULL, return_num=FALSE, return_bool=FALSE) {\n  bday_pairs &lt;- tibble()\n  for (i in 1:(nrow(df)-1)) {\n    i_data &lt;- df[i,]\n    i_bday &lt;- i_data$birthday\n    for (j in (i+1):nrow(df)) {\n      j_data &lt;- df[j,]\n      j_bday &lt;- j_data$birthday\n      # Check if they're the same\n      same_bday &lt;- i_bday == j_bday\n      if (same_bday) {\n        if (return_bool) {\n          return(1)\n        }\n        pair_data &lt;- tibble(i=i,j=j,bday=i_bday)\n        if (!is.null(is_grouped)) {\n          i_room &lt;- i_data$room_num\n          pair_data['room'] &lt;- i_room\n        }\n        bday_pairs &lt;- bind_rows(bday_pairs, pair_data)\n      }\n    }\n  }\n  if (return_bool) {\n    return(0)\n  }\n  if (return_num) {\n    return(nrow(bday_pairs))\n  }\n  return(bday_pairs)\n}\n#get_shared_bdays(ppl_df)\nget_shared_bdays(ppl_df)\n\n\n\n\n\ni\nj\nbday\n\n\n\n\n1\n5\n20\n\n\n6\n20\n11",
+    "text": "Birthday Problem\n\n# Inefficient version (return_num=FALSE) is for: if you want tibbles of *all* shared bdays for each room\nget_shared_bdays &lt;- function(df, is_grouped=NULL, return_num=FALSE, return_bool=FALSE) {\n  bday_pairs &lt;- tibble()\n  for (i in 1:(nrow(df)-1)) {\n    i_data &lt;- df[i,]\n    i_bday &lt;- i_data$birthday\n    for (j in (i+1):nrow(df)) {\n      j_data &lt;- df[j,]\n      j_bday &lt;- j_data$birthday\n      # Check if they're the same\n      same_bday &lt;- i_bday == j_bday\n      if (same_bday) {\n        if (return_bool) {\n          return(1)\n        }\n        pair_data &lt;- tibble(i=i,j=j,bday=i_bday)\n        if (!is.null(is_grouped)) {\n          i_room &lt;- i_data$room_num\n          pair_data['room'] &lt;- i_room\n        }\n        bday_pairs &lt;- bind_rows(bday_pairs, pair_data)\n      }\n    }\n  }\n  if (return_bool) {\n    return(0)\n  }\n  if (return_num) {\n    return(nrow(bday_pairs))\n  }\n  return(bday_pairs)\n}\n#get_shared_bdays(ppl_df)\nget_shared_bdays(ppl_df)",
     "crumbs": [
       "Week 4: Sep 17"
     ]
@@ -3831,7 +3944,7 @@
     "href": "w04/index.html#section",
     "title": "Week 4: Discrete Distributions",
     "section": "",
-    "text": "Let’s try more rooms…\n\n\n\n# Get tibbles for each room\nlibrary(purrr)\ngen_bday_rooms &lt;- function(num_rooms) {\n  rooms_df &lt;- tibble()\n  for (r in seq(1, num_rooms)) {\n      cur_room &lt;- gen_bday_room(r)\n      rooms_df &lt;- bind_rows(rooms_df, cur_room)\n  }\n  return(rooms_df)\n}\nnum_rooms &lt;- 10\nrooms_df &lt;- gen_bday_rooms(num_rooms)\nrooms_df %&gt;% group_by(room_num) %&gt;% group_map(~ get_shared_bdays(.x, is_grouped=TRUE))\n\n[[1]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    24    28    37\n\n[[2]]\n# A tibble: 0 × 0\n\n[[3]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    11    23    81\n\n[[4]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     8    18   328\n\n[[5]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     8    19    76\n2    17    27   255\n\n[[6]]\n# A tibble: 0 × 0\n\n[[7]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     3    13   145\n2     6     8   252\n\n[[8]]\n# A tibble: 0 × 0\n\n[[9]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     6    26   253\n\n[[10]]\n# A tibble: 0 × 0\n\n\n\nNumber of shared birthdays per room:\n\n# Now just get the # shared bdays\nshared_per_room &lt;- rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_num=TRUE))\nshared_per_room &lt;- unlist(shared_per_room)\nshared_per_room\n\n [1] 1 0 1 1 2 0 2 0 1 0\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared})\\)\n\n\nsum(shared_per_room &gt; 0) / num_rooms\n\n[1] 0.6",
+    "text": "Let’s try more rooms…\n\n\n\n# Get tibbles for each room\nlibrary(purrr)\ngen_bday_rooms &lt;- function(num_rooms) {\n  rooms_df &lt;- tibble()\n  for (r in seq(1, num_rooms)) {\n      cur_room &lt;- gen_bday_room(r)\n      rooms_df &lt;- bind_rows(rooms_df, cur_room)\n  }\n  return(rooms_df)\n}\nnum_rooms &lt;- 10\nrooms_df &lt;- gen_bday_rooms(num_rooms)\nrooms_df %&gt;% group_by(room_num) %&gt;% group_map(~ get_shared_bdays(.x, is_grouped=TRUE))\n\n[[1]]\n# A tibble: 0 × 0\n\n[[2]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    17    28   355\n\n[[3]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     9    22   215\n\n[[4]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     5    19   198\n2     6    27    20\n\n[[5]]\n# A tibble: 0 × 0\n\n[[6]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     8    20   269\n\n[[7]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    12    24   317\n\n[[8]]\n# A tibble: 0 × 0\n\n[[9]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     1    10   353\n2     5    12   162\n\n[[10]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     5    30    40\n2    15    26   306\n\n\n\nNumber of shared birthdays per room:\n\n# Now just get the # shared bdays\nshared_per_room &lt;- rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_num=TRUE))\nshared_per_room &lt;- unlist(shared_per_room)\nshared_per_room\n\n [1] 0 1 1 2 0 1 1 0 2 2\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared})\\)\n\n\nsum(shared_per_room &gt; 0) / num_rooms\n\n[1] 0.7",
     "crumbs": [
       "Week 4: Sep 17"
     ]
@@ -3841,7 +3954,7 @@
     "href": "w04/index.html#section-1",
     "title": "Week 4: Discrete Distributions",
     "section": "",
-    "text": "How about A THOUSAND ROOMS?\n\n\nnum_rooms_many &lt;- 100\nmany_rooms_df &lt;- gen_bday_rooms(num_rooms_many)\nanyshared_per_room &lt;- many_rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_bool = TRUE))\nanyshared_per_room &lt;- unlist(anyshared_per_room)\nanyshared_per_room\n\n  [1] 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 0 1 0 1 1 0 1 1 1 1 1 1 1\n [38] 0 1 1 1 1 1 1 1 1 1 0 1 1 1 0 1 1 0 0 1 0 0 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1\n [75] 1 0 0 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared bday})\\)?\n\n\n# And now the probability estimate\nsum(anyshared_per_room &gt; 0) / num_rooms_many\n\n[1] 0.82\n\n\n\nThe analytic solution: \\(\\Pr(\\text{shared} \\mid k\\text{ people in room}) = 1 - \\frac{366!}{366^{k}(366-k)!}\\)\nIn our case: \\(1 - \\frac{366!}{366^{30}(366-30)!} = 1 - \\frac{366!}{366^{30}336!} = 1 - \\frac{\\prod_{i=337}^{366}i}{366^{30}}\\)\nR can juust barely handle these numbers:\n\n\n(exact_solution &lt;- 1 - (prod(seq(337,366))) / (366^30))\n\n[1] 0.7053034",
+    "text": "How about A THOUSAND ROOMS?\n\n\nnum_rooms_many &lt;- 100\nmany_rooms_df &lt;- gen_bday_rooms(num_rooms_many)\nanyshared_per_room &lt;- many_rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_bool = TRUE))\nanyshared_per_room &lt;- unlist(anyshared_per_room)\nanyshared_per_room\n\n  [1] 0 0 1 1 1 0 1 0 1 1 1 0 1 0 0 1 1 1 1 0 0 0 0 1 1 0 1 1 1 0 0 1 0 1 1 0 0\n [38] 0 0 1 0 0 0 1 1 1 0 1 0 1 1 0 0 1 1 1 1 0 1 0 1 1 0 1 1 1 1 1 0 1 0 1 1 1\n [75] 1 0 0 1 0 1 1 1 1 1 1 1 1 0 1 1 1 0 0 1 1 1 1 0 1 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared bday})\\)?\n\n\n# And now the probability estimate\nsum(anyshared_per_room &gt; 0) / num_rooms_many\n\n[1] 0.62\n\n\n\nThe analytic solution: \\(\\Pr(\\text{shared} \\mid k\\text{ people in room}) = 1 - \\frac{366!}{366^{k}(366-k)!}\\)\nIn our case: \\(1 - \\frac{366!}{366^{30}(366-30)!} = 1 - \\frac{366!}{366^{30}336!} = 1 - \\frac{\\prod_{i=337}^{366}i}{366^{30}}\\)\nR can juust barely handle these numbers:\n\n\n(exact_solution &lt;- 1 - (prod(seq(337,366))) / (366^30))\n\n[1] 0.7053034",
     "crumbs": [
       "Week 4: Sep 17"
     ]
@@ -4165,28 +4278,28 @@
     "href": "w04/slides.html#data-generating-process-test-results",
     "title": "Week 4: Discrete Distributions",
     "section": "Data-Generating Process: Test Results",
-    "text": "Data-Generating Process: Test Results\n\n\nCode\nlibrary(dplyr)\n# Data Generating Process\ntake_test &lt;- function(is_sick) {\n  if (is_sick) {\n    return(rbinom(1,1,p_pos_given_sick))\n  } else {\n    return(rbinom(1,1,p_pos_given_healthy))\n  }\n}\nppl_df['test_result'] &lt;- unlist(lapply(ppl_df$has_disease, take_test))\nnum_positive &lt;- sum(ppl_df$test_result)\np_positive &lt;- mean(ppl_df$test_result)\nwriteLines(paste0(num_positive,\" positive tests / \",num_people,\" total = \",p_positive))\n\n\n112 positive tests / 10000 total = 0.0112\n\n\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n1\n0\n0\n\n\n2\n0\n0\n\n\n3\n0\n0\n\n\n4\n0\n0\n\n\n5\n0\n0\n\n\n6\n0\n0"
+    "text": "Data-Generating Process: Test Results\n\n\nCode\nlibrary(dplyr)\n# Data Generating Process\ntake_test &lt;- function(is_sick) {\n  if (is_sick) {\n    return(rbinom(1,1,p_pos_given_sick))\n  } else {\n    return(rbinom(1,1,p_pos_given_healthy))\n  }\n}\nppl_df['test_result'] &lt;- unlist(lapply(ppl_df$has_disease, take_test))\nnum_positive &lt;- sum(ppl_df$test_result)\np_positive &lt;- mean(ppl_df$test_result)\nwriteLines(paste0(num_positive,\" positive tests / \",num_people,\" total = \",p_positive))\n\n\n106 positive tests / 10000 total = 0.0106\n\n\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n1\n0\n0\n\n\n2\n0\n0\n\n\n3\n0\n0\n\n\n4\n0\n0\n\n\n5\n0\n0\n\n\n6\n0\n0"
   },
   {
     "objectID": "w04/slides.html#zooming-in-on-positive-tests",
     "href": "w04/slides.html#zooming-in-on-positive-tests",
     "title": "Week 4: Discrete Distributions",
     "section": "Zooming In On Positive Tests",
-    "text": "Zooming In On Positive Tests\n\n\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n30\n0\n1\n\n\n97\n0\n1\n\n\n313\n0\n1\n\n\n372\n0\n1\n\n\n413\n0\n1\n\n\n443\n0\n1\n\n\n\n\n\n\n\n\nBo doesn’t have it, and neither do 110 of the 111 total people who tested positive!\nBut, in the real world, we only observe \\(T\\)"
+    "text": "Zooming In On Positive Tests\n\n\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n154\n0\n1\n\n\n289\n0\n1\n\n\n420\n0\n1\n\n\n629\n0\n1\n\n\n851\n0\n1\n\n\n954\n0\n1\n\n\n\n\n\n\n\n\nBo doesn’t have it, and neither do 110 of the 111 total people who tested positive!\nBut, in the real world, we only observe \\(T\\)"
   },
   {
     "objectID": "w04/slides.html#zooming-in-on-disease-havers",
     "href": "w04/slides.html#zooming-in-on-disease-havers",
     "title": "Week 4: Discrete Distributions",
     "section": "Zooming In On Disease-Havers",
-    "text": "Zooming In On Disease-Havers\n\nWhat if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?\n\n\n\nCode\n#disp(ppl_df[ppl_df$has_disease == 1,])\nppl_df[ppl_df$has_disease == 1,]\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n3081\n1\n1\n\n\n5651\n1\n1\n\n\n\n\n\n\nIs this always going to be the case?\n\n\n\n\nNum with disease: 1\nProportion with disease: 0.0002\nNumber of positive tests: 59\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n4742\n1\n1\n\n\n\n\n\n\n\n\n\nNum with disease: 0\nProportion with disease: 0\nNumber of positive tests: 54\n\n\n\n\n\n\nid\nhas_disease\ntest_result"
+    "text": "Zooming In On Disease-Havers\n\nWhat if we look at only those who actually have the disease? Maybe the cost of 111 people panicking is worth it if we correctly catch those who do have it?\n\n\n\nCode\n#disp(ppl_df[ppl_df$has_disease == 1,])\nppl_df[ppl_df$has_disease == 1,]\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n4306\n1\n1\n\n\n6032\n1\n1\n\n\n\n\n\n\nIs this always going to be the case?\n\n\n\n\nNum with disease: 0\nProportion with disease: 0\nNumber of positive tests: 51\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n\n\n\n\n\n\n\nNum with disease: 3\nProportion with disease: 0.0006\nNumber of positive tests: 53\n\n\n\n\n\n\nid\nhas_disease\ntest_result\n\n\n\n\n3575\n1\n1\n\n\n3954\n1\n1\n\n\n4213\n1\n1"
   },
   {
     "objectID": "w04/slides.html#worst-case-worlds",
     "href": "w04/slides.html#worst-case-worlds",
     "title": "Week 4: Discrete Distributions",
     "section": "Worst-Case Worlds",
-    "text": "Worst-Case Worlds\n\n\n\n\nWorld #87 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  4762           1           0\n\n\nWorld #353 / 1000 (5000 people):\n# A tibble: 5 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   302           1           1\n2   841           1           1\n3  1700           1           1\n4  2212           1           0\n5  4502           1           1\n\n\nWorld #564 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1   792           1           0\n2  3746           1           1\n\n\nWorld #632 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  3851           1           0\n\n\n[1] \"0.0000008\"\n\n\n\nHow unlikely is this? Math:\n\\[\n\\begin{align*}\n\\Pr(\\textsf{T}^- \\cap \\textsf{Sick}) &= \\Pr(\\textsf{T}^- \\mid \\textsf{Sick})\\Pr(\\textsf{Sick}) \\\\\n&= (0.01)\\frac{1}{10000} \\\\\n&= \\frac{1}{1000000}\n\\end{align*}\n\\]\nComputers:\n\n\nFalse Negatives: 0, Total Cases: 1000000\n\n\nFalse Negative Rate: 0\n\n\n(Perfect match!)"
+    "text": "Worst-Case Worlds\n\n\n\n\nWorld #9 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  4898           1           0\n\n\nWorld #122 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  2358           1           0\n\n\nWorld #380 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1    41           1           0\n\n\nWorld #679 / 1000 (5000 people):\n# A tibble: 2 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1446           1           0\n2  3948           1           1\n\n\nWorld #764 / 1000 (5000 people):\n# A tibble: 1 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1029           1           0\n\n\nWorld #865 / 1000 (5000 people):\n# A tibble: 3 × 3\n     id has_disease test_result\n  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;\n1  1787           1           1\n2  2180           1           0\n3  2756           1           1\n\n\n[1] \"0.0000008\"\n\n\n\nHow unlikely is this? Math:\n\\[\n\\begin{align*}\n\\Pr(\\textsf{T}^- \\cap \\textsf{Sick}) &= \\Pr(\\textsf{T}^- \\mid \\textsf{Sick})\\Pr(\\textsf{Sick}) \\\\\n&= (0.01)\\frac{1}{10000} \\\\\n&= \\frac{1}{1000000}\n\\end{align*}\n\\]\nComputers:\n\n\nFalse Negatives: 1, Total Cases: 1000000\n\n\nFalse Negative Rate: 0.000001\n\n\n(Perfect match!)"
   },
   {
     "objectID": "w04/slides.html#bayes-takeaway",
@@ -4207,28 +4320,28 @@
     "href": "w04/slides.html#birthday-problem",
     "title": "Week 4: Discrete Distributions",
     "section": "Birthday Problem",
-    "text": "Birthday Problem\n\n\n\n30 people gather in a room together. What is the probability that two of them share the same birthday?\nAnalytic solution is fun, but requires some thought… Monte Carlo it!\n\n\n\n\nCode\ngen_bday_room &lt;- function(room_num=NULL) {\n  num_people &lt;- 30\n  num_days &lt;- 366\n  ppl_df &lt;- tibble(id=seq(1,num_people))\nbirthdays &lt;- sample(1:num_days, num_people,replace = T)\n  ppl_df['birthday'] &lt;- birthdays\n  if (!is.null(room_num)) {\n    ppl_df &lt;- ppl_df %&gt;% mutate(room_num=room_num) %&gt;% relocate(room_num)\n  }\n  return(ppl_df)\n}\nppl_df &lt;- gen_bday_room(1)\n#disp(ppl_df %&gt;% head())\nppl_df |&gt; head()\n\n\n\n\n\n\nroom_num\nid\nbirthday\n\n\n\n\n1\n1\n200\n\n\n1\n2\n15\n\n\n1\n3\n185\n\n\n1\n4\n37\n\n\n1\n5\n232\n\n\n1\n6\n232"
+    "text": "Birthday Problem\n\n\n\n30 people gather in a room together. What is the probability that two of them share the same birthday?\nAnalytic solution is fun, but requires some thought… Monte Carlo it!\n\n\n\n\nCode\ngen_bday_room &lt;- function(room_num=NULL) {\n  num_people &lt;- 30\n  num_days &lt;- 366\n  ppl_df &lt;- tibble(id=seq(1,num_people))\nbirthdays &lt;- sample(1:num_days, num_people,replace = T)\n  ppl_df['birthday'] &lt;- birthdays\n  if (!is.null(room_num)) {\n    ppl_df &lt;- ppl_df %&gt;% mutate(room_num=room_num) %&gt;% relocate(room_num)\n  }\n  return(ppl_df)\n}\nppl_df &lt;- gen_bday_room(1)\n#disp(ppl_df %&gt;% head())\nppl_df |&gt; head()\n\n\n\n\n\n\nroom_num\nid\nbirthday\n\n\n\n\n1\n1\n277\n\n\n1\n2\n258\n\n\n1\n3\n209\n\n\n1\n4\n73\n\n\n1\n5\n360\n\n\n1\n6\n139"
   },
   {
     "objectID": "w04/slides.html#birthday-problem-1",
     "href": "w04/slides.html#birthday-problem-1",
     "title": "Week 4: Discrete Distributions",
     "section": "Birthday Problem",
-    "text": "Birthday Problem\n\n\n\n\n\n\ni\nj\nbday\n\n\n\n\n5\n6\n232\n\n\n7\n24\n9\n\n\n9\n23\n63"
+    "text": "Birthday Problem\n\n\n\n\n\n\ni\nj\nbday\n\n\n\n\n13\n20\n349"
   },
   {
     "objectID": "w04/slides.html#section",
     "href": "w04/slides.html#section",
     "title": "Week 4: Discrete Distributions",
     "section": "",
-    "text": "Let’s try more rooms…\n\n\n\n\nCode\n# Get tibbles for each room\nlibrary(purrr)\ngen_bday_rooms &lt;- function(num_rooms) {\n  rooms_df &lt;- tibble()\n  for (r in seq(1, num_rooms)) {\n      cur_room &lt;- gen_bday_room(r)\n      rooms_df &lt;- bind_rows(rooms_df, cur_room)\n  }\n  return(rooms_df)\n}\nnum_rooms &lt;- 10\nrooms_df &lt;- gen_bday_rooms(num_rooms)\nrooms_df %&gt;% group_by(room_num) %&gt;% group_map(~ get_shared_bdays(.x, is_grouped=TRUE))\n\n\n[[1]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    23    25   312\n\n[[2]]\n# A tibble: 5 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     1    22   282\n2     4    20    19\n3     8    30   216\n4    16    17   358\n5    25    27    69\n\n[[3]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     3    18   251\n2    14    21    73\n\n[[4]]\n# A tibble: 3 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    10    28    76\n2    17    27    37\n3    23    29   108\n\n[[5]]\n# A tibble: 3 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     5    16    36\n2    11    25    50\n3    13    14    96\n\n[[6]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     2    25   340\n2     3    19   323\n\n[[7]]\n# A tibble: 4 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    12    23   316\n2    12    26   316\n3    18    25    92\n4    23    26   316\n\n[[8]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     1    13    50\n2     3     7   291\n\n[[9]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    11    13   201\n\n[[10]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    20    24   267\n\n\n\nNumber of shared birthdays per room:\n\n\nCode\n# Now just get the # shared bdays\nshared_per_room &lt;- rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_num=TRUE))\nshared_per_room &lt;- unlist(shared_per_room)\nshared_per_room\n\n\n [1] 1 5 2 3 3 2 4 2 1 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared})\\)\n\n\n\n[1] 1"
+    "text": "Let’s try more rooms…\n\n\n\n\nCode\n# Get tibbles for each room\nlibrary(purrr)\ngen_bday_rooms &lt;- function(num_rooms) {\n  rooms_df &lt;- tibble()\n  for (r in seq(1, num_rooms)) {\n      cur_room &lt;- gen_bday_room(r)\n      rooms_df &lt;- bind_rows(rooms_df, cur_room)\n  }\n  return(rooms_df)\n}\nnum_rooms &lt;- 10\nrooms_df &lt;- gen_bday_rooms(num_rooms)\nrooms_df %&gt;% group_by(room_num) %&gt;% group_map(~ get_shared_bdays(.x, is_grouped=TRUE))\n\n\n[[1]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    23    25    82\n\n[[2]]\n# A tibble: 0 × 0\n\n[[3]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    23    30    53\n\n[[4]]\n# A tibble: 0 × 0\n\n[[5]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     9    20   192\n\n[[6]]\n# A tibble: 0 × 0\n\n[[7]]\n# A tibble: 0 × 0\n\n[[8]]\n# A tibble: 2 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1     6    24   318\n2    21    23    57\n\n[[9]]\n# A tibble: 0 × 0\n\n[[10]]\n# A tibble: 1 × 3\n      i     j  bday\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;\n1    10    13   363\n\n\n\nNumber of shared birthdays per room:\n\n\nCode\n# Now just get the # shared bdays\nshared_per_room &lt;- rooms_df %&gt;%\n    group_by(room_num) %&gt;%\n    group_map(~ get_shared_bdays(.x, is_grouped = TRUE, return_num=TRUE))\nshared_per_room &lt;- unlist(shared_per_room)\nshared_per_room\n\n\n [1] 1 0 1 0 1 0 0 2 0 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared})\\)\n\n\n\n[1] 0.5"
   },
   {
     "objectID": "w04/slides.html#section-1",
     "href": "w04/slides.html#section-1",
     "title": "Week 4: Discrete Distributions",
     "section": "",
-    "text": "How about A THOUSAND ROOMS?\n\n\n\n  [1] 0 0 1 1 1 0 1 0 0 1 1 0 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 0 1 1\n [38] 1 1 1 1 0 0 1 1 1 1 1 0 1 1 0 1 1 0 0 0 1 1 0 1 1 1 1 1 0 1 1 0 1 1 1 0 1\n [75] 1 1 1 1 0 1 1 0 1 1 1 1 1 0 1 1 1 1 1 1 1 0 0 1 0 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared bday})\\)?\n\n\n\n[1] 0.72\n\n\n\nThe analytic solution: \\(\\Pr(\\text{shared} \\mid k\\text{ people in room}) = 1 - \\frac{366!}{366^{k}(366-k)!}\\)\nIn our case: \\(1 - \\frac{366!}{366^{30}(366-30)!} = 1 - \\frac{366!}{366^{30}336!} = 1 - \\frac{\\prod_{i=337}^{366}i}{366^{30}}\\)\nR can juust barely handle these numbers:\n\n\n\n[1] 0.7053034"
+    "text": "How about A THOUSAND ROOMS?\n\n\n\n  [1] 1 1 0 1 1 1 1 1 1 1 1 0 1 1 1 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 0 1 1\n [38] 1 1 1 1 0 0 0 1 1 0 1 0 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 0 1 0 1 1 0 1 1 1 1\n [75] 1 1 1 1 1 0 0 0 1 1 1 1 1 1 0 0 1 1 1 1 1 0 1 0 1 1\n\n\n\n\\(\\widehat{\\Pr}(\\text{shared bday})\\)?\n\n\n\n[1] 0.75\n\n\n\nThe analytic solution: \\(\\Pr(\\text{shared} \\mid k\\text{ people in room}) = 1 - \\frac{366!}{366^{k}(366-k)!}\\)\nIn our case: \\(1 - \\frac{366!}{366^{30}(366-30)!} = 1 - \\frac{366!}{366^{30}336!} = 1 - \\frac{\\prod_{i=337}^{366}i}{366^{30}}\\)\nR can juust barely handle these numbers:\n\n\n\n[1] 0.7053034"
   },
   {
     "objectID": "w04/slides.html#wrapping-up",
@@ -6440,7 +6553,7 @@
     "href": "w06/slides.html#first-attempt",
     "title": "Week 6: Moments and Covariance",
     "section": "First Attempt",
-    "text": "First Attempt\n\nWhat properties should \\(\\text{Spread}(\\cdot)\\) have?\n\nShould be \\(0\\) if every data point is identical, then increase as they spread apart\n\nHow about: average difference between each point and the overall (arithmetic) mean? \\[\n\\text{Spread}(X) = M_1(X - \\overline{X}) = \\frac{(x_1 - \\overline{X}) + (x_2 - \\overline{X}) + \\cdots + (x_n - \\overline{X})}{n}\n\\]\n\n\n\n\n\nCode\nlibrary(latex2exp)\nN &lt;- 10\nx &lt;- seq(1,N)\ny &lt;- rnorm(N, 0, 10)\nmean_y &lt;- mean(y)\nspread &lt;- y - mean_y\ndf &lt;- tibble(x=x, y=y, spread=spread)\nggplot(df, aes(x=x, y=y)) +\n  geom_hline(aes(yintercept=mean_y, linetype=\"dashed\"), color=\"purple\", size=g_linesize) +\n  geom_segment(aes(xend=x, yend=mean_y, color=ifelse(y&gt;0,\"Positive\",\"Negative\")), size=g_linesize) +\n  geom_point(size=g_pointsize) +\n  scale_linetype_manual(element_blank(), values=c(\"dashed\"=\"dashed\"), labels=c(\"dashed\"=unname(TeX(c(\"$M_1(X)$\"))))) +\n  dsan_theme(\"half\") +\n  scale_color_manual(\"Spread\", values=c(\"Positive\"=cbPalette[3],\"Negative\"=cbPalette[6]), labels=c(\"Positive\"=\"Positive\",\"Negative\"=\"Negative\")) +\n  scale_x_continuous(breaks=seq(0,10,2)) +\n  #remove_legend_title() +\n  theme(legend.spacing.y=unit(0.1,\"mm\")) +\n  labs(\n    title=paste0(N, \" Randomly-Generated Points, N(0,10)\"),\n    x=\"Index\",\n    y=\"Value\"\n  )\n\n\n\n\n\n\n\n\n\n\nThe result? To ten decimal places:\n\n\nCode\nspread_fmt &lt;- sprintf(\"%0.10f\", mean(df$spread))\nwriteLines(spread_fmt)\n\n\n-0.0000000000\n\n\n😞 What happened?"
+    "text": "First Attempt\n\nWhat properties should \\(\\text{Spread}(\\cdot)\\) have?\n\nShould be \\(0\\) if every data point is identical, then increase as they spread apart\n\nHow about: average difference between each point and the overall (arithmetic) mean? \\[\n\\text{Spread}(X) = M_1(X - \\overline{X}) = \\frac{(x_1 - \\overline{X}) + (x_2 - \\overline{X}) + \\cdots + (x_n - \\overline{X})}{n}\n\\]\n\n\n\n\n\nCode\nlibrary(latex2exp)\nN &lt;- 10\nx &lt;- seq(1,N)\ny &lt;- rnorm(N, 0, 10)\nmean_y &lt;- mean(y)\nspread &lt;- y - mean_y\ndf &lt;- tibble(x=x, y=y, spread=spread)\nggplot(df, aes(x=x, y=y)) +\n  geom_hline(aes(yintercept=mean_y, linetype=\"dashed\"), color=\"purple\", size=g_linesize) +\n  geom_segment(aes(xend=x, yend=mean_y, color=ifelse(y&gt;0,\"Positive\",\"Negative\")), size=g_linesize) +\n  geom_point(size=g_pointsize) +\n  scale_linetype_manual(element_blank(), values=c(\"dashed\"=\"dashed\"), labels=c(\"dashed\"=unname(TeX(c(\"$M_1(X)$\"))))) +\n  dsan_theme(\"half\") +\n  scale_color_manual(\"Spread\", values=c(\"Positive\"=cbPalette[3],\"Negative\"=cbPalette[6]), labels=c(\"Positive\"=\"Positive\",\"Negative\"=\"Negative\")) +\n  scale_x_continuous(breaks=seq(0,10,2)) +\n  #remove_legend_title() +\n  theme(legend.spacing.y=unit(0.1,\"mm\")) +\n  labs(\n    title=paste0(N, \" Randomly-Generated Points, N(0,10)\"),\n    x=\"Index\",\n    y=\"Value\"\n  )\n\n\n\n\n\n\n\n\n\n\nThe result? To ten decimal places:\n\n\nCode\nspread_fmt &lt;- sprintf(\"%0.10f\", mean(df$spread))\nwriteLines(spread_fmt)\n\n\n0.0000000000\n\n\n😞 What happened?"
   },
   {
     "objectID": "w06/slides.html#avoiding-cancellation",

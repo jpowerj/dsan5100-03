@@ -147,6 +147,10 @@ ggplot(result_df, aes(x=p, y=prop_matches)) +
 :::
 :::
 
+## Week 10 Lab!
+
+* [Link to Colab](https://colab.research.google.com/drive/1tUxu40n--tYuY0shdc3vxdKKrQDfmLiw#scrollTo=-hq3B9yh6D9U){target='_blank'}
+
 ## Simulations $\rightarrow$ Math {.crunch-title .small-inline .math-90 .inline-90}
 
 Prev example was overkill: we can **solve for** optimal $\param{p}$ value...
