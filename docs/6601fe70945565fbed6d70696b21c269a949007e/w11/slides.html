@@ -436,7 +436,12 @@ Jeff Jacobs
 <section id="method-of-moments" class="title-slide slide level1 center" data-stack-name="Method of Moments">
 <h1>Method of Moments</h1>
 <div class="hidden">
-
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a></a><span class="fu">source</span>(<span class="st">"../dsan-globals/_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 </div>
 <div class="hidden">
 <p><span class="math display">\[
@@ -654,12 +659,47 @@ Jeff Jacobs
 <section id="building-intuition" class="slide level2">
 <h2>Building Intuition</h2>
 <p>Consider the following dataset:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.1</span>)</span>
+<span id="cb2-2"><a></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb2-3"><a></a>eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.04</span>)</span>
+<span id="cb2-4"><a></a>y <span class="ot">&lt;-</span> x <span class="sc">+</span> eps</span>
+<span id="cb2-5"><a></a><span class="co"># But make one big outlier</span></span>
+<span id="cb2-6"><a></a>midpoint <span class="ot">&lt;-</span> <span class="fu">ceiling</span>((<span class="dv">3</span><span class="sc">/</span><span class="dv">4</span>)<span class="sc">*</span>n)</span>
+<span id="cb2-7"><a></a>y[midpoint] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb2-8"><a></a>of_data <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(<span class="at">x=</span>x, <span class="at">y=</span>y)</span>
+<span id="cb2-9"><a></a><span class="co"># Linear model</span></span>
+<span id="cb2-10"><a></a>lin_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x)</span>
+<span id="cb2-11"><a></a><span class="co"># But now polynomial regression</span></span>
+<span id="cb2-12"><a></a>poly_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> <span class="fu">poly</span>(x, <span class="at">degree =</span> <span class="dv">10</span>, <span class="at">raw=</span><span class="cn">TRUE</span>))</span>
+<span id="cb2-13"><a></a><span class="fu">ggplot</span>(of_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb2-14"><a></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> g_pointsize <span class="sc">/</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb2-15"><a></a>    <span class="fu">dsan_theme</span>(<span class="st">"full"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
+</div>
 <img data-src="index_files/figure-revealjs/overfitting-plot-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="using-all-observations" class="slide level2">
 <h2>Using All Observations</h2>
 <p>Fitting a linear model gives us:</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a></a><span class="fu">ggplot</span>(of_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb3-2"><a></a>    <span class="fu">geom_point</span>(<span class="at">size =</span> g_pointsize <span class="sc">/</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb3-3"><a></a>    <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color=</span><span class="st">"Linear"</span>), <span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">show.legend=</span><span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb3-4"><a></a>    <span class="co"># geom_abline(aes(intercept = 0, slope = 1, color = "Linear"), linewidth = 1, show.legend = FALSE) +</span></span>
+<span id="cb3-5"><a></a>    <span class="co"># stat_smooth(</span></span>
+<span id="cb3-6"><a></a>    <span class="co">#     method = "lm",</span></span>
+<span id="cb3-7"><a></a>    <span class="co">#     formula = y ~ poly(x, 10, raw = TRUE),</span></span>
+<span id="cb3-8"><a></a>    <span class="co">#     se = FALSE, aes(color = "Polynomial")</span></span>
+<span id="cb3-9"><a></a>    <span class="co"># ) +</span></span>
+<span id="cb3-10"><a></a>    <span class="fu">dsan_theme</span>(<span class="st">"full"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
+</div>
 <img data-src="index_files/figure-revealjs/of-linear-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><aside class="notes">
 <p>(What’s wrong with this picture?)</p>
 <style type="text/css">
@@ -676,11 +716,99 @@ Jeff Jacobs
 </section>
 <section id="but-is-it-robust" class="slide level2">
 <h2>But is it Robust?</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a><span class="do">## Part 1: Set up data</span></span>
+<span id="cb4-2"><a></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-3"><a></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb4-4"><a></a><span class="fu">library</span>(tibble)</span>
+<span id="cb4-5"><a></a><span class="co"># subsample &lt;- of_data |&gt; sample_n() sample(of_data, size=5)</span></span>
+<span id="cb4-6"><a></a>gen_subsamples <span class="ot">&lt;-</span> <span class="cf">function</span>(obs_data, num_subsamples, subsample_size) {</span>
+<span id="cb4-7"><a></a>  <span class="co">#print(subsample_size)</span></span>
+<span id="cb4-8"><a></a>  subsample_ints <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb4-9"><a></a>  subsample_coefs <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb4-10"><a></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>num_subsamples) {</span>
+<span id="cb4-11"><a></a>      cur_subsample <span class="ot">&lt;-</span> obs_data <span class="sc">|&gt;</span> <span class="fu">sample_n</span>(subsample_size, <span class="at">replace =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-12"><a></a>      cur_lin_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> cur_subsample)</span>
+<span id="cb4-13"><a></a>      cur_int <span class="ot">&lt;-</span> cur_lin_model<span class="sc">$</span>coefficients[<span class="dv">1</span>]</span>
+<span id="cb4-14"><a></a>      subsample_ints <span class="ot">&lt;-</span> <span class="fu">c</span>(subsample_ints, cur_int)</span>
+<span id="cb4-15"><a></a>      cur_coef <span class="ot">&lt;-</span> cur_lin_model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb4-16"><a></a>      subsample_coefs <span class="ot">&lt;-</span> <span class="fu">c</span>(subsample_coefs, cur_coef)</span>
+<span id="cb4-17"><a></a>  }</span>
+<span id="cb4-18"><a></a>  subsample_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">intercept =</span> subsample_ints, <span class="at">coef =</span> subsample_coefs)</span>
+<span id="cb4-19"><a></a>  <span class="fu">return</span>(subsample_df)</span>
+<span id="cb4-20"><a></a>}</span>
+<span id="cb4-21"><a></a>num_subsamples <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb4-22"><a></a>subsample_size <span class="ot">&lt;-</span> <span class="fu">floor</span>(<span class="fu">nrow</span>(of_data) <span class="sc">/</span> <span class="dv">2</span>)</span>
+<span id="cb4-23"><a></a>subsample_df <span class="ot">&lt;-</span> <span class="fu">gen_subsamples</span>(of_data, num_subsamples, subsample_size)</span>
+<span id="cb4-24"><a></a>full_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> of_data)</span>
+<span id="cb4-25"><a></a>full_int <span class="ot">&lt;-</span> full_model<span class="sc">$</span>coefficients[<span class="dv">1</span>]</span>
+<span id="cb4-26"><a></a>full_coef <span class="ot">&lt;-</span> full_model<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb4-27"><a></a>full_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">intercept=</span>full_int, <span class="at">coef=</span>full_coef)</span>
+<span id="cb4-28"><a></a>mean_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb4-29"><a></a>    <span class="at">intercept=</span><span class="fu">mean</span>(subsample_df<span class="sc">$</span>intercept),</span>
+<span id="cb4-30"><a></a>    <span class="at">coef =</span> <span class="fu">mean</span>(subsample_df<span class="sc">$</span>coef)</span>
+<span id="cb4-31"><a></a>)</span>
+<span id="cb4-32"><a></a></span>
+<span id="cb4-33"><a></a><span class="do">## Part 2: Plot</span></span>
+<span id="cb4-34"><a></a><span class="fu">ggplot</span>(of_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb4-35"><a></a>    <span class="fu">geom_point</span>(<span class="at">size=</span>g_pointsize) <span class="sc">+</span></span>
+<span id="cb4-36"><a></a>    <span class="co"># The random lines</span></span>
+<span id="cb4-37"><a></a>    <span class="fu">geom_abline</span>(<span class="at">data =</span> subsample_df, <span class="fu">aes</span>(<span class="at">slope =</span> coef, <span class="at">intercept =</span> intercept, <span class="at">color=</span><span class="st">'Subsample Model'</span>), <span class="at">linewidth=</span>g_linewidth, <span class="at">linetype=</span><span class="st">"solid"</span>, <span class="at">alpha=</span><span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb4-38"><a></a>    <span class="co"># The original regression line</span></span>
+<span id="cb4-39"><a></a>    <span class="fu">geom_abline</span>(<span class="at">data=</span>full_df, <span class="fu">aes</span>(<span class="at">slope =</span> coef, <span class="at">intercept =</span> intercept, <span class="at">color=</span><span class="st">'Full-Data Model'</span>), <span class="at">linewidth=</span><span class="dv">2</span><span class="sc">*</span>g_linewidth) <span class="sc">+</span></span>
+<span id="cb4-40"><a></a>    <span class="co"># The average of the random lines</span></span>
+<span id="cb4-41"><a></a>    <span class="co">#geom_abline(data=mean_df, aes(slope = coef, intercept = intercept, color='mean'), linewidth=2*g_linewidth) +</span></span>
+<span id="cb4-42"><a></a>    <span class="fu">labs</span>(</span>
+<span id="cb4-43"><a></a>        <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"Linear Models for "</span>, num_subsamples, <span class="st">" Subsamples of Size n = "</span>, subsample_size),</span>
+<span id="cb4-44"><a></a>        <span class="at">color =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb4-45"><a></a>    ) <span class="sc">+</span></span>
+<span id="cb4-46"><a></a>    <span class="fu">dsan_theme</span>(<span class="st">"full"</span>) <span class="sc">+</span></span>
+<span id="cb4-47"><a></a>    <span class="fu">theme</span>(</span>
+<span id="cb4-48"><a></a>      <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb4-49"><a></a>      <span class="at">legend.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">"mm"</span>)</span>
+<span id="cb4-50"><a></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
+</div>
 <img data-src="index_files/figure-revealjs/bootstrap-models-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="what-a-robust-model-looks-like" class="slide level2">
 <h2>What a Robust Model Looks Like</h2>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a></a>x <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.1</span>)</span>
+<span id="cb5-2"><a></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x)</span>
+<span id="cb5-3"><a></a>eps <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(n, <span class="dv">0</span>, <span class="fl">0.04</span>)</span>
+<span id="cb5-4"><a></a>y <span class="ot">&lt;-</span> x <span class="sc">+</span> eps</span>
+<span id="cb5-5"><a></a>robust_data <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)</span>
+<span id="cb5-6"><a></a>robust_sub_df <span class="ot">&lt;-</span> <span class="fu">gen_subsamples</span>(robust_data, <span class="dv">30</span>, <span class="dv">5</span>)</span>
+<span id="cb5-7"><a></a><span class="co">#print(robust_sub_df)</span></span>
+<span id="cb5-8"><a></a>full_model_robust <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> robust_data)</span>
+<span id="cb5-9"><a></a>full_int_robust <span class="ot">&lt;-</span> full_model_robust<span class="sc">$</span>coefficients[<span class="dv">1</span>]</span>
+<span id="cb5-10"><a></a>full_coef_robust <span class="ot">&lt;-</span> full_model_robust<span class="sc">$</span>coefficients[<span class="dv">2</span>]</span>
+<span id="cb5-11"><a></a>full_df_robust <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">intercept =</span> full_int_robust, <span class="at">coef =</span> full_coef_robust)</span>
+<span id="cb5-12"><a></a><span class="fu">ggplot</span>(robust_data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb5-13"><a></a>    <span class="fu">geom_point</span>(<span class="at">size=</span>g_pointsize) <span class="sc">+</span></span>
+<span id="cb5-14"><a></a>    <span class="co"># The random lines</span></span>
+<span id="cb5-15"><a></a>    <span class="fu">geom_abline</span>(<span class="at">data =</span> robust_sub_df, <span class="fu">aes</span>(<span class="at">slope =</span> coef, <span class="at">intercept =</span> intercept, <span class="at">color=</span><span class="st">'Subsample Model'</span>), <span class="at">linewidth=</span>g_linewidth, <span class="at">linetype=</span><span class="st">"solid"</span>, <span class="at">alpha=</span><span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb5-16"><a></a>    <span class="co"># The original regression line</span></span>
+<span id="cb5-17"><a></a>    <span class="fu">geom_abline</span>(<span class="at">data=</span>full_df_robust, <span class="fu">aes</span>(<span class="at">slope =</span> coef, <span class="at">intercept =</span> intercept, <span class="at">color=</span><span class="st">'Full-Data Model'</span>), <span class="at">linewidth=</span><span class="dv">2</span><span class="sc">*</span>g_linewidth) <span class="sc">+</span></span>
+<span id="cb5-18"><a></a>    <span class="co"># The average of the random lines</span></span>
+<span id="cb5-19"><a></a>    <span class="co">#geom_abline(data=mean_df, aes(slope = coef, intercept = intercept, color='mean'), linewidth=2*g_linewidth) +</span></span>
+<span id="cb5-20"><a></a>    <span class="fu">labs</span>(</span>
+<span id="cb5-21"><a></a>        <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"Linear Models for "</span>, num_subsamples, <span class="st">" Subsamples of Size n = "</span>, subsample_size),</span>
+<span id="cb5-22"><a></a>        <span class="at">color =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb5-23"><a></a>    ) <span class="sc">+</span></span>
+<span id="cb5-24"><a></a>    <span class="fu">dsan_theme</span>(<span class="st">"full"</span>) <span class="sc">+</span></span>
+<span id="cb5-25"><a></a>    <span class="fu">theme</span>(</span>
+<span id="cb5-26"><a></a>      <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb5-27"><a></a>      <span class="at">legend.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">"mm"</span>)</span>
+<span id="cb5-28"><a></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
+</div>
 <img data-src="index_files/figure-revealjs/robust-plot-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><p>Here the model is <strong>not</strong> “misled” by outliers</p>
 </section>
 <section id="the-bootstrap-principle" class="slide level2 crunch-title crunch-math scrollable">
@@ -717,11 +845,59 @@ Jeff Jacobs
 <section id="how-well-does-it-work" class="slide level2 crunch-title crunch-code">
 <h2>How Well Does it Work?</h2>
 <p>Answer: Absurdly, unreasonably well.</p>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a>pop <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">1000000</span>, <span class="at">mean =</span> <span class="dv">3</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb6-2"><a></a><span class="co"># Sampling 1k times</span></span>
+<span id="cb6-3"><a></a>rand_samples <span class="ot">&lt;-</span> <span class="fu">replicate</span>(</span>
+<span id="cb6-4"><a></a>  <span class="dv">1000</span>,</span>
+<span id="cb6-5"><a></a>  <span class="fu">sample</span>(pop, <span class="at">size=</span><span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-6"><a></a>)</span>
+<span id="cb6-7"><a></a>sample_means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(rand_samples)</span>
+<span id="cb6-8"><a></a>sample_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">est =</span> sample_means, <span class="at">Method =</span> <span class="st">"1000 Samples"</span>)</span>
+<span id="cb6-9"><a></a><span class="co"># Sampling 1 time and bootstrapping</span></span>
+<span id="cb6-10"><a></a>bs_sample <span class="ot">&lt;-</span> <span class="fu">sample</span>(pop, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb6-11"><a></a>subsamples <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, <span class="fu">sample</span>(bs_sample, <span class="at">size=</span><span class="dv">100</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb6-12"><a></a>bs_means <span class="ot">&lt;-</span> <span class="fu">colMeans</span>(subsamples)</span>
+<span id="cb6-13"><a></a>bs_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">est =</span> bs_means, <span class="at">Method =</span> <span class="st">"Bootstrap (1 Sample)"</span>)</span>
+<span id="cb6-14"><a></a>result_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(sample_df, bs_df)</span>
+<span id="cb6-15"><a></a>sim_dnorm <span class="ot">&lt;-</span> <span class="cf">function</span>(x) <span class="fu">dnorm</span>(x, <span class="at">mean =</span> <span class="dv">3</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb6-16"><a></a><span class="fu">ggplot</span>(result_df, <span class="fu">aes</span>(<span class="at">x=</span>est, <span class="at">fill=</span>Method)) <span class="sc">+</span></span>
+<span id="cb6-17"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"full"</span>) <span class="sc">+</span></span>
+<span id="cb6-18"><a></a>  <span class="fu">geom_density</span>(<span class="at">alpha=</span><span class="fl">0.2</span>, <span class="at">linewidth=</span>g_linewidth) <span class="sc">+</span></span>
+<span id="cb6-19"><a></a>  <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept=</span><span class="dv">3</span>, <span class="at">linetype=</span><span class="st">"value"</span>),<span class="at">linewidth=</span>g_linewidth) <span class="sc">+</span></span>
+<span id="cb6-20"><a></a>  <span class="fu">scale_linetype_manual</span>(<span class="st">""</span>, <span class="at">values=</span><span class="fu">c</span>(<span class="st">"density"</span><span class="ot">=</span><span class="st">"solid"</span>, <span class="st">"value"</span><span class="ot">=</span><span class="st">"dashed"</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"Population Mean"</span>, <span class="st">"testing"</span>)) <span class="sc">+</span></span>
+<span id="cb6-21"><a></a>  <span class="fu">theme</span>(</span>
+<span id="cb6-22"><a></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb6-23"><a></a>    <span class="at">legend.spacing.y =</span> <span class="fu">unit</span>(<span class="dv">0</span>, <span class="st">"mm"</span>)</span>
+<span id="cb6-24"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb6-25"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-26"><a></a>    <span class="at">title =</span> <span class="st">"Bootstrap vs. Multiple Samples"</span>,</span>
+<span id="cb6-27"><a></a>    <span class="at">x =</span> <span class="st">"Sample / Subsample Means"</span>,</span>
+<span id="cb6-28"><a></a>    <span class="at">y =</span> <span class="st">"Density"</span></span>
+<span id="cb6-29"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
+</div>
 <img data-src="index_files/figure-revealjs/bootstrap-accuracy-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a></a>sample_est <span class="ot">&lt;-</span> <span class="fu">mean</span>(sample_means)</span>
+<span id="cb7-2"><a></a>sample_str <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%.3f"</span>, sample_est)</span>
+<span id="cb7-3"><a></a>sample_err <span class="ot">&lt;-</span> <span class="fu">abs</span>(sample_est <span class="sc">-</span> <span class="dv">3</span>)</span>
+<span id="cb7-4"><a></a>sample_err_str <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%.3f"</span>, sample_err)</span>
+<span id="cb7-5"><a></a>sample_output <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"1K samples estimate: "</span>, sample_str, <span class="st">" (abs. err: "</span>, sample_err_str, <span class="st">")"</span>)</span>
+<span id="cb7-6"><a></a>bs_est <span class="ot">&lt;-</span> <span class="fu">mean</span>(bs_means)</span>
+<span id="cb7-7"><a></a>bs_str <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%.3f"</span>, bs_est)</span>
+<span id="cb7-8"><a></a>bs_err <span class="ot">&lt;-</span> <span class="fu">abs</span>(bs_est <span class="sc">-</span> <span class="dv">3</span>)</span>
+<span id="cb7-9"><a></a>bs_err_str <span class="ot">&lt;-</span> <span class="fu">sprintf</span>(<span class="st">"%.3f"</span>, bs_err)</span>
+<span id="cb7-10"><a></a>bs_output <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"Bootstrap estimate:  "</span>, bs_str, <span class="st">" (abs. err: "</span>, bs_err_str, <span class="st">")"</span>)</span>
+<span id="cb7-11"><a></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(sample_output,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,bs_output))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>1K samples estimate: 2.999 (abs. err: 0.001)
-Bootstrap estimate:  3.161 (abs. err: 0.161)</code></pre>
+<pre><code>1K samples estimate: 3.000 (abs. err: 0.000)
+Bootstrap estimate:  2.956 (abs. err: 0.044)</code></pre>
 </div>
 </div>
 </section>
@@ -734,11 +910,11 @@ Bootstrap estimate:  3.161 (abs. err: 0.161)</code></pre>
 <div class="cell" data-layout-align="center">
 <details open="" class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a><span class="fu">quantile</span>(bs_means, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a></a><span class="fu">quantile</span>(bs_means, <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>    2.5%    97.5% 
-2.966939 3.366210 </code></pre>
+<pre><code>   2.5%   97.5% 
+2.74478 3.18164 </code></pre>
 </div>
 </div>
 <ul>
@@ -828,6 +1004,17 @@ Bootstrap estimate:  3.161 (abs. err: 0.161)</code></pre>
 <li>Let’s simulate a <strong>fair</strong> coin: <span class="math inline">\(\param{p} = \Pr(\textsf{H}) = 0.5\)</span></li>
 </ul>
 <div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a></a><span class="fu">set.seed</span>(<span class="dv">5100</span>)</span>
+<span id="cb11-2"><a></a><span class="fu">library</span>(Rlab)</span>
+<span id="cb11-3"><a></a>num_flips <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb11-4"><a></a>p <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb11-5"><a></a>coin_obs <span class="ot">&lt;-</span> <span class="fu">rbern</span>(num_flips, p)</span>
+<span id="cb11-6"><a></a>coin_str <span class="ot">&lt;-</span> <span class="fu">paste0</span>(coin_obs, <span class="at">collapse=</span><span class="st">' '</span>)</span>
+<span id="cb11-7"><a></a>num_heads <span class="ot">&lt;-</span> <span class="fu">sum</span>(coin_obs)</span>
+<span id="cb11-8"><a></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(coin_str,<span class="st">" =&gt; "</span>,num_heads,<span class="st">" heads"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>1 0 0 0 1 0 0 0 0 1 =&gt; 3 heads</code></pre>
 </div>
@@ -838,9 +1025,21 @@ Bootstrap estimate:  3.161 (abs. err: 0.161)</code></pre>
 </section>
 <section id="so-how-can-we-determine-whether-the-coin-is-fair" class="slide level2 smaller crunch-title crunch-code crunch-quarto-layout-panel title-10">
 <h2>So How <em>Can</em> We Determine Whether The Coin Is Fair?</h2>
-<div>
-
-</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb13-2"><a></a>num_replications <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb13-3"><a></a>coin_seqs <span class="ot">&lt;-</span> <span class="fu">replicate</span>(num_replications, <span class="fu">rbern</span>(num_flips, p))</span>
+<span id="cb13-4"><a></a>heads_per_seq <span class="ot">&lt;-</span> <span class="fu">colSums</span>(coin_seqs)</span>
+<span id="cb13-5"><a></a>heads_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">num_heads =</span> heads_per_seq)</span>
+<span id="cb13-6"><a></a>highlight_3 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="st">"grey"</span>,<span class="dv">2</span>), <span class="fu">rep</span>(cbPalette[<span class="dv">1</span>],<span class="dv">1</span>), <span class="fu">rep</span>(<span class="st">"grey"</span>,<span class="dv">7</span>))</span>
+<span id="cb13-7"><a></a><span class="fu">ggplot</span>(heads_df, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">factor</span>(num_heads))) <span class="sc">+</span></span>
+<span id="cb13-8"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">stat=</span><span class="st">'count'</span>, <span class="at">fill=</span>highlight_3) <span class="sc">+</span></span>
+<span id="cb13-9"><a></a>  <span class="fu">dsan_theme</span>(<span class="st">"quarter"</span>) <span class="sc">+</span></span>
+<span id="cb13-10"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-11"><a></a>    <span class="at">title=</span><span class="fu">paste0</span>(<span class="st">"Results From N="</span>,num_replications,<span class="st">" 10-Coin-Flip Trials"</span>)</span>
+<span id="cb13-12"><a></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="quarto-layout-panel" data-layout="[1,1]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div id="fair-coins-left" class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
@@ -861,9 +1060,11 @@ Bootstrap estimate:  3.161 (abs. err: 0.161)</code></pre>
 </div>
 </div>
 </div>
-<div>
-
-</div>
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a>three_df <span class="ot">&lt;-</span> heads_df <span class="sc">|&gt;</span> <span class="fu">filter</span>(num_heads <span class="sc">==</span> <span class="dv">3</span>)</span>
+<span id="cb14-2"><a></a><span class="fu">nrow</span>(three_df) <span class="sc">/</span> <span class="fu">nrow</span>(heads_df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="quarto-layout-panel" data-layout="[1,1]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
@@ -918,6 +1119,46 @@ Bootstrap estimate:  3.161 (abs. err: 0.161)</code></pre>
 <li>Simulating a few public-charter pairs:</li>
 </ul>
 <div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a><span class="co"># The true population sizes</span></span>
+<span id="cb16-2"><a></a>N_ch <span class="ot">&lt;-</span> <span class="dv">157000</span></span>
+<span id="cb16-3"><a></a>N_pub <span class="ot">&lt;-</span> <span class="dv">893000</span></span>
+<span id="cb16-4"><a></a><span class="co"># We'll use a function to compute num_sims simulations of a school with N_j</span></span>
+<span id="cb16-5"><a></a><span class="co"># students, each with dropout probability p</span></span>
+<span id="cb16-6"><a></a>simulate_dropouts <span class="ot">&lt;-</span> <span class="cf">function</span>(num_sims, N_j, p) {</span>
+<span id="cb16-7"><a></a>  <span class="fu">return</span>(<span class="fu">rbinom</span>(num_sims, N_j, p))</span>
+<span id="cb16-8"><a></a>}</span>
+<span id="cb16-9"><a></a><span class="co"># We're simulating "null world" by generating data</span></span>
+<span id="cb16-10"><a></a><span class="co"># on the basis of the assumption p_pub_sim = p_ch_sim</span></span>
+<span id="cb16-11"><a></a><span class="co"># So we call the function with the same p for both</span></span>
+<span id="cb16-12"><a></a><span class="co"># simulated schools. In this case, we'll use the</span></span>
+<span id="cb16-13"><a></a><span class="co"># *overall average* dropout rate across all schools:</span></span>
+<span id="cb16-14"><a></a><span class="co"># 4.2% = 0.042</span></span>
+<span id="cb16-15"><a></a>p_sim <span class="ot">&lt;-</span> <span class="fl">0.042</span></span>
+<span id="cb16-16"><a></a><span class="co"># But we'll write a general function for simulating</span></span>
+<span id="cb16-17"><a></a><span class="co"># pairs of schools, whether or not they have the same</span></span>
+<span id="cb16-18"><a></a><span class="co"># Pr(dropout):</span></span>
+<span id="cb16-19"><a></a>simulate_pair <span class="ot">&lt;-</span> <span class="cf">function</span>(num_sims, p_ch, p_pub) {</span>
+<span id="cb16-20"><a></a>  D_ch <span class="ot">&lt;-</span> <span class="fu">simulate_dropouts</span>(num_sims, N_ch, p_ch)</span>
+<span id="cb16-21"><a></a>  D_pub <span class="ot">&lt;-</span> <span class="fu">simulate_dropouts</span>(num_sims, N_pub, p_pub)</span>
+<span id="cb16-22"><a></a>  sim_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">D_ch=</span>D_ch, <span class="at">D_pub=</span>D_pub)</span>
+<span id="cb16-23"><a></a>  <span class="fu">return</span>(sim_df)</span>
+<span id="cb16-24"><a></a>}</span>
+<span id="cb16-25"><a></a><span class="co"># Run the simulation, with the *same* p parameter</span></span>
+<span id="cb16-26"><a></a><span class="co"># for both our simulated schools:</span></span>
+<span id="cb16-27"><a></a>run_sims_same_p <span class="ot">&lt;-</span> <span class="cf">function</span>(num_sims, <span class="at">printResults=</span><span class="cn">FALSE</span>) {</span>
+<span id="cb16-28"><a></a>  sim_df <span class="ot">&lt;-</span> <span class="fu">simulate_pair</span>(num_sims, p_sim, p_sim)</span>
+<span id="cb16-29"><a></a>  <span class="co"># And from these two counts, we can compute the</span></span>
+<span id="cb16-30"><a></a>  <span class="co"># *test statistic*: in this case, the difference</span></span>
+<span id="cb16-31"><a></a>  sim_df <span class="ot">&lt;-</span> sim_df <span class="sc">|&gt;</span> <span class="fu">mutate</span>(</span>
+<span id="cb16-32"><a></a>    <span class="at">test_stat =</span> D_pub <span class="sc">-</span> D_ch</span>
+<span id="cb16-33"><a></a>  )</span>
+<span id="cb16-34"><a></a>  <span class="fu">return</span>(sim_df)</span>
+<span id="cb16-35"><a></a>}</span>
+<span id="cb16-36"><a></a>small_sim_df <span class="ot">&lt;-</span> <span class="fu">run_sims_same_p</span>(<span class="dv">3</span>)</span>
+<span id="cb16-37"><a></a>small_sim_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div class="kable-table">
 <table class="caption-top">
@@ -956,20 +1197,89 @@ Bootstrap estimate:  3.161 (abs. err: 0.161)</code></pre>
 <li>This is the range of values we might expect to see (under our model!) if two schools had the same underlying dropout probabilities</li>
 <li><span class="math inline">\(\Pr(D_\text{pub} - D_\text{ch} = v \mid H_0) \propto\)</span> height of bar at <span class="math inline">\(x = v\)</span>:</li>
 </ul>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a></a>num_trials <span class="ot">&lt;-</span> <span class="dv">10000000</span></span>
+<span id="cb17-2"><a></a>bw <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb17-3"><a></a>sim_df <span class="ot">&lt;-</span> <span class="fu">run_sims_same_p</span>(num_trials)</span>
+<span id="cb17-4"><a></a><span class="co"># And plot the values of our test statistic</span></span>
+<span id="cb17-5"><a></a>null_dist_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sim_df, <span class="fu">aes</span>(<span class="at">x=</span>test_stat)) <span class="sc">+</span></span>
+<span id="cb17-6"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span>bw) <span class="sc">+</span></span>
+<span id="cb17-7"><a></a>  <span class="fu">geom_density</span>(</span>
+<span id="cb17-8"><a></a>    <span class="fu">aes</span>(<span class="at">y =</span> bw <span class="sc">*</span> <span class="fu">after_stat</span>(count)),</span>
+<span id="cb17-9"><a></a>    <span class="at">linewidth =</span> g_linewidth,</span>
+<span id="cb17-10"><a></a>    <span class="at">fill =</span> cbPalette[<span class="dv">1</span>],</span>
+<span id="cb17-11"><a></a>    <span class="at">alpha =</span> <span class="fl">0.333</span></span>
+<span id="cb17-12"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb17-13"><a></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb17-14"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb17-15"><a></a>    <span class="at">x =</span> <span class="st">"Test Statistic (D_pub - D_ch)"</span>,</span>
+<span id="cb17-16"><a></a>    <span class="at">y =</span> <span class="st">"Count"</span>,</span>
+<span id="cb17-17"><a></a>    <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"(Public Dropouts - Charter Dropouts), "</span>,<span class="fu">format</span>(num_trials,<span class="at">big.mark=</span><span class="st">' '</span>, <span class="at">scientific=</span><span class="cn">FALSE</span>),<span class="st">" Simulations"</span>)</span>
+<span id="cb17-18"><a></a>  )</span>
+<span id="cb17-19"><a></a>null_dist_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
+</div>
 <img data-src="index_files/figure-revealjs/generate-null-dist-sim-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="how-extreme-is-our-observed-value-relative-to-this-range" class="slide level2 crunch-code crunch-title crunch-ul">
 <h2>How Extreme Is Our <em>Observed</em> Value Relative To This Range?</h2>
 <ul>
 <li>Same plot, with a vertical (red) line at our <strong>observed</strong> value:</li>
 </ul>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="fu">library</span>(scales)</span>
+<span id="cb18-2"><a></a>null_obs_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sim_df, <span class="fu">aes</span>(<span class="at">x=</span>test_stat)) <span class="sc">+</span></span>
+<span id="cb18-3"><a></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span>bw) <span class="sc">+</span></span>
+<span id="cb18-4"><a></a>  <span class="fu">geom_density</span>(</span>
+<span id="cb18-5"><a></a>    <span class="fu">aes</span>(<span class="at">y =</span> (bw<span class="sc">/</span><span class="dv">3</span>) <span class="sc">*</span> <span class="fu">after_stat</span>(count)),</span>
+<span id="cb18-6"><a></a>    <span class="at">linewidth =</span> g_linewidth,</span>
+<span id="cb18-7"><a></a>    <span class="at">fill =</span> cbPalette[<span class="dv">1</span>],</span>
+<span id="cb18-8"><a></a>    <span class="at">alpha =</span> <span class="fl">0.333</span></span>
+<span id="cb18-9"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb18-10"><a></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb18-11"><a></a>    <span class="at">xintercept =</span> <span class="dv">8500</span>,</span>
+<span id="cb18-12"><a></a>    <span class="at">color=</span><span class="st">'red'</span>,</span>
+<span id="cb18-13"><a></a>    <span class="at">linewidth =</span> g_linewidth,</span>
+<span id="cb18-14"><a></a>    <span class="at">linetype =</span> <span class="st">'dashed'</span></span>
+<span id="cb18-15"><a></a>  ) <span class="sc">+</span></span>
+<span id="cb18-16"><a></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="at">from=</span><span class="dv">5000</span>, <span class="at">to=</span><span class="dv">35000</span>, <span class="at">by=</span><span class="dv">5000</span>), <span class="at">limits=</span><span class="fu">c</span>(<span class="dv">5000</span>, <span class="dv">35000</span>)) <span class="sc">+</span></span>
+<span id="cb18-17"><a></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">big.mark=</span><span class="st">' '</span>)) <span class="sc">+</span></span>
+<span id="cb18-18"><a></a>  <span class="fu">dsan_theme</span>() <span class="sc">+</span></span>
+<span id="cb18-19"><a></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-20"><a></a>    <span class="at">x =</span> <span class="st">"Test Statistic (D_pub - D_ch)"</span>,</span>
+<span id="cb18-21"><a></a>    <span class="at">y =</span> <span class="st">"Count"</span>,</span>
+<span id="cb18-22"><a></a>    <span class="at">title =</span> <span class="fu">paste0</span>(<span class="st">"(Public Dropouts - Charter Dropouts), "</span>,<span class="fu">format</span>(num_trials,<span class="at">big.mark=</span><span class="st">' '</span>,<span class="at">scientific=</span><span class="cn">FALSE</span>),<span class="st">" Simulations"</span>)</span>
+<span id="cb18-23"><a></a>  )</span>
+<span id="cb18-24"><a></a>null_obs_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
+</div>
 <img data-src="index_files/figure-revealjs/null-dist-with-observed-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"></section>
 <section id="drawing-conclusions" class="slide level2 smaller">
 <h2>Drawing Conclusions</h2>
-<div>
-
-</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a></a><span class="fu">mean</span>(sim_df<span class="sc">$</span>test_stat)</span>
+<span id="cb19-2"><a></a>cdf_at_val <span class="ot">&lt;-</span> <span class="cf">function</span>(v) {</span>
+<span id="cb19-3"><a></a>  lt_val_df <span class="ot">&lt;-</span> sim_df <span class="sc">|&gt;</span> <span class="fu">filter</span>(test_stat <span class="sc">&lt;</span> v)</span>
+<span id="cb19-4"><a></a>  prop_lt <span class="ot">&lt;-</span> <span class="fu">nrow</span>(lt_val_df) <span class="sc">/</span> <span class="fu">nrow</span>(sim_df)</span>
+<span id="cb19-5"><a></a>  <span class="fu">return</span>(prop_lt)</span>
+<span id="cb19-6"><a></a>}</span>
+<span id="cb19-7"><a></a><span class="fu">writeLines</span>(<span class="fu">format</span>(<span class="fu">cdf_at_val</span>(<span class="dv">31000</span>), <span class="at">scientific=</span><span class="cn">FALSE</span>))</span>
+<span id="cb19-8"><a></a><span class="fu">writeLines</span>(<span class="fu">format</span>(<span class="fu">cdf_at_val</span>(<span class="dv">30500</span>), <span class="at">scientific=</span><span class="cn">FALSE</span>))</span>
+<span id="cb19-9"><a></a>cdf_val <span class="ot">&lt;-</span> <span class="fu">cdf_at_val</span>(<span class="dv">30000</span>)</span>
+<span id="cb19-10"><a></a>cdf_val_fmt <span class="ot">&lt;-</span> <span class="fu">format</span>(cdf_val, <span class="at">scientific=</span><span class="cn">FALSE</span>)</span>
+<span id="cb19-11"><a></a>lt30k_df <span class="ot">&lt;-</span> sim_df <span class="sc">|&gt;</span> <span class="fu">filter</span>(test_stat <span class="sc">&lt;</span> <span class="dv">30000</span>)</span>
+<span id="cb19-12"><a></a>num_lt30k <span class="ot">&lt;-</span> <span class="fu">nrow</span>(lt30k_df)</span>
+<span id="cb19-13"><a></a>num_total <span class="ot">&lt;-</span> <span class="fu">nrow</span>(sim_df)</span>
+<span id="cb19-14"><a></a>num_total_fmt <span class="ot">&lt;-</span> <span class="fu">format</span>(num_total, <span class="at">big.mark=</span><span class="st">','</span>)</span>
+<span id="cb19-15"><a></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(cdf_val_fmt,<span class="st">" = "</span>,num_lt30k,<span class="st">" / "</span>,num_total_fmt))</span>
+<span id="cb19-16"><a></a><span class="fu">min</span>(sim_df<span class="sc">$</span>test_stat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="quarto-layout-panel" data-layout="[1,1]">
 <div class="quarto-layout-row quarto-layout-valign-center">
 <div id="conclusions-left" class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">

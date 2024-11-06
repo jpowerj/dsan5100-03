@@ -16,6 +16,7 @@ format:
     footer: "DSAN 5100-03 W10: Parameter Estimation"
     output-file: slides.html
     df-print: kable
+    echo: true
     code-fold: true
     html-math-method: mathjax
     scrollable: true
