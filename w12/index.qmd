@@ -78,13 +78,11 @@ source("../dsan-globals/_globals.r")
 
 * Assumptions: A normal population distribution with known value of $\sigma$.
 
-
 ## Example 1: Bird Wingspans {.smaller .crunch-title .crunch-ul .crunch-code}
 
 * Trying to figure out the **population distribution** of bird wingspans.
 * We hypothesize $\mu_0 = 120\text{cm}$
 * Somehow we know the **population variance** $\sigma = 20\text{cm}$, and we know that bird wingspans form a **normal distribution**, but we don't know the true $\mu$:
-
 
 ```{r}
 #| label: z-test-hypothesized-dist
@@ -430,9 +428,9 @@ ggplot(df, aes(x=x, y=y)) +
 On the difference between these two lines, and why it matters, I cannot recommend @gelman_data_2007 enough!
 :::
 
-## Principal Component Analysis {.smaller .crunch-title .crunch-ul .shift-footnotes-20}
+## Principal Component Analysis {.smaller .crunch-title .crunch-ul .shift-footnotes-20 .crunch-code}
 
-* **Principal Component Line** can be used to **project** the data onto its **dimension of highest variance**
+* **Principal Component Line** allows **projecting** data onto its **dimension of highest variance**
 
 * More simply: PCA can **discover** meaningful axes in data (**unsupervised** learning / **exploratory** data analysis settings)
 
@@ -473,9 +471,7 @@ ggplot(gdp_df, aes(x = industrial, y = exports)) +
     )
 ```
 
-::: {.aside}
-See <a href="https://juliasilge.com/blog/un-voting/" target="_blank">https://juliasilge.com/blog/un-voting/</a> for an amazing blog post using PCA, with 2 dimensions, to explore UN voting patterns!
-:::
+* See [here](https://juliasilge.com/blog/un-voting/) for an amazing blog post using PCA to explore UN voting patterns!
 
 ## Create Your Own Dimension!
 
@@ -536,7 +532,7 @@ Given data $(X, Y)$, we estimate $\widehat{y} = \widehat{\beta_0} + \widehat{\be
 
 * We want to measure **how well** our line predicts $y$ for any given $x$ value $\implies$ **vertical distance** from regression line
 
-## Key Features of Regression Line {.crunch-math .smaller-math}
+## Key Features of Regression Line {.crunch-math .smaller-math .math-80 .inline-80 .crunch-title}
 
 * Regression line is **BLUE**: **B**est **L**inear **U**nbiased **E**stimator
 * What exactly is it the "best" linear estimator of?
@@ -597,7 +593,7 @@ Multiple R-squared:  0.07895,   Adjusted R-squared:  0.06729
 F-statistic: 6.771 on 1 and 79 DF,  p-value: 0.01106
 </pre>
 
-## Zooming In: Coefficients
+## Zooming In: Coefficients {.smaller-table}
 
 ::: {.coef-table}
 
@@ -615,7 +611,7 @@ $$
 \widehat{y} \approx \class{cb1}{\overset{\beta_0}{\underset{\small \pm 0.595}{0.620}}} +  \class{cb2}{\overset{\beta_1}{\underset{\small \pm 0.020}{0.053}}} \cdot x
 $$
 
-## Zooming In: Significance {.crunch-title}
+## Zooming In: Significance {.crunch-title .smaller}
 
 ::: {.coef-table}
 
@@ -717,7 +713,7 @@ ggplot(data=data.frame(x=c(-4,4)), aes(x=x)) +
 :::
 :::
 
-## The Residual Plot {.crunch-title .crunch-images}
+## The Residual Plot {.crunch-title .crunch-images .crunch-ul .inline-90 .math-90}
 
 ::: columns
 ::: {.column width="50%"}
@@ -860,7 +856,7 @@ Meaning, if we sample 1 million people, we would expect:
 * 1,000 to be farmers with these traits
 * $\implies$ **still 22.7 times more likely** that Steve is a farmer
 
-## The Math {.smaller .small-math}
+## The Math {.smaller .math-80 .crunch-title}
 
 $$
 \begin{align*}
@@ -897,7 +893,7 @@ $$
 
 # Types of Hypotheses {data-stack-name="Hypotheses"}
 
-## Differences vs. Ratios {.smaller .crunch-title .crunch-ul .crunch-math}
+## Differences vs. Ratios {.smaller .crunch-title .crunch-ul .crunch-math .inline-90 .math-90}
 
 * **Setting**: We have a sample $\mathbf{X}_1$ taken from a population $P_1$ and a sample $\mathbf{X}_2$ taken from a population $P_2$.
 * We care about some variable $v$ that we measured as part of our sampling: in particular, we care about $\mu^{(v)}_1$, the mean of this variable in **population 1**, and $\mu^{(v)}_2$, the mean of this variable in **population 2**^[From here onwards I drop the $(v)$ superscript for brevity, but remember that we're always talking about $\mu^{(v)}_i$: the population mean of a **particular variable** $v$ in population $i$!]
@@ -1133,7 +1129,7 @@ data_df |> t_test(formula = height ~ Country, order = c("Netherlands", "Yemen"),
 
 :::
 
-## What Hypothesis Are We Testing? {.crunch-title .crunch-math .crunch-ul .small-math .crunch-lists}
+## What Hypothesis Are We Testing? {.crunch-title .crunch-math .crunch-ul .math-80 .crunch-lists}
 
 * $z$-Tests and $t$-Tests might feel a bit weak: they allow us to hypothesize about a single population parameter, which is nice, but throughout the course we have been talking about **distributions**, not just means or variances!
 * The **Chi-Squared Test** allows us to hypothesize about distributions: for categorical random variables $X_1$ and $X_2$ we can test the null and alternative hypotheses:
@@ -1156,7 +1152,7 @@ $$
 * We will use a **lowercase** $k_{1,i}$ to represent the **$i$th possible value** of $X_1$, (i.e., the $i$th element of $\mathcal{R}_{X_1}$), and $k_{2,i}$ to represent the $i$th possible value of $\mathcal{R}_{X_2}$.
   * e.g., $k_{1,1}$ is the first element of $\mathcal{R}_{X_1}$, $k_{1,2}$ is the second element of $\mathcal{R}_{X_2}$, and so on.
 
-## Joint and Marginal Frequencies {.smaller}
+## Joint and Marginal Frequencies {.smaller .crunch-title}
 
 * Now we can define the central quantities that the chi-squared test involves: the **frequencies** (i.e., unnormalized probabilities) of observations with certain (categorical) variable values:
 
@@ -1239,22 +1235,26 @@ We can compute this test statistic (somewhat laboriously) in R as follows: first
 #dchisq(q_sum, test_df)
 ```
 
-## Drawing Conclusions in Classical World
+## Drawing Conclusions in Classical World {.smaller .crunch-title .title-10}
 
 And so, finally: this tells us that under the **null hypothesis** that `artist_name` and `valence_C` represent draws from **independent** random variables, the likelihood of obtaining our dataset, or a dataset with a more extreme test statistic, is about 0.00042, or 0.042%.
 
 Therefore, if we are evaluating our hypothesis at the 5% confidence level (or 1% or even 0.1%, because this is a **very low** probability value/percentage), we conclude that we should **reject** the null hypothesis that artist name and valence are independent. Therefore (switching from a frequentist to a Bayesian interpretation, mercifully), we **increase our degree of belief** in the hypothesis that the valence of a song **does** depend upon the artist making the song.
 
-## Drawing Conclusions in Modern (Bayesian) World {.smaller}
+## Drawing Conclusions in Modern (Bayesian) World {.smaller .crunch-title .inline-90}
 
 This **technical** conclusion (which focuses only on the results of the statistical hypothesis test), combined with the Bayesian interpretation at the end, lets us say something about "what we've learned" about music:
 
 * Our Bayesian **prior** on the null hypothesis, $\Pr(H_0) = \Pr(V \perp A)$, was probably quite small: before performing this analysis, we probably did not think that these two variables are independent, since we know that some artists tend to make more **sad** songs, while other artists tend to make more **happy** songs (though there are obviously exceptions: bands that tend to make a mix of sad and happy songs).
 * Then we performed the analysis, and **failed to reject** the hypothesis that these two variables are independent.
 * Therefore, our Bayesian **posterior** on $\Pr(V \perp A)$ should be slightly **lower**: If our prior probability on $H_0$ was some value $p$, our posterior probability now that we've performed the study and failed to reject the null hypothesis should be $p - \varepsilon$, for some appropriate value $\varepsilon$ representing the **relative balance** between (our view of) the veracity of the prior vs. the veracity of the test we performed.
-* To make it concrete: if we previously believed that $p = \Pr(H_0) = 0.1$, perhaps now we can update our beliefs such that $p = \Pr(H_0) = 0.05$. This would represent the case where we lend **equal credence** in our prior and in our experiement, since in that case
+* To make it concrete: if we previously believed that $p = \Pr(H_0) = 0.1$, perhaps now we can update our beliefs such that $p = \Pr(H_0) = 0.05$. This would represent the case where we lend **equal credence** in our prior and in our experiement, since then
 
 $$
 p_{post} = \frac{1}{2}\Pr(H_0) + \frac{1}{2}\text{Test Result} = \frac{1}{2}(0.1) + \frac{1}{2}(0) = 0.05.
 $$
 
+## References
+
+::: {#refs}
+:::

@@ -903,12 +903,12 @@ Jeff Jacobs
 </div></div>
 
 <aside><div>
-<p>On the difference between these two lines, and why it matters, I cannot recommend <span class="citation" data-cites="gelman_data_2007">Gelman and Hill (<a href="#/drawing-conclusions-in-modern-bayesian-world" role="doc-biblioref" onclick="">2007</a>)</span> enough!</p>
+<p>On the difference between these two lines, and why it matters, I cannot recommend <span class="citation" data-cites="gelman_data_2007">Gelman and Hill (<a href="#/references" role="doc-biblioref" onclick="">2007</a>)</span> enough!</p>
 </div></aside></section>
-<section id="principal-component-analysis" class="slide level2 smaller crunch-title crunch-ul shift-footnotes-20">
+<section id="principal-component-analysis" class="slide level2 smaller crunch-title crunch-ul shift-footnotes-20 crunch-code">
 <h2>Principal Component Analysis</h2>
 <ul>
-<li><p><strong>Principal Component Line</strong> can be used to <strong>project</strong> the data onto its <strong>dimension of highest variance</strong></p></li>
+<li><p><strong>Principal Component Line</strong> allows <strong>projecting</strong> data onto its <strong>dimension of highest variance</strong></p></li>
 <li><p>More simply: PCA can <strong>discover</strong> meaningful axes in data (<strong>unsupervised</strong> learning / <strong>exploratory</strong> data analysis settings)</p></li>
 </ul>
 <div class="cell" data-layout-align="center">
@@ -945,18 +945,12 @@ Jeff Jacobs
 <span id="cb10-29"><a></a>        <span class="at">y =</span> <span class="st">"Exports (% of GDP)"</span></span>
 <span id="cb10-30"><a></a>    )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="index_files/figure-revealjs/gdp-plot-1.png" class="quarto-figure quarto-figure-center" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
 
-<aside><div>
-<p>See <a href="https://juliasilge.com/blog/un-voting/" target="_blank">https://juliasilge.com/blog/un-voting/</a> for an amazing blog post using PCA, with 2 dimensions, to explore UN voting patterns!</p>
-</div></aside></section>
+</div>
+<img data-src="index_files/figure-revealjs/gdp-plot-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960"><ul>
+<li>See <a href="https://juliasilge.com/blog/un-voting/">here</a> for an amazing blog post using PCA to explore UN voting patterns!</li>
+</ul>
+</section>
 <section id="create-your-own-dimension" class="slide level2">
 <h2>Create Your Own Dimension!</h2>
 <div class="cell" data-layout-align="center">
@@ -1035,7 +1029,7 @@ Jeff Jacobs
 <li>We want to measure <strong>how well</strong> our line predicts <span class="math inline">\(y\)</span> for any given <span class="math inline">\(x\)</span> value <span class="math inline">\(\implies\)</span> <strong>vertical distance</strong> from regression line</li>
 </ul>
 </section>
-<section id="key-features-of-regression-line" class="slide level2 crunch-math smaller-math">
+<section id="key-features-of-regression-line" class="slide level2 crunch-math smaller-math math-80 inline-80 crunch-title">
 <h2>Key Features of Regression Line</h2>
 <ul>
 <li>Regression line is <strong>BLUE</strong>: <strong>B</strong>est <strong>L</strong>inear <strong>U</strong>nbiased <strong>E</strong>stimator</li>
@@ -1111,7 +1105,7 @@ Multiple R-squared:  0.07895,   Adjusted R-squared:  0.06729
 F-statistic: 6.771 on 1 and 79 DF,  p-value: 0.01106
 </pre>
 </section>
-<section id="zooming-in-coefficients" class="slide level2">
+<section id="zooming-in-coefficients" class="slide level2 smaller-table">
 <h2>Zooming In: Coefficients</h2>
 <div class="coef-table">
 <table class="caption-top">
@@ -1165,7 +1159,7 @@ F-statistic: 6.771 on 1 and 79 DF,  p-value: 0.01106
 \widehat{y} \approx \class{cb1}{\overset{\beta_0}{\underset{\small \pm 0.595}{0.620}}} +  \class{cb2}{\overset{\beta_1}{\underset{\small \pm 0.020}{0.053}}} \cdot x
 \]</span></p>
 </section>
-<section id="zooming-in-significance" class="slide level2 crunch-title">
+<section id="zooming-in-significance" class="slide level2 crunch-title smaller">
 <h2>Zooming In: Significance</h2>
 <div class="coef-table">
 <table class="caption-top">
@@ -1311,7 +1305,7 @@ F-statistic: 6.771 on 1 and 79 DF,  p-value: 0.01106
 </div>
 </div></div>
 </section>
-<section id="the-residual-plot" class="slide level2 crunch-title crunch-images">
+<section id="the-residual-plot" class="slide level2 crunch-title crunch-images crunch-ul inline-90 math-90">
 <h2>The Residual Plot</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -1430,7 +1424,7 @@ y_i = \beta_0 + \beta_1x_i + \varepsilon_i
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/thinkingfastandslow.jpg"></p>
-<figcaption>Example from <span class="citation" data-cites="kahneman_thinking_2011">Kahneman (<a href="#/drawing-conclusions-in-modern-bayesian-world" role="doc-biblioref" onclick="">2011</a>)</span></figcaption>
+<figcaption>Example from <span class="citation" data-cites="kahneman_thinking_2011">Kahneman (<a href="#/references" role="doc-biblioref" onclick="">2011</a>)</span></figcaption>
 </figure>
 </div>
 </div>
@@ -1489,7 +1483,7 @@ y_i = \beta_0 + \beta_1x_i + \varepsilon_i
 <li><span class="math inline">\(\implies\)</span> <strong>still 22.7 times more likely</strong> that Steve is a farmer</li>
 </ul>
 </section>
-<section id="the-math" class="slide level2 smaller small-math">
+<section id="the-math" class="slide level2 smaller math-80 crunch-title">
 <h2>The Math</h2>
 <p><span class="math display">\[
 \begin{align*}
@@ -1527,7 +1521,7 @@ y_i = \beta_0 + \beta_1x_i + \varepsilon_i
 <h1>Types of Hypotheses</h1>
 
 </section>
-<section id="differences-vs.-ratios" class="slide level2 smaller crunch-title crunch-ul crunch-math scrollable">
+<section id="differences-vs.-ratios" class="slide level2 smaller crunch-title crunch-ul crunch-math inline-90 math-90 scrollable">
 <h2>Differences vs.&nbsp;Ratios</h2>
 <ul>
 <li><strong>Setting</strong>: We have a sample <span class="math inline">\(\mathbf{X}_1\)</span> taken from a population <span class="math inline">\(P_1\)</span> and a sample <span class="math inline">\(\mathbf{X}_2\)</span> taken from a population <span class="math inline">\(P_2\)</span>.</li>
@@ -1843,7 +1837,7 @@ y_i = \beta_0 + \beta_1x_i + \varepsilon_i
 </div>
 </div>
 </section>
-<section id="what-hypothesis-are-we-testing" class="slide level2 crunch-title crunch-math crunch-ul small-math crunch-lists">
+<section id="what-hypothesis-are-we-testing" class="slide level2 crunch-title crunch-math crunch-ul math-80 crunch-lists">
 <h2>What Hypothesis Are We Testing?</h2>
 <ul>
 <li><span class="math inline">\(z\)</span>-Tests and <span class="math inline">\(t\)</span>-Tests might feel a bit weak: they allow us to hypothesize about a single population parameter, which is nice, but throughout the course we have been talking about <strong>distributions</strong>, not just means or variances!</li>
@@ -1872,7 +1866,7 @@ H_A: X_1 \not\perp X_2 &amp;\iff \Pr(X_1 = v_1 \mid X_2 = v_2) \neq \Pr(X_1 = v_
 </ul></li>
 </ul>
 </section>
-<section id="joint-and-marginal-frequencies" class="slide level2 smaller">
+<section id="joint-and-marginal-frequencies" class="slide level2 smaller crunch-title">
 <h2>Joint and Marginal Frequencies</h2>
 <ul>
 <li><p>Now we can define the central quantities that the chi-squared test involves: the <strong>frequencies</strong> (i.e., unnormalized probabilities) of observations with certain (categorical) variable values:</p></li>
@@ -1975,35 +1969,38 @@ Q = \sum_{k_1=1}^{K_1}\sum_{k_2=1}^{K_2}\frac{\left(f_{k_1,k_2} - \frac{f_{k_1,\
 </details>
 </div>
 </section>
-<section id="drawing-conclusions-in-classical-world" class="slide level2">
+<section id="drawing-conclusions-in-classical-world" class="slide level2 smaller crunch-title title-10">
 <h2>Drawing Conclusions in Classical World</h2>
 <p>And so, finally: this tells us that under the <strong>null hypothesis</strong> that <code>artist_name</code> and <code>valence_C</code> represent draws from <strong>independent</strong> random variables, the likelihood of obtaining our dataset, or a dataset with a more extreme test statistic, is about 0.00042, or 0.042%.</p>
 <p>Therefore, if we are evaluating our hypothesis at the 5% confidence level (or 1% or even 0.1%, because this is a <strong>very low</strong> probability value/percentage), we conclude that we should <strong>reject</strong> the null hypothesis that artist name and valence are independent. Therefore (switching from a frequentist to a Bayesian interpretation, mercifully), we <strong>increase our degree of belief</strong> in the hypothesis that the valence of a song <strong>does</strong> depend upon the artist making the song.</p>
 </section>
-<section id="drawing-conclusions-in-modern-bayesian-world" class="slide level2 smaller scrollable">
+<section id="drawing-conclusions-in-modern-bayesian-world" class="slide level2 smaller crunch-title inline-90">
 <h2>Drawing Conclusions in Modern (Bayesian) World</h2>
 <p>This <strong>technical</strong> conclusion (which focuses only on the results of the statistical hypothesis test), combined with the Bayesian interpretation at the end, lets us say something about “what we’ve learned” about music:</p>
 <ul>
 <li>Our Bayesian <strong>prior</strong> on the null hypothesis, <span class="math inline">\(\Pr(H_0) = \Pr(V \perp A)\)</span>, was probably quite small: before performing this analysis, we probably did not think that these two variables are independent, since we know that some artists tend to make more <strong>sad</strong> songs, while other artists tend to make more <strong>happy</strong> songs (though there are obviously exceptions: bands that tend to make a mix of sad and happy songs).</li>
 <li>Then we performed the analysis, and <strong>failed to reject</strong> the hypothesis that these two variables are independent.</li>
 <li>Therefore, our Bayesian <strong>posterior</strong> on <span class="math inline">\(\Pr(V \perp A)\)</span> should be slightly <strong>lower</strong>: If our prior probability on <span class="math inline">\(H_0\)</span> was some value <span class="math inline">\(p\)</span>, our posterior probability now that we’ve performed the study and failed to reject the null hypothesis should be <span class="math inline">\(p - \varepsilon\)</span>, for some appropriate value <span class="math inline">\(\varepsilon\)</span> representing the <strong>relative balance</strong> between (our view of) the veracity of the prior vs.&nbsp;the veracity of the test we performed.</li>
-<li>To make it concrete: if we previously believed that <span class="math inline">\(p = \Pr(H_0) = 0.1\)</span>, perhaps now we can update our beliefs such that <span class="math inline">\(p = \Pr(H_0) = 0.05\)</span>. This would represent the case where we lend <strong>equal credence</strong> in our prior and in our experiement, since in that case</li>
+<li>To make it concrete: if we previously believed that <span class="math inline">\(p = \Pr(H_0) = 0.1\)</span>, perhaps now we can update our beliefs such that <span class="math inline">\(p = \Pr(H_0) = 0.05\)</span>. This would represent the case where we lend <strong>equal credence</strong> in our prior and in our experiement, since then</li>
 </ul>
 <p><span class="math display">\[
 p_{post} = \frac{1}{2}\Pr(H_0) + \frac{1}{2}\text{Test Result} = \frac{1}{2}(0.1) + \frac{1}{2}(0) = 0.05.
 \]</span></p>
-
-<div class="quarto-auto-generated-content">
-<div class="footer footer-default">
-<p>DSAN 5100-03 W12: Hypothesis Testing</p>
-</div>
-</div>
+</section>
+<section id="references" class="slide level2 smaller scrollable">
+<h2>References</h2>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-gelman_data_2007" class="csl-entry" role="listitem">
 Gelman, Andrew, and Jennifer Hill. 2007. <em>Data <span>Analysis Using Regression</span> and <span>Multilevel</span>/<span>Hierarchical Models</span></em>. <span>Cambridge University Press</span>.
 </div>
 <div id="ref-kahneman_thinking_2011" class="csl-entry" role="listitem">
 Kahneman, Daniel. 2011. <em>Thinking, <span>Fast</span> and <span>Slow</span></em>. <span>Farrar, Straus and Giroux</span>.
+</div>
+</div>
+
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+<p>DSAN 5100-03 W12: Hypothesis Testing</p>
 </div>
 </div>
 </section></section>

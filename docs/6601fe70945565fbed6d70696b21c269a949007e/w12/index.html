@@ -334,7 +334,7 @@ window.Quarto = {
     </ul>
     </div>
 <div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
-<p><em>Updated 2024-11-12, 05:03:51 PM</em></p>
+<p><em>Updated 2024-11-12, 06:32:52 PM</em></p>
 </div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -406,6 +406,7 @@ window.Quarto = {
   <li><a href="#interpretation" id="toc-interpretation" class="nav-link" data-scroll-target="#interpretation">Interpretation</a></li>
   <li><a href="#drawing-conclusions-in-classical-world" id="toc-drawing-conclusions-in-classical-world" class="nav-link" data-scroll-target="#drawing-conclusions-in-classical-world">Drawing Conclusions in Classical World</a></li>
   <li><a href="#drawing-conclusions-in-modern-bayesian-world" id="toc-drawing-conclusions-in-modern-bayesian-world" class="nav-link" data-scroll-target="#drawing-conclusions-in-modern-bayesian-world">Drawing Conclusions in Modern (Bayesian) World</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w12/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
@@ -927,10 +928,10 @@ window.Quarto = {
 <div class="no-row-height column-margin column-container"><div class="margin-aside">
 <p>On the difference between these two lines, and why it matters, I cannot recommend <span class="citation" data-cites="gelman_data_2007">Gelman and Hill (<a href="#ref-gelman_data_2007" role="doc-biblioref">2007</a>)</span> enough!</p>
 </div></div></section>
-<section id="principal-component-analysis" class="level2 smaller crunch-title crunch-ul shift-footnotes-20 page-columns page-full">
-<h2 class="smaller crunch-title crunch-ul shift-footnotes-20 anchored" data-anchor-id="principal-component-analysis">Principal Component Analysis</h2>
+<section id="principal-component-analysis" class="level2 smaller crunch-title crunch-ul shift-footnotes-20 crunch-code">
+<h2 class="smaller crunch-title crunch-ul shift-footnotes-20 crunch-code anchored" data-anchor-id="principal-component-analysis">Principal Component Analysis</h2>
 <ul>
-<li><p><strong>Principal Component Line</strong> can be used to <strong>project</strong> the data onto its <strong>dimension of highest variance</strong></p></li>
+<li><p><strong>Principal Component Line</strong> allows <strong>projecting</strong> data onto its <strong>dimension of highest variance</strong></p></li>
 <li><p>More simply: PCA can <strong>discover</strong> meaningful axes in data (<strong>unsupervised</strong> learning / <strong>exploratory</strong> data analysis settings)</p></li>
 </ul>
 <div class="cell" data-layout-align="center">
@@ -972,10 +973,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
-
-<div class="no-row-height column-margin column-container"><div class="margin-aside">
-<p>See <a href="https://juliasilge.com/blog/un-voting/" target="_blank">https://juliasilge.com/blog/un-voting/</a> for an amazing blog post using PCA, with 2 dimensions, to explore UN voting patterns!</p>
-</div></div></section>
+<ul>
+<li>See <a href="https://juliasilge.com/blog/un-voting/">here</a> for an amazing blog post using PCA to explore UN voting patterns!</li>
+</ul>
+</section>
 <section id="create-your-own-dimension" class="level2">
 <h2 class="anchored" data-anchor-id="create-your-own-dimension">Create Your Own Dimension!</h2>
 <div class="cell" data-layout-align="center">
@@ -1058,8 +1059,8 @@ The Regression Hypothesis <span class="math inline">\(\mathcal{H}_{\text{reg}}\)
 <li>We want to measure <strong>how well</strong> our line predicts <span class="math inline">\(y\)</span> for any given <span class="math inline">\(x\)</span> value <span class="math inline">\(\implies\)</span> <strong>vertical distance</strong> from regression line</li>
 </ul>
 </section>
-<section id="key-features-of-regression-line" class="level2 crunch-math smaller-math">
-<h2 class="crunch-math smaller-math anchored" data-anchor-id="key-features-of-regression-line">Key Features of Regression Line</h2>
+<section id="key-features-of-regression-line" class="level2 crunch-math smaller-math math-80 inline-80 crunch-title">
+<h2 class="crunch-math smaller-math math-80 inline-80 crunch-title anchored" data-anchor-id="key-features-of-regression-line">Key Features of Regression Line</h2>
 <ul>
 <li>Regression line is <strong>BLUE</strong>: <strong>B</strong>est <strong>L</strong>inear <strong>U</strong>nbiased <strong>E</strong>stimator</li>
 <li>What exactly is it the “best” linear estimator of?</li>
@@ -1131,8 +1132,8 @@ Multiple R-squared:  0.07895,   Adjusted R-squared:  0.06729
 F-statistic: 6.771 on 1 and 79 DF,  p-value: 0.01106
 </pre>
 </section>
-<section id="zooming-in-coefficients" class="level2">
-<h2 class="anchored" data-anchor-id="zooming-in-coefficients">Zooming In: Coefficients</h2>
+<section id="zooming-in-coefficients" class="level2 smaller-table">
+<h2 class="smaller-table anchored" data-anchor-id="zooming-in-coefficients">Zooming In: Coefficients</h2>
 <div class="coef-table">
 <table class="caption-top table">
 <colgroup>
@@ -1185,8 +1186,8 @@ F-statistic: 6.771 on 1 and 79 DF,  p-value: 0.01106
 \widehat{y} \approx \class{cb1}{\overset{\beta_0}{\underset{\small \pm 0.595}{0.620}}} +  \class{cb2}{\overset{\beta_1}{\underset{\small \pm 0.020}{0.053}}} \cdot x
 \]</span></p>
 </section>
-<section id="zooming-in-significance" class="level2 crunch-title">
-<h2 class="crunch-title anchored" data-anchor-id="zooming-in-significance">Zooming In: Significance</h2>
+<section id="zooming-in-significance" class="level2 crunch-title smaller">
+<h2 class="crunch-title smaller anchored" data-anchor-id="zooming-in-significance">Zooming In: Significance</h2>
 <div class="coef-table">
 <table class="caption-top table">
 <colgroup>
@@ -1326,8 +1327,8 @@ F-statistic: 6.771 on 1 and 79 DF,  p-value: 0.01106
 </div>
 </div>
 </section>
-<section id="the-residual-plot" class="level2 crunch-title crunch-images">
-<h2 class="crunch-title crunch-images anchored" data-anchor-id="the-residual-plot">The Residual Plot</h2>
+<section id="the-residual-plot" class="level2 crunch-title crunch-images crunch-ul inline-90 math-90">
+<h2 class="crunch-title crunch-images crunch-ul inline-90 math-90 anchored" data-anchor-id="the-residual-plot">The Residual Plot</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -1500,8 +1501,8 @@ y_i = \beta_0 + \beta_1x_i + \varepsilon_i
 <li><span class="math inline">\(\implies\)</span> <strong>still 22.7 times more likely</strong> that Steve is a farmer</li>
 </ul>
 </section>
-<section id="the-math" class="level2 smaller small-math">
-<h2 class="smaller small-math anchored" data-anchor-id="the-math">The Math</h2>
+<section id="the-math" class="level2 smaller math-80 crunch-title">
+<h2 class="smaller math-80 crunch-title anchored" data-anchor-id="the-math">The Math</h2>
 <p><span class="math display">\[
 \begin{align*}
 \Pr(\mathcal{H}_L \mid E) &amp;= \Pr(\text{Steve is librarian} \mid \text{description}) \\
@@ -1536,8 +1537,8 @@ y_i = \beta_0 + \beta_1x_i + \varepsilon_i
 </section>
 <section id="types-of-hypotheses" class="level1" data-stack-name="Hypotheses">
 <h1 data-stack-name="Hypotheses">Types of Hypotheses</h1>
-<section id="differences-vs.-ratios" class="level2 smaller crunch-title crunch-ul crunch-math">
-<h2 class="smaller crunch-title crunch-ul crunch-math anchored" data-anchor-id="differences-vs.-ratios">Differences vs.&nbsp;Ratios</h2>
+<section id="differences-vs.-ratios" class="level2 smaller crunch-title crunch-ul crunch-math inline-90 math-90">
+<h2 class="smaller crunch-title crunch-ul crunch-math inline-90 math-90 anchored" data-anchor-id="differences-vs.-ratios">Differences vs.&nbsp;Ratios</h2>
 <ul>
 <li><strong>Setting</strong>: We have a sample <span class="math inline">\(\mathbf{X}_1\)</span> taken from a population <span class="math inline">\(P_1\)</span> and a sample <span class="math inline">\(\mathbf{X}_2\)</span> taken from a population <span class="math inline">\(P_2\)</span>.</li>
 <li>We care about some variable <span class="math inline">\(v\)</span> that we measured as part of our sampling: in particular, we care about <span class="math inline">\(\mu^{(v)}_1\)</span>, the mean of this variable in <strong>population 1</strong>, and <span class="math inline">\(\mu^{(v)}_2\)</span>, the mean of this variable in <strong>population 2</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></li>
@@ -1847,8 +1848,8 @@ y_i = \beta_0 + \beta_1x_i + \varepsilon_i
 </div>
 </div>
 </section>
-<section id="what-hypothesis-are-we-testing" class="level2 crunch-title crunch-math crunch-ul small-math crunch-lists">
-<h2 class="crunch-title crunch-math crunch-ul small-math crunch-lists anchored" data-anchor-id="what-hypothesis-are-we-testing">What Hypothesis Are We Testing?</h2>
+<section id="what-hypothesis-are-we-testing" class="level2 crunch-title crunch-math crunch-ul math-80 crunch-lists">
+<h2 class="crunch-title crunch-math crunch-ul math-80 crunch-lists anchored" data-anchor-id="what-hypothesis-are-we-testing">What Hypothesis Are We Testing?</h2>
 <ul>
 <li><span class="math inline">\(z\)</span>-Tests and <span class="math inline">\(t\)</span>-Tests might feel a bit weak: they allow us to hypothesize about a single population parameter, which is nice, but throughout the course we have been talking about <strong>distributions</strong>, not just means or variances!</li>
 <li>The <strong>Chi-Squared Test</strong> allows us to hypothesize about distributions: for categorical random variables <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span> we can test the null and alternative hypotheses:</li>
@@ -1876,8 +1877,8 @@ H_A: X_1 \not\perp X_2 &amp;\iff \Pr(X_1 = v_1 \mid X_2 = v_2) \neq \Pr(X_1 = v_
 </ul></li>
 </ul>
 </section>
-<section id="joint-and-marginal-frequencies" class="level2 smaller">
-<h2 class="smaller anchored" data-anchor-id="joint-and-marginal-frequencies">Joint and Marginal Frequencies</h2>
+<section id="joint-and-marginal-frequencies" class="level2 smaller crunch-title">
+<h2 class="smaller crunch-title anchored" data-anchor-id="joint-and-marginal-frequencies">Joint and Marginal Frequencies</h2>
 <ul>
 <li><p>Now we can define the central quantities that the chi-squared test involves: the <strong>frequencies</strong> (i.e., unnormalized probabilities) of observations with certain (categorical) variable values:</p></li>
 <li><p><span class="math inline">\(f_{i,j}\)</span>: The <strong>number of observations</strong> for which <span class="math inline">\(X_1 = k_{1,i}\)</span> (the <span class="math inline">\(i\)</span>th value that <span class="math inline">\(X_1\)</span> can take on) and <span class="math inline">\(X_2 = k_{2,j}\)</span> (the <span class="math inline">\(j\)</span>th value that <span class="math inline">\(X_2\)</span> can take on).</p>
@@ -1967,38 +1968,41 @@ Q = \sum_{k_1=1}^{K_1}\sum_{k_2=1}^{K_2}\frac{\left(f_{k_1,k_2} - \frac{f_{k_1,\
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="co">#dchisq(q_sum, test_df)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="drawing-conclusions-in-classical-world" class="level2">
-<h2 class="anchored" data-anchor-id="drawing-conclusions-in-classical-world">Drawing Conclusions in Classical World</h2>
+<section id="drawing-conclusions-in-classical-world" class="level2 smaller crunch-title title-10">
+<h2 class="smaller crunch-title title-10 anchored" data-anchor-id="drawing-conclusions-in-classical-world">Drawing Conclusions in Classical World</h2>
 <p>And so, finally: this tells us that under the <strong>null hypothesis</strong> that <code>artist_name</code> and <code>valence_C</code> represent draws from <strong>independent</strong> random variables, the likelihood of obtaining our dataset, or a dataset with a more extreme test statistic, is about 0.00042, or 0.042%.</p>
 <p>Therefore, if we are evaluating our hypothesis at the 5% confidence level (or 1% or even 0.1%, because this is a <strong>very low</strong> probability value/percentage), we conclude that we should <strong>reject</strong> the null hypothesis that artist name and valence are independent. Therefore (switching from a frequentist to a Bayesian interpretation, mercifully), we <strong>increase our degree of belief</strong> in the hypothesis that the valence of a song <strong>does</strong> depend upon the artist making the song.</p>
 </section>
-<section id="drawing-conclusions-in-modern-bayesian-world" class="level2 smaller">
-<h2 class="smaller anchored" data-anchor-id="drawing-conclusions-in-modern-bayesian-world">Drawing Conclusions in Modern (Bayesian) World</h2>
+<section id="drawing-conclusions-in-modern-bayesian-world" class="level2 smaller crunch-title inline-90">
+<h2 class="smaller crunch-title inline-90 anchored" data-anchor-id="drawing-conclusions-in-modern-bayesian-world">Drawing Conclusions in Modern (Bayesian) World</h2>
 <p>This <strong>technical</strong> conclusion (which focuses only on the results of the statistical hypothesis test), combined with the Bayesian interpretation at the end, lets us say something about “what we’ve learned” about music:</p>
 <ul>
 <li>Our Bayesian <strong>prior</strong> on the null hypothesis, <span class="math inline">\(\Pr(H_0) = \Pr(V \perp A)\)</span>, was probably quite small: before performing this analysis, we probably did not think that these two variables are independent, since we know that some artists tend to make more <strong>sad</strong> songs, while other artists tend to make more <strong>happy</strong> songs (though there are obviously exceptions: bands that tend to make a mix of sad and happy songs).</li>
 <li>Then we performed the analysis, and <strong>failed to reject</strong> the hypothesis that these two variables are independent.</li>
 <li>Therefore, our Bayesian <strong>posterior</strong> on <span class="math inline">\(\Pr(V \perp A)\)</span> should be slightly <strong>lower</strong>: If our prior probability on <span class="math inline">\(H_0\)</span> was some value <span class="math inline">\(p\)</span>, our posterior probability now that we’ve performed the study and failed to reject the null hypothesis should be <span class="math inline">\(p - \varepsilon\)</span>, for some appropriate value <span class="math inline">\(\varepsilon\)</span> representing the <strong>relative balance</strong> between (our view of) the veracity of the prior vs.&nbsp;the veracity of the test we performed.</li>
-<li>To make it concrete: if we previously believed that <span class="math inline">\(p = \Pr(H_0) = 0.1\)</span>, perhaps now we can update our beliefs such that <span class="math inline">\(p = \Pr(H_0) = 0.05\)</span>. This would represent the case where we lend <strong>equal credence</strong> in our prior and in our experiement, since in that case</li>
+<li>To make it concrete: if we previously believed that <span class="math inline">\(p = \Pr(H_0) = 0.1\)</span>, perhaps now we can update our beliefs such that <span class="math inline">\(p = \Pr(H_0) = 0.05\)</span>. This would represent the case where we lend <strong>equal credence</strong> in our prior and in our experiement, since then</li>
 </ul>
 <p><span class="math display">\[
 p_{post} = \frac{1}{2}\Pr(H_0) + \frac{1}{2}\text{Test Result} = \frac{1}{2}(0.1) + \frac{1}{2}(0) = 0.05.
 \]</span></p>
-
-
-
 </section>
-</section>
-
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-gelman_data_2007" class="csl-entry" role="listitem">
 Gelman, Andrew, and Jennifer Hill. 2007. <em>Data <span>Analysis Using Regression</span> and <span>Multilevel</span>/<span>Hierarchical Models</span></em>. <span>Cambridge University Press</span>.
 </div>
 <div id="ref-kahneman_thinking_2011" class="csl-entry" role="listitem">
 Kahneman, Daniel. 2011. <em>Thinking, <span>Fast</span> and <span>Slow</span></em>. <span>Farrar, Straus and Giroux</span>.
 </div>
-</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+</div>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1"><p>From here onwards I drop the <span class="math inline">\((v)\)</span> superscript for brevity, but remember that we’re always talking about <span class="math inline">\(\mu^{(v)}_i\)</span>: the population mean of a <strong>particular variable</strong> <span class="math inline">\(v\)</span> in population <span class="math inline">\(i\)</span>!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
