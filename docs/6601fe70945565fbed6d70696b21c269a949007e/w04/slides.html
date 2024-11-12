@@ -1094,7 +1094,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <span id="cb9-2"><a></a><span class="fu">sum</span>(ppl_df<span class="sc">$</span>has_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>[1] 1</code></pre>
 </div>
 </div>
 <ul>
@@ -1107,7 +1107,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <span id="cb11-2"><a></a><span class="fu">mean</span>(ppl_df<span class="sc">$</span>has_disease)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0</code></pre>
+<pre><code>[1] 1e-04</code></pre>
 </div>
 </div>
 <ul>
@@ -1119,7 +1119,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a></a><span class="fu">format</span>(<span class="fu">mean</span>(ppl_df<span class="sc">$</span>has_disease), <span class="at">scientific =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "0"</code></pre>
+<pre><code>[1] "0.0001"</code></pre>
 </div>
 </div>
 <aside class="notes">
@@ -1156,7 +1156,7 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <span id="cb15-13"><a></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(num_positive,<span class="st">" positive tests / "</span>,num_people,<span class="st">" total = "</span>,p_positive))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>101 positive tests / 10000 total = 0.0101</code></pre>
+<pre><code>106 positive tests / 10000 total = 0.0106</code></pre>
 </div>
 </div>
 <div class="cell" data-layout-align="center">
@@ -1224,32 +1224,32 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">28</td>
+<td style="text-align: right;">416</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">177</td>
+<td style="text-align: right;">465</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">188</td>
+<td style="text-align: right;">621</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">246</td>
+<td style="text-align: right;">622</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">285</td>
+<td style="text-align: right;">927</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">551</td>
+<td style="text-align: right;">999</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 </tr>
@@ -1292,6 +1292,11 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 </tr>
 </thead>
 <tbody>
+<tr class="odd">
+<td style="text-align: right;">7936</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1302,9 +1307,9 @@ P(W = \textsf{Sun} \mid A = \textsf{Go}) &amp;= \frac{\overbrace{P(A = \textsf{G
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code>Num with disease: 1
-Proportion with disease: 0.0002
-Number of positive tests: 46</code></pre>
+<pre><code>Num with disease: 0
+Proportion with disease: 0
+Number of positive tests: 43</code></pre>
 </div>
 <div class="cell-output-display">
 <div class="kable-table">
@@ -1317,11 +1322,6 @@ Number of positive tests: 46</code></pre>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: right;">3613</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -1330,9 +1330,9 @@ Number of positive tests: 46</code></pre>
 </div><div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code>Num with disease: 1
-Proportion with disease: 0.0002
-Number of positive tests: 49</code></pre>
+<pre><code>Num with disease: 0
+Proportion with disease: 0
+Number of positive tests: 54</code></pre>
 </div>
 <div class="cell-output-display">
 <div class="kable-table">
@@ -1345,11 +1345,6 @@ Number of positive tests: 49</code></pre>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: right;">4245</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -1363,41 +1358,19 @@ Number of positive tests: 49</code></pre>
 <div class="column" style="width:50%;">
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code>World #111 / 1000 (5000 people):
+<pre><code>World #351 / 1000 (5000 people):
 # A tibble: 2 × 3
      id has_disease test_result
   &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
-1  2592           1           0
-2  3514           1           1
+1  3243           1           0
+2  4636           1           1
 
 
-World #337 / 1000 (5000 people):
+World #993 / 1000 (5000 people):
 # A tibble: 1 × 3
      id has_disease test_result
   &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
-1  1207           1           0
-
-
-World #505 / 1000 (5000 people):
-# A tibble: 1 × 3
-     id has_disease test_result
-  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
-1  1479           1           0
-
-
-World #670 / 1000 (5000 people):
-# A tibble: 1 × 3
-     id has_disease test_result
-  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
-1  2838           1           0
-
-
-World #922 / 1000 (5000 people):
-# A tibble: 2 × 3
-     id has_disease test_result
-  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
-1    81           1           1
-2  4782           1           0</code></pre>
+1  2948           1           0</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "0.0000008"</code></pre>
@@ -1511,32 +1484,32 @@ World #922 / 1000 (5000 people):
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">282</td>
+<td style="text-align: right;">239</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
-<td style="text-align: right;">73</td>
+<td style="text-align: right;">350</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">3</td>
-<td style="text-align: right;">203</td>
+<td style="text-align: right;">65</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">4</td>
-<td style="text-align: right;">342</td>
+<td style="text-align: right;">228</td>
 </tr>
 <tr class="odd">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">5</td>
-<td style="text-align: right;">262</td>
+<td style="text-align: right;">202</td>
 </tr>
 <tr class="even">
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">6</td>
-<td style="text-align: right;">225</td>
+<td style="text-align: right;">307</td>
 </tr>
 </tbody>
 </table>
@@ -1579,61 +1552,80 @@ World #922 / 1000 (5000 people):
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-# A tibble: 0 × 0
+# A tibble: 4 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     3    26    32
+2     6    17   359
+3    10    29    39
+4    15    21    98
 
 [[2]]
 # A tibble: 2 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     2    25    85
-2    28    30   210
+1     1     2   190
+2     9    21   102
 
 [[3]]
-# A tibble: 0 × 0
-
-[[4]]
-# A tibble: 1 × 3
+# A tibble: 2 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     3    11    87
+1     8    19   244
+2    15    28    63
+
+[[4]]
+# A tibble: 2 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     3    27   254
+2     7     9   166
 
 [[5]]
 # A tibble: 1 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1    21    30   318
+1     8     9    46
 
 [[6]]
-# A tibble: 3 × 3
+# A tibble: 4 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     7     9   221
-2    13    20   269
-3    14    16   176
+1     6    21   136
+2     6    23   136
+3    19    26    87
+4    21    23   136
 
 [[7]]
-# A tibble: 3 × 3
-      i     j  bday
-  &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     1    16   176
-2     6     9   290
-3    20    27   227
-
-[[8]]
 # A tibble: 1 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     4    18   324
+1    10    18   244
+
+[[8]]
+# A tibble: 4 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     4    17    10
+2     7    11   227
+3     8    12   319
+4    10    22   363
 
 [[9]]
-# A tibble: 0 × 0
+# A tibble: 4 × 3
+      i     j  bday
+  &lt;int&gt; &lt;int&gt; &lt;int&gt;
+1     2    19    39
+2    12    13    59
+3    12    14    59
+4    13    14    59
 
 [[10]]
 # A tibble: 2 × 3
       i     j  bday
   &lt;int&gt; &lt;int&gt; &lt;int&gt;
-1     2     3    86
-2     7    11   208</code></pre>
+1     4     6    75
+2    17    29   157</code></pre>
 </div>
 </div>
 </div><div class="column" style="width:48%;">
@@ -1649,7 +1641,7 @@ World #922 / 1000 (5000 people):
 <span id="cb27-6"><a></a>shared_per_room</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code> [1] 0 2 0 1 1 3 3 1 0 2</code></pre>
+<pre><code> [1] 4 2 2 2 1 4 1 4 4 2</code></pre>
 </div>
 </div>
 <ul>
@@ -1657,7 +1649,7 @@ World #922 / 1000 (5000 people):
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7</code></pre>
+<pre><code>[1] 1</code></pre>
 </div>
 </div>
 </div></div>
@@ -1669,9 +1661,9 @@ World #922 / 1000 (5000 people):
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code>  [1] 1 1 1 1 1 1 1 1 0 1 1 0 0 1 0 0 1 0 1 1 1 1 1 1 0 1 1 1 1 1 1 0 1 1 0 1 1
- [38] 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 0 1 0 1 1 1 1 0 0 1 1 1 0 1 1
- [75] 0 0 0 0 1 1 1 0 0 1 0 1 1 1 1 1 1 1 0 1 1 1 1 0 0 1</code></pre>
+<pre><code>  [1] 0 0 1 1 0 1 0 0 1 1 1 0 0 1 1 0 0 1 1 1 1 1 0 1 1 1 0 1 1 1 0 0 1 1 1 0 1
+ [38] 1 1 1 1 1 1 0 1 1 0 1 0 1 0 0 1 0 1 1 1 1 1 0 0 0 1 1 0 0 1 1 1 1 0 0 1 1
+ [75] 1 1 0 1 1 1 0 1 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 1 1</code></pre>
 </div>
 </div>
 <ul>
@@ -1679,7 +1671,7 @@ World #922 / 1000 (5000 people):
 </ul>
 <div class="cell" data-layout-align="center">
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.74</code></pre>
+<pre><code>[1] 0.69</code></pre>
 </div>
 </div>
 <ul>

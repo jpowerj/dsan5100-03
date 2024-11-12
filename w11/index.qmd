@@ -1,11 +1,11 @@
 ---
-title: "Week 11: Method of Moments and Bootstrap "
+title: "Week 11: Method of Moments and Bootstrap"
 subtitle: "*DSAN 5100: Probabilistic Modeling and Statistical Computing*<br>Section 03"
 author: "Jeff Jacobs"
 institute: "<a href=\"mailto:jj1088@georgetown.edu\" target=\"_blank\">`jj1088@georgetown.edu`</a>"
-date: 2024-10-29
+date: 2024-11-05
 date-format: full
-lecnum: 10
+lecnum: 11
 bibliography: "../_DSAN5100.bib"
 categories:
   - "Class Sessions"
@@ -13,7 +13,7 @@ format:
   revealjs:
     cache: false
     css: "../dsan-globals/jjstyles.css"
-    footer: "DSAN 5100-03 W10: Parameter Estimation"
+    footer: "DSAN 5100-03 W11: Method of Moments and Bootstrap"
     output-file: slides.html
     df-print: kable
     echo: true
