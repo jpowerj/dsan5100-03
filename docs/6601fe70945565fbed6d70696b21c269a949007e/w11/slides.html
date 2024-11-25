@@ -99,7 +99,6 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
-      margin-bottom: 0em;
     }
     .hanging-indent div.csl-entry {
       margin-left:2em;
@@ -462,6 +461,8 @@ Jeff Jacobs
 \newcommand{\iid}{\overset{\text{\small{iid}}}{\sim}}
 \newcommand{\lik}{\mathcal{L}}
 \newcommand{\loglik}{\ell}
+\DeclareMathOperator*{\maximize}{maximize}
+\DeclareMathOperator*{\minimize}{minimize}
 \newcommand{\mle}{\textsf{ML}}
 \newcommand{\nimplies}{\;\not\!\!\!\!\implies}
 \newcommand{\orange}[1]{\color{orange}{#1}}
@@ -613,11 +614,11 @@ Jeff Jacobs
 &amp;= \text{Irreducible Error} + \text{Bias}^2 + \text{Variance}.
 \end{align*}
 \]</span></p>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>It’s even more complicated, since we don’t even know whether the features <span class="math inline">\(X\)</span> we’ve chosen are actually the features in the world that causally affect <span class="math inline">\(Y\)</span>, but that’s for later classes… Or see <span class="citation" data-cites="hastie_elements_2013">Hastie, Tibshirani, and Friedman (<a href="#/references" role="doc-biblioref" onclick="">2013</a>)</span>!</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>It’s even more complicated, since we don’t even know whether the features <span class="math inline">\(X\)</span> we’ve chosen are actually the features in the world that causally affect <span class="math inline">\(Y\)</span>, but that’s for later classes… Or see <span class="citation" data-cites="hastie_elements_2013">(<a href="#/references" role="doc-biblioref" onclick=""><strong>hastie_elements_2013?</strong></a>)</span>!</p></li></ol></aside></section>
 <section id="in-practice" class="slide level2">
 <h2>In Practice</h2>
 
-<img data-src="images/overfitting-underfitting.jpg" class="r-stretch quarto-figure-center"><p class="caption">Figure from <span class="citation" data-cites="tharwat_parameter_2019">Tharwat (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></p></section>
+<img data-src="images/overfitting-underfitting.jpg" class="r-stretch quarto-figure-center"><p class="caption">Figure from <span class="citation" data-cites="tharwat_parameter_2019">(<a href="#/references" role="doc-biblioref" onclick=""><strong>tharwat_parameter_2019?</strong></a>)</span></p></section>
 <section id="efficiency" class="slide level2 smaller">
 <h2>Efficiency</h2>
 <ul>
@@ -896,8 +897,8 @@ Jeff Jacobs
 <span id="cb7-11"><a></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(sample_output,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,bs_output))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>1K samples estimate: 2.998 (abs. err: 0.002)
-Bootstrap estimate:  3.050 (abs. err: 0.050)</code></pre>
+<pre><code>1K samples estimate: 3.002 (abs. err: 0.002)
+Bootstrap estimate:  3.022 (abs. err: 0.022)</code></pre>
 </div>
 </div>
 </section>
@@ -914,7 +915,7 @@ Bootstrap estimate:  3.050 (abs. err: 0.050)</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    2.5%    97.5% 
-2.873309 3.235364 </code></pre>
+2.803628 3.232230 </code></pre>
 </div>
 </div>
 <ul>
@@ -1088,7 +1089,7 @@ Bootstrap estimate:  3.050 (abs. err: 0.050)</code></pre>
 <li>I prefer <span class="math inline">\(T = 11\%\)</span> (89% confidence), for same reason as anthropologist/statistician Richard McElreath:</li>
 </ul>
 <blockquote>
-<p>89 is a prime number, so if someone asks you to justify it, you can stare at them meaningfully and incant, <strong>“why, because it’s prime, of course!”</strong> That’s no worse than the conventional justification for 95%. <span class="citation" data-cites="mcelreath_statistical_2020">(<a href="#/references" role="doc-biblioref" onclick="">McElreath 2020, 88</a>)</span></p>
+<p>89 is a prime number, so if someone asks you to justify it, you can stare at them meaningfully and incant, <strong>“why, because it’s prime, of course!”</strong> That’s no worse than the conventional justification for 95%. <span class="citation" data-cites="mcelreath_statistical_2020">(<a href="#/references" role="doc-biblioref" onclick=""><strong>mcelreath_statistical_2020?</strong></a>)</span></p>
 </blockquote>
 <!-- ![From @mcelreath_statistical_2020](images/mcelreath-prime.jpeg){fig-align="center"} -->
 </section>
@@ -1335,16 +1336,8 @@ Bootstrap estimate:  3.050 (abs. err: 0.050)</code></pre>
 <img data-src="images/guardian.jpeg" class="r-stretch quarto-figure-center"><p class="caption">(From <em><a href="https://www.theguardian.com/us-news/2016/feb/21/success-academy-charter-school-students-got-to-go" target="_blank">The Guardian</a></em>, 2016 Feb 21)</p></section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-hastie_elements_2013" class="csl-entry" role="listitem">
-Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2013. <em>The <span>Elements</span> of <span>Statistical Learning</span>: <span>Data Mining</span>, <span>Inference</span>, and <span>Prediction</span></em>. <span>Springer Science &amp; Business Media</span>.
-</div>
-<div id="ref-mcelreath_statistical_2020" class="csl-entry" role="listitem">
-McElreath, Richard. 2020. <em>Statistical <span>Rethinking</span>: <span>A Bayesian Course</span> with <span>Examples</span> in <span>R</span> and <span>STAN</span></em>. <span>CRC Press</span>.
-</div>
-<div id="ref-tharwat_parameter_2019" class="csl-entry" role="listitem">
-Tharwat, Alaa. 2019. <span>“Parameter Investigation of Support Vector Machine Classifier with Kernel Functions.”</span> <em>Knowledge and Information Systems</em> 61 (3): 1269–1302. <a href="https://doi.org/10.1007/s10115-019-01335-4">https://doi.org/10.1007/s10115-019-01335-4</a>.
-</div>
+<div id="refs" role="list">
+
 </div>
 
 <div class="quarto-auto-generated-content">

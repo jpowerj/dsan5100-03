@@ -55,27 +55,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -334,7 +314,7 @@ window.Quarto = {
     </ul>
     </div>
 <div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
-<p><em>Updated 2024-11-12, 06:32:52 PM</em></p>
+<p><em>Updated 2024-11-24, 09:51:34 PM</em></p>
 </div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -473,6 +453,8 @@ window.Quarto = {
 \newcommand{\iid}{\overset{\text{\small{iid}}}{\sim}}
 \newcommand{\lik}{\mathcal{L}}
 \newcommand{\loglik}{\ell}
+\DeclareMathOperator*{\maximize}{maximize}
+\DeclareMathOperator*{\minimize}{minimize}
 \newcommand{\mle}{\textsf{ML}}
 \newcommand{\nimplies}{\;\not\!\!\!\!\implies}
 \newcommand{\orange}[1]{\color{orange}{#1}}
@@ -888,7 +870,7 @@ M_R(t) &amp;= ☠️
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/agnesi-crop.jpeg" class="img-fluid figure-img"></p>
-<figcaption>From <span class="citation" data-cites="agnesi_analytical_1801">Agnesi (<a href="#ref-agnesi_analytical_1801" role="doc-biblioref">1801</a>)</span> [<a href="" target="_blank">Internet Archive</a>]</figcaption>
+<figcaption>From <span class="citation" data-cites="agnesi_analytical_1801">(<a href="#ref-agnesi_analytical_1801" role="doc-biblioref"><strong>agnesi_analytical_1801?</strong></a>)</span> [<a href="" target="_blank">Internet Archive</a>]</figcaption>
 </figure>
 </div>
 </div>
@@ -1078,7 +1060,7 @@ M_R(t) &amp;= ☠️
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(spread_fmt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>0.0000000000</code></pre>
+<pre><code>-0.0000000000</code></pre>
 </div>
 </div>
 <p>😞 What happened?</p>
@@ -1294,7 +1276,7 @@ M''_{X}(t) &amp;= pe^t,\text{ and }\expect{X^2} = M''_X(0) = p \\
 </ul>
 </div>
 <div class="notes">
-<p>In case it doesn’t load: <span class="citation" data-cites="hansen_large_1982">(<a href="#ref-hansen_large_1982" role="doc-biblioref">Hansen 1982</a>)</span> has 17,253 citations as of 2023-05-21</p>
+<p>In case it doesn’t load: <span class="citation" data-cites="hansen_large_1982">(<a href="#ref-hansen_large_1982" role="doc-biblioref"><strong>hansen_large_1982?</strong></a>)</span> has 17,253 citations as of 2023-05-21</p>
 </div>
 </section>
 <section id="beware" class="level2">
@@ -1372,7 +1354,7 @@ M''_{X}(t) &amp;= pe^t,\text{ and }\expect{X^2} = M''_X(0) = p \\
 </section>
 <section id="bivariate-distributions" class="level2">
 <h2 class="anchored" data-anchor-id="bivariate-distributions">Bivariate Distributions</h2>
-<p><span class="citation" data-cites="degroot_probability_2013">DeGroot and Schervish (<a href="#ref-degroot_probability_2013" role="doc-biblioref">2013, 118</a>)</span> | <a href="https://jjacobs.me/dsps/03-random-variables.html#sec-3-4">DSPS Sec. 3.4 <i class="bi bi-box-arrow-up-right ps-1"></i></a></p>
+<p><span class="citation" data-cites="degroot_probability_2013">(<a href="#ref-degroot_probability_2013" role="doc-biblioref"><strong>degroot_probability_2013?</strong></a>)</span> | <a href="https://jjacobs.me/dsps/03-random-variables.html#sec-3-4">DSPS Sec. 3.4 <i class="bi bi-box-arrow-up-right ps-1"></i></a></p>
 <ul>
 <li>We generalize the concept of the distribution of a random variable to the <strong>joint distribution</strong> of two random variables.</li>
 <li>In doing so, we introduce the <strong>joint pmf</strong> for two <strong>discrete</strong> random variables, the <strong>joint pdf</strong> for two <strong>continuous</strong> variables, and the <strong>joint CDF</strong> for <strong>any two</strong> random variables.</li>
@@ -1425,24 +1407,13 @@ h_t &amp;= o_t \odot \tanh(C_t) \\
 
 
 
-
 <div class="no-row-height column-margin column-container"><div class="margin-aside">
 <p>For a full explanation, see <a href="https://math.stackexchange.com/questions/846011/precise-definition-of-the-support-of-a-random-variable" target="_blank">this StackExchange discussion</a>.</p>
 </div></div></section>
 </section>
 
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-agnesi_analytical_1801" class="csl-entry" role="listitem">
-Agnesi, Maria Gaetana. 1801. <em>Analytical <span>Institutions</span> in <span>Four Books</span>: <span>Originally Written</span> in <span>Italian</span></em>. <span>Taylor and Wilks</span>.
-</div>
-<div id="ref-degroot_probability_2013" class="csl-entry" role="listitem">
-DeGroot, Morris H., and Mark J. Schervish. 2013. <em>Probability and <span>Statistics</span></em>. <span>Pearson Education</span>.
-</div>
-<div id="ref-hansen_large_1982" class="csl-entry" role="listitem">
-Hansen, Lars Peter. 1982. <span>“Large Sample Properties of Generalized Method of Moments Estimators.”</span> <em>Econometrica: Journal of the Econometric Society</em>, 1029–54.
-</div>
-</div></section><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
 
 <ol>
 <li id="fn1"><p>Mathematically, it’s important to call <span class="math inline">\(aX + b\)</span> an “affine transformation”, <em>not</em> a linear transformation. In practice, everyone calls this “linear”, so I try to use both (for easy Googling!). The reason it matters will come up when we discuss Variance!<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>

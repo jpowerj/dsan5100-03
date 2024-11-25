@@ -95,27 +95,7 @@
     code span.va { color: #111111; } /* Variable */
     code span.vs { color: #20794d; } /* VerbatimString */
     code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
-    /* CSS for citations */
-    div.csl-bib-body { }
-    div.csl-entry {
-      clear: both;
-      margin-bottom: 0em;
-    }
-    .hanging-indent div.csl-entry {
-      margin-left:2em;
-      text-indent:-2em;
-    }
-    div.csl-left-margin {
-      min-width:2em;
-      float:left;
-    }
-    div.csl-right-inline {
-      margin-left:2em;
-      padding-left:1em;
-    }
-    div.csl-indent {
-      margin-left: 2em;
-    }  </style>
+  </style>
   <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto.css">
   <link rel="stylesheet" href="../dsan-globals/jjstyles.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -460,6 +440,8 @@ Jeff Jacobs
 \newcommand{\iid}{\overset{\text{\small{iid}}}{\sim}}
 \newcommand{\lik}{\mathcal{L}}
 \newcommand{\loglik}{\ell}
+\DeclareMathOperator*{\maximize}{maximize}
+\DeclareMathOperator*{\minimize}{minimize}
 \newcommand{\mle}{\textsf{ML}}
 \newcommand{\nimplies}{\;\not\!\!\!\!\implies}
 \newcommand{\orange}[1]{\color{orange}{#1}}
@@ -751,7 +733,7 @@ M_R(t) &amp;= ☠️
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="images/agnesi-crop.jpeg"></p>
-<figcaption>From <span class="citation" data-cites="agnesi_analytical_1801">Agnesi (<a href="#/sec-continuous-support" role="doc-biblioref" onclick="">1801</a>)</span> [<a href="" target="_blank">Internet Archive</a>]</figcaption>
+<figcaption>From <span class="citation" data-cites="agnesi_analytical_1801">(<a href="" role="doc-biblioref" onclick="return false;"><strong>agnesi_analytical_1801?</strong></a>)</span> [<a href="" target="_blank">Internet Archive</a>]</figcaption>
 </figure>
 </div>
 </div></div>
@@ -1119,7 +1101,7 @@ M''_{X}(t) &amp;= pe^t,\text{ and }\expect{X^2} = M''_X(0) = p \\
 </ul>
 </div>
 <aside class="notes">
-<p>In case it doesn’t load: <span class="citation" data-cites="hansen_large_1982">(<a href="#/sec-continuous-support" role="doc-biblioref" onclick="">Hansen 1982</a>)</span> has 17,253 citations as of 2023-05-21</p>
+<p>In case it doesn’t load: <span class="citation" data-cites="hansen_large_1982">(<a href="" role="doc-biblioref" onclick="return false;"><strong>hansen_large_1982?</strong></a>)</span> has 17,253 citations as of 2023-05-21</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1194,7 +1176,7 @@ M''_{X}(t) &amp;= pe^t,\text{ and }\expect{X^2} = M''_X(0) = p \\
 <img data-src="images/contour_corr.png" class="r-stretch quarto-figure-center"><p class="caption">Also from <a href="https://jfh.georgetown.domains/dsan5100/slides/W02/notes.html#bi-variate-correlated" target="_blank">Prof.&nbsp;Hickman’s slides</a>!</p></section>
 <section id="bivariate-distributions" class="slide level2">
 <h2>Bivariate Distributions</h2>
-<p><span class="citation" data-cites="degroot_probability_2013">DeGroot and Schervish (<a href="#/sec-continuous-support" role="doc-biblioref" onclick="">2013, 118</a>)</span> | <a href="https://jjacobs.me/dsps/03-random-variables.html#sec-3-4">DSPS Sec. 3.4 <i class="bi bi-box-arrow-up-right ps-1"></i></a></p>
+<p><span class="citation" data-cites="degroot_probability_2013">(<a href="" role="doc-biblioref" onclick="return false;"><strong>degroot_probability_2013?</strong></a>)</span> | <a href="https://jjacobs.me/dsps/03-random-variables.html#sec-3-4">DSPS Sec. 3.4 <i class="bi bi-box-arrow-up-right ps-1"></i></a></p>
 <ul>
 <li>We generalize the concept of the distribution of a random variable to the <strong>joint distribution</strong> of two random variables.</li>
 <li>In doing so, we introduce the <strong>joint pmf</strong> for two <strong>discrete</strong> random variables, the <strong>joint pdf</strong> for two <strong>continuous</strong> variables, and the <strong>joint CDF</strong> for <strong>any two</strong> random variables.</li>
@@ -1234,7 +1216,7 @@ h_t &amp;= o_t \odot \tanh(C_t) \\
 <li>If you’re a dork like me, you can read about <a href="https://en.wikipedia.org/wiki/Generalized_mean" target="_blank">generalized means</a>, <a href="https://en.wikipedia.org/wiki/Fr%C3%A9chet_mean" target="_blank">Fréchet means</a>, or <a href="https://www.stata-journal.com/article.html?article=st0313" target="_blank">Stata’s <code>trimmean</code> function</a>, all of which bring together seemingly-unrelated functions used throughout Machine Learning!</li>
 </ul>
 </section>
-<section id="sec-continuous-support" class="slide level2 smaller scrollable">
+<section id="sec-continuous-support" class="slide level2 scrollable">
 <h2>Appendix B: Continuous RV Support</h2>
 <p>In most cases, for continuous RVs, the definition</p>
 <p><span class="math display">\[
@@ -1250,17 +1232,6 @@ h_t &amp;= o_t \odot \tanh(C_t) \\
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p>DSAN 5100-03 W06: Moments and Covariance</p>
-</div>
-</div>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-agnesi_analytical_1801" class="csl-entry" role="listitem">
-Agnesi, Maria Gaetana. 1801. <em>Analytical <span>Institutions</span> in <span>Four Books</span>: <span>Originally Written</span> in <span>Italian</span></em>. <span>Taylor and Wilks</span>.
-</div>
-<div id="ref-degroot_probability_2013" class="csl-entry" role="listitem">
-DeGroot, Morris H., and Mark J. Schervish. 2013. <em>Probability and <span>Statistics</span></em>. <span>Pearson Education</span>.
-</div>
-<div id="ref-hansen_large_1982" class="csl-entry" role="listitem">
-Hansen, Lars Peter. 1982. <span>“Large Sample Properties of Generalized Method of Moments Estimators.”</span> <em>Econometrica: Journal of the Econometric Society</em>, 1029–54.
 </div>
 </div>
 <aside><div>

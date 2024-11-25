@@ -23,7 +23,7 @@ source("../../dsan-globals/_globals.r")
 
 :::
 
-<a href='https://jfh.georgetown.domains/dsan5100/share-point/labs/lab-5/lab-5-assignment.html' target='_blank'>Problem 2e on your Lab 5 Assignment</a>, which asks you to:
+Problem 2e on your Lab 5 Assignment</a>, which asks you to:
 
 ::: {.callout-note title="Lab 5 Problem 2e"}
 

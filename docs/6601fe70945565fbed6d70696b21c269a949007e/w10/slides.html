@@ -34,7 +34,6 @@
     div.csl-bib-body { }
     div.csl-entry {
       clear: both;
-      margin-bottom: 0em;
     }
     .hanging-indent div.csl-entry {
       margin-left:2em;
@@ -396,6 +395,8 @@ Jeff Jacobs
 \newcommand{\iid}{\overset{\text{\small{iid}}}{\sim}}
 \newcommand{\lik}{\mathcal{L}}
 \newcommand{\loglik}{\ell}
+\DeclareMathOperator*{\maximize}{maximize}
+\DeclareMathOperator*{\minimize}{minimize}
 \newcommand{\mle}{\textsf{ML}}
 \newcommand{\nimplies}{\;\not\!\!\!\!\implies}
 \newcommand{\orange}[1]{\color{orange}{#1}}
@@ -875,7 +876,7 @@ X_1, X_2 \overset{iid}{\sim} \mathcal{N}( &amp;\hspace{-5mm}\mu\hspace{0.5mm}, &
 &amp;= \text{Irreducible Error} + \text{Bias}^2 + \text{Variance}.
 \end{align*}
 \]</span></p>
-<aside><ol class="aside-footnotes"><li id="fn3"><p>A complication we put aside for now: do the features <span class="math inline">\(X\)</span> we chose in fact causally impact <span class="math inline">\(Y\)</span>? See <span class="citation" data-cites="hastie_elements_2013">Hastie, Tibshirani, and Friedman (<a href="#/references" role="doc-biblioref" onclick="">2013</a>)</span>!</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn3"><p>A complication we put aside for now: do the features <span class="math inline">\(X\)</span> we chose in fact causally impact <span class="math inline">\(Y\)</span>? See <span class="citation" data-cites="hastie_elements_2013">(<a href="#/references" role="doc-biblioref" onclick=""><strong>hastie_elements_2013?</strong></a>)</span>!</p></li></ol></aside></section>
 <section id="in-practice" class="slide level2">
 <h2>In Practice</h2>
 
@@ -884,7 +885,7 @@ X_1, X_2 \overset{iid}{\sim} \mathcal{N}( &amp;\hspace{-5mm}\mu\hspace{0.5mm}, &
 APPENDICES
 
 -->
-<img data-src="images/overfitting-underfitting.jpg" class="r-stretch quarto-figure-center"><p class="caption">Figure from <span class="citation" data-cites="tharwat_parameter_2019">Tharwat (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></p></section>
+<img data-src="images/overfitting-underfitting.jpg" class="r-stretch quarto-figure-center"><p class="caption">Figure from <span class="citation" data-cites="tharwat_parameter_2019">(<a href="#/references" role="doc-biblioref" onclick=""><strong>tharwat_parameter_2019?</strong></a>)</span></p></section>
 <section id="appendix-1-derivation-of-mathbbemu_2" class="slide level2 smaller crunch-math">
 <h2>Appendix 1: Derivation of <span class="math inline">\(\mathbb{E}[\mu_*^2]\)</span></h2>
 <p><span class="math display">\[
@@ -928,13 +929,8 @@ APPENDICES
 </section>
 <section id="references" class="slide level2 smaller scrollable">
 <h2>References</h2>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-hastie_elements_2013" class="csl-entry" role="listitem">
-Hastie, Trevor, Robert Tibshirani, and Jerome Friedman. 2013. <em>The <span>Elements</span> of <span>Statistical Learning</span>: <span>Data Mining</span>, <span>Inference</span>, and <span>Prediction</span></em>. <span>Springer Science &amp; Business Media</span>.
-</div>
-<div id="ref-tharwat_parameter_2019" class="csl-entry" role="listitem">
-Tharwat, Alaa. 2019. <span>“Parameter Investigation of Support Vector Machine Classifier with Kernel Functions.”</span> <em>Knowledge and Information Systems</em> 61 (3): 1269–1302. <a href="https://doi.org/10.1007/s10115-019-01335-4">https://doi.org/10.1007/s10115-019-01335-4</a>.
-</div>
+<div id="refs" role="list">
+
 </div>
 
 <div class="quarto-auto-generated-content">
