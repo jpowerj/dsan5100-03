@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Jeff Jacobs">
+
+<title>Week 14: Non-Parametric Statistics – DSAN 5100-03</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../dsan-globals/jjstyles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#non-parametric-statistics-overview" id="toc-non-parametric-statistics-overview" class="nav-link active" data-scroll-target="#non-parametric-statistics-overview">Non-Parametric Statistics: Overview</a>
+  <ul class="collapse">
+  <li><a href="#how-is-non-parametric-different-from-what-weve-been-doing" id="toc-how-is-non-parametric-different-from-what-weve-been-doing" class="nav-link" data-scroll-target="#how-is-non-parametric-different-from-what-weve-been-doing">How is Non-Parametric <em>Different</em> from What We’ve Been Doing?</a></li>
+  <li><a href="#what-makes-it-non-parametric" id="toc-what-makes-it-non-parametric" class="nav-link" data-scroll-target="#what-makes-it-non-parametric">What Makes It “Non-Parametric”?</a></li>
+  <li><a href="#what-if-were-wrong" id="toc-what-if-were-wrong" class="nav-link" data-scroll-target="#what-if-were-wrong">What If We’re Wrong?</a></li>
+  </ul></li>
+  <li><a href="#avoiding-wrongness-disasters-the-sign-test" id="toc-avoiding-wrongness-disasters-the-sign-test" class="nav-link" data-scroll-target="#avoiding-wrongness-disasters-the-sign-test">Avoiding Wrongness Disasters: The Sign Test</a>
+  <ul class="collapse">
+  <li><a href="#sign-test-intuition" id="toc-sign-test-intuition" class="nav-link" data-scroll-target="#sign-test-intuition">Sign Test Intuition</a></li>
+  <li><a href="#procedure-in-general" id="toc-procedure-in-general" class="nav-link" data-scroll-target="#procedure-in-general">Procedure in General</a></li>
+  </ul></li>
+  <li><a href="#mann-whitney-u-test-paired-observations-paired-samples" id="toc-mann-whitney-u-test-paired-observations-paired-samples" class="nav-link" data-scroll-target="#mann-whitney-u-test-paired-observations-paired-samples">Mann-Whitney U Test: Paired Observations → Paired Samples</a>
+  <ul class="collapse">
+  <li><a href="#what-if-we-cant-pair-observations-one-to-one" id="toc-what-if-we-cant-pair-observations-one-to-one" class="nav-link" data-scroll-target="#what-if-we-cant-pair-observations-one-to-one">What If We <em>Can’t</em> Pair Observations One-to-One?</a></li>
+  <li><a href="#computational-efficiency" id="toc-computational-efficiency" class="nav-link" data-scroll-target="#computational-efficiency">Computational Efficiency</a></li>
+  <li><a href="#pairwise-comparison-mode" id="toc-pairwise-comparison-mode" class="nav-link" data-scroll-target="#pairwise-comparison-mode">Pairwise Comparison Mode</a></li>
+  <li><a href="#ranking-mode" id="toc-ranking-mode" class="nav-link" data-scroll-target="#ranking-mode">Ranking Mode</a></li>
+  <li><a href="#example-2022-world-cup" id="toc-example-2022-world-cup" class="nav-link" data-scroll-target="#example-2022-world-cup">Example: 2022 World Cup</a></li>
+  <li><a href="#samples-rightarrow-populations" id="toc-samples-rightarrow-populations" class="nav-link" data-scroll-target="#samples-rightarrow-populations">Samples <span class="math inline">\(\rightarrow\)</span> Populations</a></li>
+  <li><a href="#the-non-parametric-fork-in-the-road" id="toc-the-non-parametric-fork-in-the-road" class="nav-link" data-scroll-target="#the-non-parametric-fork-in-the-road">The Non-Parametric Fork in the Road</a></li>
+  <li><a href="#choosing-non-parametric-hypotheses" id="toc-choosing-non-parametric-hypotheses" class="nav-link" data-scroll-target="#choosing-non-parametric-hypotheses">Choosing <em>Non-Parametric</em> Hypotheses</a></li>
+  <li><a href="#sorting-and-ranking-observations" id="toc-sorting-and-ranking-observations" class="nav-link" data-scroll-target="#sorting-and-ranking-observations">Sorting and Ranking Observations</a></li>
+  <li><a href="#our-rank-based-test-statistic" id="toc-our-rank-based-test-statistic" class="nav-link" data-scroll-target="#our-rank-based-test-statistic">Our Rank-Based Test Statistic</a></li>
+  <li><a href="#simulating-one-null-hypothesis-world" id="toc-simulating-one-null-hypothesis-world" class="nav-link" data-scroll-target="#simulating-one-null-hypothesis-world">Simulating (One) Null-Hypothesis World</a></li>
+  <li><a href="#simulating-many-null-hypothesis-worlds" id="toc-simulating-many-null-hypothesis-worlds" class="nav-link" data-scroll-target="#simulating-many-null-hypothesis-worlds">Simulating Many Null-Hypothesis Worlds</a></li>
+  <li><a href="#wilcox.test-in-r" id="toc-wilcox.test-in-r" class="nav-link" data-scroll-target="#wilcox.test-in-r"><code>wilcox.test</code> in R</a></li>
+  </ul></li>
+  <li><a href="#kruskal-wallis-test" id="toc-kruskal-wallis-test" class="nav-link" data-scroll-target="#kruskal-wallis-test">Kruskal-Wallis Test</a>
+  <ul class="collapse">
+  <li><a href="#procedure" id="toc-procedure" class="nav-link" data-scroll-target="#procedure">Procedure</a></li>
+  <li><a href="#kruskal.test-in-r" id="toc-kruskal.test-in-r" class="nav-link" data-scroll-target="#kruskal.test-in-r"><code>kruskal.test</code> in R</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w14/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div><div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Week 14: Non-Parametric Statistics</h1>
+<p class="subtitle lead"><em>DSAN 5100: Probabilistic Modeling and Statistical Computing</em><br>Section 03</p>
+  <div class="quarto-categories">
+    <div class="quarto-category">Class Sessions</div>
+  </div>
+  </div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Jeff Jacobs </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="mailto:jj1088@georgetown.edu" target="_blank"><code>jj1088@georgetown.edu</code></a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">Tuesday, December 10, 2024</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<center>
+<a class="h2" href="./slides.html" target="_blank">Open slides in new window →</a>
+</center>
+<section id="non-parametric-statistics-overview" class="level1" data-stack-name="Overview">
+<h1 data-stack-name="Overview">Non-Parametric Statistics: Overview</h1>
+<div class="hidden">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">source</span>(<span class="st">"../dsan-globals/_globals.r"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div class="hidden">
+<p><span class="math display">\[
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+\newcommand{\bigexp}[1]{\exp\mkern-4mu\left[ #1 \right]}
+\newcommand{\bigexpect}[1]{\mathbb{E}\mkern-4mu \left[ #1 \right]}
+\newcommand{\definedas}{\overset{\text{defn}}{=}}
+\newcommand{\definedalign}{\overset{\phantom{\text{defn}}}{=}}
+\newcommand{\eqeventual}{\overset{\text{eventually}}{=}}
+\newcommand{\Err}{\text{Err}}
+\newcommand{\expect}[1]{\mathbb{E}[#1]}
+\newcommand{\expectsq}[1]{\mathbb{E}^2[#1]}
+\newcommand{\fw}[1]{\texttt{#1}}
+\newcommand{\given}{\mid}
+\newcommand{\green}[1]{\color{green}{#1}}
+\newcommand{\heads}{\outcome{heads}}
+\newcommand{\iid}{\overset{\text{\small{iid}}}{\sim}}
+\newcommand{\lik}{\mathcal{L}}
+\newcommand{\loglik}{\ell}
+\DeclareMathOperator*{\maximize}{maximize}
+\DeclareMathOperator*{\minimize}{minimize}
+\newcommand{\mle}{\textsf{ML}}
+\newcommand{\nimplies}{\;\not\!\!\!\!\implies}
+\newcommand{\orange}[1]{\color{orange}{#1}}
+\newcommand{\outcome}[1]{\textsf{#1}}
+\newcommand{\param}[1]{{\color{purple} #1}}
+\newcommand{\pgsamplespace}{\{\green{1},\green{2},\green{3},\purp{4},\purp{5},\purp{6}\}}
+\newcommand{\prob}[1]{P\left( #1 \right)}
+\newcommand{\purp}[1]{\color{purple}{#1}}
+\newcommand{\sign}{\text{Sign}}
+\newcommand{\spacecap}{\; \cap \;}
+\newcommand{\spacewedge}{\; \wedge \;}
+\newcommand{\tails}{\outcome{tails}}
+\newcommand{\Var}[1]{\text{Var}[#1]}
+\newcommand{\bigVar}[1]{\text{Var}\mkern-4mu \left[ #1 \right]}
+\]</span></p>
+</div>
+<section id="how-is-non-parametric-different-from-what-weve-been-doing" class="level2 title-08 smaller crunch-title crunch-ul crunch-iframe">
+<h2 class="title-08 smaller crunch-title crunch-ul crunch-iframe anchored" data-anchor-id="how-is-non-parametric-different-from-what-weve-been-doing">How is Non-Parametric <em>Different</em> from What We’ve Been Doing?</h2>
+<ul>
+<li>Statistical models and hypothesis tests we’ve learned thus far were <strong>parametric</strong></li>
+<li>Meaning: Assume population follows <strong>this distribution</strong>, then estimate population parameters (e.g., <span class="math inline">\(\param{\mu}\)</span> and <span class="math inline">\(\param{\sigma}\)</span>) using MLE, GMM, etc.</li>
+</ul>
+<iframe width="100%" height="460" frameborder="0" src="https://observablehq.com/embed/@jpowerj/parametric-normal?cells=paramGrid%2Cchart"></iframe>
+</section>
+<section id="what-makes-it-non-parametric" class="level2 smaller crunch-img crunch-title crunch-quarto-figure crunch-quarto-layout-panel crunch-ul footnotes-0">
+<h2 class="smaller crunch-img crunch-title crunch-quarto-figure crunch-quarto-layout-panel crunch-ul footnotes-0 anchored" data-anchor-id="what-makes-it-non-parametric">What Makes It “Non-Parametric”?</h2>
+<ul>
+<li>We’ve talked about how the Normal distribution is “standard” in multiple senses:
+<ul>
+<li><strong>Empirically</strong>: It arises from common processes in nature, like random walks</li>
+<li><strong>Theoretically</strong>: It is the maximum-entropy distribution which encodes <strong>only</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> knowledge of a <strong>mean</strong> <span class="math inline">\(\mu\)</span> and a <strong>variance</strong> <span class="math inline">\(\sigma^2\)</span></li>
+</ul></li>
+<li>Then we talked about <strong>estimating</strong> these parameters (<span class="math inline">\(\param{\mu}\)</span> and <span class="math inline">\(\param{\sigma^2}\)</span>) from data: different ways to amalgamate information from an <strong>observed sample</strong> <span class="math inline">\(\mathbf{X} = (X_1, \ldots, X_n)\)</span> to <strong>estimate</strong> (unobserved) <span class="math inline">\(\param{\mu}\)</span> and <span class="math inline">\(\param{\sigma}^2\)</span> with <strong>minimal bias and variance</strong></li>
+</ul>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout="[1,1]">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/normal-dist-inference.svg" class="img-fluid quarto-figure quarto-figure-center figure-img" width="340"></p>
+</figure>
+</div>
+</div>
+<div id="nonparametric-right" class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<ul>
+<li>We therefore <strong>“funnel”</strong> all of the information contained in <span class="math inline">\(\mathbf{X}\)</span> down into estimates of <span class="math inline">\(\param{\mu}\)</span> and <span class="math inline">\(\param{\sigma^2}\)</span></li>
+<li>But… <strong>what if we’re wrong?</strong> What if the DGP is <strong>not</strong> based on a Normal distribution?</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section id="what-if-were-wrong" class="level2 smaller crunch-title">
+<h2 class="smaller crunch-title anchored" data-anchor-id="what-if-were-wrong">What If We’re Wrong?</h2>
+<ul>
+<li>It is this concern: the fact that <strong>all of our results</strong>, <strong>all of our confidence</strong> about our estimates thus far, come as a result of making <strong>distributional assumptions</strong></li>
+<li><strong>Non-parametric</strong> analysis tries to avoid this potential catastrophe by making <strong>as few distributional assumptions as possible</strong></li>
+<li>Recall how parameters of a distribution determine <strong>all information</strong> you could possibly want to know about the distribution (via <strong>Moment Generating Function</strong>):</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 5%">
+<col style="width: 30%">
+<col style="width: 5%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Type of Distribution</th>
+<th>+</th>
+<th>Parameter Values</th>
+<th>=</th>
+<th>All Possible Info (MGF)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Normal <span class="math inline">\(~\mathcal{N}(\param{\mu}, \param{\sigma^2})\)</span></td>
+<td>+</td>
+<td><span class="math inline">\(\param{\mu} = m\)</span>, <span class="math inline">\(\param{\sigma^2} = s^2\)</span></td>
+<td>=</td>
+<td><span class="math inline">\(M_t(X) = \exp[mt + s^2t^2/2]\)</span></td>
+</tr>
+<tr class="even">
+<td>Uniform <span class="math inline">\(~\mathcal{U}(\param{\alpha},\param{\beta})\)</span></td>
+<td>+</td>
+<td><span class="math inline">\(\param{\alpha} = a\)</span>, <span class="math inline">\(\param{\beta} = b\)</span></td>
+<td>=</td>
+<td><span class="math inline">\(M_t(X) = \frac{e^{tb} - e^{ta}}{t(b-a)}\)</span></td>
+</tr>
+<tr class="odd">
+<td>Poisson <span class="math inline">\(~\text{Pois}(\param{\lambda})\)</span></td>
+<td>+</td>
+<td><span class="math inline">\(\param{\lambda} = \ell\)</span></td>
+<td>=</td>
+<td><span class="math inline">\(M_t(X) = \exp[\ell(e^t - 1)]\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="avoiding-wrongness-disasters-the-sign-test" class="level1" data-stack-name="Sign Test">
+<h1 data-stack-name="Sign Test">Avoiding Wrongness Disasters: The Sign Test</h1>
+<section id="sign-test-intuition" class="level2 smaller crunch-title crunch-math math-80 inline-90 crunch-ul crunch-p crunch-li-5">
+<h2 class="smaller crunch-title crunch-math math-80 inline-90 crunch-ul crunch-p crunch-li-5 anchored" data-anchor-id="sign-test-intuition">Sign Test Intuition</h2>
+<ul>
+<li><p>Instead of trying to estimate <strong>all possible info</strong> about the underlying distribution, we only estimate <strong>one piece of information</strong> that we need to <strong>test a hypothesis</strong></p></li>
+<li><p>Example: for populations <span class="math inline">\(\chi\)</span>, <span class="math inline">\(\psi\)</span>, if <span class="math inline">\(H_A: \mu_\chi &gt; \mu_\psi\)</span>, skip intermediate step of estimating distributions <span class="math inline">\(\mathcal{D}_\chi(\param{\theta})\)</span>, <span class="math inline">\(\mathcal{D}_\psi(\param{\theta})\)</span> from samples <span class="math inline">\(\mathbf{X}\)</span>, <span class="math inline">\(\mathbf{Y}\)</span>!</p></li>
+<li><p>Instead, just directly “extract” <strong>greater than</strong> vs.&nbsp;<strong>not greater than</strong> info from <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{Y}\)</span> (<strong>median</strong> <span class="math inline">\(m\)</span> always exists as “pivot” for well-behaved <span class="math inline">\(X\)</span>, <span class="math inline">\(\Pr(X &gt; m) = 0.5\)</span>)</p></li>
+<li><p>It will help us to define <span class="math inline">\(\text{Sign}(x) = \begin{cases}\phantom{-}1 &amp;\text{if } x &gt; 0 \\ \phantom{-}0 &amp;\text{if }x = 0 \\ -1 &amp;\text{if }x &lt; 0\end{cases}\)</span></p></li>
+<li><p>If <span class="math inline">\(\mathbf{X} = (15, 7, 11, 3)\)</span>, <span class="math inline">\(\mathbf{Y} = (-3, 4, 1, 4)\)</span>, we can compute a “greater-than score”:</p></li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+\sum_{i=1}^N \sign(X_i - Y_i) &amp;= \sign(15 - (-3)) + \sign(7-4) + \sign(11-1) + \sign(3-4) \\
+&amp;= 1 + 1 + 1 + -1 = 2
+\end{align*}
+\]</span></p>
+<ul>
+<li>So long as <strong>slots are comparable</strong> (notice <span class="math inline">\(\mathbf{X}, \mathbf{Y}\)</span> are <strong>ordered</strong>), we can compare this with <span class="math inline">\(0\)</span>, our expectation if <span class="math inline">\(\chi = \psi\)</span>, <strong>regardless of underlying distributions <span class="math inline">\(\mathcal{D}_\chi, \mathcal{D}_\psi\)</span></strong>.</li>
+</ul>
+</section>
+<section id="procedure-in-general" class="level2 smaller crunch-title crunch-math">
+<h2 class="smaller crunch-title crunch-math anchored" data-anchor-id="procedure-in-general">Procedure in General</h2>
+<ul>
+<li><span class="math inline">\(\mathbf{X}\)</span>: size-<span class="math inline">\(N\)</span> sample from population <span class="math inline">\(\chi\)</span>; <span class="math inline">\(\mathbf{Y}\)</span>: size-<span class="math inline">\(N\)</span> sample from population <span class="math inline">\(\psi\)</span></li>
+<li>(Rather than estimating <span class="math inline">\(\mathcal{D}_\chi\)</span> from <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathcal{D}_\psi\)</span> from <span class="math inline">\(\mathbf{Y}\)</span>), we directly <strong>pair</strong> datapoints <span class="math inline">\(X_i \in \mathbf{X}\)</span> and <span class="math inline">\(Y_i \in \mathbf{Y}\)</span> and compute the <strong>sign</strong> of their difference:</li>
+</ul>
+<p><span class="math display">\[
+\text{GT}_i(X_i, Y_i) = \text{Sign}(X_{i} - Y_{i}) = \begin{cases}
+\phantom{-}1 &amp;\text{if }X_{i} &gt; Y_{i}, \\
+\phantom{-}0 &amp;\text{if }X_{i} = Y_{i}, \\
+-1 &amp;\text{if }X_{i} &lt; Y_{i}
+\end{cases}
+\]</span></p>
+<ul>
+<li><p>We can then <strong>sum</strong> each pair’s score into an aggregate score:</p>
+<p><span class="math display">\[
+  \text{GT}(\mathbf{X}, \mathbf{Y}) = \sum_{i=1}^NGT_i(X_i,Y_i)
+  \]</span></p>
+<p>such that if <span class="math inline">\(\chi\)</span> and <span class="math inline">\(\psi\)</span> are in fact <strong>the same population</strong>, we expect <span class="math inline">\(GT(\mathbf{X}, \mathbf{Y}) = 0\)</span> (positive and negative values of <span class="math inline">\(GT_i\)</span> cancel each other out, for sufficiently large <span class="math inline">\(N\)</span>)</p></li>
+<li><p>Non-parametric tests which use this value as a <strong>test statistic</strong> are called <strong>Sign tests</strong> <!-- * Note how I'm leaving it ambiguous how to **aggregate** individual scores $\text{GT}_i(X_i, Y_i)$ into an overall score $\text{GT}(\mathbf{X}, \mathbf{Y})$: this depends on the **context**, e.g., the particular **form** of the hypothesis you're trying to test --></p></li>
+</ul>
+</section>
+</section>
+<section id="mann-whitney-u-test-paired-observations-paired-samples" class="level1" data-stack-name="Mann-Whitney">
+<h1 data-stack-name="Mann-Whitney">Mann-Whitney U Test: Paired Observations → Paired Samples</h1>
+<ul>
+<li>Also called the Wilcoxon Rank Sum Test</li>
+</ul>
+<section id="what-if-we-cant-pair-observations-one-to-one" class="level2 title-08">
+<h2 class="title-08 anchored" data-anchor-id="what-if-we-cant-pair-observations-one-to-one">What If We <em>Can’t</em> Pair Observations One-to-One?</h2>
+<ul>
+<li>For example, what if samples aren’t the same size: <span class="math inline">\(N_X = |\mathbf{X}| \neq N_Y = |\mathbf{Y}|\)</span>?</li>
+<li><em>Intuition</em>: If there is no “natural” one-to-one pairing of the observations, we can instead consider <strong>all possible pairs</strong> <span class="math inline">\((X_{i}, Y_{j}) \in \mathbf{X} \times \mathbf{Y}\)</span></li>
+<li>We can then count how often <span class="math inline">\(X_i &gt; Y_j\)</span>, how often <span class="math inline">\(Y_j &gt; X_i\)</span>, and compare this to our <strong>expectation</strong> of how often these would occur if <span class="math inline">\(\chi = \psi\)</span> (that is, if <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{Y}\)</span> were in fact drawn from the <strong>same population</strong>)</li>
+</ul>
+<!-- * Another piece of information we could compute is the **rank** of each datapoint with respect to the **combination** of the two datasets:
+* If dataset 1 has size $N_1$ and dataset 2 has size $N_2$: The **greatest value across both datasets** has **rank 1**, the **second-greatest** has **rank 2**, and so on, up to the **lowest value across both datasets** having **rank $N_1 + N_2$** -->
+</section>
+<section id="computational-efficiency" class="level2">
+<h2 class="anchored" data-anchor-id="computational-efficiency">Computational Efficiency</h2>
+<ul>
+<li>We could just go ahead with this intuition, checking every pair and seeing how often <span class="math inline">\(X_i &gt; Y_j\)</span> vs.&nbsp;how often <span class="math inline">\(Y_j &gt; X_i\)</span>, but this is <strong>computationally expensive</strong> for large samples (requiring <span class="math inline">\(O(N_1N_2)\)</span> comparisons)</li>
+<li>So, let’s walk through an example with pairwise comparisons, but try to think of an equivalent yet <strong>sub-quadratic</strong> method for achieving the same results!</li>
+</ul>
+</section>
+<section id="pairwise-comparison-mode" class="level2 smaller crunch-title crunch-quarto-layout-panel crunch-ul">
+<h2 class="smaller crunch-title crunch-quarto-layout-panel crunch-ul anchored" data-anchor-id="pairwise-comparison-mode">Pairwise Comparison Mode</h2>
+<ul>
+<li>Let <span class="math inline">\(\mathbf{X} = \{5, 9, 7\}, \mathbf{Y} = \{7, 6\}\)</span>, and consider <span class="math inline">\(X_i &gt; Y_j\)</span> vs.&nbsp;<span class="math inline">\(Y_j &gt; X_i\)</span> for all pairs:</li>
+<li>Give 1 point to <span class="math inline">\(\mathbf{X}\)</span> if <span class="math inline">\(X_i &gt; Y_j\)</span>, 1 point to <span class="math inline">\(\mathbf{Y}\)</span> if <span class="math inline">\(Y_j &gt; X_i\)</span>, 0.5 points to both if <span class="math inline">\(X_i = Y_j\)</span>.</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\(X_i\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(Y_j\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(&gt;\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(=\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(&lt;\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">+1</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">+1</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">+0.5</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">7</td>
+<td style="text-align: center;">6</td>
+<td style="text-align: center;">+1</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Final</strong></td>
+<td style="text-align: center;"><strong>Score:</strong></td>
+<td style="text-align: center;"><span class="math inline">\(S_{\mathbf{X}} = 3.5\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="math inline">\(S_{\mathbf{Y}} = 2.5\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ranking-mode" class="level2 smaller crunch-title crunch-ul smaller-math inline-80">
+<h2 class="smaller crunch-title crunch-ul smaller-math inline-80 anchored" data-anchor-id="ranking-mode">Ranking Mode</h2>
+<ul>
+<li>Now consider the <strong>combined dataset</strong> <span class="math inline">\(\mathbf{Z} = \mathbf{X} \oplus \mathbf{Y} = (5_X, 9_X, 7_X, 7_Y, 6_Y)\)</span></li>
+<li>Let’s see what we get when we <strong>rank the values</strong> in <span class="math inline">\(\mathbf{X}\)</span> and <span class="math inline">\(\mathbf{Y}\)</span> separately, then rank the same values within <span class="math inline">\(\mathbf{Z}\)</span>, keeping track of whether each number is from <span class="math inline">\(\mathbf{X}\)</span> or <span class="math inline">\(\mathbf{Y}\)</span>:</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 14%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Values</strong></td>
+<td style="text-align: center;"><span class="math inline">\(5_X\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(6_Y\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(7_X\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(7_Y\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(9_X\)</span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Rank in <span class="math inline">\(\mathbf{X}\)</span></strong></td>
+<td style="text-align: center;"><span class="math inline">\([1]_{X/\mathbf{X}}\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="math inline">\([2]_{X/\mathbf{X}}\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="math inline">\([3]_{X/\mathbf{X}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\Sigma_{X/\mathbf{X}} = [6]\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Rank in <span class="math inline">\(\mathbf{Y}\)</span></strong></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="math inline">\([1]_{Y/\mathbf{Y}}\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="math inline">\([2]_{Y/\mathbf{Y}}\)</span></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="math inline">\(\Sigma_{Y/\mathbf{Y}} = [3]\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Rank in <span class="math inline">\(\mathbf{Z}\)</span></strong></td>
+<td style="text-align: center;"><span class="math inline">\([1]_{X/\mathbf{Z}}\)</span></td>
+<td style="text-align: center;">&nbsp;<br><span class="math inline">\([2]_{Y/\mathbf{Z}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\([3.5]_{X/\mathbf{Z}}\)</span></td>
+<td style="text-align: center;">&nbsp;<br><span class="math inline">\([3.5]_{Y/\mathbf{Z}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\([5]_{X/\mathbf{Z}}\)</span></td>
+<td style="text-align: center;"><span class="math inline">\(\Sigma_{X/\mathbf{Z}} = [9.5]\)</span><br><span class="math inline">\(\Sigma_{Y/\mathbf{Z}} = [5.5]\)</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Thus, by <strong>subtracting</strong> single-sample ranks from combined-sample ranks, we obtain:</li>
+<li><span class="math inline">\(S_{\mathbf{X}} = \Sigma_{X/\mathbf{Z}} - \Sigma_{X/\mathbf{X}} = 9.5 - 6 = 3.5\)</span></li>
+<li><span class="math inline">\(S_{\mathbf{Y}} = \Sigma_{Y/\mathbf{Z}} - \Sigma_{Y/\mathbf{Y}} = 5.5 - 3 = 2.5\)</span> 🤯</li>
+<li>And yet, this runs in <span class="math inline">\(O((N_1+N_2)\log(N_1+N_2)) &lt; O(N_1N_2)\)</span></li>
+</ul>
+</section>
+<section id="example-2022-world-cup" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="example-2022-world-cup">Example: 2022 World Cup</h2>
+<ul>
+<li>Heights (inches) of Welsh vs.&nbsp;US national football teams (<span class="math inline">\(N = 22\)</span> players total):</li>
+</ul>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 14%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td><strong>Wales</strong></td>
+<td>78</td>
+<td>71</td>
+<td>76</td>
+<td>75</td>
+<td>72</td>
+<td>70</td>
+<td>68</td>
+<td>72</td>
+<td>69</td>
+<td>73</td>
+<td>67</td>
+<td style="text-align: right;"><span class="math inline">\(\overline{X} \approx 71.91\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>USA</strong></td>
+<td>75</td>
+<td>68</td>
+<td>75</td>
+<td>69</td>
+<td>70</td>
+<td>70</td>
+<td>72</td>
+<td>67</td>
+<td>72</td>
+<td>72</td>
+<td>70</td>
+<td style="text-align: right;"><span class="math inline">\(\overline{Y} \approx 70.73\)</span></td>
+</tr>
+</tbody>
+</table>
+<div class="cell" data-layout-align="center">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Manual (via tibble)</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># us_heights &lt;- tibble(height=c(75, 68, 74, 68, 68, 70, 72, 67, 72, 72, 70))</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># corrected</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>us_heights <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">height=</span><span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">68</span>, <span class="dv">75</span>, <span class="dv">69</span>, <span class="dv">70</span>, <span class="dv">70</span>, <span class="dv">72</span>, <span class="dv">67</span>, <span class="dv">72</span>, <span class="dv">72</span>, <span class="dv">68</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>mean_us <span class="ot">&lt;-</span> <span class="fu">mean</span>(us_heights<span class="sc">$</span>height)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>us_heights <span class="ot">&lt;-</span> us_heights <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Team =</span> <span class="st">"US"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>wales_heights <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">height=</span><span class="fu">c</span>(<span class="dv">78</span>, <span class="dv">71</span>, <span class="dv">76</span>, <span class="dv">75</span>, <span class="dv">72</span>, <span class="dv">70</span>, <span class="dv">68</span>, <span class="dv">72</span>, <span class="dv">69</span>, <span class="dv">73</span>, <span class="dv">67</span>))</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>mean_wales <span class="ot">&lt;-</span> <span class="fu">mean</span>(wales_heights<span class="sc">$</span>height)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># From csv</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># https://www.fifa.com/en/match-centre/match/17/255711/285063/400235455</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>team_df <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"assets/wc_usa_wales.csv"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># team_df |&gt; group_by(team) |&gt; summarize(height_mean = mean(height_in))</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>mean_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">mean_height =</span> <span class="fu">c</span>(mean_us, mean_wales), <span class="at">Team =</span> <span class="fu">c</span>(<span class="st">"US"</span>, <span class="st">"Wales"</span>))</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>wales_heights <span class="ot">&lt;-</span> wales_heights <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Team =</span> <span class="st">"Wales"</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>players <span class="ot">=</span> <span class="fu">bind_rows</span>(us_heights, wales_heights)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(players, <span class="fu">aes</span>(<span class="at">x=</span>height, <span class="at">fill=</span>Team)) <span class="sc">+</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha=</span><span class="fl">0.3</span>, <span class="at">adjust=</span><span class="dv">4</span><span class="sc">/</span><span class="dv">5</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">data=</span>mean_df,</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">xintercept=</span>mean_height, <span class="at">color=</span>Team),</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="st">"dashed"</span>,</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> g_linewidth</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">65</span>,<span class="dv">80</span>)) <span class="sc">+</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">dsan_theme</span>(<span class="st">"half"</span>) <span class="sc">+</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(cbPalette[<span class="dv">1</span>], cbPalette[<span class="dv">2</span>])) <span class="sc">+</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Empirical Distribution of Team Heights"</span>,</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Height (inches)"</span>,</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Empirical Density"</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/height-hist-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="samples-rightarrow-populations" class="level2 crunch-code">
+<h2 class="crunch-code anchored" data-anchor-id="samples-rightarrow-populations">Samples <span class="math inline">\(\rightarrow\)</span> Populations</h2>
+<ul>
+<li>We know that the <strong>sampled</strong> heights of Welsh football players (<span class="math inline">\(\mathbf{X}\)</span>) are (on average) greater than the <strong>sampled</strong> heights of US football players (<span class="math inline">\(\mathbf{Y}\)</span>).</li>
+<li>But are heights in fact greater among the <strong>population</strong> of Welsh football players (<span class="math inline">\(\chi\)</span>), relative to the <strong>population</strong> of US football players (<span class="math inline">\(\psi\)</span>)?</li>
+</ul>
+</section>
+<section id="the-non-parametric-fork-in-the-road" class="level2 smaller">
+<h2 class="smaller anchored" data-anchor-id="the-non-parametric-fork-in-the-road">The Non-Parametric Fork in the Road</h2>
+<ul>
+<li>Recall: in <strong>parametric tests</strong>, when comparing means, we analyzed the difference in the sample means <strong>relative to their variability</strong> and summarized the sample information in a test statistic: for example, <span class="math inline">\(t = \frac{\overline{X} - \mu_H}{\widehat{\sigma} / \sqrt{N}}\)</span></li>
+<li>We <strong>could</strong> compute this test statistic, but it would <strong>implicitly depend on</strong> an assumption of the underlying DGP: that heights follow a <strong>Normal</strong> distribution.</li>
+<li>Here, instead, we produce a test statistic based on the <strong>ranks</strong>!</li>
+<li>Test statistics should measure how <strong>surprised</strong> we would be if we observed what we observed in a world where the <strong>null hypothesis is true</strong></li>
+<li>Equivalently, it should be <strong>low</strong> if the observed difference could feasibly have occurred just due to random noise (i.e., if we’re looking at noisy data from world where <strong>null hypothesis is true</strong>)</li>
+<li>So, let’s think in these terms about the <strong>ranks</strong> of each datapoint, to develop a non-parametric <strong>test statistic</strong> based on the ranks</li>
+</ul>
+</section>
+<section id="choosing-non-parametric-hypotheses" class="level2 crunch-title title-09">
+<h2 class="crunch-title title-09 anchored" data-anchor-id="choosing-non-parametric-hypotheses">Choosing <em>Non-Parametric</em> Hypotheses</h2>
+<ul>
+<li>The <strong>empirical distributions</strong> from the previous slide, and the <strong>small sample size</strong> (<span class="math inline">\(N_1 = N_2 = 11\)</span>), motivate our use of a nonparametric test!</li>
+<li>Assuming <span class="math inline">\(X \sim \mathcal{D}_1\)</span> and <span class="math inline">\(Y \sim \mathcal{D}_2\)</span> (but <strong>not</strong> assuming the <strong>parametric forms</strong> of <span class="math inline">\(\mathcal{D}_1\)</span> or <span class="math inline">\(\mathcal{D}_2\)</span>!), we can test:</li>
+<li><span class="math inline">\(H_0: \Pr(X &gt; Y) = \Pr(Y &gt; X)\)</span></li>
+<li><span class="math inline">\(H_1: \Pr(X &gt; Y) \neq \Pr(Y &gt; X)\)</span></li>
+</ul>
+</section>
+<section id="sorting-and-ranking-observations" class="level2 smaller crunch-title crunch-table-cells">
+<h2 class="smaller crunch-title crunch-table-cells anchored" data-anchor-id="sorting-and-ranking-observations">Sorting and Ranking Observations</h2>
+<table class="centered-table table-line-2-3 table-line-4-5 caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th colspan="2" style="text-align: center; border-right: 2px solid black; font-size: 20pt !important;">Original Data</th>
+<th colspan="2" style="text-align: center; border-right: 2px solid black; font-size: 20pt !important;">Sorted Total Samples</th>
+<th colspan="2" style="text-align: center; font-size: 20pt !important;">Rank</th>
+</tr>
+<tr class="odd">
+<th style="text-align: center; font-size: 18pt !important;">USA</th>
+<th style="text-align: center; font-size: 18pt !important; border-right: 2px solid black;">Wales</th>
+<th style="text-align: center; font-size: 18pt !important;">USA</th>
+<th style="text-align: center; font-size: 18pt !important; border-right: 2px solid black;">Wales</th>
+<th style="text-align: center; font-size: 18pt !important;">USA</th>
+<th style="text-align: center; font-size: 18pt !important;">Wales</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">75</td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">67</td>
+<td style="text-align: center;">1.5</td>
+<td style="text-align: center;">1.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">68</td>
+<td style="text-align: center;">71</td>
+<td style="text-align: center;">68</td>
+<td rowspan="2" style="text-align: center; vertical-align: middle;">68</td>
+<td style="text-align: center; border-right-width: 0px !important;">4</td>
+<td rowspan="2" style="text-align: center; vertical-align: middle; border-left: 0px;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">75</td>
+<td style="text-align: center;">76</td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center; border-right-width: 0px !important;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">75</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center; border-right-width: 0px !important;">6.5</td>
+<td style="text-align: center;">6.5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">70</td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">70</td>
+<td rowspan="2" style="text-align: center; vertical-align: middle;">70</td>
+<td style="text-align: center;">9</td>
+<td rowspan="2" style="text-align: center; vertical-align: middle;">9</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">70</td>
+<td style="text-align: center;">70</td>
+<td style="text-align: center;">70</td>
+<td style="text-align: center; border-right-width: 0px !important;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">72</td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">71</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">11</td>
+</tr>
+<tr class="even">
+<td rowspan="2" style="text-align: center;">67</td>
+<td rowspan="2" style="text-align: center;">72</td>
+<td rowspan="2" style="text-align: center;">72</td>
+<td rowspan="3" style="text-align: center; vertical-align: middle; border-right-width: 2px !important;">72</td>
+<td rowspan="2" style="text-align: center;">14</td>
+<td rowspan="3" style="text-align: center; vertical-align: middle; border-right-width: 0px !important;">14</td>
+</tr>
+<tr class="odd">
+</tr>
+<tr class="even">
+<td rowspan="2" style="text-align: center; vertical-align: middle;">72</td>
+<td rowspan="2" style="text-align: center; vertical-align: middle;">69</td>
+<td rowspan="2" style="text-align: center; vertical-align: middle;">72</td>
+<td rowspan="2" style="text-align: center; vertical-align: middle; border-right-width: 0px !important;">14</td>
+</tr>
+<tr class="odd">
+<td rowspan="3" style="text-align: center; vertical-align: middle; border-right-width: 2px !important;">72</td>
+<td rowspan="3" style="text-align: center; vertical-align: middle; border-right-width: 0px !important;">14</td>
+</tr>
+<tr class="even">
+<td rowspan="2" style="text-align: center;">72</td>
+<td rowspan="2" style="text-align: center;">73</td>
+<td rowspan="2" style="text-align: center;">72</td>
+<td rowspan="2" style="text-align: center; border-right-width: 0px !important;">14</td>
+</tr>
+<tr class="odd">
+</tr>
+<tr class="even">
+<td style="text-align: center; vertical-align: middle;">68</td>
+<td style="text-align: center; vertical-align: middle;">67</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">73</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">17</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center; vertical-align: middle;">75</td>
+<td rowspan="2" style="text-align: center; vertical-align: middle; border-right-width: 2px !important;">75</td>
+<td style="text-align: center;">19</td>
+<td rowspan="2" style="text-align: center; vertical-align: middle;">19</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center; border-right-width: 0px !important;">75</td>
+<td style="text-align: center; border-right-width: 0px !important;">19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">76</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">21</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">22</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="our-rank-based-test-statistic" class="level2 smaller crunch-title crunch-ul crunch-math crunch-li">
+<h2 class="smaller crunch-title crunch-ul crunch-math crunch-li anchored" data-anchor-id="our-rank-based-test-statistic">Our Rank-Based Test Statistic</h2>
+<ul>
+<li>Sums of ranks relative to the <strong>combined</strong> dataset: <span class="math inline">\(\Sigma_{X/\mathbf{Z}} = 112.5\)</span>, <span class="math inline">\(\Sigma_{Y/\mathbf{Z}} = 140.5\)</span>.</li>
+<li>And then sum the ranks in each group, relative to the same group… In general, if we have <span class="math inline">\(N\)</span> ranked datapoints (so, datapoints given labels <span class="math inline">\(\{1, 2, \ldots, N\}\)</span>), what will the <strong>sum</strong> of these individual ranks be?</li>
+</ul>
+<p><span class="math display">\[
+\sum_{i=1}^{N}i = \underbrace{\overbrace{(1 + N)}^{N + 1} + \overbrace{(2 + (N-1))}^{N + 1} + \cdots}_{N/2\text{ terms}} = \frac{N(N+1)}{2}
+\]</span></p>
+<ul>
+<li>So, in this case,</li>
+</ul>
+<p><span class="math display">\[
+\Sigma_{X/\mathbf{X}} = \Sigma_{Y/\mathbf{Y}} = \sum_{i=1}^{11}i = \frac{11(12)}{2} = 66
+\]</span></p>
+<ul>
+<li>Giving us the test statistics</li>
+</ul>
+<p><span class="math display">\[
+\begin{align*}
+U_X &amp;= 112.5 - 66 = 46.5, \; U_Y = 140.5 - 66 = 74.5 \\
+U &amp;= \min\{U_X, U_Y\} = \min\{46.5, 74.5\} = 46.5
+\end{align*}
+\]</span></p>
+</section>
+<section id="simulating-one-null-hypothesis-world" class="level2 smaller title-11">
+<h2 class="smaller title-11 anchored" data-anchor-id="simulating-one-null-hypothesis-world">Simulating (One) Null-Hypothesis World</h2>
+<p>One simulation:</p>
+<div class="columns">
+<div class="column" style="width:48%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">5100</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>N1 <span class="ot">&lt;-</span> <span class="dv">11</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>N2 <span class="ot">&lt;-</span> <span class="dv">11</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> N1 <span class="sc">+</span> N2</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>totalRankSum <span class="ot">&lt;-</span> (N <span class="sc">*</span> (N<span class="sc">+</span><span class="dv">1</span>)) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>s_1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(N1)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>df_1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> s_1, <span class="at">team =</span> <span class="st">"A"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>s_2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(N2)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>df_2 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> s_2, <span class="at">team =</span> <span class="st">"B"</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>df_combined <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_1, df_2)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>df_combined[<span class="st">'rank'</span>] <span class="ot">&lt;-</span> <span class="fu">rank</span>(df_combined<span class="sc">$</span>x)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(<span class="st">"N1 = "</span>,N1,<span class="st">", N2 = "</span>,N2,<span class="st">" =&gt; Sum(1...(N1+N2)) = "</span>,totalRankSum))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>N1 = 11, N2 = 11 =&gt; Sum(1...(N1+N2)) = 253</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df_combined <span class="sc">|&gt;</span> <span class="fu">arrange</span>(rank) <span class="sc">|&gt;</span> <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">x</th>
+<th style="text-align: left;">team</th>
+<th style="text-align: right;">rank</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.0281644</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0282184</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0730575</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.1343398</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.1351495</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.1858087</td>
+<td style="text-align: left;">A</td>
+<td style="text-align: right;">6</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:4%;">
+<div style="height: 50px; width: 1px;">
+&nbsp;
+</div>
+<p>→</p>
+</div><div class="column" style="width:48%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>df_combined <span class="sc">|&gt;</span> <span class="fu">group_by</span>(team) <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">ranksum =</span> <span class="fu">sum</span>(rank)) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">proportion =</span> ranksum <span class="sc">/</span> totalRankSum)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="kable-table">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">team</th>
+<th style="text-align: right;">ranksum</th>
+<th style="text-align: right;">proportion</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">A</td>
+<td style="text-align: right;">144</td>
+<td style="text-align: right;">0.56917</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">B</td>
+<td style="text-align: right;">109</td>
+<td style="text-align: right;">0.43083</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="simulating-many-null-hypothesis-worlds" class="level2 smaller title-11 crunch-quarto-figure">
+<h2 class="smaller title-11 crunch-quarto-figure anchored" data-anchor-id="simulating-many-null-hypothesis-worlds">Simulating Many Null-Hypothesis Worlds</h2>
+<p>And we can repeat this process (say) 10K times:</p>
+<div class="columns">
+<div class="column" style="width:30%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>simulate_ranksums <span class="ot">&lt;-</span> <span class="cf">function</span>(N1, N2) {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  N <span class="ot">&lt;-</span> N1 <span class="sc">+</span> N2</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  totalRankSum <span class="ot">&lt;-</span> (N <span class="sc">*</span> (N<span class="sc">+</span><span class="dv">1</span>)) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  s_1 <span class="ot">&lt;-</span> <span class="fu">runif</span>(N1)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  df_1 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> s_1, <span class="at">team =</span> <span class="st">"A"</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  s_2 <span class="ot">&lt;-</span> <span class="fu">runif</span>(N2)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  df_2 <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">x =</span> s_2, <span class="at">team =</span> <span class="st">"B"</span>)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  df_combined <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_1, df_2)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  df_combined[<span class="st">'rank'</span>] <span class="ot">&lt;-</span> <span class="fu">rank</span>(df_combined<span class="sc">$</span>x)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  ranksum_df <span class="ot">&lt;-</span> df_combined <span class="sc">|&gt;</span> <span class="fu">group_by</span>(team) <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">ranksum =</span> <span class="fu">sum</span>(rank))</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(ranksum_df<span class="sc">$</span>ranksum)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>num_sims <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>results <span class="ot">&lt;-</span> <span class="fu">replicate</span>(num_sims, <span class="fu">simulate_ranksums</span>(<span class="dv">11</span>,<span class="dv">11</span>))</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="fu">t</span>(results[,<span class="dv">0</span><span class="sc">:</span><span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1] [,2]
+ [1,]  133  120
+ [2,]   98  155
+ [3,]  115  138
+ [4,]  166   87
+ [5,]  137  116
+ [6,]  140  113
+ [7,]  146  107
+ [8,]  157   96
+ [9,]  119  134
+[10,]  106  147</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rowMeans</span>(results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 126.407 126.593</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:70%;">
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Separate ranksums</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ranksum_A <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ranksum=</span>results[<span class="dv">1</span>,], <span class="at">team=</span><span class="st">"A"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ranksum_A_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(ranksum_A<span class="sc">$</span>ranksum)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>ranksum_B <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">ranksum=</span>results[<span class="dv">2</span>,], <span class="at">team=</span><span class="st">"B"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>ranksum_B_mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(ranksum_B<span class="sc">$</span>ranksum)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>sim_df <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(ranksum_A, ranksum_B)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Means</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>mean_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">mean_value =</span> <span class="fu">c</span>(ranksum_A_mean, ranksum_B_mean), <span class="at">team=</span><span class="fu">c</span>(<span class="st">"A"</span>,<span class="st">"B"</span>))</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>mean_center <span class="ot">&lt;-</span> (ranksum_A_mean <span class="sc">+</span> ranksum_B_mean) <span class="sc">/</span> <span class="dv">2</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>gen_ranksum_plot <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">radius=</span><span class="cn">Inf</span>) {</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  ranksum_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(sim_df, <span class="fu">aes</span>(<span class="at">x=</span>ranksum, <span class="at">fill=</span>team)) <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_density</span>(<span class="at">linewidth =</span> g_linewidth, <span class="at">alpha=</span><span class="fl">0.333</span>) <span class="sc">+</span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_vline</span>(</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">data=</span>mean_df,</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="fu">aes</span>(<span class="at">xintercept =</span> mean_value, <span class="at">color=</span>team),</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>        <span class="at">linewidth =</span> g_linewidth</span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">+</span></span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_classic</span>(<span class="at">base_size=</span><span class="dv">14</span>) <span class="sc">+</span></span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(cbPalette[<span class="dv">1</span>], cbPalette[<span class="dv">2</span>]))</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (radius <span class="sc">!=</span> <span class="cn">Inf</span>) {</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>        ranksum_plot <span class="ot">&lt;-</span> ranksum_plot <span class="sc">+</span></span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>        <span class="fu">xlim</span>(mean_center <span class="sc">-</span> radius, mean_center <span class="sc">+</span> radius)</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(ranksum_plot)</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_ranksum_plot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/ranksum-sim-plot-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gen_ranksum_plot</span>(<span class="at">radius=</span><span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/ranksum-sim-plot-zoomed-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="wilcox.test-in-r" class="level2 crunch-title crunch-code crunch-ul">
+<h2 class="crunch-title crunch-code crunch-ul anchored" data-anchor-id="wilcox.test-in-r"><code>wilcox.test</code> in R</h2>
+<div class="cell" data-layout-align="center">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(height <span class="sc">~</span> Team, <span class="at">data=</span>players, <span class="at">exact =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Wilcoxon rank sum test with continuity correction
+
+data:  height by Team
+W = 48, p-value = 0.4262
+alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+</div>
+<ul>
+<li>We confirm our computed test statistic of <strong>46.5</strong>, and obtain a p-value of about <strong>0.37</strong></li>
+<li>Thus, under most confidence levels (like my favorite <span class="math inline">\(\alpha = 0.11\)</span>), we <strong>fail to reject</strong> the null hypothesis <span class="math inline">\(\mathcal{H}_0\)</span></li>
+<li>Putting on our Bayes hats, we do <strong>not</strong> increase our degree of belief that height <strong>differs</strong> between the two populations.</li>
+</ul>
+</section>
+</section>
+<section id="kruskal-wallis-test" class="level1" data-stack-name="Kruskal-Wallis">
+<h1 data-stack-name="Kruskal-Wallis">Kruskal-Wallis Test</h1>
+<ul>
+<li>For comparing outcomes across <strong>more than two independent groups</strong></li>
+<li>Sometimes described as “ANOVA with Ranks”</li>
+</ul>
+<section id="procedure" class="level2">
+<h2 class="anchored" data-anchor-id="procedure">Procedure</h2>
+<ul>
+<li>Pool observations from <span class="math inline">\(k\)</span> samples into one combined sample, keeping track of which sample each observation comes from, then rank lowest to highest.</li>
+<li>Test statistic:</li>
+</ul>
+<p><span class="math display">\[
+H = \frac{12}{N(N+1)}\sum_{j=1}^{k}\frac{R_j^2}{n_j} - 3(N+1)
+\]</span></p>
+<ul>
+<li>Reject <span class="math inline">\(\mathcal{H}_0\)</span> if <span class="math inline">\(H \geq \text{critical val}\)</span></li>
+</ul>
+</section>
+<section id="kruskal.test-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="kruskal.test-in-r"><code>kruskal.test</code> in R</h2>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># kruskal.test(height ~ position, data=players)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+</section>
+
+
+<div id="quarto-appendix" class="default"><section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes"><h2 class="anchored quarto-appendix-heading">Footnotes</h2>
+
+<ol>
+<li id="fn1"><p>Recall that any other distribution implicitly encodes <strong>additional assumptions</strong>: bounded range, nonnegative, etc.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+    const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+    const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+    let newTheme = '';
+    if(darkModeDefault) {
+      newTheme = isAlternate ? baseTheme : alternateTheme;
+    } else {
+      newTheme = isAlternate ? alternateTheme : baseTheme;
+    }
+    const changeGiscusTheme = () => {
+      // From: https://github.com/giscus/giscus/issues/336
+      const sendMessage = (message) => {
+        const iframe = document.querySelector('iframe.giscus-frame');
+        if (!iframe) return;
+        iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+      }
+      sendMessage({
+        setConfig: {
+          theme: newTheme
+        }
+      });
+    }
+    const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+    if (isGiscussLoaded) {
+      changeGiscusTheme();
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  const darkModeDefault = false;
+  let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+    toggleGiscusIfUsed(toAlternate, darkModeDefault);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+          // target, if specified
+          link.setAttribute("target", "_blank");
+          if (link.getAttribute("rel") === null) {
+            link.setAttribute("rel", "noopener");
+          }
+          // default icon
+          link.classList.add("external");
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/jpowerj/dsan5100-03/blob/main/w14/index.qmd" target="_blank" class="toc-action"><i class="bi bi-github"></i>View source</a></li></ul></div></div></div></footer></body></html>

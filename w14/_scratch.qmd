@@ -1,0 +1,47 @@
+---
+title: "W14 Scratch"
+---
+
+```{r}
+library(tidyverse) |> suppressPackageStartupMessages()
+```
+
+```{r}
+wc_df <- read_csv("assets/wc_players.csv", show_col_types = FALSE)
+wc_df <- wc_df |> rename(team=`National Team`)
+```
+
+```{r}
+teams_to_keep <- c("USA", "Wales")
+# unique(wc_df$`National Team`)
+team_df <- wc_df |> filter(team %in% teams_to_keep) |>
+  select(team, `POS`, `PLAYER NAME`, `HEIGHT (CM)`) |>
+  rename(position=POS, name=`PLAYER NAME`, height_cm=`HEIGHT (CM)`) |>
+  mutate(height_in = height_cm / 2.54)
+team_df
+```
+
+US only:
+
+```{r}
+team_df |> filter(team == "USA") |> arrange(height_in)
+```
+
+For cm to inches:
+
+```{r}
+library(units)
+match_df <- read_csv("assets/wc_usa_wales.csv", show_col_types = FALSE)
+match_df$height_cm <- set_units(match_df$height_cm, cm)
+match_df$height_in <- as.numeric(set_units(match_df$height_cm, inch))
+match_df
+```
+
+```{r}
+match_df |> group_by(team) |> summarize(height_mean = mean(height_in))
+```
+
+```{r}
+match_df |> write_csv("assets/wc_heights.csv")
+```
+

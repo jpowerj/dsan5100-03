@@ -333,7 +333,7 @@ window.Quarto = {
     </ul>
     </div>
 <div class="quarto-sidebar-footer"><div class="sidebar-footer-item">
-<p><em>Updated 2024-11-24, 09:51:34 PM</em></p>
+<p><em>Updated 2024-12-11, 05:10:12 AM</em></p>
 </div></div></nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
@@ -471,6 +471,7 @@ window.Quarto = {
 \newcommand{\pgsamplespace}{\{\green{1},\green{2},\green{3},\purp{4},\purp{5},\purp{6}\}}
 \newcommand{\prob}[1]{P\left( #1 \right)}
 \newcommand{\purp}[1]{\color{purple}{#1}}
+\newcommand{\sign}{\text{Sign}}
 \newcommand{\spacecap}{\; \cap \;}
 \newcommand{\spacewedge}{\; \wedge \;}
 \newcommand{\tails}{\outcome{tails}}
@@ -901,8 +902,8 @@ window.Quarto = {
 <span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>bs_output <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"Bootstrap estimate:  "</span>, bs_str, <span class="st">" (abs. err: "</span>, bs_err_str, <span class="st">")"</span>)</span>
 <span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">writeLines</span>(<span class="fu">paste0</span>(sample_output,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>,bs_output))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>1K samples estimate: 3.005 (abs. err: 0.005)
-Bootstrap estimate:  3.077 (abs. err: 0.077)</code></pre>
+<pre><code>1K samples estimate: 3.001 (abs. err: 0.001)
+Bootstrap estimate:  3.083 (abs. err: 0.083)</code></pre>
 </div>
 </div>
 </section>
@@ -919,7 +920,7 @@ Bootstrap estimate:  3.077 (abs. err: 0.077)</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    2.5%    97.5% 
-2.886822 3.269316 </code></pre>
+2.890703 3.281231 </code></pre>
 </div>
 </div>
 <ul>

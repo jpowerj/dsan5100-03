@@ -1,0 +1,205 @@
+
+## Nonparametric Tests
+
+* Distribution-free - they do not assume that the
+outcome is approximately normally distributed.
+* Cost: less powerful than their parametric
+counterparts (i.e., when the alternative is true, they may be less likely to reject H0).
+
+## Normality Tests
+
+* It can sometimes be difficult to assess whether a continuous outcome follows a normal distribution
+and, thus, whether a parametric or nonparametric test is appropriate.
+* Several statistical tests can be used to assess whether data are likely from a normal distribution:
+    * Kolmogorov-Smirnov test
+    * Anderson-Darling test
+    * Shapiro-Wilk test.
+* Each test is based on evaluating:
+    * $\mathcal{H}_0$: Data follow a normal distribution
+    * $\mathcal{H}_1$: Data do **not** follow a normal distribution.
+
+# Non-Parametric Analysis {data-stack-name="Non-Parametric Analysis"}
+
+::: {.aside}
+
+Recall that any other distribution implicitly encodes **additional assumptions**: bounded range, nonnegative, etc.
+
+:::
+
+# Go metric! Oh well
+#us_heights <- tibble(height=c(190.5, 172.7, 188, 172.7, 172.7, 177.8, 182.9, 170.2, 182.9, 182.9, 177.8)
+
+---
+
+
+## Sorting and Ranking Observations {.smaller .crunch-title .crunch-table-cells}
+
+```{=html}
+<table class='centered-table table-line-2-3 table-line-4-5' style='border-collapse: collapse; font-size: 16pt;'>
+<thead>
+<tr>
+    <td colspan="2" align="center" style="border-right: 2px solid black; font-size: 20pt !important;">Original Data</td>
+    <td colspan="2" align="center" style="border-right: 2px solid black; font-size: 20pt !important;">Sorted Total Samples</td>
+    <td colspan="2" align="center" style="font-size: 20pt !important;">Rank</td>
+</tr>
+<tr>
+    <td style='font-size: 18pt !important;' align='center'>USA</td>
+    <td style="font-size: 18pt !important; border-right: 2px solid black;">Wales</td>
+    <td style='font-size: 18pt !important;'>USA</td>
+    <td style="font-size: 18pt !important; border-right: 2px solid black;">Wales</td>
+    <td style='font-size: 18pt !important;'>USA</td>
+    <td style='font-size: 18pt !important;'>Wales</td>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td align="center">75</td>
+    <td align="center">78</td>
+    <td align="center">67</td>
+    <td align="center">67</td>
+    <td align="center">1.5</td>
+    <td align="center">1.5</td>
+</tr>
+<tr>
+    <td>68</td>
+    <td>71</td>
+    <td>68</td>
+    <td rowspan="2" style="vertical-align: middle;">68</td>
+    <td style="border-right-width: 0px !important;">4.5</td>
+    <td rowspan="2" style="vertical-align: middle; border-left: 0px;">4.5</td>
+</tr>
+<tr>
+    <td>75</td>
+    <td>76</td>
+    <td>68</td>
+    <td style="border-right-width: 0px !important;">4.5</td>
+</tr>
+<tr>
+    <td>69</td>
+    <td>75</td>
+    <td>69</td>
+    <td>69</td>
+    <td style="border-right-width: 0px !important;">4.5</td>
+    <td>4.5</td>
+</tr>
+<tr>
+    <td>70</td>
+    <td>72</td>
+    <td>70</td>
+    <td rowspan="2" style="vertical-align: middle;">70</td>
+    <td>7</td>
+    <td rowspan="2" style="vertical-align: middle;">7</td>
+</tr>
+<tr>
+    <td>70</td>
+    <td>70</td>
+    <td>70</td>
+    <td style="border-right-width: 0px !important;">9</td>
+</tr>
+<tr>
+    <td>72</td>
+    <td>68</td>
+    <td></td>
+    <td>71</td>
+    <td></td>
+    <td>7</td>
+</tr>
+<!-- start multirow -->
+<!-- r1 -->
+<tr>
+    <td rowspan="2">67</td>
+    <td rowspan="2">72</td>
+    <td rowspan="2">72</td>
+    <td rowspan="3" style="vertical-align: middle;">72</td>
+    <td rowspan="2">11</td>
+    <td rowspan="3" style="vertical-align: middle;">11</td>
+</tr>
+<!-- r2 -->
+<tr></tr>
+<!-- r3 -->
+<tr>
+    <td rowspan="2" style="vertical-align: middle;">72</td>
+    <td rowspan="2" style="vertical-align: middle;">69</td>
+    <td rowspan="2" style="vertical-align: middle;">72</td>
+    <td></td>
+    <td rowspan="2" style="vertical-align: middle;">14</td>
+    <td></td>
+</tr>
+<!-- r4 -->
+<tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td rowspan="3">a</td>
+    <td></td>
+    <td rowspan="3">b</td>
+</tr>
+<!-- r5 -->
+<tr>
+    <td rowspan="2">15</td>
+    <td rowspan="2">16</td>
+    <td rowspan="2">17</td>
+    <td></td>
+    <td rowspan="2">18</td>
+    <td></td>
+</tr>
+<!-- r6 -->
+<tr></tr>
+<!-- end multirow -->
+<tr>
+    <td style="vertical-align: middle;">68</td>
+    <td style="vertical-align: middle;">67</td>
+    <td style="vertical-align: middle;">72</td>
+    <td style="vertical-align: middle;border-right-width: 0px !important;">14</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>70</td>
+    <td>67</td>
+    <td>72</td>
+    <td style="border-right-width: 0px !important;">14</td>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>73</td>
+    <td></td>
+    <td>17</td>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+    <td>74</td>
+    <td></td>
+    <td>18</td>
+    <td></td>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+    <td>75</td>
+    <td>75</td>
+    <td>19.5</td>
+    <td>19.5</td>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>76</td>
+    <td></td>
+    <td>21</td>
+</tr>
+<tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td>78</td>
+    <td></td>
+    <td>22</td>
+</tr>
+</tbody>
+</table>
+```

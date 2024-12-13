@@ -112,6 +112,10 @@ a.disabled {
   margin-bottom: 3px !important;
 }
 
+.crunch-iframe iframe {
+  margin-bottom: 0px !important;
+}
+
 .crunch-img img {
   margin-top: 0px !important;
   margin-bottom: 0px !important;
@@ -155,6 +159,13 @@ a.disabled {
   margin-bottom: 0px !important;
 }
 
+.crunch-table-cells td, th {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  padding-bottom: 2px !important;
+  padding-top: 2px !important;
+}
+
 .crunch-title h2 {
   margin-bottom: 0px !important;
 }
@@ -196,14 +207,25 @@ figcaption {
 .inline-90 .math.inline {
   font-size: 90% !important;
 }
+.inline-85 .math.inline {
+  font-size: 85% !important;
+}
 .inline-80 .math.inline {
   font-size: 80% !important;
 }
 .math-90 .math.display {
   font-size: 90% !important;
 }
+.math-85 .math.display {
+  font-size: 85% !important;
+}
 .math-80 .math.display {
   font-size: 80% !important;
+}
+
+.footnotes-0 aside {
+  bottom: 0px !important;
+  margin-top: 0px !important;
 }
 
 .new-unit {
@@ -281,6 +303,14 @@ summary {
 /* and one small fix for weird FF behavior, described in https://stackoverflow.com/questions/7517127/ */
 table thead th {
   background-clip: padding-box;
+}
+
+/* Vertical lines in tables */
+.table-line-2-3 td:nth-child(2) {
+    border-right: 2px solid black !important;
+}
+.table-line-4-5 td:nth-child(4) {
+    border-right: 2px solid black !important;
 }
 
 .table-va td {
